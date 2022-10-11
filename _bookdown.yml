@@ -1,0 +1,6 @@
+book_filename: "hydr-watres_main.Rmd"
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+#output_dir: "docs"

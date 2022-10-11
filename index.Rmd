@@ -1,0 +1,34 @@
+--- 
+title: "Hydraulics and Water Resources: Examples Using R"
+author: "Ed Maurer"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [ed-bookdown.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+cover-image: images/david-becker-rrfdqjJWwmU-unsplash.jpg
+description: |
+  A compilation of fluid mechanics, hydraulics, and water resources 
+  engineering exercises using R.
+link-citations: yes
+#github-repo: rstudio/bookdown-demo
+---
+
+# Preface {-}
+
+This is a compilation of various R exercised created over many years. They have been used mostly in undergraduate civil engineering classes including fluid mechanics, hydraulics, and water resources.
+
+In what follows, text will be intentionally brief. More extensive discussion and description can be found in any fluid mechanics, applied hydraulics, or water resources engineering text. Fundamental equations will be introduced thought the emphasis will be on applications to solve common problems. Also, since this is written by a civil engineer, the only fluids included are water and air, since that accounts for nearly all problems encountered in the field.
+
+Solving water problems is rarely done by hand calculations, though the importance of performing order of magnitude 'back of the envelope' calculations cannot be overstated. Whether using a hand calculator, spreadsheet, or a programming language to produce a solution, having a sense of when an answer is an outlier will help catch errors. 
+
+Scripting languages are powerful tools for performing calculations, providing a fully traceable and reproducible path from your input to a solution. Open source languages have the benefit of being free to use, and invite users to be part of a community helping improve the language and its capabilities. The language of choice for this book is R [@r_core_team_r_2022], chosen for its straightforward syntax, powerful graphical capabilities, wide use in engineering and in many other disciplines, and by using the RStudio interface, it can look and feel a lot like Matlab`r knitr::asis_output("\U00AE")` with which most engineering students have some experience.
+
+No introduction to R or RStudio is provided here. It is assumed that the reader has installed R (and RStudio), is comfortable installing and updating packages, and understands the basics of R scripting. A brief overview [is provided here](https://www.engr.scu.edu/~emaurer/shared/R-intro/), aimed at students at Santa Clara University. More comprehensive materials are readily available, including [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.html) by the R Core Team. An excellent set of materials for a course [Introduction to Programming with R](https://discdown.org/rprogramming/) by Stauffer et al. is also freely available and includes interactive exercises.
+
+## Copyight {-}
+
+This work is provided under a Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). As a summary, this license allows reusers to distribute, remix, adapt, and build upon the material in any medium or format for noncommercial purposes only, and only so long as attribution is given to the creator. This is a summary of (and not a substitute for) the [license](https://creativecommons.org/licenses/by-nc/4.0/legalcode).
+``` {r echo=FALSE}
+knitr::include_graphics("images/CC-BY-NC.png", out.width = '15%') 
+```
