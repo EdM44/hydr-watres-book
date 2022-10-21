@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="3.7 Parallel pipes: solving a system of equations | Hydraulics and Water Resources: Examples Using R" />
+<meta property="og:type" content="book" />
+<meta property="og:image" content="/images/david-becker-rrfdqjJWwmU-unsplash.jpg" />
+<meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+
+
+<meta name="author" content="Ed Maurer" />
+
+<meta name="date" content="2022-10-21" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>">
+
+<title>3.7 Parallel pipes: solving a system of equations | Hydraulics and Water Resources: Examples Using R</title>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#preface" id="toc-preface">Preface</a>
+<ul>
+<li><a href="copyight.html#copyight" id="toc-copyight">Copyight</a></li>
+</ul></li>
+<li><a href="1-units-in-fluid-mechanics.html#units-in-fluid-mechanics" id="toc-units-in-fluid-mechanics"><span class="toc-section-number">1</span> Units in Fluid Mechanics</a></li>
+<li class="has-sub"><a href="2-properties-of-water.html#properties-of-water" id="toc-properties-of-water"><span class="toc-section-number">2</span> Properties of Water</a>
+<ul>
+<li><a href="2.1-properties-important-for-water-standing-still.html#properties-important-for-water-standing-still" id="toc-properties-important-for-water-standing-still"><span class="toc-section-number">2.1</span> Properties important for water standing still</a></li>
+<li><a href="2.2-properties-important-for-moving-water.html#properties-important-for-moving-water" id="toc-properties-important-for-moving-water"><span class="toc-section-number">2.2</span> Properties important for moving water</a></li>
+<li><a href="2.3-atmosperic-properties.html#atmosperic-properties" id="toc-atmosperic-properties"><span class="toc-section-number">2.3</span> Atmosperic Properties</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-water-flowing-in-pipes-energy-losses.html#water-flowing-in-pipes-energy-losses" id="toc-water-flowing-in-pipes-energy-losses"><span class="toc-section-number">3</span> Water Flowing in Pipes: Energy Losses</a>
+<ul>
+<li><a href="3.1-important-dimensionless-quantity.html#important-dimensionless-quantity" id="toc-important-dimensionless-quantity"><span class="toc-section-number">3.1</span> Important dimensionless quantity</a></li>
+<li><a href="3.2-friction-loss-in-circular-pipes.html#friction-loss-in-circular-pipes" id="toc-friction-loss-in-circular-pipes"><span class="toc-section-number">3.2</span> Friction Loss in Circular Pipes</a></li>
+<li><a href="3.3-solving-pipe-friction-problems.html#solving-pipe-friction-problems" id="toc-solving-pipe-friction-problems"><span class="toc-section-number">3.3</span> Solving Pipe friction problems</a></li>
+<li class="has-sub"><a href="3.4-type1.html#type1" id="toc-type1"><span class="toc-section-number">3.4</span> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li><a href="3.4-type1.html#solving-for-head-loss-by-manual-iteration" id="toc-solving-for-head-loss-by-manual-iteration"><span class="toc-section-number">3.4.1</span> Solving for head loss by manual iteration</a></li>
+<li><a href="3.4-type1.html#dwapprox" id="toc-dwapprox"><span class="toc-section-number">3.4.2</span> Solving for headloss using an empirical approximation</a></li>
+<li><a href="3.4-type1.html#coleb-solver" id="toc-coleb-solver"><span class="toc-section-number">3.4.3</span> Solving for head loss using an equation solver</a></li>
+<li><a href="3.4-type1.html#solving-for-head-loss-using-an-r-package" id="toc-solving-for-head-loss-using-an-r-package"><span class="toc-section-number">3.4.4</span> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="has-sub"><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-flow-or-velocity-type-2-problems" id="toc-solving-for-flow-or-velocity-type-2-problems"><span class="toc-section-number">3.5</span> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-q-or-v-using-manual-iteration" id="toc-solving-for-q-or-v-using-manual-iteration"><span class="toc-section-number">3.5.1</span> Solving for Q (or V) using manual iteration</a></li>
+<li><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-q-using-an-explicit-equation" id="toc-solving-for-q-using-an-explicit-equation"><span class="toc-section-number">3.5.2</span> Solving for Q Using an Explicit Equation</a></li>
+<li><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-q-using-an-r-package" id="toc-solving-for-q-using-an-r-package"><span class="toc-section-number">3.5.3</span> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="has-sub"><a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html#solving-for-pipe-diameter-d-type-3-problems" id="toc-solving-for-pipe-diameter-d-type-3-problems"><span class="toc-section-number">3.6</span> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li><a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html#solving-for-d-using-manual-iterations" id="toc-solving-for-d-using-manual-iterations"><span class="toc-section-number">3.6.1</span> Solving for D using manual iterations</a></li>
+<li><a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html#solving-for-d-using-an-equation-solver" id="toc-solving-for-d-using-an-equation-solver"><span class="toc-section-number">3.6.2</span> Solving for D using an equation solver</a></li>
+</ul></li>
+<li><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#parallel-pipes-solving-a-system-of-equations" id="toc-parallel-pipes-solving-a-system-of-equations"><span class="toc-section-number">3.7</span> Parallel pipes: solving a system of equations</a></li>
+<li><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#simple-pipe-networks-the-hardy-cross-method" id="toc-simple-pipe-networks-the-hardy-cross-method"><span class="toc-section-number">3.8</span> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-flow-in-open-channels.html#flow-in-open-channels" id="toc-flow-in-open-channels"><span class="toc-section-number">4</span> Flow in open channels</a>
+<ul>
+<li><a href="4.1-an-important-dimensionless-quantity.html#an-important-dimensionless-quantity" id="toc-an-important-dimensionless-quantity"><span class="toc-section-number">4.1</span> An important dimensionless quantity</a></li>
+<li><a href="4.2-equations-for-open-channel-flow.html#equations-for-open-channel-flow" id="toc-equations-for-open-channel-flow"><span class="toc-section-number">4.2</span> Equations for open channel flow</a></li>
+<li class="has-sub"><a href="4.3-trap.html#trap" id="toc-trap"><span class="toc-section-number">4.3</span> Trapezoidal channels</a>
+<ul>
+<li><a href="4.3-trap.html#solving-the-manning-equations-in-r" id="toc-solving-the-manning-equations-in-r"><span class="toc-section-number">4.3.1</span> Solving the Manning equations in R</a></li>
+<li><a href="4.3-trap.html#solving-the-manning-equation-with-the-hydraulics-r-package" id="toc-solving-the-manning-equation-with-the-hydraulics-r-package"><span class="toc-section-number">4.3.2</span> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li><a href="4.3-trap.html#solving-the-manning-equation-using-a-spreadsheet-like-excel" id="toc-solving-the-manning-equation-using-a-spreadsheet-like-excel"><span class="toc-section-number">4.3.3</span> solving the Manning equation using a Spreadsheet Like Excel</a></li>
+<li><a href="4.3-trap.html#optimal-trapezoidal-geometry" id="toc-optimal-trapezoidal-geometry"><span class="toc-section-number">4.3.4</span> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="has-sub"><a href="4.4-circ.html#circ" id="toc-circ"><span class="toc-section-number">4.4</span> Circular Channels (flowing partially full)</a>
+<ul>
+<li><a href="4.4-circ.html#solving-the-manning-equation-in-r" id="toc-solving-the-manning-equation-in-r"><span class="toc-section-number">4.4.1</span> Solving the Manning equation in R</a></li>
+</ul></li>
+<li><a href="4.5-crit-section.html#crit-section" id="toc-crit-section"><span class="toc-section-number">4.5</span> Critical flow</a></li>
+<li class="has-sub"><a href="4.6-gradually-varied-steady-flow.html#gradually-varied-steady-flow" id="toc-gradually-varied-steady-flow"><span class="toc-section-number">4.6</span> Gradually varied steady flow</a>
+<ul>
+<li><a href="4.6-gradually-varied-steady-flow.html#the-direct-step-method" id="toc-the-direct-step-method"><span class="toc-section-number">4.6.1</span> The direct step method</a></li>
+<li><a href="4.6-gradually-varied-steady-flow.html#standard-step-method" id="toc-standard-step-method"><span class="toc-section-number">4.6.2</span> Standard step method</a></li>
+</ul></li>
+</ul></li>
+<li><a href="5-momentum-in-water-flow.html#momentum-in-water-flow" id="toc-momentum-in-water-flow"><span class="toc-section-number">5</span> Momentum in water flow</a></li>
+<li class="has-sub"><a href="6-pumps-and-how-they-operate-in-a-hydraulic-system.html#pumps-and-how-they-operate-in-a-hydraulic-system" id="toc-pumps-and-how-they-operate-in-a-hydraulic-system"><span class="toc-section-number">6</span> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li><a href="6.1-defining-the-system-curve.html#defining-the-system-curve" id="toc-defining-the-system-curve"><span class="toc-section-number">6.1</span> Defining the system curve</a></li>
+<li><a href="6.2-defining-the-pump-characteristic-curve.html#defining-the-pump-characteristic-curve" id="toc-defining-the-pump-characteristic-curve"><span class="toc-section-number">6.2</span> Defining the pump characteristic curve</a></li>
+<li><a href="6.3-finding-the-operating-point.html#finding-the-operating-point" id="toc-finding-the-operating-point"><span class="toc-section-number">6.3</span> Finding the operating point</a></li>
+</ul></li>
+<li><a href="references.html#references" id="toc-references">References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="parallel-pipes-solving-a-system-of-equations" class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Parallel pipes: solving a system of equations</h2>
+<p>In the examples above the challenge was often to solve a single implicit equation. The manual iteration approach can work to solve two equations, but as the number of equations increases, especially when using implicit equations, using an equation solver is needed.</p>
+<p>For the case of a simple pipe loop manual iterations are impractical. for this reason often fixed values of <em>f</em> are assumed, or an empirical energy loss equation is used. However, a single loop, identical to a parallel pipe problem, can be used to demonstrate how systems of equations can be solved simultaneously for systems of pipes.</p>
+<p>Example <a href="3.7-parallel-pipes-solving-a-system-of-equations.html#exm:loop-1">3.6</a> demonstrates the process of assembling the equations for a solver for a parallel pipe problem.</p>
+<div class="example">
+<p><span id="exm:loop-1" class="example"><strong>Example 3.6  </strong></span>Two pipes carry a flow of Q=0.5 m<sup>3</sup>/s, as depicted in Figure <a href="3.7-parallel-pipes-solving-a-system-of-equations.html#fig:paral-pipe">3.2</a></p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:paral-pipe"></span>
+<img src="images/pipe_loop.png" alt="Parallel Pipe Example" width="50%" />
+<p class="caption">
+Figure 3.2: Parallel Pipe Example
+</p>
+</div>
+<p>The fundamental equations needed are the Darcy-Weisbach equation, the Colebrook equation, and continuity (conservation of mass). For the illustrated system, this means:</p>
+<ul>
+<li>The flows through each pipe must add to the total flow</li>
+<li>The head loss through Pipe 1 must equal that of Pipe 2</li>
+</ul>
+<p>This could be set up as a system of anywhere from 2 to 10 equations to solve simultaneously. In this example four equations are used:
+<span class="math display" id="eq:loopeq1">\[\begin{equation}
+  Q_1+Q_2-Q_{total}=V_1\frac{\pi}{4}D_1^2+V_2\frac{\pi}{4}D_2^2-0.5m^3/s=0
+  \tag{3.11}
+\end{equation}\]</span>
+and
+<span class="math display" id="eq:loopeq2">\[\begin{equation}
+  Qh_{f1}-h_{f2} = \frac{f_1L_1}{D_1}\frac{V_1^2}{2g} -\frac{f_2L_2}{D_2}\frac{V_2^2}{2g}=0
+  \tag{3.12}
+\end{equation}\]</span></p>
+<p>The other two equations are the Colebrook equation <a href="3.4-type1.html#eq:coleb-2">(3.8)</a> for solving for the friction factor for each pipe.</p>
+<p>These four equations can be solved simultaneously using an equation solver, such as the <em>fsolve</em> function in the <em>R</em> package <em>pracma</em>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#assign known inputs - SI units</span></span>
+<span id="cb18-2"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-2" aria-hidden="true" tabindex="-1"></a>Qsum <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb18-3"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-3" aria-hidden="true" tabindex="-1"></a>D1 <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb18-4"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-4" aria-hidden="true" tabindex="-1"></a>D2 <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
+<span id="cb18-5"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-5" aria-hidden="true" tabindex="-1"></a>L1 <span class="ot">&lt;-</span> <span class="dv">400</span></span>
+<span id="cb18-6"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-6" aria-hidden="true" tabindex="-1"></a>L2 <span class="ot">&lt;-</span> <span class="dv">600</span></span>
+<span id="cb18-7"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-7" aria-hidden="true" tabindex="-1"></a>ks <span class="ot">&lt;-</span> <span class="fl">0.000025</span></span>
+<span id="cb18-8"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-8" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fl">9.81</span></span>
+<span id="cb18-9"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-9" aria-hidden="true" tabindex="-1"></a>nu <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">kvisc</span>(<span class="at">T=</span><span class="dv">100</span>, <span class="at">units=</span><span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb18-10"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Set up the function that sets up 4 unknowns (x) and 4 equations (y)</span></span>
+<span id="cb18-12"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-12" aria-hidden="true" tabindex="-1"></a>F_trial <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb18-13"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-13" aria-hidden="true" tabindex="-1"></a>  V1 <span class="ot">&lt;-</span> x[<span class="dv">1</span>]</span>
+<span id="cb18-14"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-14" aria-hidden="true" tabindex="-1"></a>  V2 <span class="ot">&lt;-</span> x[<span class="dv">2</span>]</span>
+<span id="cb18-15"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-15" aria-hidden="true" tabindex="-1"></a>  f1 <span class="ot">&lt;-</span> x[<span class="dv">3</span>]</span>
+<span id="cb18-16"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-16" aria-hidden="true" tabindex="-1"></a>  f2 <span class="ot">&lt;-</span> x[<span class="dv">4</span>]</span>
+<span id="cb18-17"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-17" aria-hidden="true" tabindex="-1"></a>  Re1 <span class="ot">&lt;-</span> V1<span class="sc">*</span>D1<span class="sc">/</span>nu</span>
+<span id="cb18-18"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-18" aria-hidden="true" tabindex="-1"></a>  Re2 <span class="ot">&lt;-</span> V2<span class="sc">*</span>D2<span class="sc">/</span>nu</span>
+<span id="cb18-19"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-19" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(x))</span>
+<span id="cb18-20"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Continuity - flows in each branch must add to total</span></span>
+<span id="cb18-21"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-21" aria-hidden="true" tabindex="-1"></a>  y[<span class="dv">1</span>] <span class="ot">&lt;-</span> V1<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">4</span><span class="sc">*</span>D1<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> V2<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">4</span><span class="sc">*</span>D2<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> Qsum</span>
+<span id="cb18-22"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Darcy-Weisbach equation for head loss - must be equal in each branch</span></span>
+<span id="cb18-23"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-23" aria-hidden="true" tabindex="-1"></a>  y[<span class="dv">2</span>] <span class="ot">&lt;-</span> f1<span class="sc">*</span>L1<span class="sc">*</span>V1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(D1<span class="sc">*</span><span class="dv">2</span><span class="sc">*</span>g) <span class="sc">-</span> f2<span class="sc">*</span>L2<span class="sc">*</span>V2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(D2<span class="sc">*</span><span class="dv">2</span><span class="sc">*</span>g)</span>
+<span id="cb18-24"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Colebrook equation for friction factors</span></span>
+<span id="cb18-25"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-25" aria-hidden="true" tabindex="-1"></a>  y[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">2.0</span><span class="sc">*</span><span class="fu">log10</span>((ks<span class="sc">/</span>D1)<span class="sc">/</span><span class="fl">3.7</span> <span class="sc">+</span> <span class="fl">2.51</span><span class="sc">/</span>(Re1<span class="sc">*</span>(f1<span class="sc">^</span><span class="fl">0.5</span>)))<span class="sc">-</span><span class="dv">1</span><span class="sc">/</span>(f1<span class="sc">^</span><span class="fl">0.5</span>)</span>
+<span id="cb18-26"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-26" aria-hidden="true" tabindex="-1"></a>  y[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">2.0</span><span class="sc">*</span><span class="fu">log10</span>((ks<span class="sc">/</span>D2)<span class="sc">/</span><span class="fl">3.7</span> <span class="sc">+</span> <span class="fl">2.51</span><span class="sc">/</span>(Re2<span class="sc">*</span>(f2<span class="sc">^</span><span class="fl">0.5</span>)))<span class="sc">-</span><span class="dv">1</span><span class="sc">/</span>(f2<span class="sc">^</span><span class="fl">0.5</span>)</span>
+<span id="cb18-27"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(y)</span>
+<span id="cb18-28"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-29"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co">#provide initial guesses for unknowns and run the fsolve command</span></span>
+<span id="cb18-31"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-31" aria-hidden="true" tabindex="-1"></a>xstart <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">2.0</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span>)</span>
+<span id="cb18-32"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-32" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> pracma<span class="sc">::</span><span class="fu">fsolve</span>(F_trial, xstart)</span>
+<span id="cb18-33"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-34"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="co">#prepare some results to print</span></span>
+<span id="cb18-35"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-35" aria-hidden="true" tabindex="-1"></a>Q1 <span class="ot">&lt;-</span> z<span class="sc">$</span>x[<span class="dv">1</span>]<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">4</span><span class="sc">*</span>D1<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb18-36"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-36" aria-hidden="true" tabindex="-1"></a>Q2 <span class="ot">&lt;-</span> z<span class="sc">$</span>x[<span class="dv">2</span>]<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">4</span><span class="sc">*</span>D2<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb18-37"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-37" aria-hidden="true" tabindex="-1"></a>hf1 <span class="ot">&lt;-</span> z<span class="sc">$</span>x[<span class="dv">3</span>]<span class="sc">*</span>L1<span class="sc">*</span>z<span class="sc">$</span>x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(D1<span class="sc">*</span><span class="dv">2</span><span class="sc">*</span>g)</span>
+<span id="cb18-38"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-38" aria-hidden="true" tabindex="-1"></a>hf2 <span class="ot">&lt;-</span> z<span class="sc">$</span>x[<span class="dv">4</span>]<span class="sc">*</span>L2<span class="sc">*</span>z<span class="sc">$</span>x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(D2<span class="sc">*</span><span class="dv">2</span><span class="sc">*</span>g)</span>
+<span id="cb18-39"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Q1=%.2f, Q2=%.2f, V1=%.1f, V2=%.1f, hf1=%.1f, hf2=%.1f, f1=%.3f, f2=%.3f</span><span class="sc">\n</span><span class="st">&quot;</span>, Q1,Q2,z<span class="sc">$</span>x[<span class="dv">1</span>],z<span class="sc">$</span>x[<span class="dv">2</span>],hf1,hf2,z<span class="sc">$</span>x[<span class="dv">3</span>],z<span class="sc">$</span>x[<span class="dv">4</span>]))</span>
+<span id="cb18-40"><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Q1=0.15, Q2=0.35, V1=4.8, V2=5.0, hf1=30.0, hf2=30.0, f1=0.013, f2=0.012</span></span></code></pre></div>
+<p>If the <em>fsolve</em> command fails, a simple solution is sometimes to revise your initial guesses and try again. There are other solvers in <em>R</em> and every other scripting language that can be similarly implemented.</p>
+<p>If the simplification were applied for fixed <em>f</em> values, then Equations <a href="3.7-parallel-pipes-solving-a-system-of-equations.html#eq:loopeq1">(3.11)</a> and <a href="3.7-parallel-pipes-solving-a-system-of-equations.html#eq:loopeq2">(3.12)</a> can be solved simultaneously for V<sub>1</sub> and V<sub>2</sub>.</p>
+</div>
+<p style="text-align: center;">
+<a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html"><button class="btn btn-default">Previous</button></a>
+<a href="3.8-simple-pipe-networks-the-hardy-cross-method.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

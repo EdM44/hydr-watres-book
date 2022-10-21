@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="3.8 Simple pipe networks: the Hardy-Cross method | Hydraulics and Water Resources: Examples Using R" />
+<meta property="og:type" content="book" />
+<meta property="og:image" content="/images/david-becker-rrfdqjJWwmU-unsplash.jpg" />
+<meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+
+
+<meta name="author" content="Ed Maurer" />
+
+<meta name="date" content="2022-10-21" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>">
+
+<title>3.8 Simple pipe networks: the Hardy-Cross method | Hydraulics and Water Resources: Examples Using R</title>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#preface" id="toc-preface">Preface</a>
+<ul>
+<li><a href="copyight.html#copyight" id="toc-copyight">Copyight</a></li>
+</ul></li>
+<li><a href="1-units-in-fluid-mechanics.html#units-in-fluid-mechanics" id="toc-units-in-fluid-mechanics"><span class="toc-section-number">1</span> Units in Fluid Mechanics</a></li>
+<li class="has-sub"><a href="2-properties-of-water.html#properties-of-water" id="toc-properties-of-water"><span class="toc-section-number">2</span> Properties of Water</a>
+<ul>
+<li><a href="2.1-properties-important-for-water-standing-still.html#properties-important-for-water-standing-still" id="toc-properties-important-for-water-standing-still"><span class="toc-section-number">2.1</span> Properties important for water standing still</a></li>
+<li><a href="2.2-properties-important-for-moving-water.html#properties-important-for-moving-water" id="toc-properties-important-for-moving-water"><span class="toc-section-number">2.2</span> Properties important for moving water</a></li>
+<li><a href="2.3-atmosperic-properties.html#atmosperic-properties" id="toc-atmosperic-properties"><span class="toc-section-number">2.3</span> Atmosperic Properties</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-water-flowing-in-pipes-energy-losses.html#water-flowing-in-pipes-energy-losses" id="toc-water-flowing-in-pipes-energy-losses"><span class="toc-section-number">3</span> Water Flowing in Pipes: Energy Losses</a>
+<ul>
+<li><a href="3.1-important-dimensionless-quantity.html#important-dimensionless-quantity" id="toc-important-dimensionless-quantity"><span class="toc-section-number">3.1</span> Important dimensionless quantity</a></li>
+<li><a href="3.2-friction-loss-in-circular-pipes.html#friction-loss-in-circular-pipes" id="toc-friction-loss-in-circular-pipes"><span class="toc-section-number">3.2</span> Friction Loss in Circular Pipes</a></li>
+<li><a href="3.3-solving-pipe-friction-problems.html#solving-pipe-friction-problems" id="toc-solving-pipe-friction-problems"><span class="toc-section-number">3.3</span> Solving Pipe friction problems</a></li>
+<li class="has-sub"><a href="3.4-type1.html#type1" id="toc-type1"><span class="toc-section-number">3.4</span> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li><a href="3.4-type1.html#solving-for-head-loss-by-manual-iteration" id="toc-solving-for-head-loss-by-manual-iteration"><span class="toc-section-number">3.4.1</span> Solving for head loss by manual iteration</a></li>
+<li><a href="3.4-type1.html#dwapprox" id="toc-dwapprox"><span class="toc-section-number">3.4.2</span> Solving for headloss using an empirical approximation</a></li>
+<li><a href="3.4-type1.html#coleb-solver" id="toc-coleb-solver"><span class="toc-section-number">3.4.3</span> Solving for head loss using an equation solver</a></li>
+<li><a href="3.4-type1.html#solving-for-head-loss-using-an-r-package" id="toc-solving-for-head-loss-using-an-r-package"><span class="toc-section-number">3.4.4</span> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="has-sub"><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-flow-or-velocity-type-2-problems" id="toc-solving-for-flow-or-velocity-type-2-problems"><span class="toc-section-number">3.5</span> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-q-or-v-using-manual-iteration" id="toc-solving-for-q-or-v-using-manual-iteration"><span class="toc-section-number">3.5.1</span> Solving for Q (or V) using manual iteration</a></li>
+<li><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-q-using-an-explicit-equation" id="toc-solving-for-q-using-an-explicit-equation"><span class="toc-section-number">3.5.2</span> Solving for Q Using an Explicit Equation</a></li>
+<li><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-q-using-an-r-package" id="toc-solving-for-q-using-an-r-package"><span class="toc-section-number">3.5.3</span> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="has-sub"><a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html#solving-for-pipe-diameter-d-type-3-problems" id="toc-solving-for-pipe-diameter-d-type-3-problems"><span class="toc-section-number">3.6</span> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li><a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html#solving-for-d-using-manual-iterations" id="toc-solving-for-d-using-manual-iterations"><span class="toc-section-number">3.6.1</span> Solving for D using manual iterations</a></li>
+<li><a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html#solving-for-d-using-an-equation-solver" id="toc-solving-for-d-using-an-equation-solver"><span class="toc-section-number">3.6.2</span> Solving for D using an equation solver</a></li>
+</ul></li>
+<li><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#parallel-pipes-solving-a-system-of-equations" id="toc-parallel-pipes-solving-a-system-of-equations"><span class="toc-section-number">3.7</span> Parallel pipes: solving a system of equations</a></li>
+<li><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#simple-pipe-networks-the-hardy-cross-method" id="toc-simple-pipe-networks-the-hardy-cross-method"><span class="toc-section-number">3.8</span> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-flow-in-open-channels.html#flow-in-open-channels" id="toc-flow-in-open-channels"><span class="toc-section-number">4</span> Flow in open channels</a>
+<ul>
+<li><a href="4.1-an-important-dimensionless-quantity.html#an-important-dimensionless-quantity" id="toc-an-important-dimensionless-quantity"><span class="toc-section-number">4.1</span> An important dimensionless quantity</a></li>
+<li><a href="4.2-equations-for-open-channel-flow.html#equations-for-open-channel-flow" id="toc-equations-for-open-channel-flow"><span class="toc-section-number">4.2</span> Equations for open channel flow</a></li>
+<li class="has-sub"><a href="4.3-trap.html#trap" id="toc-trap"><span class="toc-section-number">4.3</span> Trapezoidal channels</a>
+<ul>
+<li><a href="4.3-trap.html#solving-the-manning-equations-in-r" id="toc-solving-the-manning-equations-in-r"><span class="toc-section-number">4.3.1</span> Solving the Manning equations in R</a></li>
+<li><a href="4.3-trap.html#solving-the-manning-equation-with-the-hydraulics-r-package" id="toc-solving-the-manning-equation-with-the-hydraulics-r-package"><span class="toc-section-number">4.3.2</span> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li><a href="4.3-trap.html#solving-the-manning-equation-using-a-spreadsheet-like-excel" id="toc-solving-the-manning-equation-using-a-spreadsheet-like-excel"><span class="toc-section-number">4.3.3</span> solving the Manning equation using a Spreadsheet Like Excel</a></li>
+<li><a href="4.3-trap.html#optimal-trapezoidal-geometry" id="toc-optimal-trapezoidal-geometry"><span class="toc-section-number">4.3.4</span> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="has-sub"><a href="4.4-circ.html#circ" id="toc-circ"><span class="toc-section-number">4.4</span> Circular Channels (flowing partially full)</a>
+<ul>
+<li><a href="4.4-circ.html#solving-the-manning-equation-in-r" id="toc-solving-the-manning-equation-in-r"><span class="toc-section-number">4.4.1</span> Solving the Manning equation in R</a></li>
+</ul></li>
+<li><a href="4.5-crit-section.html#crit-section" id="toc-crit-section"><span class="toc-section-number">4.5</span> Critical flow</a></li>
+<li class="has-sub"><a href="4.6-gradually-varied-steady-flow.html#gradually-varied-steady-flow" id="toc-gradually-varied-steady-flow"><span class="toc-section-number">4.6</span> Gradually varied steady flow</a>
+<ul>
+<li><a href="4.6-gradually-varied-steady-flow.html#the-direct-step-method" id="toc-the-direct-step-method"><span class="toc-section-number">4.6.1</span> The direct step method</a></li>
+<li><a href="4.6-gradually-varied-steady-flow.html#standard-step-method" id="toc-standard-step-method"><span class="toc-section-number">4.6.2</span> Standard step method</a></li>
+</ul></li>
+</ul></li>
+<li><a href="5-momentum-in-water-flow.html#momentum-in-water-flow" id="toc-momentum-in-water-flow"><span class="toc-section-number">5</span> Momentum in water flow</a></li>
+<li class="has-sub"><a href="6-pumps-and-how-they-operate-in-a-hydraulic-system.html#pumps-and-how-they-operate-in-a-hydraulic-system" id="toc-pumps-and-how-they-operate-in-a-hydraulic-system"><span class="toc-section-number">6</span> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li><a href="6.1-defining-the-system-curve.html#defining-the-system-curve" id="toc-defining-the-system-curve"><span class="toc-section-number">6.1</span> Defining the system curve</a></li>
+<li><a href="6.2-defining-the-pump-characteristic-curve.html#defining-the-pump-characteristic-curve" id="toc-defining-the-pump-characteristic-curve"><span class="toc-section-number">6.2</span> Defining the pump characteristic curve</a></li>
+<li><a href="6.3-finding-the-operating-point.html#finding-the-operating-point" id="toc-finding-the-operating-point"><span class="toc-section-number">6.3</span> Finding the operating point</a></li>
+</ul></li>
+<li><a href="references.html#references" id="toc-references">References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="simple-pipe-networks-the-hardy-cross-method" class="section level2" number="3.8">
+<h2><span class="header-section-number">3.8</span> Simple pipe networks: the Hardy-Cross method</h2>
+<p>For water pipe networks containing multiple loops, manually setting up systems of equations is impractical. In addition, hand calculations always assume fixed <em>f</em> values or use an empirical friction loss equation to simplify calculations.</p>
+<p>A typical method to solve for the flow in each pipe segment in a small network uses the Hardy-Cross method. This consists of setting up an initial guess of flow (magnitude and direction) for each pipe segment, ensuring conservation of mass is preserved at each node (or vertex) in the network. Then calculations are performed for each loop, ensuring energy is conserved.</p>
+<p>When using the Darcy-Weisbach equation, Equation <a href="3.2-friction-loss-in-circular-pipes.html#eq:d-w1">(3.3)</a>, for friction loss, the head loss in each pipe segment is usually expressed in a condensed form as <span class="math inline">\({h_f = KQ^{2}}\)</span> where <em>K</em> is defined as in Equation <a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#eq:hceq1">(3.13)</a>.
+<span class="math display" id="eq:hceq1">\[\begin{equation}
+  K = \frac{8fL}{\pi^{2}gD^{5}}
+  \tag{3.13}
+\end{equation}\]</span></p>
+<p>When doing calculations by hand fixed <em>f</em> values are assumed, but when using a computational tool like <em>R</em> any of the methods for estimating <em>f</em> and h<sub>f</sub> may be applied.</p>
+<p>The Hardy-Cross method begins by assuming flows in each segment of a loop. These initial flows are then adjusted in a series of iterations. The flow adjustment in each loop is calculated at each iteration in Equation Equation <a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#eq:hceq2">(3.14)</a>.
+<span class="math display" id="eq:hceq2">\[\begin{equation}
+  \Delta{Q_i} = -\frac{\sum_{j=1}^{p_i} K_{ij}Q_j|Q_j|}{\sum_{j=1}^{p_i} 2K_{ij}Q_j^2}
+  \tag{3.14}
+\end{equation}\]</span></p>
+<p>For calculations for small systems with two or three loops can be done manually with fixed <em>f</em> and <em>K</em> values. Using the <em>hydraulics</em> R package to solve a small pipe network is demonstrated in Example <a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#exm:hcross-1">3.7</a>.</p>
+<div class="example">
+<p><span id="exm:hcross-1" class="example"><strong>Example 3.7  </strong></span>Find the flows in each pipe in teh system shown in Figure <a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#fig:hc-1">3.3</a>. Input consists of pipe characteristics, pipe order and initial flows for each loop, as shown non the diagram.</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hc-1"></span>
+<img src="images/hardycross_system.png" alt="A sample pipe network with pipe numbers indicated in black" width="75%" />
+<p class="caption">
+Figure 3.3: A sample pipe network with pipe numbers indicated in black
+</p>
+</div>
+<p>Input for this system, assuming fixed <em>f</em> values, would look like the following. (If fixed <em>K</em> values are provided, f, L and D are not needed). These <em>f</em> values were estimated using <span class="math inline">\(ks=0.00025 m\)</span> in the form of the Colebrook equation for fully rough flows, Equation <a href="3.4-type1.html#eq:coleb-rough">(3.5)</a>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb19-1" aria-hidden="true" tabindex="-1"></a>dfpipes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb19-2"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>),                                <span class="co">#pipe ID</span></span>
+<span id="cb19-3"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">D =</span> <span class="fu">c</span>(<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.2</span>,<span class="fl">0.2</span>,<span class="fl">0.2</span>,<span class="fl">0.15</span>,<span class="fl">0.25</span>,<span class="fl">0.15</span>,<span class="fl">0.15</span>,<span class="fl">0.25</span>),         <span class="co">#diameter in m</span></span>
+<span id="cb19-4"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">L =</span> <span class="fu">c</span>(<span class="dv">250</span>,<span class="dv">100</span>,<span class="dv">125</span>,<span class="dv">125</span>,<span class="dv">100</span>,<span class="dv">100</span>,<span class="dv">125</span>,<span class="dv">100</span>,<span class="dv">100</span>,<span class="dv">125</span>),              <span class="co">#length in m</span></span>
+<span id="cb19-5"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> <span class="fu">c</span>(.<span class="dv">01879</span>,.<span class="dv">02075</span>,.<span class="dv">02075</span>,.<span class="dv">02075</span>,.<span class="dv">02075</span>,.<span class="dv">02233</span>,.<span class="dv">01964</span>,.<span class="dv">02233</span>,.<span class="dv">02233</span>,.<span class="dv">01964</span>)</span>
+<span id="cb19-6"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb19-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-7"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb19-7" aria-hidden="true" tabindex="-1"></a>loops <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>),<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">6</span>))</span>
+<span id="cb19-8"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb19-8" aria-hidden="true" tabindex="-1"></a>Qs <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(.<span class="dv">040</span>,.<span class="dv">040</span>,.<span class="dv">02</span>,<span class="sc">-</span>.<span class="dv">02</span>,<span class="sc">-</span>.<span class="dv">04</span>),<span class="fu">c</span>(.<span class="dv">02</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="sc">-</span>.<span class="dv">02</span>),<span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">02</span>,.<span class="dv">02</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span></code></pre></div>
+<p>Running the <em>hardycross</em> function and looking at the output after three iterations (defined by <em>n_iter</em>):</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb20-1" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">hardycross</span>(<span class="at">dfpipes =</span> dfpipes, <span class="at">loops =</span> loops, <span class="at">Qs =</span> Qs, <span class="at">n_iter =</span> <span class="dv">3</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)</span>
+<span id="cb20-2"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb20-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(ans<span class="sc">$</span>dfloops, <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">format =</span> <span class="st">&quot;pipe&quot;</span>, <span class="at">padding=</span><span class="dv">0</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">loop</th>
+<th align="right">pipe</th>
+<th align="right">flow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.0383</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0.0383</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0.0232</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">-0.0258</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">-0.0417</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">0.0258</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">0.0090</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">0.0041</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">-0.0159</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">-0.0232</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">0.0151</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">-0.0049</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">-0.0090</td>
+</tr>
+</tbody>
+</table>
+<p>The output pipe data frame has added columns, including the flow (where direction is that for the first loop containing the segment).</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb21-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(ans<span class="sc">$</span>dfpipes, <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">format =</span> <span class="st">&quot;pipe&quot;</span>, <span class="at">padding=</span><span class="dv">0</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">ID</th>
+<th align="right">D</th>
+<th align="right">L</th>
+<th align="right">f</th>
+<th align="right">Q</th>
+<th align="right">K</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.30</td>
+<td align="right">250</td>
+<td align="right">0.0188</td>
+<td align="right">0.0383</td>
+<td align="right">159.7828</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.20</td>
+<td align="right">100</td>
+<td align="right">0.0208</td>
+<td align="right">0.0383</td>
+<td align="right">535.9666</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">0.20</td>
+<td align="right">125</td>
+<td align="right">0.0208</td>
+<td align="right">0.0232</td>
+<td align="right">669.9582</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0.20</td>
+<td align="right">125</td>
+<td align="right">0.0208</td>
+<td align="right">-0.0258</td>
+<td align="right">669.9582</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">0.20</td>
+<td align="right">100</td>
+<td align="right">0.0208</td>
+<td align="right">-0.0417</td>
+<td align="right">535.9666</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">0.15</td>
+<td align="right">100</td>
+<td align="right">0.0223</td>
+<td align="right">0.0090</td>
+<td align="right">2430.5356</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">0.25</td>
+<td align="right">125</td>
+<td align="right">0.0196</td>
+<td align="right">0.0041</td>
+<td align="right">207.7883</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">0.15</td>
+<td align="right">100</td>
+<td align="right">0.0223</td>
+<td align="right">-0.0159</td>
+<td align="right">2430.5356</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">0.15</td>
+<td align="right">100</td>
+<td align="right">0.0223</td>
+<td align="right">0.0151</td>
+<td align="right">2430.5356</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">0.25</td>
+<td align="right">125</td>
+<td align="right">0.0196</td>
+<td align="right">-0.0049</td>
+<td align="right">207.7883</td>
+</tr>
+</tbody>
+</table>
+<p>While the Hardy-Cross method is often used with fixed <em>f</em> (or <em>K</em>) values when it is used in exercises performed by hand, the use of the Colebrook equation allows friction losses to vary with Reynolds number. To use this approach the input data must include absolute roughness. Example values are included here:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb22-1" aria-hidden="true" tabindex="-1"></a>dfpipes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb22-2"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>),                         <span class="co">#pipe ID</span></span>
+<span id="cb22-3"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">D =</span> <span class="fu">c</span>(<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.2</span>,<span class="fl">0.2</span>,<span class="fl">0.2</span>,<span class="fl">0.15</span>,<span class="fl">0.25</span>,<span class="fl">0.15</span>,<span class="fl">0.15</span>,<span class="fl">0.25</span>),  <span class="co">#diameter in m</span></span>
+<span id="cb22-4"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">L =</span> <span class="fu">c</span>(<span class="dv">250</span>,<span class="dv">100</span>,<span class="dv">125</span>,<span class="dv">125</span>,<span class="dv">100</span>,<span class="dv">100</span>,<span class="dv">125</span>,<span class="dv">100</span>,<span class="dv">100</span>,<span class="dv">125</span>),       <span class="co">#length in m</span></span>
+<span id="cb22-5"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ks =</span> <span class="fu">rep</span>(<span class="fl">0.00025</span>,<span class="dv">10</span>)                                  <span class="co">#absolute roughness, m</span></span>
+<span id="cb22-6"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb22-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-7"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb22-7" aria-hidden="true" tabindex="-1"></a>loops <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>),<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">6</span>))</span>
+<span id="cb22-8"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb22-8" aria-hidden="true" tabindex="-1"></a>Qs <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(.<span class="dv">040</span>,.<span class="dv">040</span>,.<span class="dv">02</span>,<span class="sc">-</span>.<span class="dv">02</span>,<span class="sc">-</span>.<span class="dv">04</span>),<span class="fu">c</span>(.<span class="dv">02</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="sc">-</span>.<span class="dv">02</span>),<span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">02</span>,.<span class="dv">02</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span></code></pre></div>
+<p>The effect of allowing the calculation of <em>f</em> to be (correctly) dependent on velocity (via the Reynolds number) can be seen, though the effect on final flow values is small.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb23-1" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">hardycross</span>(<span class="at">dfpipes =</span> dfpipes, <span class="at">loops =</span> loops, <span class="at">Qs =</span> Qs, <span class="at">n_iter =</span> <span class="dv">3</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)</span>
+<span id="cb23-2"><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#cb23-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(ans<span class="sc">$</span>dfpipes, <span class="at">digits =</span> <span class="dv">4</span>, <span class="at">format =</span> <span class="st">&quot;pipe&quot;</span>, <span class="at">padding=</span><span class="dv">0</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">ID</th>
+<th align="right">D</th>
+<th align="right">L</th>
+<th align="right">ks</th>
+<th align="right">Q</th>
+<th align="right">f</th>
+<th align="right">K</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.30</td>
+<td align="right">250</td>
+<td align="right">3e-04</td>
+<td align="right">0.0382</td>
+<td align="right">0.0207</td>
+<td align="right">176.1877</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.20</td>
+<td align="right">100</td>
+<td align="right">3e-04</td>
+<td align="right">0.0382</td>
+<td align="right">0.0218</td>
+<td align="right">562.9732</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">0.20</td>
+<td align="right">125</td>
+<td align="right">3e-04</td>
+<td align="right">0.0230</td>
+<td align="right">0.0224</td>
+<td align="right">723.1119</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0.20</td>
+<td align="right">125</td>
+<td align="right">3e-04</td>
+<td align="right">-0.0258</td>
+<td align="right">0.0222</td>
+<td align="right">718.1439</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">0.20</td>
+<td align="right">100</td>
+<td align="right">3e-04</td>
+<td align="right">-0.0418</td>
+<td align="right">0.0217</td>
+<td align="right">560.8321</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">0.15</td>
+<td align="right">100</td>
+<td align="right">3e-04</td>
+<td align="right">0.0088</td>
+<td align="right">0.0248</td>
+<td align="right">2700.4710</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">0.25</td>
+<td align="right">125</td>
+<td align="right">3e-04</td>
+<td align="right">0.0040</td>
+<td align="right">0.0280</td>
+<td align="right">296.3990</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">0.15</td>
+<td align="right">100</td>
+<td align="right">3e-04</td>
+<td align="right">-0.0160</td>
+<td align="right">0.0238</td>
+<td align="right">2590.2795</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">0.15</td>
+<td align="right">100</td>
+<td align="right">3e-04</td>
+<td align="right">0.0152</td>
+<td align="right">0.0239</td>
+<td align="right">2598.5553</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">0.25</td>
+<td align="right">125</td>
+<td align="right">3e-04</td>
+<td align="right">-0.0048</td>
+<td align="right">0.0270</td>
+<td align="right">285.4983</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+<!-- </div> -->
+<p style="text-align: center;">
+<a href="3.7-parallel-pipes-solving-a-system-of-equations.html"><button class="btn btn-default">Previous</button></a>
+<a href="4-flow-in-open-channels.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

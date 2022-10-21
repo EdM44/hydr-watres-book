@@ -1,5 +1,12 @@
 # Units in Fluid Mechanics 
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 Before beginning with problem solving methods it helps to recall some important quantities in fluid mechanics and their associated units. While the world has generally moved forward into standardizing the use of the SI unit system, the U.S. stubbornly holds onto the antiquated US (sometimes called the British Gravitational, BG) system. This means practicing engineers must be familiar with both systems, and be able to convert between the two systems. 
 
 These important quantities are shown in Table \@ref(tab:variable-units). 
@@ -14,8 +21,8 @@ df <- data.frame(
   Quantity = c("Length","Acceleration", "Mass", "Force","Density", "Energy/Work","Flowrate","Kinematic viscocity","Power","Pressure","Specific Weight","Velocity","(Dynamic) Viscocity","Volume"),
   Symbol = c("L","a","m","F","$\\rho$","","Q","$\\nu$","","p","$\\gamma$","V","$\\nu$","$\\forall$"),
   Dimensions = c("$L$","$LT^{-2}$","$M$","$F$","$ML^{-3}$","FL","$L^{3}/T$","$L^{2}/T$","$FLT^{-1}$","$FL^{-2}$","$FL^{-3}$","$LT^{-1}$","$FTL^{-2}$","$L^3$"),
-  US_Units = c("$ft$","$ft/s^2$","$slug$","$lb$","$slug/ft^3$","${ft}\\cdot{lb}$","$ft^{3}/s$=cfs","$ft^{2}/s$","$ft*lb/s$","$lb/in^2=psi$","$lb/ft^3$","$ft/s$","$lb*s/ft^2$","$ft^3$"),
-  SI_units = c("$m$","$m/s^{2}$", "$kg$","$N$","$kg/m^3$", "${N}\\cdot{m}=joule (J)$", "$m^{3}/s$","$m^{2}/s$", "$N*m/s=watt (W)$", "$N/m^2=Pa$", "$N/m^3$","$m/s$","$N*s/m^2=Pa*s$","$m^3$"),
+  US_Units = c("$ft$","$ft/s^2$","$slug$","$lb$","$slug/ft^3$","${ft}\\cdot{lb}$","$ft^{3}/s$=cfs","$ft^{2}/s$","${ft}\\cdot{lb/s}$","$lb/in^2=psi$","$lb/ft^3$","$ft/s$","${lb}\\cdot{s/ft^2}$","$ft^3$"),
+  SI_units = c("$m$","$m/s^{2}$", "$kg$","$N$","$kg/m^3$", "${N}\\cdot{m}=joule (J)$", "$m^{3}/s$","$m^{2}/s$", "${N}\\cdot{m/s}=watt (W)$", "$N/m^2=Pa$", "$N/m^3$","$m/s$","${N}\\cdot{s/m^2}={Pa}\\cdot{s}$","$m^3$"),
   Conversion = c(
     sig("ft","m"),
     sig("ft/s^2","m/s^2"),
@@ -45,7 +52,7 @@ knitr::kable(df, col.names = c("Quantity",
 
 There are many other units that must be accommodated. For example, one may encounter the _poise_ to describe (dynamic) viscosity ($1~Pa*s = 10~poise$), or the _stoke_ for kinematic viscocity ($1~m^2/s=10^4~stokes$). Many hydraulic systems use gallons per minute (gpm) as a unit of flow ($1~ft^3/s=448.8~gpm$), and larger water systems often use millions of gallons per day (mgd) ($1~mgd = 1.547~ft^3/s$). For volume, the SI system often uses liters ($l$) instead of $m^3$ ($1~m^3=1000~l$).
 
-One regular conversion that needs to occur is the translation between mass (m) and weight (W), where $W=mg$. Here $g$ is gravitational acceleration on the earth's surface: $g=9.81~m/s^2=32.2~ft/s^2$. When working with forces (such as with momentum problems or hydrostatic forces) be sure to work with weights/forces, not mass.
+One regular conversion that needs to occur is the translation between mass (m) and weight (W), where $W=mg$, where $g$ is gravitational acceleration on the earth's surface: $g=9.81~m/s^2=32.2~ft/s^2$. When working with forces (such as with momentum problems or hydrostatic forces) be sure to work with weights/forces, not mass.
 
 It is straightforward to use conversion factors in the table to manipulate values between the systems, multiplying by the factor shown to go from US to SI units, or dividing to do the 
 $${1*10^{-6}~m^2/s}*\frac{1 ~ft^2/s}{0.0929~m^2/s}=1.076*10^{-5} ~ft^2/s$$
@@ -62,8 +69,11 @@ Q_cfs <- units::set_units(Q_gpm, ft^3/s)
 Q_cfs
 ```
 
-Repeating the unit conversion of viscosity with the _units_ package:
+Repeating the unit conversion of viscosity using the _units_ package:
 
+::: {.example}
+Convert kinematic viscosity from SI to Eng units.
+:::
 ```{r units-ex2, echo=TRUE, collapse=TRUE}
 nu <- units::set_units(1e-6, m^2/s)
 nu
@@ -71,6 +81,10 @@ units::set_units(nu, ft^2/s)
 ```
 
 The _units_ package also produces correct units during operations. For example, multiplying mass by _g_ should produce weight.
+
+::: {.example}
+Using the _units_ package to produce correct units during mathematical operations.
+:::
 ```{r units-ex3, echo=TRUE, collapse=TRUE}
 #If you travel at 88 ft/sec for 1 hour, how many km would you travel?
 v <- units::set_units(88, ft/s)
@@ -86,7 +100,8 @@ w <- m*g
 #Notice the units are technically correct, but have not been simplified in this case
 w
 #These can be set manually to verify that lbf (pound-force) is a valid equivalent
-set_units(w, lbf)
-set_units(w, N)
-
+units::set_units(w, lbf)
+units::set_units(w, N)
 ```
+
+

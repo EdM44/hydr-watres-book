@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Properties of Water | Hydraulics and Water Resources: Examples Using R</title>
+  <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Properties of Water | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Properties of Water | Hydraulics and Water Resources: Examples Using R" />
+  
+  <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+<meta name="author" content="Ed Maurer" />
+
+
+<meta name="date" content="2022-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="units-in-fluid-mechanics.html"/>
+<link rel="next" href="water-flowing-in-pipes-energy-losses.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of Water</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
+<li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>3</b> Water Flowing in Pipes: Energy Losses</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>3.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="3.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>3.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="3.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>3.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="3.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>3.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>3.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="3.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>3.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="3.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>3.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="3.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>3.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>3.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>3.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="3.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>3.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="3.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>3.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>3.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>3.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="3.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>3.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>3.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="3.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>3.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>4</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>4.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="4.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>4.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equations-in-r"><i class="fa fa-check"></i><b>4.3.1</b> Solving the Manning equations in R</a></li>
+<li class="chapter" data-level="4.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>4.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="4.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>4.3.3</b> solving the Manning equation using a Spreadsheet Like Excel</a></li>
+<li class="chapter" data-level="4.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>4.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>4.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>4.4.1</b> Solving the Manning equation in R</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>4.5</b> Critical flow</a></li>
+<li class="chapter" data-level="4.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gradually-varied-steady-flow"><i class="fa fa-check"></i><b>4.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>4.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="4.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>4.6.2</b> Standard step method</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>5</b> Momentum in water flow</a></li>
+<li class="chapter" data-level="6" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>6</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>6.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="6.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>6.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="6.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>6.3</b> Finding the operating point</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hydraulics and Water Resources: Examples Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="properties-of-water" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Properties of Water<a href="properties-of-water.html#properties-of-water" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Fundamental properties of water allow the description of the forces it exerts and how it behaves while in motion. Many were listed in Chapter .</p>
+<p>A summary of basic water properties, which vary with temperature, is shown in Table <a href="properties-of-water.html#tab:water-props-SI">2.1</a> for SI units and Table <a href="properties-of-water.html#tab:water-props-Eng">2.2</a> for US (or Eng) units.</p>
+<table class="table table-striped" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:water-props-SI">Table 2.1: </span>Water properties in SI units
+</caption>
+<thead>
+<tr>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Temperature
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Density
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Spec_Weight
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Viscosity
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Kinem_Visc
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Sat_VP
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Surf_Tens
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Bulk_Mod
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:center;">
+C
+</th>
+<th style="text-align:center;">
+kg m-3
+</th>
+<th style="text-align:center;">
+N m-3
+</th>
+<th style="text-align:center;">
+N s m-2
+</th>
+<th style="text-align:center;">
+m2 s-1
+</th>
+<th style="text-align:center;">
+Pa
+</th>
+<th style="text-align:center;">
+N m-1
+</th>
+<th style="text-align:center;">
+Pa
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(0\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(999.9\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.809}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.734}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.734}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(611.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({75.7}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.02}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1000\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.810}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.501}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.501}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(872.6\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({74.9}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.06}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(10\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(999.7\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.807}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.310}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.311}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.228}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({74.2}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.10}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(15\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(999.1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.801}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.153}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.154}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.706}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({73.5}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.14}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(20\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(998.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.793}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.021}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.023}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.339}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({72.7}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.18}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(25\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(997.1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.781}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({910.8}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({913.5}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({3.170}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({72.0}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.22}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(30\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(995.7\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.768}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({817.4}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({821.0}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.247}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({71.2}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.25}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(35\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(994.1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.752}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({738.0}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({742.4}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({5.629}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({70.4}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.26}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(40\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(992.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.734}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({669.9}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({675.1}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({7.385}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({69.6}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.28}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(45\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(990.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.714}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({611.2}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({617.3}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.595}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({68.8}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.28}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(50\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(988.1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.693}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({560.5}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({567.2}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({12.35}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({67.9}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.29}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(55\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(985.7\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.670}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({516.2}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({523.7}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({15.76}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({67.1}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.28}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(60\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(983.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.645}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({477.6}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({485.7}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({19.95}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({66.2}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.28}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(65\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(980.6\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.619}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({443.5}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({452.3}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({25.04}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({65.4}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.26}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(70\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(977.7\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.592}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({413.5}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({422.9}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({31.20}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({64.5}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.25}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(75\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(974.8\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.563}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({386.9}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({396.9}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({38.60}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({63.6}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.22}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(80\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(971.7\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.533}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({363.1}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({373.7}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({47.42}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({62.7}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.20}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(85\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(968.5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.501}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({341.9}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({353.0}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({57.87}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({61.8}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.17}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(90\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(965.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.468}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({322.9}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({334.5}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({70.18}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({60.8}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.14}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(95\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(961.7\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.434}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({305.7}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({317.9}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({84.61}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({59.9}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.10}\times 10^{9}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(100\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(958.1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.399}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({290.2}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({302.9}\times 10^{-9}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({101.4}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({58.9}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.07}\times 10^{9}\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:water-props-Eng">Table 2.2: </span>Water properties in US units
+</caption>
+<thead>
+<tr>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Temperature
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Density
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Spec_Weight
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Viscosity
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Kinem_Visc
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Sat_VP
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Surf_Tens
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Bulk_Mod
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:center;">
+F
+</th>
+<th style="text-align:center;">
+slug ft-3
+</th>
+<th style="text-align:center;">
+lbf ft-3
+</th>
+<th style="text-align:center;">
+lbf s ft-2
+</th>
+<th style="text-align:center;">
+ft2 s-1
+</th>
+<th style="text-align:center;">
+lbf ft-2
+</th>
+<th style="text-align:center;">
+lbf ft-1
+</th>
+<th style="text-align:center;">
+lbf ft-2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(32\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.938\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(62.42\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({36.21}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({18.73}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(12.77\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({5.18}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({42.2}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(42\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.939\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(62.43\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({30.87}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({15.96}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(18.94\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({5.13}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({43.1}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(52\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.938\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(62.40\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({26.58}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({13.75}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(27.62\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({5.07}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({44.0}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(62\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.937\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(62.36\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({23.11}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({11.96}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(39.64\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({5.02}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({45.0}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(72\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.934\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(62.29\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({20.26}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({10.50}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(56.00\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.96}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({45.9}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(82\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.932\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(62.20\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({17.90}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.290}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(77.99\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.90}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({46.7}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(92\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.928\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(62.09\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({15.94}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({8.286}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(107.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.84}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({47.2}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(102\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.925\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(61.97\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({14.29}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({7.443}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(145.3\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.78}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({47.5}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(112\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.920\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(61.83\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({12.89}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({6.732}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(194.7\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.72}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({47.7}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(122\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.916\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(61.68\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({11.71}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({6.126}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(258.0\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.66}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({47.8}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(132\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.911\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(61.52\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({10.69}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({5.608}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(338.1\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.59}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({47.7}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(142\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.905\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(61.34\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.808}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({5.162}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(438.5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.53}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({47.5}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(152\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.899\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(61.16\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({9.046}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.775}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(563.2\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.46}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({47.2}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(162\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.893\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(60.96\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({8.381}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.438}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(716.9\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.39}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({46.8}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(172\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.887\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(60.75\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({7.797}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.144}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(904.5\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.32}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({46.2}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(182\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.880\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(60.53\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({7.283}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({3.884}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.132}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.25}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({45.5}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(192\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.873\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(60.30\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({6.828}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({3.655}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.405}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.18}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({44.8}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(202\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.865\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(60.06\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({6.423}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({3.452}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({1.731}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.11}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({44.0}\times 10^{6}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(212\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(1.858\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(59.81\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({6.061}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({3.271}\times 10^{-6}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({2.118}\times 10^{3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({4.04}\times 10^{-3}\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\({43.2}\times 10^{6}\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>What follows is a brief discussion of some of these properties, and how they can be applied in R. All of the properties shown in the tables above are produced using the <em>hydraulics</em> R package. The <a href="https://CRAN.R-project.org/package=hydraulics">documentation for that package</a> provides details on its use. The water property functions in the <em>hydraulics</em> package can be called using the <em>ret_units</em> input to allow it to return an object of class <em>units</em>, as designated by the package <code>units</code>. This enables capabilities for new units to be deduced as operations are performed on the values. Concise examples are in the <a href="https://cran.r-project.org/package=units">vignettes for the ‘units’ package</a>.</p>
+<div id="properties-important-for-water-standing-still" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Properties important for water standing still<a href="properties-of-water.html#properties-important-for-water-standing-still" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>An intrinsic property of water is its mass. In the presence of gravity, it exerts a weight on its surroundings. Forces caused by the weight of water enter design in many ways.</p>
+<div class="example">
+<p><span id="exm:ex-bucket" class="example"><strong>Example 2.1  </strong></span>Determine the tension in the 8 mm diameter rope holding a bucket containing 12 liters of water. Ignore the weight of the bucket. Assume a water temperature of 20 <span class="math inline">\(^\circ\)</span>C.</p>
+</div>
+<p><img src="images/wishing-well-small.png" width="30%" style="float:right; padding:10px" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="properties-of-water.html#cb4-1" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">=</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">20</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-2"><a href="properties-of-water.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Water density:</span></span>
+<span id="cb4-3"><a href="properties-of-water.html#cb4-3" aria-hidden="true" tabindex="-1"></a>rho</span>
+<span id="cb4-4"><a href="properties-of-water.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 998.2336 [kg/m^3]</span></span>
+<span id="cb4-5"><a href="properties-of-water.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Find mass by multiplying by volume</span></span>
+<span id="cb4-6"><a href="properties-of-water.html#cb4-6" aria-hidden="true" tabindex="-1"></a>vol <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">12</span>, liter)</span>
+<span id="cb4-7"><a href="properties-of-water.html#cb4-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> rho <span class="sc">*</span> vol</span>
+<span id="cb4-8"><a href="properties-of-water.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert mass to weight in Newtons</span></span>
+<span id="cb4-9"><a href="properties-of-water.html#cb4-9" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">9.81</span>, m<span class="sc">/</span>s<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb4-10"><a href="properties-of-water.html#cb4-10" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(m<span class="sc">*</span>g, <span class="st">&quot;N&quot;</span>)</span>
+<span id="cb4-11"><a href="properties-of-water.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Divide by cross-sectional area of the rope to obtain tension</span></span>
+<span id="cb4-12"><a href="properties-of-water.html#cb4-12" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(pi<span class="sc">/</span><span class="dv">4</span> <span class="sc">*</span> <span class="dv">8</span><span class="sc">^</span><span class="dv">2</span>, mm<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb4-13"><a href="properties-of-water.html#cb4-13" aria-hidden="true" tabindex="-1"></a>tension <span class="ot">&lt;-</span> w<span class="sc">/</span>area</span>
+<span id="cb4-14"><a href="properties-of-water.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Express the result in Pascals</span></span>
+<span id="cb4-15"><a href="properties-of-water.html#cb4-15" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tension, Pa)</span>
+<span id="cb4-16"><a href="properties-of-water.html#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2337828 [Pa]</span></span>
+<span id="cb4-17"><a href="properties-of-water.html#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#For demonstration, convert to psi</span></span>
+<span id="cb4-18"><a href="properties-of-water.html#cb4-18" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tension, psi)</span>
+<span id="cb4-19"><a href="properties-of-water.html#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 339.0733 [psi]</span></span></code></pre></div>
+<p>For example <a href="properties-of-water.html#exm:ex-bucket">2.1</a> units could have been tracked manually throughout, as if done by hand. The convenience of using the <em>units</em> package allows conversions that can be used to check hand calculations.</p>
+</div>
+<div id="properties-important-for-moving-water" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Properties important for moving water<a href="properties-of-water.html#properties-important-for-moving-water" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When describing the behavior of moving water in civil engineering infrastructure like pipes and channels there are three primary water properties used used in calculations, all of which vary with water temperature: density (<span class="math inline">\(\rho\)</span>), dynamic viscosity(<span class="math inline">\(\mu\)</span>), and kinematic viscosity(<span class="math inline">\(\nu\)</span>), which are related by Equation <a href="properties-of-water.html#eq:test-eq">(2.1)</a></p>
+<p><span class="math display" id="eq:test-eq">\[\begin{equation}
+  \nu=\frac{\mu}{\rho}
+  \tag{2.1}
+\end{equation}\]</span></p>
+<p>Viscosity is caused by interaction of the fluid molecules as they are subjected to a shearing force. This is often illustrated by a conceptual sketch of two parallel plates, one fixed and one moving at a constant speed, with a fluid in between. Perhaps more intuitively, a smore can be used.
+<img src="images/viscosity_cracker.jpg" width="70%" /></p>
+<p>If the velocity of the marshmallow filling varies linearly, it will be stationary (V=0) at the bottom and moving at the same velocity as the upper cracker at the top (V=U). The the force needed to move the upper cracker can be calculate using Equation <a href="properties-of-water.html#eq:visc1">(2.2)</a></p>
+<p><span class="math display" id="eq:visc1">\[\begin{equation}
+  F=A{\mu}\frac{dV}{dy}
+  \tag{2.2}
+\end{equation}\]</span>
+where y is the distance between the crackers and A is the cross-sectional area of a cracker. Equation <a href="properties-of-water.html#eq:visc1">(2.2)</a> is often written in terms of shear stress <span class="math inline">\({\tau}\)</span> as in Equation <a href="properties-of-water.html#eq:visc2">(2.3)</a></p>
+<p><span class="math display" id="eq:visc2">\[\begin{equation}
+  \frac{F}{A}={\tau}={\mu}\frac{dV}{dy}
+  \tag{2.3}
+\end{equation}\]</span></p>
+<p>The following demonstrates a use of these relationships.</p>
+<div class="example">
+<p><span id="exm:ex-marsh" class="example"><strong>Example 2.2  </strong></span>Determine force required to slide the top cracker at 1 cm/s with a thickness of marshmallow of 0.5 cm. The cross-sectional area of the crackers is 10 cm<span class="math inline">\(^2\)</span>. The viscosity (dynamic viscosity, as can be discerned by the units) of marshmallow is about 0.1 Pa<span class="math inline">\(\cdot\)</span>s.</p>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="properties-of-water.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Assign variables</span></span>
+<span id="cb5-2"><a href="properties-of-water.html#cb5-2" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">10</span>, cm<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="properties-of-water.html#cb5-3" aria-hidden="true" tabindex="-1"></a>U <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">1</span>, cm<span class="sc">/</span>s)</span>
+<span id="cb5-4"><a href="properties-of-water.html#cb5-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">0.5</span>, cm)</span>
+<span id="cb5-5"><a href="properties-of-water.html#cb5-5" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">0.1</span>, Pa<span class="sc">*</span>s)</span>
+<span id="cb5-6"><a href="properties-of-water.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Find shear stress</span></span>
+<span id="cb5-7"><a href="properties-of-water.html#cb5-7" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> mu <span class="sc">*</span> U <span class="sc">/</span> y</span>
+<span id="cb5-8"><a href="properties-of-water.html#cb5-8" aria-hidden="true" tabindex="-1"></a>tau</span>
+<span id="cb5-9"><a href="properties-of-water.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.2 [Pa]</span></span>
+<span id="cb5-10"><a href="properties-of-water.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Since stress is F/A, multiply tau by A to find F, convert to Newtons and pounds</span></span>
+<span id="cb5-11"><a href="properties-of-water.html#cb5-11" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tau<span class="sc">*</span>A, N)</span>
+<span id="cb5-12"><a href="properties-of-water.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2e-04 [N]</span></span>
+<span id="cb5-13"><a href="properties-of-water.html#cb5-13" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tau<span class="sc">*</span>A, lbf)</span>
+<span id="cb5-14"><a href="properties-of-water.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4.496179e-05 [lbf]</span></span></code></pre></div>
+<p>Water is less viscous than marshmallow, so viscosity has much lower values than in the example. Values for water can be obtained using the <em>hydraulics</em> R package for calculations, using the <em>dens</em>, <em>dvisc</em>, and <em>kvisc</em>. All of the water property functions can accept a list of input temperature values, enabling visualization of a property with varying water temperature, as shown in Figure <a href="properties-of-water.html#fig:waterprops-3b">2.1</a>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="properties-of-water.html#cb6-1" aria-hidden="true" tabindex="-1"></a>Ts <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>)</span>
+<span id="cb6-2"><a href="properties-of-water.html#cb6-2" aria-hidden="true" tabindex="-1"></a>nus <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">kvisc</span>(<span class="at">T =</span> Ts, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb6-3"><a href="properties-of-water.html#cb6-3" aria-hidden="true" tabindex="-1"></a>xlbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Temperature, &quot;</span> (degree<span class="sc">*</span>C))</span>
+<span id="cb6-4"><a href="properties-of-water.html#cb6-4" aria-hidden="true" tabindex="-1"></a>ylbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Kinematic viscosity,&quot;</span> <span class="sc">~</span>nu<span class="sc">~</span> (m<span class="sc">^</span>{<span class="dv">2</span>}<span class="sc">/</span>s))</span>
+<span id="cb6-5"><a href="properties-of-water.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">cex=</span><span class="fl">0.8</span>, <span class="at">mgp =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="fl">0.7</span>,<span class="dv">0</span>))</span>
+<span id="cb6-6"><a href="properties-of-water.html#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Ts, nus, <span class="at">xlab =</span> xlbl, <span class="at">ylab =</span> ylbl, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:waterprops-3b"></span>
+<img src="hydr-watres_main_files/figure-html/waterprops-3b-1.png" alt="Variation of kinematic viscosity with temperature." width="50%" />
+<p class="caption">
+Figure 2.1: Variation of kinematic viscosity with temperature.
+</p>
+</div>
+</div>
+<div id="atmosperic-properties" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Atmosperic Properties<a href="properties-of-water.html#atmosperic-properties" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Since water interacts with the atmosphere, through processes like evaporation and condensation, some basic properties of air are helpful. Selected characteristics of the standard atmosphere, as determined by the International Civil Aviation Organization (ICAO), are included in the <em>hydraulics</em> package. Three functions <em>atmpres</em>, <em>atmdens</em>, and <em>atmtemp</em> return different properties of the standard atmosphere, which vary with altitude. These are summarized in Table <a href="properties-of-water.html#tab:atmos-props-SI">2.3</a> for SI units and Table <a href="properties-of-water.html#tab:atmos-props-Eng">2.4</a> for US (or Eng) units.</p>
+<table class="table table-striped" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:atmos-props-SI">Table 2.3: </span>ICAO standard atmospheric properties in SI units
+</caption>
+<thead>
+<tr>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Altitude
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Temperature
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Pressure
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Density
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:center;">
+m
+</th>
+<th style="text-align:center;">
+C
+</th>
+<th style="text-align:center;">
+Pa
+</th>
+<th style="text-align:center;">
+kg m-3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+15.00
+</td>
+<td style="text-align:center;">
+101325.0
+</td>
+<td style="text-align:center;">
+1.22500
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1000
+</td>
+<td style="text-align:center;">
+8.50
+</td>
+<td style="text-align:center;">
+89876.3
+</td>
+<td style="text-align:center;">
+1.11166
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2000
+</td>
+<td style="text-align:center;">
+2.00
+</td>
+<td style="text-align:center;">
+79501.4
+</td>
+<td style="text-align:center;">
+1.00655
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3000
+</td>
+<td style="text-align:center;">
+-4.49
+</td>
+<td style="text-align:center;">
+70121.1
+</td>
+<td style="text-align:center;">
+0.90925
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4000
+</td>
+<td style="text-align:center;">
+-10.98
+</td>
+<td style="text-align:center;">
+61660.4
+</td>
+<td style="text-align:center;">
+0.81935
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5000
+</td>
+<td style="text-align:center;">
+-17.47
+</td>
+<td style="text-align:center;">
+54048.2
+</td>
+<td style="text-align:center;">
+0.73643
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+6000
+</td>
+<td style="text-align:center;">
+-23.96
+</td>
+<td style="text-align:center;">
+47217.6
+</td>
+<td style="text-align:center;">
+0.66011
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+7000
+</td>
+<td style="text-align:center;">
+-30.45
+</td>
+<td style="text-align:center;">
+41105.2
+</td>
+<td style="text-align:center;">
+0.59002
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+8000
+</td>
+<td style="text-align:center;">
+-36.93
+</td>
+<td style="text-align:center;">
+35651.5
+</td>
+<td style="text-align:center;">
+0.52579
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+9000
+</td>
+<td style="text-align:center;">
+-43.42
+</td>
+<td style="text-align:center;">
+30800.6
+</td>
+<td style="text-align:center;">
+0.46706
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+10000
+</td>
+<td style="text-align:center;">
+-49.90
+</td>
+<td style="text-align:center;">
+26499.8
+</td>
+<td style="text-align:center;">
+0.41351
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+11000
+</td>
+<td style="text-align:center;">
+-56.38
+</td>
+<td style="text-align:center;">
+22699.8
+</td>
+<td style="text-align:center;">
+0.36480
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+12000
+</td>
+<td style="text-align:center;">
+-62.85
+</td>
+<td style="text-align:center;">
+19354.6
+</td>
+<td style="text-align:center;">
+0.32062
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+13000
+</td>
+<td style="text-align:center;">
+-69.33
+</td>
+<td style="text-align:center;">
+16421.2
+</td>
+<td style="text-align:center;">
+0.28067
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+14000
+</td>
+<td style="text-align:center;">
+-75.80
+</td>
+<td style="text-align:center;">
+13859.4
+</td>
+<td style="text-align:center;">
+0.24465
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+15000
+</td>
+<td style="text-align:center;">
+-82.27
+</td>
+<td style="text-align:center;">
+11631.9
+</td>
+<td style="text-align:center;">
+0.21229
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:atmos-props-Eng">Table 2.4: </span>ICAO standard atmospheric properties in US units
+</caption>
+<thead>
+<tr>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Altitude
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Temperature
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Pressure
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="">
+Density
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:center;">
+ft
+</th>
+<th style="text-align:center;">
+F
+</th>
+<th style="text-align:center;">
+lbf ft-2
+</th>
+<th style="text-align:center;">
+slug ft-3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+59.00
+</td>
+<td style="text-align:center;">
+2116.2
+</td>
+<td style="text-align:center;">
+0.00237
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5000
+</td>
+<td style="text-align:center;">
+41.17
+</td>
+<td style="text-align:center;">
+1760.9
+</td>
+<td style="text-align:center;">
+0.00205
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+10000
+</td>
+<td style="text-align:center;">
+23.36
+</td>
+<td style="text-align:center;">
+1455.6
+</td>
+<td style="text-align:center;">
+0.00175
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+15000
+</td>
+<td style="text-align:center;">
+5.55
+</td>
+<td style="text-align:center;">
+1194.8
+</td>
+<td style="text-align:center;">
+0.00149
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+20000
+</td>
+<td style="text-align:center;">
+-12.25
+</td>
+<td style="text-align:center;">
+973.3
+</td>
+<td style="text-align:center;">
+0.00127
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+25000
+</td>
+<td style="text-align:center;">
+-30.05
+</td>
+<td style="text-align:center;">
+786.3
+</td>
+<td style="text-align:center;">
+0.00107
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+30000
+</td>
+<td style="text-align:center;">
+-47.83
+</td>
+<td style="text-align:center;">
+629.7
+</td>
+<td style="text-align:center;">
+0.00089
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+35000
+</td>
+<td style="text-align:center;">
+-65.61
+</td>
+<td style="text-align:center;">
+499.3
+</td>
+<td style="text-align:center;">
+0.00074
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+40000
+</td>
+<td style="text-align:center;">
+-83.37
+</td>
+<td style="text-align:center;">
+391.8
+</td>
+<td style="text-align:center;">
+0.00061
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+45000
+</td>
+<td style="text-align:center;">
+-101.13
+</td>
+<td style="text-align:center;">
+303.9
+</td>
+<td style="text-align:center;">
+0.00049
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+50000
+</td>
+<td style="text-align:center;">
+-118.88
+</td>
+<td style="text-align:center;">
+232.7
+</td>
+<td style="text-align:center;">
+0.00040
+</td>
+</tr>
+</tbody>
+</table>
+<p>As with water property functions, the data in the table can be extracted using individual commands for use in calculations. All atmospheric functions have input arguments of altitude (<em>ft</em> or <em>m</em>), unit system (<em>SI</em> or <em>Eng</em>), and whether or not units should be returned.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="properties-of-water.html#cb7-1" aria-hidden="true" tabindex="-1"></a>hydraulics<span class="sc">::</span><span class="fu">atmpres</span>(<span class="at">alt =</span> <span class="dv">3000</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-2"><a href="properties-of-water.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 70121.14 [Pa]</span></span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="units-in-fluid-mechanics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="water-flowing-in-pipes-energy-losses.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

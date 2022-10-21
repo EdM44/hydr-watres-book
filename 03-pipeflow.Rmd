@@ -1,0 +1,419 @@
+# Water Flowing in Pipes: Energy Losses
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Flow in civil engineering infrastructure is usually either in pipes, where it is not exposed to the atmosphere and flows under pressure, or open channels (canals, rivers, etc.). this chapter is concerned only with water flow in pipes.
+
+```{r out.width='70%', echo=FALSE, fig.align="center"}
+  knitr::include_graphics("images/pressurized-water-pipe.jpg")
+```
+
+Once water begins to move engineering problems often need to relate the flow rate to the energy dissipated. To accomplish this, the flow needs to be classified using dimensionless constants since energy dissipation varies with the flow conditions.
+
+## Important dimensionless quantity
+
+As water begins to move, the characteristics are described by two quantities in engineering hydraulics: the Reynolds number, _Re_ and the Froude number _Fr_. The latter is more important for open channel flow and will be discussed in that chapter.
+
+Reynolds number describes the turbulence of the flow, defined by the ratio of kinematic forces, expressed by velocity _V_ and a characteristic length such as pipe diameter, _D_, to viscous forces as expressed by the kinematic viscosity $\nu$, as in Equation \@ref(eq:reynolds)
+
+\begin{equation}
+  Re=\frac{VD}{\nu}
+  (\#eq:reynolds)
+\end{equation}
+
+For open channels the characteristic length is the _hydraulic depth_, the area of flow divided by the top width. For adequately turbulent conditions to exists, Reynolds numbers should exceed 4000 for full pipes, and 2000 for open channels.
+
+## Friction Loss in Circular Pipes
+
+The energy at any point along a pipe containing flowing water is often described by the energy per unit weight, or energy head, E, as in Equation  \@ref(eq:energy1)
+
+\begin{equation}
+  E = z+\frac{P}{\gamma}+\alpha\frac{V^2}{2g}
+  (\#eq:energy1)
+\end{equation}
+where _P_ is the pressure, $\gamma=\rho g$ is the specific weight of water, _z_ is the elevation of the point, _V_ is the average velocity, and each term has units of length. $\alpha$ is a kinetic energy adjustment factor to account for non-uniform velocity distribution across the cross-section. $\alpha$ is typically assumed to be 1.0 for turbulent flow in circular pipes because the value is close to 1.0 and $\frac{V^2}{2g}$ (the velocity head) tends to be small in relation to other terms in the equation. Some applications where velocity varies widely across a cross-section, such as a river channel with flow in a main channel and a flood plain, will need to account for values of $\alpha$ other than one.
+
+As water flows through a pipe energy is lost due to friction with the pipe walls and local disturbances (minor losses). The energy loss between two sections is expressed as ${E_1} - {h_l} = {E_2}$. When pipes are long, with $\frac{L}{D}>1000$, friction losses dominate the energy loss on the system, and the head loss, $h_l$, is calculated as the head loss due to friction, $h_f$. 
+
+This energy head loss due to friction with the walls of the pipe is described by the Darcy-Weisbach equation, which estimates the energy loss per unit weight, or head loss ${h_f}$, which has units of length. For circular pipes it is expressed by Equation \@ref(eq:d-w1)
+
+\begin{equation}
+  h_f = \frac{fL}{D}\frac{V^2}{2g} = \frac{8fL}{\pi^{2}gD^{5}}Q^{2}
+  (\#eq:d-w1)
+\end{equation}
+
+In equation \@ref(eq:d-w1) _f_ is the friction factor, typically calculated with the Colebrook equation (Equation \@ref(eq:coleb1)).
+
+\begin{equation}
+  \frac{1}{\sqrt{f}} = -2\log\left(\frac{\frac{k_s}{D}}{3.7} + \frac{2.51}{Re\sqrt{f}}\right)
+  (\#eq:coleb1)
+\end{equation}
+
+In Equation \@ref(eq:coleb1) $k_s$ is the absolute roughness of the pipe wall. There are close approximations to the Colebrook equation that have an explicit form to facilitate hand-calculations, but when using R or other computational tools there is no need to use approximations.
+
+## Solving Pipe friction problems
+
+As water flows through a pipe energy is lost due to friction with the pipe walls and local disturbances (minor losses). For this example assume minor losses are negligible. The energy head loss due to friction with the walls of the pipe is described by the Darcy-Weisbach equation (Equation (\@ref(eq:d-w1))), which estimates the energy loss per unit weight, or head loss h~f~, which has units of length. The Colebrook equation (Equation \@ref(eq:coleb1)) is commonly plotted as a Moody diagram to illustrate the relationships between the variables, in Figure \@ref(fig:moody1).
+```{r moody1, fig.cap="Moody Diagram", message=FALSE, warning=FALSE}
+hydraulics::moody()
+```
+
+Because of the for of the equations, they can sometimes be a challenge to solve, especially by hand. It can help to classify the types of problems based on what variable is unknown. These are summarized in Table \@ref(tab:prob-types).
+
+```{r prob-types, echo=FALSE}
+knitr::kable(data.frame(Type=c("1","2","3"), Known=c("Q (or V), D, ks, L","hL, D, ks, L","hL, Q (or V), ks, L"), Unknown=c("hL","Q (or V)","D")), format="pipe", padding=0, escape = F,  booktabs = TRUE, caption = "Types of Energy Loss Problems in Pipe Flow")
+```
+
+When solving by hand the types in Table \@ref(tab:prob-types) become progressively more difficult, but when using solvers the difference in complexity is subtle.
+
+## Solving for head loss (Type 1 problems) {#type1}
+
+The simplest pipe flow problem to solve is when the unknown is head loss, h~f~ (equivalent to h~L~ in the absence of minor losses), since all variables on the right side of the Darcy-Weisbach equation are known, except _f_. 
+
+### Solving for head loss by manual iteration
+
+While all unknowns are on the right side of Equation \@ref(eq:d-w1), iteration is still required because the Colebrook equation, Equation \@ref(eq:coleb1), cannot be solved explicitly for _f_. An illustration of solving this type of problem is shown in Example \@ref(exm:pipe-1-1).
+
+::: {.example #pipe-1-1}
+Find the head loss (due to friction) of 20$^\circ$C water in a pipe with the following characteristics: Q=0.416 m$^3$/s, L=100m, D=0.5m, k~s~=0.046mm.
+:::
+Since the water temperature is known, first find the kinematic viscocity of water, ${\nu}$, since it is needed for the Reynolds number. This can be obtained from a table in a reference or using software. Here we will use the _hydraulics_ R package.
+```{r setup1, message=FALSE, warning=FALSE}
+nu <- hydraulics::kvisc(T=20, units="SI")
+cat(sprintf("Kinematic viscosity = %.3e m2/s\n", nu))
+```
+
+We will need the Reynolds Number to use the Colebrook equation, and that can be calculated since Q is known. This can be accomplished with a calculator, or using other software (R is used here):
+```{r re1, message=FALSE, warning=FALSE}
+Q <- 0.416
+D <- 0.5
+A <- (3.14/4)*D^2
+V <- Q/A
+Re <- V*D/nu
+cat(sprintf("Velocity = %.3f m/s, Re = %.3e\n", V, Re))
+```
+
+Now the only unknown in the Colebrook equation is _f_, but unfortunately _f_ appears on both sides of the equation. 
+
+To begin the iterative process, a first guess at _f_ is needed. A reasonable value to use is the minimum f value, f~min~, given the known $\frac{k_s}{D}=\frac{0.046}{500}=0.000092=9.2\cdot 10^{-5}$.
+Reading horizontally from the right vertical axis to the left on the Moody diagram provides a value for $f_{min}\approx 0.012$. 
+
+Numerically, it can be seen that _f_ is independent of _Re_ for large values of _Re_. When _Re_ is large the second term of the Colebrook equation becomes small and the equation approaches Equation \@ref(eq:coleb-rough).
+\begin{equation}
+  \frac{1}{\sqrt{f}} = -2\log\left(\frac{\frac{k_s}{D}}{3.7}\right)
+  (\#eq:coleb-rough)
+\end{equation}
+This independence of _f_ with varying _Re_ values is visible in the Moody Diagram, Figure \@ref(fig:moody1), toward the right, where the lines become horizontal.
+
+Using Equation \@ref(eq:coleb-rough) the same value of f~min~=0.012 is obtained, since the colebrook equation defines the Moody diagram.
+
+**Iteration 1:** Using f=0.012 the right side of the Colebrook equation is 8.656. the next estimate for _f_ is then obtained by $\frac{1}{\sqrt{f}}=8.656$ so f=0.0133.
+
+**Iteration 2:** Using the new value of f=0.0133 in the right side of the Colebrook equation produces 8.677. A new value for _f_ is obtained by $\frac{1}{\sqrt{f}}=8.677$ so f=0.0133. The solution has converged!
+
+Using the new value of _f_, the value for h~f~ is calculated:
+$$h_f = \frac{8fL}{\pi^{2}gD^{5}}Q^{2}=\frac{8(0.0133)(100)}{\pi^{2}(9.81)(0.5)^{5}}(0.416)^{2}=0.061 m$$
+
+### Solving for headloss using an empirical approximation {#dwapprox}
+
+A shortcut that can be used to avoid iterating to find the friction factor is to use an approximation to the Colebrook equation that can be solved explicitly. One example is the Haaland equation \@ref(eq:haal) [@haaland_simple_1983].
+\begin{equation}
+  \frac{1}{\sqrt{f}} = -1.8\log\left(\left(\frac{\frac{k_s}{D}}{3.7}\right)^{1.11}+\frac{6.9}{Re}\right)
+  (\#eq:haal)
+\end{equation} 
+
+For ordinary pipe flow conditions in water pipes, Equation \@ref(eq:haal) is accurate to within 1.5% of the Colebrook equation. There are many other empirical equations, one common one being that of Swamee and Jain [@swamee_explicit_1976], shown in Equation  \@ref(eq:swam1).
+\begin{equation}
+  \frac{1}{\sqrt{f}} = -2\log\left(\frac{\frac{k_s}{D}}{3.7}+\frac{5.74}{Re^{0.9}}\right)
+  (\#eq:swam1)
+\end{equation} 
+
+These approximations are useful for solving problems by hand or in spreadsheets, and their accuracy is generally within the uncertainty of other input variables like the absolute roughness.
+
+### Solving for head loss using an equation solver {#coleb-solver}
+
+Rather than use an empirical approximation (as in Section \@ref(dwapprox)) to the Colebrook equation, it is straightforward to apply an equation solver to use the Colebrook equation directly. This is demonstrated in Example \@ref(exm:pipe-1-2).
+
+::: {.example #pipe-1-2}
+Find the friction factor for the same conditions as Example \@ref(exm:pipe-1-1): D=0.5m, k~s~=0.046mm, and Re=1.036e+06.
+:::
+First, rearrange the Colebrook equation so all terms are on one side of the equation, as in Equation \@ref(eq:coleb-2).
+\begin{equation}
+  -2\log\left(\frac{\frac{k_s}{D}}{3.7} + \frac{2.51}{Re\sqrt{f}}\right) - \frac{1}{\sqrt{f}}=0
+  (\#eq:coleb-2)
+\end{equation}
+
+Create a function using whatever equation solving platform you prefer. Here the R software is used:
+```{r colebrook2, message=FALSE, warning=FALSE}
+colebrk <- function(f,ks,D,Re) -2.0*log10((ks/D)/3.7 + 2.51/(Re*(f^0.5)))-1/(f^0.5)
+```
+
+Find the root of the function (where it equals zero), specifying a reasonable range for f values using the _interval_ argument:
+```{r colebrook3, message=FALSE, warning=FALSE}
+f <- uniroot(colebrk, interval = c(0.008,0.1), ks=0.000046, D=0.5, Re=1.036e+06)$root
+cat(sprintf("f = %.4f\n", f))
+```
+The same value for h~f~ as above results.
+
+### Solving for head loss using an R package 
+
+Equation solvers for implicit equations, like in Section \@ref(coleb-solver), are built into the R package _hydraulics_. that can be applied directly, without writing a separate function.
+
+::: {.example #pipe-1-3}
+Using the _hydraulics_ R package, find the friction factor and head loss for the same conditions as Example \@ref(exm:pipe-1-2): Q=0.416 m^3^/s, L=100 m, D=0.5m, k~s~=0.046mm, and nu = 1.023053e-06 m^2^/s.
+:::
+```{r pipe-1-3}
+ans <- hydraulics::darcyweisbach(Q = 0.416,D = 0.5, L = 100, ks = 0.000046, 
+                     nu = 1.023053e-06, units = c("SI"))
+cat(sprintf("Reynolds no: %.0f\nFriction Fact: %.4f\nHead Loss: %.2f ft\n", 
+            ans$Re, ans$f, ans$hf))
+```
+
+If only the _f_ value is needed, the _colebrook_ equation can be used.
+```{r colebrook4, message=FALSE, warning=FALSE}
+f <- hydraulics::colebrook(ks=0.000046, V= 2.120, D=0.5, nu=1.023e-06)
+cat(sprintf("f = %.4f\n", f))
+```
+
+Notice that the _colebrook_ function needs input in dimensionally consistent units. Because it is dimensionally homogeneous and the input dimensions are consistent, the unit system does not need to be defined like with many other functions in the _hydraulics_ package.
+
+## Solving for Flow or Velocity (Type 2 problems)
+
+When flow (Q) or velocity (V) is unknown, the Reynolds number cannot be determined, complicating the solution of the Colebrook equation. As with Secion \@ref(type1) there are several strategies to solving these, ranging from iterative manual calculations to using software packages. For Type 2 problems, since D is known, once either V or Q is known, the other is known, since $Q=V{\cdot}A=V\frac{\pi}{4}D^2$.
+
+### Solving for Q (or V) using manual iteration
+
+Solving a Type 2 problem can be done with manual iterations, as demonstrated in Example \@ref(exm:pipe-2-1).
+
+::: {.example #pipe-2-1}
+find the flow rate, _Q_ of 20^o^C water in a pipe with the following characteristics: h~f~=0.6m, L=100m, D=0.5m, k~s~=0.046mm.
+:::
+First rearrange the Darcy-Weisbach equation to express V as a function of f, substituting all of the known quantities: $$V = \sqrt{\frac{h_f}{L}\frac{2gD}{f}}=\frac{0.243}{\sqrt{f}}$$
+
+That provides one equation relating _V_ and _f_. The second equation relating _V_ and _f_ is one of the friction factor equations, such as the Colebrook equation or its graphic representation in the Moody diagram. An initial guess at a value for _f_ is obtained using f~min~=0.012 as was done in Example \@ref(exm:pipe-1-1).
+
+**Iteration 1:** $V=\frac{0.243}{\sqrt{0.012}}=2.218$; $Re=\frac{2.218\cdot 0.5}{1.023e-06}=1.084 \cdot 10^6$. A new _f_ value is obtained from the Moody diagram or an equation using the new Re value: $f \approx 0.0131$
+
+**Iteration 2:** $V=\frac{0.243}{\sqrt{0.0131}}=2.123$; $Re=\frac{2.123\cdot 0.5}{1.023e-06}=1.038 \cdot 10^6$. A new _f_ estimate: $f \approx 0.0132$
+
+The function converges very quickly if a reasonable first guess is made. Using V=2.12 m/s, $Q = AV = \left(\frac{\pi}{4}\right)D^2V=0.416 m^3/s$
+
+### Solving for Q Using an Explicit Equation
+
+Solving Type 2 problems using iteration is not necessary, since an explicit equation based on the Colebrook equation can be derived. Solving the Darcy Weisbach equation for $\frac{1}{\sqrt{f}}$ and substituting that into the Colebrook equation produces Equation \@ref(eq:coleb-3).
+\begin{equation}
+  Q=-2.221D^2\sqrt{\frac{gDh_f}{L}} \log\left(\frac{\frac{k_s}{D}}{3.7} + \frac{1.784\nu}{D}\sqrt{\frac{L}{gDh_f}}\right)
+  (\#eq:coleb-3)
+\end{equation}
+
+This can be solved explicitly for Q=0.413 m^3^/s.
+
+### Solving for Q Using an R package
+
+Using software to solve the problem allows the use of the Colebrook equation in a straightforward format. The _hydraulics_ package in R is applied to the same problem as above.
+```{r dw, message=FALSE, warning=FALSE}
+ans <- hydraulics::darcyweisbach(D=0.5, hf=0.6, L=100, ks=0.000046, nu=1.023e-06, units = c('SI'))
+knitr::kable(format(as.data.frame(ans), digits = 3), format = "pipe")
+```
+
+The answer differs from the manual iteration by just over 2%, showing remarkable consistency.
+
+## Solving for pipe diameter, D (Type 3 problems) 
+
+When D is unknown, neither Re nor relative roughness $\frac{ks}{D}$ are known. Referring to the Moody diagram, Figure \@ref(fig:moody1), the difficulty in estimating a value for _f_ (on the left axis) is evident since the positions on either the right axis ($\frac{ks}{D}$) or x-axis (_Re_) are known.
+
+### Solving for D using manual iterations
+
+Solving for D using manual iterations is done by first rearranging Equation \@ref(eq:coleb-3) to allow it to be solved for zero, as in Equation  \@ref(eq:coleb-4).
+\begin{equation}
+  -2.221D^2\sqrt{\frac{gDh_f}{L}} \log\left(\frac{\frac{k_s}{D}}{3.7} + \frac{1.784\nu}{D}\sqrt{\frac{L}{gDh_f}}\right)-Q=0
+  (\#eq:coleb-4)
+\end{equation}
+
+Using this with manual iterations is demonstrated in Example \@ref(exm:pipe-3-1).
+
+::: {.example #pipe-3-1}
+For a similar problem to \@ref(exm:pipe-2-1) use Q=0.416m^3^/s and solve for the required pipe diameter, D.
+:::
+This can be solved manually by guessing values and repeating the calculation in a spreadsheet or with a tool like R.
+
+**Iteration 1:** Guess an arbitrary value of D=0.3m. Solve the left side of Equation  \@ref(eq:coleb-4) to obtain a value of -0.31
+
+**Iteration 2:** Guess another value for D=1.0m. The left side of Equation \@ref(eq:coleb-4) produces a value for the function of 2.11
+
+The root, when the function equals zero, lies between the two values, so the correct D is between 0.3 and 1.0. Repeated values can home in on a solution. Plotting the results from many trials can help guide toward the solution.
+```{r type3_guesses, echo=FALSE, fig.cap="", fig.align="center"}
+knitr::include_graphics("images/type3_guesses.png")
+```
+The root is seen to lie very close to D=0.5 m. Repeated trials can home in on the result.
+
+### Solving for D using an equation solver
+
+An equation solver automatically accomplishes the manual steps of the prior demonstration. The equation from 1.6 can be written as a function that can then be solved for the root, again using _R_ software for the demonstration: 
+```{r qfcn1, message=FALSE, warning=FALSE}
+q_fcn <- function(D, Q, hf, L, ks, nu, g) {
+  -2.221 * D^2 * sqrt(( g * D * hf)/L) * log10((ks/D)/3.7 + (1.784 * nu/D) * sqrt(L/(g * D * hf))) - Q
+}
+```
+The _uniroot_ function can solve the equation in R (or use a comparable approach in other software) for a reasonable range of D values
+```{r qfcn2, message=FALSE, warning=FALSE}
+ans <- uniroot(q_fcn, interval=c(0.01,4.0),Q=0.416, hf=0.6, L=100, ks=0.000046, nu=1.023053e-06, g=9.81)$root
+cat(sprintf("D = %.3f m\n", ans))
+```
+
+## Parallel pipes: solving a system of equations
+
+In the examples above the challenge was often to solve a single implicit equation. The manual iteration approach can work to solve two equations, but as the number of equations increases, especially when using implicit equations, using an equation solver is needed. 
+
+For the case of a simple pipe loop manual iterations are impractical. for this reason often fixed values of _f_ are assumed, or an empirical energy loss equation is used. However, a single loop, identical to a parallel pipe problem, can be used to demonstrate how systems of equations can be solved simultaneously for systems of pipes.
+
+Example \@ref(exm:loop-1) demonstrates the process of assembling the equations for a solver for a parallel pipe problem.
+
+::: {.example #loop-1}
+Two pipes carry a flow of Q=0.5 m^3^/s, as depicted in Figure \@ref(fig:paral-pipe)
+:::
+```{r paral-pipe, echo=FALSE, fig.cap="Parallel Pipe Example", out.width = '50%', fig.align="center"}
+knitr::include_graphics("images/pipe_loop.png")
+```
+The fundamental equations needed are the Darcy-Weisbach equation, the Colebrook equation, and continuity (conservation of mass). For the illustrated system, this means:
+
+- The flows through each pipe must add to the total flow
+- The head loss through Pipe 1 must equal that of Pipe 2
+
+This could be set up as a system of anywhere from 2 to 10 equations to solve simultaneously. In this example four equations are used:
+\begin{equation}
+  Q_1+Q_2-Q_{total}=V_1\frac{\pi}{4}D_1^2+V_2\frac{\pi}{4}D_2^2-0.5m^3/s=0
+  (\#eq:loopeq1)
+\end{equation}
+and
+\begin{equation}
+  Qh_{f1}-h_{f2} = \frac{f_1L_1}{D_1}\frac{V_1^2}{2g} -\frac{f_2L_2}{D_2}\frac{V_2^2}{2g}=0
+  (\#eq:loopeq2)
+\end{equation}
+
+The other two equations are the Colebrook equation \@ref(eq:coleb-2) for solving for the friction factor for each pipe.
+
+These four equations can be solved simultaneously using an equation solver, such as the _fsolve_ function in the _R_ package _pracma_.
+```{r fsolve1, message=FALSE, warning=FALSE}
+#assign known inputs - SI units
+Qsum <- 0.5
+D1 <- 0.2
+D2 <- 0.3
+L1 <- 400
+L2 <- 600
+ks <- 0.000025
+g <- 9.81
+nu <- hydraulics::kvisc(T=100, units='SI')
+
+#Set up the function that sets up 4 unknowns (x) and 4 equations (y)
+F_trial <- function(x) {
+  V1 <- x[1]
+  V2 <- x[2]
+  f1 <- x[3]
+  f2 <- x[4]
+  Re1 <- V1*D1/nu
+  Re2 <- V2*D2/nu
+  y <- numeric(length(x))
+  #Continuity - flows in each branch must add to total
+  y[1] <- V1*pi/4*D1^2 + V2*pi/4*D2^2 - Qsum
+  #Darcy-Weisbach equation for head loss - must be equal in each branch
+  y[2] <- f1*L1*V1^2/(D1*2*g) - f2*L2*V2^2/(D2*2*g)
+  #Colebrook equation for friction factors
+  y[3] <- -2.0*log10((ks/D1)/3.7 + 2.51/(Re1*(f1^0.5)))-1/(f1^0.5)
+  y[4] <- -2.0*log10((ks/D2)/3.7 + 2.51/(Re2*(f2^0.5)))-1/(f2^0.5)
+  return(y)
+}
+
+#provide initial guesses for unknowns and run the fsolve command
+xstart <- c(2.0, 2.0, 0.01, 0.01)
+z <- pracma::fsolve(F_trial, xstart)
+
+#prepare some results to print
+Q1 <- z$x[1]*pi/4*D1^2
+Q2 <- z$x[2]*pi/4*D2^2
+hf1 <- z$x[3]*L1*z$x[1]^2/(D1*2*g)
+hf2 <- z$x[4]*L2*z$x[2]^2/(D2*2*g)
+cat(sprintf("Q1=%.2f, Q2=%.2f, V1=%.1f, V2=%.1f, hf1=%.1f, hf2=%.1f, f1=%.3f, f2=%.3f\n", Q1,Q2,z$x[1],z$x[2],hf1,hf2,z$x[3],z$x[4]))
+```
+
+If the _fsolve_ command fails, a simple solution is sometimes to revise your initial guesses and try again. There are other solvers in _R_ and every other scripting language that can be similarly implemented.
+
+If the simplification were applied for fixed _f_ values, then Equations \@ref(eq:loopeq1) and \@ref(eq:loopeq2) can be solved simultaneously for V~1~ and V~2~.
+
+## Simple pipe networks: the Hardy-Cross method
+
+For water pipe networks containing multiple loops, manually setting up systems of equations is impractical. In addition, hand calculations always assume fixed _f_ values or use an empirical friction loss equation to simplify calculations. 
+
+A typical method to solve for the flow in each pipe segment in a small network uses the Hardy-Cross method. This consists of setting up an initial guess of flow (magnitude and direction) for each pipe segment, ensuring conservation of mass is preserved at each node (or vertex) in the network. Then calculations are performed for each loop, ensuring energy is conserved.
+
+When using the Darcy-Weisbach equation, Equation \@ref(eq:d-w1), for friction loss, the head loss in each pipe segment is usually expressed in a condensed form as ${h_f = KQ^{2}}$ where _K_ is defined as in Equation \@ref(eq:hceq1).
+\begin{equation}
+  K = \frac{8fL}{\pi^{2}gD^{5}}
+  (\#eq:hceq1)
+\end{equation}
+
+When doing calculations by hand fixed _f_ values are assumed, but when using a computational tool like _R_ any of the methods for estimating _f_ and h~f~ may be applied.
+
+The Hardy-Cross method begins by assuming flows in each segment of a loop. These initial flows are then adjusted in a series of iterations. The flow adjustment in each loop is calculated at each iteration in Equation Equation \@ref(eq:hceq2).
+\begin{equation}
+  \Delta{Q_i} = -\frac{\sum_{j=1}^{p_i} K_{ij}Q_j|Q_j|}{\sum_{j=1}^{p_i} 2K_{ij}Q_j^2}
+  (\#eq:hceq2)
+\end{equation}
+
+For calculations for small systems with two or three loops can be done manually with fixed _f_ and _K_ values. Using the _hydraulics_ R package to solve a small pipe network is demonstrated in Example \@ref(exm:hcross-1).
+
+::: {.example #hcross-1}
+Find the flows in each pipe in teh system shown in Figure \@ref(fig:hc-1). Input consists of pipe characteristics, pipe order and initial flows for each loop, as shown non the diagram.
+:::
+```{r hc-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "75%", fig.cap = "A sample pipe network with pipe numbers indicated in black"}
+knitr::include_graphics('images/hardycross_system.png')
+```
+
+Input for this system, assuming fixed _f_ values, would look like the following. (If fixed _K_ values are provided, f, L and D are not needed). These _f_ values were estimated using $ks=0.00025 m$ in the form of the Colebrook equation for fully rough flows, Equation \@ref(eq:coleb-rough).
+
+```{r hc-2, message=FALSE}
+dfpipes <- data.frame(
+  ID = c(1,2,3,4,5,6,7,8,9,10),                                #pipe ID
+  D = c(0.3,0.2,0.2,0.2,0.2,0.15,0.25,0.15,0.15,0.25),         #diameter in m
+  L = c(250,100,125,125,100,100,125,100,100,125),              #length in m
+  f = c(.01879,.02075,.02075,.02075,.02075,.02233,.01964,.02233,.02233,.01964)
+)
+loops <- list(c(1,2,3,4,5),c(4,6,7,8),c(3,9,10,6))
+Qs <- list(c(.040,.040,.02,-.02,-.04),c(.02,0,0,-.02),c(-.02,.02,0,0))
+```
+
+Running the _hardycross_ function and looking at the output after three iterations (defined by _n\_iter_):
+```{r hc-3, message=FALSE}
+ans <- hydraulics::hardycross(dfpipes = dfpipes, loops = loops, Qs = Qs, n_iter = 3, units = "SI")
+knitr::kable(ans$dfloops, digits = 4, format = "pipe", padding=0)
+```
+
+The output pipe data frame has added columns, including the flow (where direction is that for the first loop containing the segment).
+```{r hc-4, message=FALSE}
+knitr::kable(ans$dfpipes, digits = 4, format = "pipe", padding=0)
+```
+
+While the Hardy-Cross method is often used with fixed _f_ (or _K_) values when it is used in exercises performed by hand, the use of the Colebrook equation allows friction losses to vary with Reynolds number. To use this approach the input data must include absolute roughness. Example values are included here:
+
+```{r hc-5, message=FALSE}
+dfpipes <- data.frame(
+  ID = c(1,2,3,4,5,6,7,8,9,10),                         #pipe ID
+  D = c(0.3,0.2,0.2,0.2,0.2,0.15,0.25,0.15,0.15,0.25),  #diameter in m
+  L = c(250,100,125,125,100,100,125,100,100,125),       #length in m
+  ks = rep(0.00025,10)                                  #absolute roughness, m
+)
+loops <- list(c(1,2,3,4,5),c(4,6,7,8),c(3,9,10,6))
+Qs <- list(c(.040,.040,.02,-.02,-.04),c(.02,0,0,-.02),c(-.02,.02,0,0))
+```
+
+The effect of allowing the calculation of _f_ to be (correctly) dependent on velocity (via the Reynolds number) can be seen, though the effect on final flow values is small.
+
+```{r hc-6, message=FALSE}
+ans <- hydraulics::hardycross(dfpipes = dfpipes, loops = loops, Qs = Qs, n_iter = 3, units = "SI")
+knitr::kable(ans$dfpipes, digits = 4, format = "pipe", padding=0)
+```

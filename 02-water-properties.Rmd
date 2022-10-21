@@ -1,0 +1,156 @@
+# Properties of Water {#properties-of-water}
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Fundamental properties of water allow the description of the forces it exerts and how it behaves while in motion. Many were listed in Chapter .
+
+A summary of basic water properties, which vary with temperature, is shown in Table \@ref(tab:water-props-SI) for SI units and Table \@ref(tab:water-props-Eng) for US (or Eng) units.
+
+```{r water-props-SI, echo=FALSE, message=FALSE, warnings=FALSE}
+suppressWarnings(suppressMessages(library(dplyr)))
+tbl <- hydraulics::water_table(units = "SI")
+unitlist <- sapply(unname(tbl),units::deparse_unit)
+colnames <- names(tbl)
+tbl <- docxtools::format_engr(units::drop_units(tbl), sigdig = c(0, 4, 4, 4, 4, 4, 3, 3))
+knitr::kable(tbl, col.names = unitlist, align = "c", format = "html", 
+             booktabs = TRUE, caption = "Water properties in SI units") %>%
+  kableExtra::add_header_above(header = colnames, line = F, align = "c") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", font_size = 10)
+```
+
+```{r water-props-Eng, echo=FALSE, message=FALSE, warnings=FALSE}
+tbl <- hydraulics::water_table(units = "Eng")
+unitlist <- sapply(unname(tbl),units::deparse_unit)
+colnames <- names(tbl)
+tbl <- docxtools::format_engr(units::drop_units(tbl), sigdig = c(0, 4, 4, 4, 4, 4, 3, 3))
+knitr::kable(tbl, col.names = unitlist, align = "c", format = "html", 
+             booktabs = TRUE, caption = "Water properties in US units") %>%
+  kableExtra::add_header_above(header = colnames, line = F, align = "c") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", font_size = 10)
+```
+
+What follows is a brief discussion of some of these properties, and how they can be applied in R. All of the properties shown in the tables above are produced using the _hydraulics_ R package. The [documentation for that package](https://CRAN.R-project.org/package=hydraulics) provides details on its use. The water property functions in the _hydraulics_ package can be called using the _ret_units_ input to allow it to return an object of class _units_, as designated by the package `units`. This enables capabilities for new units to be deduced as operations are performed on the values. Concise examples are in the [vignettes for the 'units' package](https://cran.r-project.org/package=units).
+
+## Properties important for water standing still
+
+An intrinsic property of water is its mass. In the presence of gravity, it exerts a weight on its surroundings. Forces caused by the weight of water enter design in many ways.
+
+::: {.example #ex-bucket}
+Determine the tension in the 8 mm diameter rope holding a bucket containing 12 liters of water. Ignore the weight of the bucket. Assume a water temperature of 20 $^\circ$C.
+:::
+```{r out.width='30%', out.extra='style="float:right; padding:10px"', echo=FALSE}
+  knitr::include_graphics("images/wishing-well-small.png")
+```
+```{r waterprops-ex1}
+rho = hydraulics::dens(T = 20, units = 'SI', ret_units = TRUE)
+#Water density:
+rho
+#Find mass by multiplying by volume
+vol <- units::set_units(12, liter)
+m <- rho * vol
+#Convert mass to weight in Newtons
+g <- units::set_units(9.81, m/s^2)
+w <- units::set_units(m*g, "N")
+#Divide by cross-sectional area of the rope to obtain tension
+area <- units::set_units(pi/4 * 8^2, mm^2)
+tension <- w/area
+#Express the result in Pascals
+units::set_units(tension, Pa)
+#For demonstration, convert to psi
+units::set_units(tension, psi)
+```
+For example \@ref(exm:ex-bucket) units could have been tracked manually throughout, as if done by hand. The convenience of using the _units_ package allows conversions that can be used to check hand calculations.
+
+## Properties important for moving water
+
+When describing the behavior of moving water in civil engineering infrastructure like pipes and channels there are three primary water properties used used in calculations, all of which vary with water temperature: density ($\rho$), dynamic viscosity($\mu$), and kinematic viscosity($\nu$), which are related by Equation \@ref(eq:test-eq)
+
+\begin{equation}
+  \nu=\frac{\mu}{\rho}
+  (\#eq:test-eq)
+\end{equation}
+
+Viscosity is caused by interaction of the fluid molecules as they are subjected to a shearing force. This is often illustrated by a conceptual sketch of two parallel plates, one fixed and one moving at a constant speed, with a fluid in between. Perhaps more intuitively, a smore can be used.
+```{r out.width='70%', echo=FALSE}
+  knitr::include_graphics("images/viscosity_cracker.jpg")
+```
+
+If the velocity of the marshmallow filling varies linearly, it will be stationary (V=0) at the bottom and moving at the same velocity as the upper cracker at the top (V=U). The the force needed to move the upper cracker can be calculate using Equation \@ref(eq:visc1)
+
+\begin{equation}
+  F=A{\mu}\frac{dV}{dy}
+  (\#eq:visc1)
+\end{equation}
+where y is the distance between the crackers and A is the cross-sectional area of a cracker. Equation \@ref(eq:visc1) is often written in terms of shear stress ${\tau}$ as in Equation \@ref(eq:visc2)
+
+\begin{equation}
+  \frac{F}{A}={\tau}={\mu}\frac{dV}{dy}
+  (\#eq:visc2)
+\end{equation}
+
+The following demonstrates a use of these relationships.
+
+::: {.example #ex-marsh}
+Determine force required to slide the top cracker at 1 cm/s with a thickness of marshmallow of 0.5 cm. The cross-sectional area of the  crackers is 10 cm$^2$. The viscosity (dynamic viscosity, as can be discerned by the units) of marshmallow is about 0.1 Pa$\cdot$s.
+:::
+
+```{r waterprops-ex2}
+#Assign variables
+A <- units::set_units(10, cm^2)
+U <- units::set_units(1, cm/s)
+y <- units::set_units(0.5, cm)
+mu <- units::set_units(0.1, Pa*s)
+#Find shear stress
+tau <- mu * U / y
+tau
+#Since stress is F/A, multiply tau by A to find F, convert to Newtons and pounds
+units::set_units(tau*A, N)
+units::set_units(tau*A, lbf)
+```
+
+Water is less viscous than marshmallow, so viscosity has much lower values than in the example. Values for water can be obtained using the _hydraulics_ R package for calculations,  using the _dens_, _dvisc_, and _kvisc_. All of the water property functions can accept a list of input temperature values, enabling visualization of a property with varying water temperature, as shown in Figure \@ref(fig:waterprops-3b).
+
+```{r waterprops-3b, out.width="50%", fig.cap="Variation of kinematic viscosity with temperature."}
+Ts <- seq(0, 100, 10)
+nus <- hydraulics::kvisc(T = Ts, units = 'SI')
+xlbl <- expression("Temperature, " (degree*C))
+ylbl <- expression("Kinematic viscosity," ~nu~ (m^{2}/s))
+par(cex=0.8, mgp = c(2,0.7,0))
+plot(Ts, nus, xlab = xlbl, ylab = ylbl, type="l")
+```
+
+## Atmosperic Properties
+
+Since water interacts with the atmosphere, through processes like evaporation and condensation, some basic properties of air are helpful. Selected characteristics of the standard atmosphere, as determined by the International Civil Aviation Organization (ICAO), are included in the _hydraulics_ package. Three functions _atmpres_, _atmdens_, and _atmtemp_ return different properties of the standard atmosphere, which vary with altitude. These are summarized in Table \@ref(tab:atmos-props-SI) for SI units and Table \@ref(tab:atmos-props-Eng) for US (or Eng) units. 
+
+```{r atmos-props-SI, echo=FALSE, message=FALSE, warnings=FALSE}
+tbl <- hydraulics::atmos_table(units = "SI")
+unitlist <- sapply(unname(tbl),units::deparse_unit)
+colnames <- names(tbl)
+knitr::kable(units::drop_units(tbl), col.names = unitlist, align = "c", format = "html",
+             digits = c(0, 2, 1, 5),  
+             booktabs = TRUE, caption = "ICAO standard atmospheric properties in SI units") %>%
+  kableExtra::add_header_above(header = colnames, line = F, align = "c") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", font_size = 10)
+```
+
+```{r atmos-props-Eng, echo=FALSE, message=FALSE, warnings=FALSE}
+tbl <- hydraulics::atmos_table(units = "Eng")
+unitlist <- sapply(unname(tbl),units::deparse_unit)
+colnames <- names(tbl)
+knitr::kable(units::drop_units(tbl), col.names = unitlist, align = "c", format = "html",
+             digits = c(0, 2, 1, 5), 
+             booktabs = TRUE, caption = "ICAO standard atmospheric properties in US units") %>%
+  kableExtra::add_header_above(header = colnames, line = F, align = "c") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", font_size = 10)
+```
+
+As with water property functions, the data in the table can be extracted using individual commands for use in calculations. All atmospheric functions have input arguments of altitude (_ft_ or _m_), unit system (_SI_ or _Eng_), and whether or not units should be returned. 
+```{r waterprops-atmex}
+hydraulics::atmpres(alt = 3000, units = "SI", ret_units = TRUE)
+```

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="2.2 Properties important for moving water | Hydraulics and Water Resources: Examples Using R" />
+<meta property="og:type" content="book" />
+<meta property="og:image" content="/images/david-becker-rrfdqjJWwmU-unsplash.jpg" />
+<meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+
+
+<meta name="author" content="Ed Maurer" />
+
+<meta name="date" content="2022-10-21" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>">
+
+<title>2.2 Properties important for moving water | Hydraulics and Water Resources: Examples Using R</title>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="toc.css" type="text/css" />
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#preface" id="toc-preface">Preface</a>
+<ul>
+<li><a href="copyight.html#copyight" id="toc-copyight">Copyight</a></li>
+</ul></li>
+<li><a href="1-units-in-fluid-mechanics.html#units-in-fluid-mechanics" id="toc-units-in-fluid-mechanics"><span class="toc-section-number">1</span> Units in Fluid Mechanics</a></li>
+<li class="has-sub"><a href="2-properties-of-water.html#properties-of-water" id="toc-properties-of-water"><span class="toc-section-number">2</span> Properties of Water</a>
+<ul>
+<li><a href="2.1-properties-important-for-water-standing-still.html#properties-important-for-water-standing-still" id="toc-properties-important-for-water-standing-still"><span class="toc-section-number">2.1</span> Properties important for water standing still</a></li>
+<li><a href="2.2-properties-important-for-moving-water.html#properties-important-for-moving-water" id="toc-properties-important-for-moving-water"><span class="toc-section-number">2.2</span> Properties important for moving water</a></li>
+<li><a href="2.3-atmosperic-properties.html#atmosperic-properties" id="toc-atmosperic-properties"><span class="toc-section-number">2.3</span> Atmosperic Properties</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-water-flowing-in-pipes-energy-losses.html#water-flowing-in-pipes-energy-losses" id="toc-water-flowing-in-pipes-energy-losses"><span class="toc-section-number">3</span> Water Flowing in Pipes: Energy Losses</a>
+<ul>
+<li><a href="3.1-important-dimensionless-quantity.html#important-dimensionless-quantity" id="toc-important-dimensionless-quantity"><span class="toc-section-number">3.1</span> Important dimensionless quantity</a></li>
+<li><a href="3.2-friction-loss-in-circular-pipes.html#friction-loss-in-circular-pipes" id="toc-friction-loss-in-circular-pipes"><span class="toc-section-number">3.2</span> Friction Loss in Circular Pipes</a></li>
+<li><a href="3.3-solving-pipe-friction-problems.html#solving-pipe-friction-problems" id="toc-solving-pipe-friction-problems"><span class="toc-section-number">3.3</span> Solving Pipe friction problems</a></li>
+<li class="has-sub"><a href="3.4-type1.html#type1" id="toc-type1"><span class="toc-section-number">3.4</span> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li><a href="3.4-type1.html#solving-for-head-loss-by-manual-iteration" id="toc-solving-for-head-loss-by-manual-iteration"><span class="toc-section-number">3.4.1</span> Solving for head loss by manual iteration</a></li>
+<li><a href="3.4-type1.html#dwapprox" id="toc-dwapprox"><span class="toc-section-number">3.4.2</span> Solving for headloss using an empirical approximation</a></li>
+<li><a href="3.4-type1.html#coleb-solver" id="toc-coleb-solver"><span class="toc-section-number">3.4.3</span> Solving for head loss using an equation solver</a></li>
+<li><a href="3.4-type1.html#solving-for-head-loss-using-an-r-package" id="toc-solving-for-head-loss-using-an-r-package"><span class="toc-section-number">3.4.4</span> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="has-sub"><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-flow-or-velocity-type-2-problems" id="toc-solving-for-flow-or-velocity-type-2-problems"><span class="toc-section-number">3.5</span> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-q-or-v-using-manual-iteration" id="toc-solving-for-q-or-v-using-manual-iteration"><span class="toc-section-number">3.5.1</span> Solving for Q (or V) using manual iteration</a></li>
+<li><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-q-using-an-explicit-equation" id="toc-solving-for-q-using-an-explicit-equation"><span class="toc-section-number">3.5.2</span> Solving for Q Using an Explicit Equation</a></li>
+<li><a href="3.5-solving-for-flow-or-velocity-type-2-problems.html#solving-for-q-using-an-r-package" id="toc-solving-for-q-using-an-r-package"><span class="toc-section-number">3.5.3</span> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="has-sub"><a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html#solving-for-pipe-diameter-d-type-3-problems" id="toc-solving-for-pipe-diameter-d-type-3-problems"><span class="toc-section-number">3.6</span> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li><a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html#solving-for-d-using-manual-iterations" id="toc-solving-for-d-using-manual-iterations"><span class="toc-section-number">3.6.1</span> Solving for D using manual iterations</a></li>
+<li><a href="3.6-solving-for-pipe-diameter-d-type-3-problems.html#solving-for-d-using-an-equation-solver" id="toc-solving-for-d-using-an-equation-solver"><span class="toc-section-number">3.6.2</span> Solving for D using an equation solver</a></li>
+</ul></li>
+<li><a href="3.7-parallel-pipes-solving-a-system-of-equations.html#parallel-pipes-solving-a-system-of-equations" id="toc-parallel-pipes-solving-a-system-of-equations"><span class="toc-section-number">3.7</span> Parallel pipes: solving a system of equations</a></li>
+<li><a href="3.8-simple-pipe-networks-the-hardy-cross-method.html#simple-pipe-networks-the-hardy-cross-method" id="toc-simple-pipe-networks-the-hardy-cross-method"><span class="toc-section-number">3.8</span> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-flow-in-open-channels.html#flow-in-open-channels" id="toc-flow-in-open-channels"><span class="toc-section-number">4</span> Flow in open channels</a>
+<ul>
+<li><a href="4.1-an-important-dimensionless-quantity.html#an-important-dimensionless-quantity" id="toc-an-important-dimensionless-quantity"><span class="toc-section-number">4.1</span> An important dimensionless quantity</a></li>
+<li><a href="4.2-equations-for-open-channel-flow.html#equations-for-open-channel-flow" id="toc-equations-for-open-channel-flow"><span class="toc-section-number">4.2</span> Equations for open channel flow</a></li>
+<li class="has-sub"><a href="4.3-trap.html#trap" id="toc-trap"><span class="toc-section-number">4.3</span> Trapezoidal channels</a>
+<ul>
+<li><a href="4.3-trap.html#solving-the-manning-equations-in-r" id="toc-solving-the-manning-equations-in-r"><span class="toc-section-number">4.3.1</span> Solving the Manning equations in R</a></li>
+<li><a href="4.3-trap.html#solving-the-manning-equation-with-the-hydraulics-r-package" id="toc-solving-the-manning-equation-with-the-hydraulics-r-package"><span class="toc-section-number">4.3.2</span> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li><a href="4.3-trap.html#solving-the-manning-equation-using-a-spreadsheet-like-excel" id="toc-solving-the-manning-equation-using-a-spreadsheet-like-excel"><span class="toc-section-number">4.3.3</span> solving the Manning equation using a Spreadsheet Like Excel</a></li>
+<li><a href="4.3-trap.html#optimal-trapezoidal-geometry" id="toc-optimal-trapezoidal-geometry"><span class="toc-section-number">4.3.4</span> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="has-sub"><a href="4.4-circ.html#circ" id="toc-circ"><span class="toc-section-number">4.4</span> Circular Channels (flowing partially full)</a>
+<ul>
+<li><a href="4.4-circ.html#solving-the-manning-equation-in-r" id="toc-solving-the-manning-equation-in-r"><span class="toc-section-number">4.4.1</span> Solving the Manning equation in R</a></li>
+</ul></li>
+<li><a href="4.5-crit-section.html#crit-section" id="toc-crit-section"><span class="toc-section-number">4.5</span> Critical flow</a></li>
+<li class="has-sub"><a href="4.6-gradually-varied-steady-flow.html#gradually-varied-steady-flow" id="toc-gradually-varied-steady-flow"><span class="toc-section-number">4.6</span> Gradually varied steady flow</a>
+<ul>
+<li><a href="4.6-gradually-varied-steady-flow.html#the-direct-step-method" id="toc-the-direct-step-method"><span class="toc-section-number">4.6.1</span> The direct step method</a></li>
+<li><a href="4.6-gradually-varied-steady-flow.html#standard-step-method" id="toc-standard-step-method"><span class="toc-section-number">4.6.2</span> Standard step method</a></li>
+</ul></li>
+</ul></li>
+<li><a href="5-momentum-in-water-flow.html#momentum-in-water-flow" id="toc-momentum-in-water-flow"><span class="toc-section-number">5</span> Momentum in water flow</a></li>
+<li class="has-sub"><a href="6-pumps-and-how-they-operate-in-a-hydraulic-system.html#pumps-and-how-they-operate-in-a-hydraulic-system" id="toc-pumps-and-how-they-operate-in-a-hydraulic-system"><span class="toc-section-number">6</span> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li><a href="6.1-defining-the-system-curve.html#defining-the-system-curve" id="toc-defining-the-system-curve"><span class="toc-section-number">6.1</span> Defining the system curve</a></li>
+<li><a href="6.2-defining-the-pump-characteristic-curve.html#defining-the-pump-characteristic-curve" id="toc-defining-the-pump-characteristic-curve"><span class="toc-section-number">6.2</span> Defining the pump characteristic curve</a></li>
+<li><a href="6.3-finding-the-operating-point.html#finding-the-operating-point" id="toc-finding-the-operating-point"><span class="toc-section-number">6.3</span> Finding the operating point</a></li>
+</ul></li>
+<li><a href="references.html#references" id="toc-references">References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="properties-important-for-moving-water" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Properties important for moving water</h2>
+<p>When describing the behavior of moving water in civil engineering infrastructure like pipes and channels there are three primary water properties used used in calculations, all of which vary with water temperature: density (<span class="math inline">\(\rho\)</span>), dynamic viscosity(<span class="math inline">\(\mu\)</span>), and kinematic viscosity(<span class="math inline">\(\nu\)</span>), which are related by Equation <a href="2.2-properties-important-for-moving-water.html#eq:test-eq">(2.1)</a></p>
+<p><span class="math display" id="eq:test-eq">\[\begin{equation}
+  \nu=\frac{\mu}{\rho}
+  \tag{2.1}
+\end{equation}\]</span></p>
+<p>Viscosity is caused by interaction of the fluid molecules as they are subjected to a shearing force. This is often illustrated by a conceptual sketch of two parallel plates, one fixed and one moving at a constant speed, with a fluid in between. Perhaps more intuitively, a smore can be used.
+<img src="images/viscosity_cracker.jpg" width="70%" /></p>
+<p>If the velocity of the marshmallow filling varies linearly, it will be stationary (V=0) at the bottom and moving at the same velocity as the upper cracker at the top (V=U). The the force needed to move the upper cracker can be calculate using Equation <a href="2.2-properties-important-for-moving-water.html#eq:visc1">(2.2)</a></p>
+<p><span class="math display" id="eq:visc1">\[\begin{equation}
+  F=A{\mu}\frac{dV}{dy}
+  \tag{2.2}
+\end{equation}\]</span>
+where y is the distance between the crackers and A is the cross-sectional area of a cracker. Equation <a href="2.2-properties-important-for-moving-water.html#eq:visc1">(2.2)</a> is often written in terms of shear stress <span class="math inline">\({\tau}\)</span> as in Equation <a href="2.2-properties-important-for-moving-water.html#eq:visc2">(2.3)</a></p>
+<p><span class="math display" id="eq:visc2">\[\begin{equation}
+  \frac{F}{A}={\tau}={\mu}\frac{dV}{dy}
+  \tag{2.3}
+\end{equation}\]</span></p>
+<p>The following demonstrates a use of these relationships.</p>
+<div class="example">
+<p><span id="exm:ex-marsh" class="example"><strong>Example 2.2  </strong></span>Determine force required to slide the top cracker at 1 cm/s with a thickness of marshmallow of 0.5 cm. The cross-sectional area of the crackers is 10 cm<span class="math inline">\(^2\)</span>. The viscosity (dynamic viscosity, as can be discerned by the units) of marshmallow is about 0.1 Pa<span class="math inline">\(\cdot\)</span>s.</p>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="2.2-properties-important-for-moving-water.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Assign variables</span></span>
+<span id="cb5-2"><a href="2.2-properties-important-for-moving-water.html#cb5-2" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">10</span>, cm<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="2.2-properties-important-for-moving-water.html#cb5-3" aria-hidden="true" tabindex="-1"></a>U <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">1</span>, cm<span class="sc">/</span>s)</span>
+<span id="cb5-4"><a href="2.2-properties-important-for-moving-water.html#cb5-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">0.5</span>, cm)</span>
+<span id="cb5-5"><a href="2.2-properties-important-for-moving-water.html#cb5-5" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">0.1</span>, Pa<span class="sc">*</span>s)</span>
+<span id="cb5-6"><a href="2.2-properties-important-for-moving-water.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Find shear stress</span></span>
+<span id="cb5-7"><a href="2.2-properties-important-for-moving-water.html#cb5-7" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> mu <span class="sc">*</span> U <span class="sc">/</span> y</span>
+<span id="cb5-8"><a href="2.2-properties-important-for-moving-water.html#cb5-8" aria-hidden="true" tabindex="-1"></a>tau</span>
+<span id="cb5-9"><a href="2.2-properties-important-for-moving-water.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.2 [Pa]</span></span>
+<span id="cb5-10"><a href="2.2-properties-important-for-moving-water.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Since stress is F/A, multiply tau by A to find F, convert to Newtons and pounds</span></span>
+<span id="cb5-11"><a href="2.2-properties-important-for-moving-water.html#cb5-11" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tau<span class="sc">*</span>A, N)</span>
+<span id="cb5-12"><a href="2.2-properties-important-for-moving-water.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2e-04 [N]</span></span>
+<span id="cb5-13"><a href="2.2-properties-important-for-moving-water.html#cb5-13" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tau<span class="sc">*</span>A, lbf)</span>
+<span id="cb5-14"><a href="2.2-properties-important-for-moving-water.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4.496179e-05 [lbf]</span></span></code></pre></div>
+<p>Water is less viscous than marshmallow, so viscosity has much lower values than in the example. Values for water can be obtained using the <em>hydraulics</em> R package for calculations, using the <em>dens</em>, <em>dvisc</em>, and <em>kvisc</em>. All of the water property functions can accept a list of input temperature values, enabling visualization of a property with varying water temperature, as shown in Figure <a href="2.2-properties-important-for-moving-water.html#fig:waterprops-3b">2.1</a>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="2.2-properties-important-for-moving-water.html#cb6-1" aria-hidden="true" tabindex="-1"></a>Ts <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>)</span>
+<span id="cb6-2"><a href="2.2-properties-important-for-moving-water.html#cb6-2" aria-hidden="true" tabindex="-1"></a>nus <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">kvisc</span>(<span class="at">T =</span> Ts, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb6-3"><a href="2.2-properties-important-for-moving-water.html#cb6-3" aria-hidden="true" tabindex="-1"></a>xlbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Temperature, &quot;</span> (degree<span class="sc">*</span>C))</span>
+<span id="cb6-4"><a href="2.2-properties-important-for-moving-water.html#cb6-4" aria-hidden="true" tabindex="-1"></a>ylbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Kinematic viscosity,&quot;</span> <span class="sc">~</span>nu<span class="sc">~</span> (m<span class="sc">^</span>{<span class="dv">2</span>}<span class="sc">/</span>s))</span>
+<span id="cb6-5"><a href="2.2-properties-important-for-moving-water.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">cex=</span><span class="fl">0.8</span>, <span class="at">mgp =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="fl">0.7</span>,<span class="dv">0</span>))</span>
+<span id="cb6-6"><a href="2.2-properties-important-for-moving-water.html#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Ts, nus, <span class="at">xlab =</span> xlbl, <span class="at">ylab =</span> ylbl, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:waterprops-3b"></span>
+<img src="hydr-watres_main_files/figure-html/waterprops-3b-1.png" alt="Variation of kinematic viscosity with temperature." width="50%" />
+<p class="caption">
+Figure 2.1: Variation of kinematic viscosity with temperature.
+</p>
+</div>
+</div>
+<p style="text-align: center;">
+<a href="2.1-properties-important-for-water-standing-still.html"><button class="btn btn-default">Previous</button></a>
+<a href="2.3-atmosperic-properties.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

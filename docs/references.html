@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>References | Hydraulics and Water Resources: Examples Using R</title>
+  <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="References | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="References | Hydraulics and Water Resources: Examples Using R" />
+  
+  <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+<meta name="author" content="Ed Maurer" />
+
+
+<meta name="date" content="2022-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="pumps-and-how-they-operate-in-a-hydraulic-system.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of Water</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
+<li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>3</b> Water Flowing in Pipes: Energy Losses</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>3.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="3.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>3.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="3.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>3.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="3.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>3.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>3.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="3.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>3.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="3.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>3.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="3.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>3.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>3.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>3.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="3.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>3.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="3.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>3.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>3.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>3.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="3.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>3.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>3.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="3.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>3.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>4</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>4.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="4.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>4.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equations-in-r"><i class="fa fa-check"></i><b>4.3.1</b> Solving the Manning equations in R</a></li>
+<li class="chapter" data-level="4.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>4.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="4.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>4.3.3</b> solving the Manning equation using a Spreadsheet Like Excel</a></li>
+<li class="chapter" data-level="4.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>4.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>4.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>4.4.1</b> Solving the Manning equation in R</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>4.5</b> Critical flow</a></li>
+<li class="chapter" data-level="4.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gradually-varied-steady-flow"><i class="fa fa-check"></i><b>4.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>4.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="4.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>4.6.2</b> Standard step method</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>5</b> Momentum in water flow</a></li>
+<li class="chapter" data-level="6" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>6</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>6.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="6.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>6.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="6.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>6.3</b> Finding the operating point</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hydraulics and Water Resources: Examples Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="references" class="section level1 unnumbered hasAnchor">
+<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-davidian_jacob_computation_1984" class="csl-entry">
+Davidian, Jacob. 1984. <span>“Computation of Water-Surface Profiles in Open Channels.”</span> Techniques of Water-Resources Investigations, Book 3, Chapter A15. <a href="https://doi.org/10.3133/twri03A15">https://doi.org/10.3133/twri03A15</a>.
+</div>
+<div id="ref-haaland_simple_1983" class="csl-entry">
+Haaland, S. E. 1983. <span>“Simple and <span>Explicit</span> <span>Formulas</span> for the <span>Friction</span> <span>Factor</span> in <span>Turbulent</span> <span>Pipe</span> <span>Flow</span>.”</span> <em>Journal of Fluids Engineering</em> 105 (1): 89–90. <a href="https://doi.org/10.1115/1.3240948">https://doi.org/10.1115/1.3240948</a>.
+</div>
+<div id="ref-r_core_team_r_2022" class="csl-entry">
+R Core Team. 2022. <span>“R: <span>A</span> <span>Language</span> and <span>Environment</span> for <span>Statistical</span> <span>Computing</span>.”</span> Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div id="ref-swamee_explicit_1976" class="csl-entry">
+Swamee, Prabhata K., and Akalank K. Jain. 1976. <span>“Explicit <span>Equations</span> for <span>Pipe</span>-<span>Flow</span> <span>Problems</span>.”</span> <em>Journal of the Hydraulics Division</em> 102 (5): 657–64. <a href="https://doi.org/10.1061/JYCEAJ.0004542">https://doi.org/10.1061/JYCEAJ.0004542</a>.
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="pumps-and-how-they-operate-in-a-hydraulic-system.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Units in Fluid Mechanics | Hydraulics and Water Resources: Examples Using R</title>
+  <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Units in Fluid Mechanics | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Units in Fluid Mechanics | Hydraulics and Water Resources: Examples Using R" />
+  
+  <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+<meta name="author" content="Ed Maurer" />
+
+
+<meta name="date" content="2022-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="properties-of-water.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of Water</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
+<li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>3</b> Water Flowing in Pipes: Energy Losses</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>3.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="3.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>3.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="3.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>3.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="3.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>3.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>3.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="3.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>3.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="3.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>3.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="3.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>3.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>3.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>3.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="3.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>3.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="3.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>3.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>3.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>3.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="3.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>3.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>3.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="3.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>3.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>4</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>4.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="4.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>4.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equations-in-r"><i class="fa fa-check"></i><b>4.3.1</b> Solving the Manning equations in R</a></li>
+<li class="chapter" data-level="4.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>4.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="4.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>4.3.3</b> solving the Manning equation using a Spreadsheet Like Excel</a></li>
+<li class="chapter" data-level="4.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>4.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>4.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>4.4.1</b> Solving the Manning equation in R</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>4.5</b> Critical flow</a></li>
+<li class="chapter" data-level="4.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gradually-varied-steady-flow"><i class="fa fa-check"></i><b>4.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>4.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="4.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>4.6.2</b> Standard step method</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>5</b> Momentum in water flow</a></li>
+<li class="chapter" data-level="6" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>6</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>6.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="6.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>6.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="6.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>6.3</b> Finding the operating point</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hydraulics and Water Resources: Examples Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="units-in-fluid-mechanics" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Units in Fluid Mechanics<a href="units-in-fluid-mechanics.html#units-in-fluid-mechanics" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Before beginning with problem solving methods it helps to recall some important quantities in fluid mechanics and their associated units. While the world has generally moved forward into standardizing the use of the SI unit system, the U.S. stubbornly holds onto the antiquated US (sometimes called the British Gravitational, BG) system. This means practicing engineers must be familiar with both systems, and be able to convert between the two systems.</p>
+<p>These important quantities are shown in Table <a href="units-in-fluid-mechanics.html#tab:variable-units">1.1</a>.</p>
+<table>
+<caption><span id="tab:variable-units">Table 1.1: </span>Dimensions and units for common quantities.</caption>
+<colgroup>
+<col width="17%" />
+<col width="8%" />
+<col width="9%" />
+<col width="17%" />
+<col width="27%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Quantity</th>
+<th align="left">Symbol</th>
+<th align="left">Dimensions</th>
+<th align="left">US (or BG) Units</th>
+<th align="left">SI Units</th>
+<th align="left">US to SI multiply by</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Length</td>
+<td align="left">L</td>
+<td align="left"><span class="math inline">\(L\)</span></td>
+<td align="left"><span class="math inline">\(ft\)</span></td>
+<td align="left"><span class="math inline">\(m\)</span></td>
+<td align="left">0.3048</td>
+</tr>
+<tr class="even">
+<td align="left">Acceleration</td>
+<td align="left">a</td>
+<td align="left"><span class="math inline">\(LT^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(ft/s^2\)</span></td>
+<td align="left"><span class="math inline">\(m/s^{2}\)</span></td>
+<td align="left">0.3048</td>
+</tr>
+<tr class="odd">
+<td align="left">Mass</td>
+<td align="left">m</td>
+<td align="left"><span class="math inline">\(M\)</span></td>
+<td align="left"><span class="math inline">\(slug\)</span></td>
+<td align="left"><span class="math inline">\(kg\)</span></td>
+<td align="left">14.59</td>
+</tr>
+<tr class="even">
+<td align="left">Force</td>
+<td align="left">F</td>
+<td align="left"><span class="math inline">\(F\)</span></td>
+<td align="left"><span class="math inline">\(lb\)</span></td>
+<td align="left"><span class="math inline">\(N\)</span></td>
+<td align="left">4.448</td>
+</tr>
+<tr class="odd">
+<td align="left">Density</td>
+<td align="left"><span class="math inline">\(\rho\)</span></td>
+<td align="left"><span class="math inline">\(ML^{-3}\)</span></td>
+<td align="left"><span class="math inline">\(slug/ft^3\)</span></td>
+<td align="left"><span class="math inline">\(kg/m^3\)</span></td>
+<td align="left">515.4</td>
+</tr>
+<tr class="even">
+<td align="left">Energy/Work</td>
+<td align="left"></td>
+<td align="left">FL</td>
+<td align="left"><span class="math inline">\({ft}\cdot{lb}\)</span></td>
+<td align="left"><span class="math inline">\({N}\cdot{m}=joule (J)\)</span></td>
+<td align="left">1.356</td>
+</tr>
+<tr class="odd">
+<td align="left">Flowrate</td>
+<td align="left">Q</td>
+<td align="left"><span class="math inline">\(L^{3}/T\)</span></td>
+<td align="left"><span class="math inline">\(ft^{3}/s\)</span>=cfs</td>
+<td align="left"><span class="math inline">\(m^{3}/s\)</span></td>
+<td align="left">0.02832</td>
+</tr>
+<tr class="even">
+<td align="left">Kinematic viscocity</td>
+<td align="left"><span class="math inline">\(\nu\)</span></td>
+<td align="left"><span class="math inline">\(L^{2}/T\)</span></td>
+<td align="left"><span class="math inline">\(ft^{2}/s\)</span></td>
+<td align="left"><span class="math inline">\(m^{2}/s\)</span></td>
+<td align="left">0.0929</td>
+</tr>
+<tr class="odd">
+<td align="left">Power</td>
+<td align="left"></td>
+<td align="left"><span class="math inline">\(FLT^{-1}\)</span></td>
+<td align="left"><span class="math inline">\({ft}\cdot{lb/s}\)</span></td>
+<td align="left"><span class="math inline">\({N}\cdot{m/s}=watt (W)\)</span></td>
+<td align="left">1.356</td>
+</tr>
+<tr class="even">
+<td align="left">Pressure</td>
+<td align="left">p</td>
+<td align="left"><span class="math inline">\(FL^{-2}\)</span></td>
+<td align="left"><span class="math inline">\(lb/in^2=psi\)</span></td>
+<td align="left"><span class="math inline">\(N/m^2=Pa\)</span></td>
+<td align="left">6895</td>
+</tr>
+<tr class="odd">
+<td align="left">Specific Weight</td>
+<td align="left"><span class="math inline">\(\gamma\)</span></td>
+<td align="left"><span class="math inline">\(FL^{-3}\)</span></td>
+<td align="left"><span class="math inline">\(lb/ft^3\)</span></td>
+<td align="left"><span class="math inline">\(N/m^3\)</span></td>
+<td align="left">157.1</td>
+</tr>
+<tr class="even">
+<td align="left">Velocity</td>
+<td align="left">V</td>
+<td align="left"><span class="math inline">\(LT^{-1}\)</span></td>
+<td align="left"><span class="math inline">\(ft/s\)</span></td>
+<td align="left"><span class="math inline">\(m/s\)</span></td>
+<td align="left">0.3048</td>
+</tr>
+<tr class="odd">
+<td align="left">(Dynamic) Viscocity</td>
+<td align="left"><span class="math inline">\(\nu\)</span></td>
+<td align="left"><span class="math inline">\(FTL^{-2}\)</span></td>
+<td align="left"><span class="math inline">\({lb}\cdot{s/ft^2}\)</span></td>
+<td align="left"><span class="math inline">\({N}\cdot{s/m^2}={Pa}\cdot{s}\)</span></td>
+<td align="left">47.88</td>
+</tr>
+<tr class="even">
+<td align="left">Volume</td>
+<td align="left"><span class="math inline">\(\forall\)</span></td>
+<td align="left"><span class="math inline">\(L^3\)</span></td>
+<td align="left"><span class="math inline">\(ft^3\)</span></td>
+<td align="left"><span class="math inline">\(m^3\)</span></td>
+<td align="left">0.02832</td>
+</tr>
+</tbody>
+</table>
+<p>There are many other units that must be accommodated. For example, one may encounter the <em>poise</em> to describe (dynamic) viscosity (<span class="math inline">\(1~Pa*s = 10~poise\)</span>), or the <em>stoke</em> for kinematic viscocity (<span class="math inline">\(1~m^2/s=10^4~stokes\)</span>). Many hydraulic systems use gallons per minute (gpm) as a unit of flow (<span class="math inline">\(1~ft^3/s=448.8~gpm\)</span>), and larger water systems often use millions of gallons per day (mgd) (<span class="math inline">\(1~mgd = 1.547~ft^3/s\)</span>). For volume, the SI system often uses liters (<span class="math inline">\(l\)</span>) instead of <span class="math inline">\(m^3\)</span> (<span class="math inline">\(1~m^3=1000~l\)</span>).</p>
+<p>One regular conversion that needs to occur is the translation between mass (m) and weight (W), where <span class="math inline">\(W=mg\)</span>, where <span class="math inline">\(g\)</span> is gravitational acceleration on the earth’s surface: <span class="math inline">\(g=9.81~m/s^2=32.2~ft/s^2\)</span>. When working with forces (such as with momentum problems or hydrostatic forces) be sure to work with weights/forces, not mass.</p>
+<p>It is straightforward to use conversion factors in the table to manipulate values between the systems, multiplying by the factor shown to go from US to SI units, or dividing to do the
+<span class="math display">\[{1*10^{-6}~m^2/s}*\frac{1 ~ft^2/s}{0.0929~m^2/s}=1.076*10^{-5} ~ft^2/s\]</span></p>
+<p>Another example converts between two quantities in the US system: 100 gallons per minute to cfs:
+<span class="math display">\[{100 ~gpm}*\frac{1 ~cfs}{448.8 ~gpm}=0.223 ~cfs\]</span>
+The <em>units</em> package in R can do these conversions and more, and also checks that conversions are permissible (producing an error if incompatible units are used).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="units-in-fluid-mechanics.html#cb1-1" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">units_options</span>(<span class="at">set_units_mode =</span> <span class="st">&quot;symbols&quot;</span>)</span>
+<span id="cb1-2"><a href="units-in-fluid-mechanics.html#cb1-2" aria-hidden="true" tabindex="-1"></a>Q_gpm <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">100</span>, gallon<span class="sc">/</span>min)</span>
+<span id="cb1-3"><a href="units-in-fluid-mechanics.html#cb1-3" aria-hidden="true" tabindex="-1"></a>Q_gpm</span>
+<span id="cb1-4"><a href="units-in-fluid-mechanics.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 100 [gallon/min]</span></span>
+<span id="cb1-5"><a href="units-in-fluid-mechanics.html#cb1-5" aria-hidden="true" tabindex="-1"></a>Q_cfs <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(Q_gpm, ft<span class="sc">^</span><span class="dv">3</span><span class="sc">/</span>s)</span>
+<span id="cb1-6"><a href="units-in-fluid-mechanics.html#cb1-6" aria-hidden="true" tabindex="-1"></a>Q_cfs</span>
+<span id="cb1-7"><a href="units-in-fluid-mechanics.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.2228009 [ft^3/s]</span></span></code></pre></div>
+<p>Repeating the unit conversion of viscosity using the <em>units</em> package:</p>
+<div class="example">
+<p><span id="exm:unlabeled-div-1" class="example"><strong>Example 1.1  </strong></span>Convert kinematic viscosity from SI to Eng units.</p>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="units-in-fluid-mechanics.html#cb2-1" aria-hidden="true" tabindex="-1"></a>nu <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">1e-6</span>, m<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
+<span id="cb2-2"><a href="units-in-fluid-mechanics.html#cb2-2" aria-hidden="true" tabindex="-1"></a>nu</span>
+<span id="cb2-3"><a href="units-in-fluid-mechanics.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1e-06 [m^2/s]</span></span>
+<span id="cb2-4"><a href="units-in-fluid-mechanics.html#cb2-4" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(nu, ft<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
+<span id="cb2-5"><a href="units-in-fluid-mechanics.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.076391e-05 [ft^2/s]</span></span></code></pre></div>
+<p>The <em>units</em> package also produces correct units during operations. For example, multiplying mass by <em>g</em> should produce weight.</p>
+<div class="example">
+<p><span id="exm:unlabeled-div-2" class="example"><strong>Example 1.2  </strong></span>Using the <em>units</em> package to produce correct units during mathematical operations.</p>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="units-in-fluid-mechanics.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#If you travel at 88 ft/sec for 1 hour, how many km would you travel?</span></span>
+<span id="cb3-2"><a href="units-in-fluid-mechanics.html#cb3-2" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">88</span>, ft<span class="sc">/</span>s)</span>
+<span id="cb3-3"><a href="units-in-fluid-mechanics.html#cb3-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">1</span>, hour)</span>
+<span id="cb3-4"><a href="units-in-fluid-mechanics.html#cb3-4" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> v<span class="sc">*</span>t</span>
+<span id="cb3-5"><a href="units-in-fluid-mechanics.html#cb3-5" aria-hidden="true" tabindex="-1"></a>d</span>
+<span id="cb3-6"><a href="units-in-fluid-mechanics.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 316800 [ft]</span></span>
+<span id="cb3-7"><a href="units-in-fluid-mechanics.html#cb3-7" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(d, km)</span>
+<span id="cb3-8"><a href="units-in-fluid-mechanics.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 96.56064 [km]</span></span>
+<span id="cb3-9"><a href="units-in-fluid-mechanics.html#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="units-in-fluid-mechanics.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#What is the weight of a 4 slug mass, in pounds and Newtons?</span></span>
+<span id="cb3-11"><a href="units-in-fluid-mechanics.html#cb3-11" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">4</span>, slug)</span>
+<span id="cb3-12"><a href="units-in-fluid-mechanics.html#cb3-12" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">32.2</span>, ft<span class="sc">/</span>s<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb3-13"><a href="units-in-fluid-mechanics.html#cb3-13" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> m<span class="sc">*</span>g</span>
+<span id="cb3-14"><a href="units-in-fluid-mechanics.html#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Notice the units are technically correct, but have not been simplified in this case</span></span>
+<span id="cb3-15"><a href="units-in-fluid-mechanics.html#cb3-15" aria-hidden="true" tabindex="-1"></a>w</span>
+<span id="cb3-16"><a href="units-in-fluid-mechanics.html#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 128.8 [ft*slug/s^2]</span></span>
+<span id="cb3-17"><a href="units-in-fluid-mechanics.html#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#These can be set manually to verify that lbf (pound-force) is a valid equivalent</span></span>
+<span id="cb3-18"><a href="units-in-fluid-mechanics.html#cb3-18" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, lbf)</span>
+<span id="cb3-19"><a href="units-in-fluid-mechanics.html#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 128.8 [lbf]</span></span>
+<span id="cb3-20"><a href="units-in-fluid-mechanics.html#cb3-20" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, N)</span>
+<span id="cb3-21"><a href="units-in-fluid-mechanics.html#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 572.9308 [N]</span></span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="properties-of-water.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

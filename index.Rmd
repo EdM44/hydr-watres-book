@@ -6,19 +6,29 @@ site: bookdown::bookdown_site
 documentclass: book
 bibliography: [ed-bookdown.bib]
 # url: your book url like https://bookdown.org/yihui/bookdown
-cover-image: images/david-becker-rrfdqjJWwmU-unsplash.jpg
+#cover-image: 
 description: |
   A compilation of fluid mechanics, hydraulics, and water resources 
   engineering exercises using R.
 link-citations: yes
+always_allow_html: true
 #github-repo: rstudio/bookdown-demo
 ---
 
+#![](images/david-becker-rrfdqjJWwmU-unsplash.jpg)
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 # Preface {-}
 
-This is a compilation of various R exercised created over many years. They have been used mostly in undergraduate civil engineering classes including fluid mechanics, hydraulics, and water resources.
+This is a compilation of various R exercised created over many years. They have been used mostly in undergraduate civil engineering classes including fluid mechanics, hydraulics, and water resources. This is a dynamic work, and will be regularly updated as errors are identified, improved presentation is developed, or new topics or examples introduced. I welcome any suggestions or comments.
 
-In what follows, text will be intentionally brief. More extensive discussion and description can be found in any fluid mechanics, applied hydraulics, or water resources engineering text. Fundamental equations will be introduced thought the emphasis will be on applications to solve common problems. Also, since this is written by a civil engineer, the only fluids included are water and air, since that accounts for nearly all problems encountered in the field.
+In what follows, text will be intentionally brief. More extensive discussion and description can be found in any fluid mechanics, applied hydraulics, or water resources engineering text. Fundamental equations will be introduced though the emphasis will be on applications to solve common problems. Also, since this is written by a civil engineer, the only fluids included are water and air, since that accounts for nearly all problems encountered in the field.
 
 Solving water problems is rarely done by hand calculations, though the importance of performing order of magnitude 'back of the envelope' calculations cannot be overstated. Whether using a hand calculator, spreadsheet, or a programming language to produce a solution, having a sense of when an answer is an outlier will help catch errors. 
 
@@ -26,9 +36,16 @@ Scripting languages are powerful tools for performing calculations, providing a 
 
 No introduction to R or RStudio is provided here. It is assumed that the reader has installed R (and RStudio), is comfortable installing and updating packages, and understands the basics of R scripting. A brief overview [is provided here](https://www.engr.scu.edu/~emaurer/shared/R-intro/), aimed at students at Santa Clara University. More comprehensive materials are readily available, including [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.html) by the R Core Team. An excellent set of materials for a course [Introduction to Programming with R](https://discdown.org/rprogramming/) by Stauffer et al. is also freely available and includes interactive exercises.
 
+As I developed these exercises and text, I learned R through the work of many others, and the excellent help offered by skilled people sharing their knowledge on [stackoverflow](https://stackoverflow.com/questions/tagged/r). The methods shown here are not the only ways to solve these problems, and users are invited to share alternative or better solutions.
+
 ## Copyight {-}
 
 This work is provided under a Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). As a summary, this license allows reusers to distribute, remix, adapt, and build upon the material in any medium or format for noncommercial purposes only, and only so long as attribution is given to the creator. This is a summary of (and not a substitute for) the [license](https://creativecommons.org/licenses/by-nc/4.0/legalcode).
-``` {r echo=FALSE}
-knitr::include_graphics("images/CC-BY-NC.png", out.width = '15%') 
+``` {r echo=FALSE, out.width = '15%'}
+knitr::include_graphics("images/CC-BY-NC.png") 
+```
+
+```{js, echo = FALSE}
+title=document.getElementById('header');
+title.innerHTML = '<img src="images/david-becker-rrfdqjJWwmU-unsplash-sm.jpg" alt="Cover Image">' + title.innerHTML
 ```
