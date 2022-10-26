@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 
 # Preface {-}
 
-This is a compilation of various R exercised created over many years. They have been used mostly in undergraduate civil engineering classes including fluid mechanics, hydraulics, and water resources. This is a dynamic work, and will be regularly updated as errors are identified, improved presentation is developed, or new topics or examples introduced. I welcome any suggestions or comments.
+This is a compilation of various R exercises and examples created over many years. They have been used mostly in undergraduate civil engineering classes including fluid mechanics, hydraulics, and water resources. This is a dynamic work, and will be regularly updated as errors are identified, improved presentation is developed, or new topics or examples are introduced. I welcome any suggestions or comments.
 
 In what follows, text will be intentionally brief. More extensive discussion and description can be found in any fluid mechanics, applied hydraulics, or water resources engineering text. Fundamental equations will be introduced though the emphasis will be on applications to solve common problems. Also, since this is written by a civil engineer, the only fluids included are water and air, since that accounts for nearly all problems encountered in the field.
 
