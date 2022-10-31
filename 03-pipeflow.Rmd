@@ -9,8 +9,10 @@ knitr::opts_chunk$set(
 
 Flow in civil engineering infrastructure is usually either in pipes, where it is not exposed to the atmosphere and flows under pressure, or open channels (canals, rivers, etc.). this chapter is concerned only with water flow in pipes.
 
+```{r, include = FALSE, echo = FALSE}
 #xxx maybe add:
 #knitr::include_graphics(normalizePath("output/figures/chapter1/top100/top100_2000.jpeg", winslash = "/"))
+```
 
 ```{r out.width='70%', echo=FALSE, fig.align="center"}
   knitr::include_graphics("images/pressurized-water-pipe.jpg")

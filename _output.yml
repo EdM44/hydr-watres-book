@@ -3,7 +3,7 @@ bookdown::gitbook:
   split_bib: no
   config:
     toc:
-      collapse: subsection
+      collapse: section
       scroll_highlight: true
       before: |
         <li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>

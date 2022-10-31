@@ -7,15 +7,24 @@ Where flowing water water is exposed to the atmosphere, and thus not under press
 ```
 
 Typical design challenges can be:
+
 - Determining how deep water will flow in a channel
 - Finding the bottom slope required to carry a defined flow in a channel
 - Comparing different cross-sectional shapes and dimensions to carry flow
 
-In pipe flow the cross-sectional area does not change with flow rate, which tends to make the equations more cumbersome. However, in civil engineering applications, roughness characteristics are not usually considered as variable with flow rate, which makes the equations more tractable.
+In pipe flow the cross-sectional area does not change with flow rate, which simplifies some aspects of calculations. By contrast, in open channel flow conditions including flow depth, area, and roughness can all vary with flow rate, which tends to make the equations more cumbersome. In civil engineering applications, roughness characteristics are not usually considered as variable with flow rate.
+
+In what follows, three conditions for flow are considered:
+
+- Uniform flow, where flow characteristics do not vary along the length of a channel
+- Gradually varied flow, where flow responds to an obstruction or change in channel conditions with a gradual adjustment in flow depth
+- Rapidly varied flow, where an abrupt channel transition results in a rapid change in water surface, the most important case of which is the hydraulic jump
 
 ## An important dimensionless quantity
 
-For open channel flow, given a channel shape and flow rate, flow can usually exist at two different depths, termed subcritical (slow, deep) and supercritical (shallow, fast). The exception is at critical flow conditions, where only one depth exists, the critical depth. Which depth is exhibited by the flow is determined by the slope and roughness of the channel. The Froude number is defined by Equation \@ref(eq:froude)
+For open channel flow, given a channel shape and flow rate, flow can usually exist at two different depths, termed subcritical (slow, deep) and supercritical (shallow, fast). The exception is at critical flow conditions, where only one depth exists, the critical depth. Which of these depths is exhibited by the flow is determined by the slope and roughness of the channel. 
+
+The Froude number characterizes whether flow is critical, supercritical or subcritical, and is defined by Equation \@ref(eq:froude)
 
 \begin{equation}
   Fr=\frac{V}{\sqrt{gD}}
@@ -52,11 +61,14 @@ Critical depth is defined by the relation (at critical conditions) in Equation \
 \end{equation}
 where B is the width of the water surface (top width).
 
-Because of the channel geometry being reflected in _A_ and _R_, it helps to work with specific shapes in adapting these equations. The two most common are trapezoidal and circular, included in Sections \@ref(trap) and \@ref(circ) below.
+Because of the channel geometry being included in _A_ and _R_, it helps to work with specific shapes in adapting these equations. The two most common are trapezoidal and circular, included in Sections \@ref(trap) and \@ref(circ) below.
 
 As with pipe flow, the energy equation applies for one dimensional open channel flow as well, Equation \@ref(eq:ocenergy-1):
-$\frac{V_1^2}{2g}+y_1+z_1=\frac{V_2^2}{2g}+y_2+z_2+h_L$
-where point 1 is upstream of point 2, _V_ is the flow velocity, _y_ is the flow depth, and _z_ is the elevation of the channel bottom. $h_L$ is the energy head loss from point 1 to point 2. For uniform flow, it is the drop in elevation between the two points due to the channel slope.
+\begin{equation}
+  \frac{V_1^2}{2g}+y_1+z_1=\frac{V_2^2}{2g}+y_2+z_2+h_L
+  (\#eq:ocenergy-1)
+\end{equation}
+where point 1 is upstream of point 2, _V_ is the flow velocity, _y_ is the flow depth, and _z_ is the elevation of the channel bottom. $h_L$ is the energy head loss from point 1 to point 2. For uniform flow, $h_L$ is the drop in elevation between the two points due to the channel slope.
 
 ## Trapezoidal channels {#trap}
 
@@ -91,14 +103,14 @@ Substituting Equations \@ref(eq:trapg1) and \@ref(eq:trapg3) into the Manning eq
   (\#eq:man-2)
 \end{equation}
 
-### Solving the Manning equations in R
+### Solving the Manning equation in R
 
-To solve Equation \@ref(eq:man-2) when any variable than _Q_ is unknown, it is straightforward to rearrange it to a form of y(x) = 0. 
+To solve Equation \@ref(eq:man-2) when any variable other than _Q_ is unknown, it is straightforward to rearrange it to a form of y(x) = 0. 
 \begin{equation}
   Q-\frac{C}{n}{\frac{\left(by+my^2\right)^{\frac{5}{3}}}{\left(b+2y\sqrt{1+m^2}\right)^\frac{2}{3}}}{S}^{\frac{1}{2}}=0
   (\#eq:man-3)
 \end{equation}
-This allows the use of a standard solver to find the root(s).
+This allows the use of a standard solver to find the root(s). If solving it by hand, trial and error can be employed as well.
 
 Example \@ref(exm:oc-1) demonstrates the solution of Equation \@ref(eq:man-3) for the flow depth, _y_. A trial-and-error approach can be applied, and with careful selection of guesses a solution can be obtained relatively quickly. Using solvers makes the process much quicker and less prone to error.
 
@@ -122,7 +134,7 @@ S <- 0.0006
 C <- 1.486
 ```
 
-Use the _R_ function _uniroot_ to find a single root within a defined interval. Set the interval (the range of possible y values in which to search for a root) to cover all plausible values, here from 0.1 mm to 200 m.
+Use the _R_ function _uniroot_ to find a single root within a defined interval. Set the interval (the range of possible y values in which to search for a root) to cover all plausible values, here from 0.0001 mm to 200 m.
 ```{r manningt-2}
 ans <- uniroot(yfun, interval = c(0.0000001, 200), extendInt = "yes")
 cat(sprintf("Normal Depth: %.3f ft\n", ans$root))
@@ -140,7 +152,8 @@ This validates the result in the example, showing the root of Equation \@ref(eq:
 
 ### Solving the Manning equation with the _hydraulics_ R package
 
-The _hydraulics_ package has a _manningt_ (the 't' is for 'trapezoid') function for trapezoidal channels. Example \@ref(oc-2) demonstrates its usage.
+The _hydraulics_ package has a _manningt_ (the 't' is for 'trapezoid') function for trapezoidal channels. Example \@ref(exm:oc-2) demonstrates its usage.
+
 ::: {.example #oc-2}
 Find the uniform (normal) flow depth, y, for a trapezoidal channel with Q=225 ft^3^/s, n=0.016, m=2, b=10 _ft_, S=0.0006.
 :::
@@ -152,7 +165,7 @@ cat(sprintf("Normal Depth: %.3f ft\n", ans$y))
 cat(sprintf("Critical Depth: %.3f ft\n", ans$yc))
 ```
 
-### solving the Manning equation using a Spreadsheet Like Excel
+### Solving the Manning equation using a spreadsheet like Excel
 
 Spreadsheet software is very popular and has been modified to be able to accomplish many technical tasks such as solving equations. This example uses Excel with its solver add-in activated, though other spreadsheet software has similar solver add-ins that can be used.
 
@@ -228,7 +241,7 @@ Area is described by Equation \@ref(eq:circg2)
   A=\left(\frac{\theta-\sin{\theta}}{8}\right)D^2
   (\#eq:circg2)
 \end{equation}
-theta in radians
+(Be sure to use theta in radians.)
 
 Wetted perimeter is described by Equation \@ref(eq:circg3)
 \begin{equation}
@@ -251,13 +264,14 @@ Substituting Equations \@ref(eq:circg2) and \@ref(eq:circg4) into the Manning eq
 \end{equation}
 where C=20.16 for SI units and C=13.53 for US Customary (English) units.
 
-### Solving the Manning equation in R
+### Solving the Manning equation for a circular pipe in R
 
-As was demonstrated with pipe flow, a function could be written with Equation \@ref(man-c) and a solver applied to find the value of $\theta$ for the given flow conditions with a known D, S, n and Q. The value for $\theta$ could then be used with Equations \@ref(eq:circg1), \@ref(eq:circg2) and \@ref(eq:circg3) to recover geometric values.
+As was demonstrated with pipe flow, a function could be written with Equation \@ref(eq:man-c) and a solver applied to find the value of $\theta$ for the given flow conditions with a known D, S, n and Q. The value for $\theta$ could then be used with Equations \@ref(eq:circg1), \@ref(eq:circg2) and \@ref(eq:circg3) to recover geometric values.
 
 The _R_ package _hydraulics_ has implemented those routines to enable these calculations. 
-For an existing pipe, a common problem is the determination of the depth, _y_ that a given flow _Q_, will have given a pipe diameter _d_, slope _S_ and roughness _n_. Example \@ref(circx1) demonstrates this.
-::: {.example #circx}
+For an existing pipe, a common problem is the determination of the depth, _y_ that a given flow _Q_, will have given a pipe diameter _d_, slope _S_ and roughness _n_. Example \@ref(exm:circx1) demonstrates this.
+
+::: {.example #circx1}
 Find the uniform (normal) flow depth, y, for a trapezoidal channel with Q=225 ft^3^/s, n=0.016, m=2, b=10 _ft_, S=0.0006.
 :::
 The function _manningc_ from the _hydraulics_ package is used. Any one of the variables in the Manning equation, and related geometric variables, may be treated as an unknown. 
@@ -281,7 +295,7 @@ For any channel geometry and flow rate a convenient plot is a specific energy di
   E=y+\frac{V^2}{2g}
   (\#eq:spen1)
 \end{equation}
-It can also be interpreted as the total energy head, or energy per unit weight, relative to the channel bottom.
+It can be interpreted as the total energy head, or energy per unit weight, relative to the channel bottom.
 
 For a trapezoidal channel, critical flow conditions occur as described by Equation \@ref(eq:crit-1). Combining that with trapezoidal geometry produces Equation \@ref(eq:spen2)
 \begin{equation}
@@ -315,18 +329,18 @@ $y_0$, normal depth, found using Equation \@ref(eq:man-1)
 $y$, flow depth, found using Equation \@ref(eq:ocenergy-1)
 
 If $y_n < y_c$ flow is supercritical (for example, flowing down a steep slope); if $y_n > y_c$ flow is subcritical. Variations in the water surface are classified by profile types based on to whether the normal flow is subcritical (or mild sloped, M) or supercritical (steep, S), as in Figure \@ref(fig:gvfcurves) [@davidian_jacob_computation_1984].
-```{r gvfcurves, echo=FALSE, fig.cap="Gradually varied flow profiles", fig.align="center"}
+```{r gvfcurves, echo=FALSE, fig.cap="Types of flow profiles on mild and steep slopes", fig.align="center"}
 knitr::include_graphics("images/gvf-curves.PNG")
 ```
 
 In addition to channel transitions, changes in channel slow of roughness (Manning _n_) will cause the flow surface to vary. Some of these conditions are illusted in Figure \@ref(fig:gvfcurves2) [@davidian_jacob_computation_1984].
-```{r gvfcurves2, echo=FALSE, fig.cap="Gradually varied flow profiles", fig.align="center"}
+```{r gvfcurves2, echo=FALSE, fig.cap="Types of flow profiles with changes in slope or roughness", fig.align="center"}
 knitr::include_graphics("images/gvf-n-S-transitions.PNG")
 ```
 
 Typically, for supercritical flow the calculations start at an upstream cross section and move downstream. For subcritical flow calculations proceed upstream. However, for the direct step method, a negative result will indicate upstream, and a positive result indicates downstream.
 
-If the water surface passes through critical depth (from supercritical to subcritical or the reverse) it is no longer gradually varied flow and the methods here do not apply. This can happen at abrupt changes in channel slop or roughness, or channel transitions.
+If the water surface passes through critical depth (from supercritical to subcritical or the reverse) it is no longer gradually varied flow and the methods in this section do not apply. This can happen at abrupt changes in channel slope or roughness, or channel transitions.
 
 ### The direct step method
 
@@ -340,26 +354,26 @@ The distance between these two cross-sections, ${\Delta}X$, is calculated using 
   {\Delta}X=\frac{E_1-E_2}{\overline{S}-S_0}
   (\#eq:gvf1)
 \end{equation}
-Where E is the specific energy from Equation \@ref(eq:spen1), $S_0$ is the slope of the channel bed, and $S$ is the slopw of the energy grade line, estimated as the slope of the water surface. $\overline{S}$ is the average of the S values at each cross section calculated using the Manning equation, Equation \@ref(eq:man-1) solved for slope, as in Equation \@ref(eq:man-gvf).
+Where E is the specific energy from Equation \@ref(eq:spen1), $S_0$ is the slope of the channel bed, and $S$ is the slope of the energy grade line. $\overline{S}$ is the average of the S values at each cross section calculated using the Manning equation, Equation \@ref(eq:man-1) solved for slope, as in Equation \@ref(eq:man-gvf).
 \begin{equation}
   S=\frac{n^2\,V^2}{C^2\,R^{\frac{4}{3}}}
   (\#eq:man-gvf)
 \end{equation}
 
 Example \@ref(exm:gvfx1) demonstrates this.
+
 ::: {.example #gvfx1}
 Water flows at 10 m^3^/s in a trapezoidal channel with n=0.015, bottom width 3 m, side slope of 2:1 (H:V) and longitudinal slope 0.0009 (0.09%). At the location of a USGS stream gage the flow depth is 1.4 m. Use the direct step method to find the distance to the point where the depth is 1.2 m and determine whether it is upstream or downstream.
 :::
-Begin by setting up a function to calculate the Manning slope and settign up the input data.
+Begin by setting up a function to calculate the Manning slope and setting up the input data.
 ```{r gvfsol-1, message=FALSE, warning=FALSE}
-#function to calculate manning's slope
+#function to calculate Manning slope
 slope_f <- function(V,n,R,C) {
   return(V^2*n^2/(C^2*R^(4./3.)))
 }
 #Now set up input data ##################################
 #input Flow
 Q=10.0
-
 #input depths:
 y1 <- 1.4 #starting depth
 y2 <- 1.2 #final depth
@@ -385,7 +399,7 @@ depth_incr <- (y2 - y1) / nsteps
 depths <- seq(from=y1, to=y2, by=depth_incr)
 ```
 
-First check to see if the flow is subcritical or supercritical and find the normal depth. Critical and normal depths can be calculated using the _manningt_ function in the _hydraulics_ package, as in Example \@ref(oc-2). However, because other functionality of the _rivr_ package is used, these will be calculated using functions from the _rivr_ package. 
+First check to see if the flow is subcritical or supercritical and find the normal depth. Critical and normal depths can be calculated using the _manningt_ function in the _hydraulics_ package, as in Example \@ref(exm:oc-2). However, because other functionality of the _rivr_ package is used, these will be calculated using functions from the _rivr_ package. 
 ```{r gvfsol-2, message=FALSE, warning=FALSE}
 rivr::critical_depth(Q = Q, yopt = y1, g = g, B = bottom_width , SS = side_slope)
 #note using either depth for yopt produces the same answer
@@ -422,17 +436,29 @@ cat(sprintf("Using %d steps, total distance from depth %.2f to %.2f = %.2f m\n",
 ```
 
 The result is negative, verifying that the location of depth y2 is upstream of y1. Of course, the result will become more precise as more incremental steps are included, as shown in Figure \@ref(fig:gvfmultiple)
-```{r gvfmultiple, out.width='70%', echo=FALSE, fig.align="center"}
+```{r gvfmultiple, out.width='70%', echo=FALSE, fig.align="center", fig.cap="Variation of number of calculation steps to final calculated distance."}
   knitr::include_graphics("images/gvf_multiplesteps.png")
 ```
+
+The direct step method is also implemented in the _hydraulics_ package, and can be applied to the same problem as above, as illustrated in Example \@ref(exm:gvfx1b).
+
+::: {.example #gvfx1b}
+Water flows at 10 m^3^/s in a trapezoidal channel with n=0.015, bottom width 3 m, side slope of 2:1 (H:V) and longitudinal slope 0.0009 (0.09%). At the location of a USGS stream gage the flow depth is 1.4 m. Use the direct step method to find the distance to the point where the depth is 1.2 m and determine whether it is upstream or downstream.
+:::
+```{r ds-1, fig.width = 4, fig.asp = 1.0}
+hydraulics::direct_step(So=0.0009, n=0.015, Q=10, y1=1.4, y2=1.2, b=3, m=2, nsteps=2, units="SI")
+```
+
+This produces the same result, and verifies that the water surface profile is type M-1.
 
 ### Standard step method
 
 The standard step method works similarly to the direct step method, except from one known depth the second depth is determined at a known distance, _L_. This is a preferred method when the depth at a critical location, such as a bridge, is needed.
 
-The _rivr_ package implements the standard step method in its _compute\_profile_ function. To compare it to the direct step method, check the depth at $y_2$ given the total distance from Example \@ref(exm:gvfx2).
-::: {.example #gvfx1}
-For the same channel and flow rate as Example \@ref(exm:gvfx1), determine the depth of water at the distance _L_ determined above, and compare it to the value above.
+The _rivr_ package implements the standard step method in its _compute\_profile_ function. To compare it to the direct step method, check the depth at $y_2$ given the total distance from Example \@ref(exm:gvfx1).
+
+::: {.example #gvfx2}
+For the same channel and flow rate as Example \@ref(exm:gvfx1), determine the depth of water at the distance _L_ determined above.
 :::
 The function requires the distance to be positive, so apply the absolute value to the _L_ value. 
 ```{r gvfsol-4, message=FALSE, warning=FALSE}
@@ -444,4 +470,63 @@ ans$x
 ans$y
 ```
 
-This shows the distances and depths at each of the steps defined. Consistent with the above, the distances are negative, showing that they are progressing upstream. The results are identical for y2 using the direct step method.
+This shows the distances and depths at each of the steps defined. Consistent with the above, the distances are negative, showing that they are progressing upstream. The results are identical for $y_2$ using the direct step method.
+
+## Rapidly varied flow (the hydraulic jump)
+
+In the discussion of critical flow in Section \@ref(crit-section), the concept of alternate depths was introduced, where a given flow rate in a channel with known geometry typically may assume two possible values, one subcritical and one supercritical. For the case of supercritical flow transitioning to subcritical flow, a smooth transition is impossible, so a hydraulic jump occurs. A hydraulic jump always diddipates some of the incoming energy. A hydraulic jump is depicted in Figure \@ref(fig:hj-1) [@peterka_alvin_j_hydraulic_1978].
+
+```{r hj-1, echo=FALSE, fig.align="center", fig.cap="A typical hydraulic jump."}
+  knitr::include_graphics("images/hydr_jump_usbr.PNG")
+```
+
+The two depths on either side of a hydraulic jump are called **sequent depths** or **conjugate depths**. The relationship between them can be established using the momentum equation to develop an general expression (for any open channel) for the **momentum function, M**, as in Equation \@ref(eq:hj-eq1).
+\begin{equation}
+  M=Ah_c+\frac{Q^2}{gA}
+  (\#eq:hj-eq1)
+\end{equation}
+where $h_c$ is the distance from the water surface to the centroid of the channel cross-section. For a **trapezoidal** channel, the momentum equation becomes that described by Equation \@ref(eq:hj-eq2).
+\begin{equation}
+  M=\frac{by^2}{2}+\frac{my^3}{3}+\frac{Q^2}{gy\left(b+my\right)}
+  (\#eq:hj-eq2)
+\end{equation}
+
+For the case of a **rectangular** channel, setting m=0 and setting the Momentum function for two sequent depths, y~1~ ans y~2~ equal, produces the relationship in Equation  \@ref(eq:hj-eq3).
+\begin{equation}
+  \frac{y_2}{y_1}=\frac{1}{2}\left(-1+\sqrt{1+8Fr_1^2}\right)
+  or
+  \frac{y_1}{y_2}=\frac{1}{2}\left(-1+\sqrt{1+8Fr_2^2}\right)
+  (\#eq:hj-eq3)
+\end{equation}
+where Fr~n~ is the Froude Number [Equation \@ref(eq:froude)] at section n.
+
+Again, for the case of a **rectangular** channel, the energy head loss through a hydraulic jump simplifies to Equation  \@ref(eq:hj-eq4).
+\begin{equation}
+  h_l=\frac{\left(y_2-y_1\right)^3}{4y_1y_2}
+  (\#eq:hj-eq4)
+\end{equation}
+
+Given that the momentum function must be conserved on either side of a hydraulic jump, finding the sequent depth for any known depth becomes straightforward for trapezoidal shapes. Setting M~1~ = M~2~ in Equation \@ref(eq:hj-eq2) allows the use of a solver, as in Example  \@ref(exm:seq_x1).
+
+::: {.example #seq_x1}
+A trapezoidal channel with a bottom width of 0.5 m and a side slope of 1:1 carries a flow of 0.2 m^3^/s. The depth on one side of a hydraulic jump is 0.1 m. Find the sequent depth, the energy head loss, and the power dissipation in Watts.
+:::
+```{r hydj-x1, message=FALSE, warning=FALSE}
+flow <- 0.2
+ans <- hydraulics::sequent_depth(Q=flow,b=0.5,y=0.1,m=1,units = "SI", ret_units = TRUE)
+#print output of function
+ans
+#Find energy head loss
+hl <- abs(ans$E - ans$E_seq)
+hl
+#Express this as a power loss
+gamma <- hydraulics::specwt(units = "SI")
+P <- gamma*flow*hl
+cat(sprintf("Power loss = %.1f Watts\n",P))
+```
+
+The energy loss across hydraulic jumps varies with the Froude number of the incoming flow, as shown in  depicted in Figure \@ref(fig:hj-2) [@peterka_alvin_j_hydraulic_1978].
+
+```{r hj-2, echo=FALSE, fig.align="center", fig.cap="Types of hydraulic jumps."}
+  knitr::include_graphics("images/hydr_jump_forms_usbr.PNG")
+```

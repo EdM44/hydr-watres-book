@@ -26,7 +26,7 @@ engineering exercises using R.</p>" />
 <meta name="author" content="Ed Maurer" />
 
 
-<meta name="date" content="2022-10-26" />
+<meta name="date" content="2022-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,8 +55,74 @@ engineering exercises using R.</p>" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
@@ -140,14 +206,14 @@ div.csl-indent {
 <li class="chapter" data-level="4.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>4.2</b> Equations for open channel flow</a></li>
 <li class="chapter" data-level="4.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>4.3</b> Trapezoidal channels</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equations-in-r"><i class="fa fa-check"></i><b>4.3.1</b> Solving the Manning equations in R</a></li>
+<li class="chapter" data-level="4.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>4.3.1</b> Solving the Manning equation in R</a></li>
 <li class="chapter" data-level="4.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>4.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
-<li class="chapter" data-level="4.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>4.3.3</b> solving the Manning equation using a Spreadsheet Like Excel</a></li>
+<li class="chapter" data-level="4.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>4.3.3</b> Solving the Manning equation using a spreadsheet like Excel</a></li>
 <li class="chapter" data-level="4.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>4.3.4</b> Optimal trapezoidal geometry</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>4.4</b> Circular Channels (flowing partially full)</a>
 <ul>
-<li class="chapter" data-level="4.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>4.4.1</b> Solving the Manning equation in R</a></li>
+<li class="chapter" data-level="4.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>4.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>4.5</b> Critical flow</a></li>
 <li class="chapter" data-level="4.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gradually-varied-steady-flow"><i class="fa fa-check"></i><b>4.6</b> Gradually varied steady flow</a>
@@ -155,6 +221,7 @@ div.csl-indent {
 <li class="chapter" data-level="4.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>4.6.1</b> The direct step method</a></li>
 <li class="chapter" data-level="4.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>4.6.2</b> Standard step method</a></li>
 </ul></li>
+<li class="chapter" data-level="4.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#rapidly-varied-flow-the-hydraulic-jump"><i class="fa fa-check"></i><b>4.7</b> Rapidly varied flow (the hydraulic jump)</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>5</b> Momentum in water flow</a></li>
 <li class="chapter" data-level="6" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>6</b> Pumps and how they operate in a hydraulic system</a>
@@ -184,12 +251,12 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Hydraulics and Water Resources: Examples Using R</h1>
 <p class="author"><em>Ed Maurer</em></p>
-<p class="date"><em>2022-10-26</em></p>
+<p class="date"><em>2022-10-31</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered hasAnchor">
 <h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This is a compilation of various R exercises and examples created over many years. They have been used mostly in undergraduate civil engineering classes including fluid mechanics, hydraulics, and water resources. This is a dynamic work, and will be regularly updated as errors are identified, improved presentation is developed, or new topics or examples are introduced. I welcome any suggestions or comments.</p>
-<p>In what follows, text will be intentionally brief. More extensive discussion and description can be found in any fluid mechanics, applied hydraulics, or water resources engineering text. Fundamental equations will be introduced though the emphasis will be on applications to solve common problems. Also, since this is written by a civil engineer, the only fluids included are water and air, since that accounts for nearly all problems encountered in the field.</p>
+<p>In what follows, text will be intentionally brief. More extensive discussion and description can be found in any fluid mechanics, applied hydraulics, or water resources engineering text. Symbology in this reference generally follows that Finnemore and Franzini <span class="citation">(<a href="references.html#ref-finnemore_fluid_2002" role="doc-biblioref">2002</a>)</span>. Fundamental equations will be introduced though the emphasis will be on applications to solve common problems. Also, since this is written by a civil engineer, the only fluids included are water and air, since that accounts for nearly all problems encountered in the field.</p>
 <p>Solving water problems is rarely done by hand calculations, though the importance of performing order of magnitude ‘back of the envelope’ calculations cannot be overstated. Whether using a hand calculator, spreadsheet, or a programming language to produce a solution, having a sense of when an answer is an outlier will help catch errors.</p>
 <p>Scripting languages are powerful tools for performing calculations, providing a fully traceable and reproducible path from your input to a solution. Open source languages have the benefit of being free to use, and invite users to be part of a community helping improve the language and its capabilities. The language of choice for this book is R <span class="citation">(<a href="references.html#ref-r_core_team_r_2022" role="doc-biblioref">R Core Team 2022</a>)</span>, chosen for its straightforward syntax, powerful graphical capabilities, wide use in engineering and in many other disciplines, and by using the RStudio interface, it can look and feel a lot like Matlab® with which most engineering students have some experience.</p>
 <p>No introduction to R or RStudio is provided here. It is assumed that the reader has installed R (and RStudio), is comfortable installing and updating packages, and understands the basics of R scripting. A brief overview <a href="https://www.engr.scu.edu/~emaurer/shared/R-intro/">is provided here</a>, aimed at students at Santa Clara University. More comprehensive materials are readily available, including <a href="https://cran.r-project.org/doc/manuals/R-intro.html">An Introduction to R</a> by the R Core Team. An excellent set of materials for a course <a href="https://discdown.org/rprogramming/">Introduction to Programming with R</a> by Stauffer et al. is also freely available and includes interactive exercises.</p>
@@ -259,13 +326,27 @@ gitbook.start({
 "options": null
 },
 "toc": {
-"collapse": "subsection",
+"collapse": "section",
 "scroll_highlight": true
 }
 });
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
