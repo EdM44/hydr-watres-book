@@ -68,7 +68,7 @@ As water flows through a pipe energy is lost due to friction with the pipe walls
 hydraulics::moody()
 ```
 
-Because of the for of the equations, they can sometimes be a challenge to solve, especially by hand. It can help to classify the types of problems based on what variable is unknown. These are summarized in Table \@ref(tab:prob-types).
+Because of the form of the equations, they can sometimes be a challenge to solve, especially by hand. It can help to classify the types of problems based on what variable is unknown. These are summarized in Table \@ref(tab:prob-types).
 
 ```{r prob-types, echo=FALSE}
 knitr::kable(data.frame(Type=c("1","2","3"), Known=c("Q (or V), D, ks, L","hL, D, ks, L","hL, Q (or V), ks, L"), Unknown=c("hL","Q (or V)","D")), format="pipe", padding=0, escape = F,  booktabs = TRUE, caption = "Types of Energy Loss Problems in Pipe Flow")
@@ -179,7 +179,7 @@ cat(sprintf("Reynolds no: %.0f\nFriction Fact: %.4f\nHead Loss: %.2f ft\n",
             ans$Re, ans$f, ans$hf))
 ```
 
-If only the _f_ value is needed, the _colebrook_ equation can be used.
+If only the _f_ value is needed, the _colebrook_ function can be used.
 ```{r colebrook4, message=FALSE, warning=FALSE}
 f <- hydraulics::colebrook(ks=0.000046, V= 2.120, D=0.5, nu=1.023e-06)
 cat(sprintf("f = %.4f\n", f))

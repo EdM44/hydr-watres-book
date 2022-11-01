@@ -319,7 +319,7 @@ The specific energy for a given depth _y_ and alternate depth can be added to th
 hydraulics::spec_energy_trap( Q = 360, b = 20, m = 1, scale = 4, y=3.0, units = "Eng" )
 ```
 
-## Gradually varied steady flow
+## Gradually varied steady flow {#gvf-section}
 
 When water approaches an obstacle, it can back up, with its depth increasing. The effect can be observed well upstream. Similarly, as water approaches a drop, such as with a waterfall, the water level declines, and that effect can also be seen upstream. In general, any change in slope or roughness will produce changes in depth along a channel length. 
 
@@ -333,7 +333,7 @@ If $y_n < y_c$ flow is supercritical (for example, flowing down a steep slope); 
 knitr::include_graphics("images/gvf-curves.PNG")
 ```
 
-In addition to channel transitions, changes in channel slow of roughness (Manning _n_) will cause the flow surface to vary. Some of these conditions are illusted in Figure \@ref(fig:gvfcurves2) [@davidian_jacob_computation_1984].
+In addition to channel transitions, changes in channel slow of roughness (Manning _n_) will cause the flow surface to vary. Some of these conditions are illustrated in Figure \@ref(fig:gvfcurves2) [@davidian_jacob_computation_1984].
 ```{r gvfcurves2, echo=FALSE, fig.cap="Types of flow profiles with changes in slope or roughness", fig.align="center"}
 knitr::include_graphics("images/gvf-n-S-transitions.PNG")
 ```
@@ -472,9 +472,13 @@ ans$y
 
 This shows the distances and depths at each of the steps defined. Consistent with the above, the distances are negative, showing that they are progressing upstream. The results are identical for $y_2$ using the direct step method.
 
-## Rapidly varied flow (the hydraulic jump)
+## Rapidly varied flow (the hydraulic jump) {#hj-section}
 
-In the discussion of critical flow in Section \@ref(crit-section), the concept of alternate depths was introduced, where a given flow rate in a channel with known geometry typically may assume two possible values, one subcritical and one supercritical. For the case of supercritical flow transitioning to subcritical flow, a smooth transition is impossible, so a hydraulic jump occurs. A hydraulic jump always diddipates some of the incoming energy. A hydraulic jump is depicted in Figure \@ref(fig:hj-1) [@peterka_alvin_j_hydraulic_1978].
+```{r hj-0, echo=FALSE, fig.align="center", fig.cap="A hydraulic jump at St. Anthony Falls, Minnesota."}
+  knitr::include_graphics("images/StAnthonyFalls_apron.JPG")
+```
+
+In the discussion of critical flow in Section \@ref(crit-section), the concept of alternate depths was introduced, where a given flow rate in a channel with known geometry typically may assume two possible values, one subcritical and one supercritical. For the case of supercritical flow transitioning to subcritical flow, a smooth transition is impossible, so a hydraulic jump occurs. A hydraulic jump always dissipates some of the incoming energy. A hydraulic jump is depicted in Figure \@ref(fig:hj-1) [@peterka_alvin_j_hydraulic_1978].
 
 ```{r hj-1, echo=FALSE, fig.align="center", fig.cap="A typical hydraulic jump."}
   knitr::include_graphics("images/hydr_jump_usbr.PNG")
@@ -509,7 +513,7 @@ Again, for the case of a **rectangular** channel, the energy head loss through a
 Given that the momentum function must be conserved on either side of a hydraulic jump, finding the sequent depth for any known depth becomes straightforward for trapezoidal shapes. Setting M~1~ = M~2~ in Equation \@ref(eq:hj-eq2) allows the use of a solver, as in Example  \@ref(exm:seq_x1).
 
 ::: {.example #seq_x1}
-A trapezoidal channel with a bottom width of 0.5 m and a side slope of 1:1 carries a flow of 0.2 m^3^/s. The depth on one side of a hydraulic jump is 0.1 m. Find the sequent depth, the energy head loss, and the power dissipation in Watts.
+A trapezoidal channel with a bottom width of 0.5 m and a side slope of 1:1 carries a flow of 0.2 m^3/s. The depth on one side of a hydraulic jump is 0.1 m. Find the sequent depth, the energy head loss, and the power dissipation in Watts.
 :::
 ```{r hydj-x1, message=FALSE, warning=FALSE}
 flow <- 0.2
@@ -530,3 +534,34 @@ The energy loss across hydraulic jumps varies with the Froude number of the inco
 ```{r hj-2, echo=FALSE, fig.align="center", fig.cap="Types of hydraulic jumps."}
   knitr::include_graphics("images/hydr_jump_forms_usbr.PNG")
 ```
+
+### Location of a hydraulic jump
+
+In hydraulic infrastructure where hydraulic jumps will occur there are usually engineered features, such as baffles or basins, to force a hydraulic jump to occur in specific locations, to protect downstream waterways from the turbulent effects of an uncontrolled hydraulic jump. In the absence of engineered features to cause a jump, the location of a hydraulic jump can be determined using the concepts of Sections \@ref{gvf-section} and \@ref{hj-section}.
+
+Example \@ref(exm:hj-loc) demonstrates the determination of the location of a hydraulic jump when normal flow conditions exist at some distance upstream and downstream of the jump.
+
+::: {.example #hj-loc}
+A rectangular (a trapezoid with side slope, m=0) concrete channel with a bottom width of 3 m carries a flow of 8 m^3/s. The upstream channel slopes steeply at S~o~=0.018 and discharges onto a mild slope of S~o~=0.0015. Determine the height of the jump and its location.
+:::
+First find the normal depth on each slope, and the critical depth for the channel.
+```{r hydj-loc1, message=FALSE, warning=FALSE}
+yn1 <- hydraulics::manningt(Q = 8, n = 0.013, m = 0, Sf = 0.018, b = 3, units = "SI")$y
+yn2 <- hydraulics::manningt(Q = 8, n = 0.013, m = 0, Sf = 0.0015, b = 3, units = "SI")$y
+yc <- hydraulics::manningt(Q = 8, n = 0.013, m = 0, Sf = 0.0015, b = 3, units = "SI")$yc
+cat(sprintf("yn1 = %.3f m, yn2 = %.3f m, yc = %.3f m\n", yn1, yn2, yc))
+```
+Recall that the calculation of yc only depends on flow and channel geometry (Q, b, m), so the values of n and Sf can be arbitrary for that command. These results confirm that flow is supercritical upstream and subcritical downstream, so a hydraulic jump will occur.
+
+The hydraulic jump will either begin at y1 (and jump to the sequent depth for y1) or end at y2 (beginning at the sequent depth for y2). The possibilities are shown in Figure \@ref(fig:gvfcurves) in the lower right panel. First check the two sequent depths.
+```{r hydj-loc2, message=FALSE, warning=FALSE}
+yn1_seq <- hydraulics::sequent_depth(Q = 8, b = 3, y=yn1, m = 0, units = "SI")$y_seq
+yn2_seq <- hydraulics::sequent_depth(Q = 8, b = 3, y=yn2, m = 0, units = "SI")$y_seq
+cat(sprintf("yn1_seq = %.3f m, yn2_seq = %.3f m\n", yn1_seq, yn2_seq))
+```
+This confirms that if the jump began at _yn1_ (on the steep slope) it would need to jump a level below _yn2_, with an **S-1** curve providing the gradual increase in depth to _yn2_. Since _yn1_seq_ exceeds _yn2_, this is not possible. That can be verified using the _direct_step_ function to show the distance from _yn1_seq_ to _yn2_ would need to be _upstream_ (negative x values in the result), which cannot occur for this case. This means the alternate case must exist, with an M-3 profile raising yn1 to yn2_seq at which point the jump occurs. The direct step method can find this distance along the channel.
+```{r hydj-loc3, message=FALSE, warning=FALSE}
+hydraulics::direct_step(So=0.0015, n=0.013, Q=8, y1=yn1, y2=yn2_seq, b=3, m=0, nsteps=2, units="SI")
+```
+The number of calculation steps (nsteps) can be increased for greater precision, but 2 steps is adequate here.
+

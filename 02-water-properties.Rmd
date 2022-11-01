@@ -38,7 +38,7 @@ What follows is a brief discussion of some of these properties, and how they can
 
 ## Properties important for water standing still
 
-An intrinsic property of water is its mass. In the presence of gravity, it exerts a weight on its surroundings. Forces caused by the weight of water enter design in many ways.
+An intrinsic property of water is its mass. In the presence of gravity, it exerts a weight on its surroundings. Forces caused by the weight of water enter design in many ways. Example \@ref(exm:ex-bucket) uses water mass and weight in a calculation.
 
 ::: {.example #ex-bucket}
 Determine the tension in the 8 mm diameter rope holding a bucket containing 12 liters of water. Ignore the weight of the bucket. Assume a water temperature of 20 $^\circ$C.
@@ -66,6 +66,54 @@ units::set_units(tension, psi)
 ```
 For example \@ref(exm:ex-bucket) units could have been tracked manually throughout, as if done by hand. The convenience of using the _units_ package allows conversions that can be used to check hand calculations.
 
+Water expands as it is heated, which is part of what is driving sea-level rise globally.  Approximately 90% of excess energy caused by global warming pollution is absorbed by oceans, with most of that occurring in the upper ocean: 0-700 m of depth [@fox-kemper_ocean_2021]. Example \@ref(exm:ex-bucket) uses water mass and weight in a calculation.
+
+::: {.example #ex-bucket}
+Assume the ocean is made of fresh water (the change in density of sea water with temperature is close enough to fresh water for this illustration). Assume a 700 m thick upper layer of the ocean. Assuming this upper layer has an initial temperature of 15 $^\circ$C and calculate the change in mean sea level due to a 2 $^\circ$C rise in temperature of this upper layer.
+:::
+```{r out.width='20%', out.extra='style="float:right; padding:10px"', echo=FALSE}
+  knitr::include_graphics("images/slr_column.PNG")
+```
+It may help to consider a single 1m x 1m column of water with h=700 m high under original conditions. Since mass is conserved, and mass = volume x density, this is simple: $$LWh_1\cdot\rho_1=LWh_2\cdot\rho_2$$ or $$h_2=h_1\frac{\rho_1}{\rho_2}$$
+```{r waterprops-ex1b, warning=FALSE, message=FALSE}
+rho1 = hydraulics::dens(T = 15, units = 'SI')
+rho2 = hydraulics::dens(T = 17, units = 'SI')
+h2 = 700 * (rho1/rho2)
+cat(sprintf("Change in sea level = %.3f m\n", h2-700))
+```
+The bulk modulus, E~v~, relates the change in specific volume to the change in pressure, and defined as in Equation \@ref(eq:bm-1).
+\begin{equation}
+  E_v=-v\frac{dp}{dv}
+  (\#eq:bm-1)
+\end{equation}
+which can be discretized:
+\begin{equation}
+  \frac{v_2-v_1}{v_1}=-\frac{p_2-p_1}{E_v}
+  (\#eq:bm-2)
+\end{equation}
+where v is the specific volume ($v=\frac{1}{\rho}$) and p is pressure.
+
+Example \@ref(exm:ex-bm) shows one application of this.
+
+::: {.example #ex-bm}
+A barrel of water has an initial temperature of 15 $^\circ$C at atmospheric pressure (p=0 Pa gage). Plot the  pressure the barrel must exert the have no change in volume as the water warms to 20 $^\circ$C.
+:::
+```{r out.width='20%', out.extra='style="float:right; padding:10px"', echo=FALSE}
+  knitr::include_graphics("images/barrel-36724.png")
+```
+Here essentially the larger specific volume (at a higher temperature) is then compressed by ${\Delta}P$ to return the volume to its original value. Thus, subscript 1 indicates the warmer condition, and subscript 2 the original at 15 $^\circ$C.
+```{r waterprops-ex1-bm, out.width="60%", fig.cap="Approximate change in pressure as water temperature increases.", warning=FALSE, message=FALSE}
+dp <- function(tmp) {
+  rho2 <- hydraulics::dens(T = 15, units = 'SI')
+  rho1 <- hydraulics::dens(T = tmp, units = 'SI')
+  Ev <- hydraulics::Ev(T = tmp, units = 'SI')
+  return((-((1/rho2) - (1/rho1))/(1/rho1))*Ev)
+}
+temps <- seq(from=15, to=20, by=1)
+plot(temps,dp(temps), xlab="Temperature, C", ylab="Pressure increase, Pa", type="b")
+```
+These very high pressures required to compress water, even by a small fraction, validates the ordinary assumption that water can be considered incompressible in most applications. It should be noted that the Ev values produced by the _hydraulics_ package only vary with temperature, and assume standard atmospheric pressure; in reality, Ev values increase with increasing pressure so the values plotted here serve only as a demonstration and underestimate the pressure increase.
+
 ## Properties important for moving water
 
 When describing the behavior of moving water in civil engineering infrastructure like pipes and channels there are three primary water properties used used in calculations, all of which vary with water temperature: density ($\rho$), dynamic viscosity($\mu$), and kinematic viscosity($\nu$), which are related by Equation \@ref(eq:test-eq)
@@ -76,7 +124,7 @@ When describing the behavior of moving water in civil engineering infrastructure
 \end{equation}
 
 Viscosity is caused by interaction of the fluid molecules as they are subjected to a shearing force. This is often illustrated by a conceptual sketch of two parallel plates, one fixed and one moving at a constant speed, with a fluid in between. Perhaps more intuitively, a smore can be used.
-```{r out.width='70%', echo=FALSE}
+```{r out.width='60%', echo=FALSE}
   knitr::include_graphics("images/viscosity_cracker.jpg")
 ```
 
@@ -115,7 +163,7 @@ units::set_units(tau*A, lbf)
 
 Water is less viscous than marshmallow, so viscosity has much lower values than in the example. Values for water can be obtained using the _hydraulics_ R package for calculations,  using the _dens_, _dvisc_, and _kvisc_. All of the water property functions can accept a list of input temperature values, enabling visualization of a property with varying water temperature, as shown in Figure \@ref(fig:waterprops-3b).
 
-```{r waterprops-3b, out.width="50%", fig.cap="Variation of kinematic viscosity with temperature."}
+```{r waterprops-3b, out.width="60%", fig.cap="Variation of kinematic viscosity with temperature."}
 Ts <- seq(0, 100, 10)
 nus <- hydraulics::kvisc(T = Ts, units = 'SI')
 xlbl <- expression("Temperature, " (degree*C))
