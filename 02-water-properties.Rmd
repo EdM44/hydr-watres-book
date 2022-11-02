@@ -66,9 +66,9 @@ units::set_units(tension, psi)
 ```
 For example \@ref(exm:ex-bucket) units could have been tracked manually throughout, as if done by hand. The convenience of using the _units_ package allows conversions that can be used to check hand calculations.
 
-Water expands as it is heated, which is part of what is driving sea-level rise globally.  Approximately 90% of excess energy caused by global warming pollution is absorbed by oceans, with most of that occurring in the upper ocean: 0-700 m of depth [@fox-kemper_ocean_2021]. Example \@ref(exm:ex-bucket) uses water mass and weight in a calculation.
+Water expands as it is heated, which is part of what is driving sea-level rise globally.  Approximately 90% of excess energy caused by global warming pollution is absorbed by oceans, with most of that occurring in the upper ocean: 0-700 m of depth [@fox-kemper_ocean_2021]. Example \@ref(exm:ex-slr) uses water mass and weight in a calculation.
 
-::: {.example #ex-bucket}
+::: {.example #ex-slr}
 Assume the ocean is made of fresh water (the change in density of sea water with temperature is close enough to fresh water for this illustration). Assume a 700 m thick upper layer of the ocean. Assuming this upper layer has an initial temperature of 15 $^\circ$C and calculate the change in mean sea level due to a 2 $^\circ$C rise in temperature of this upper layer.
 :::
 ```{r out.width='20%', out.extra='style="float:right; padding:10px"', echo=FALSE}
