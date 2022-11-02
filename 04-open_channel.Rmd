@@ -553,7 +553,7 @@ cat(sprintf("yn1 = %.3f m, yn2 = %.3f m, yc = %.3f m\n", yn1, yn2, yc))
 ```
 Recall that the calculation of yc only depends on flow and channel geometry (Q, b, m), so the values of n and Sf can be arbitrary for that command. These results confirm that flow is supercritical upstream and subcritical downstream, so a hydraulic jump will occur.
 
-The hydraulic jump will either begin at y1 (and jump to the sequent depth for y1) or end at y2 (beginning at the sequent depth for y2). The possibilities are shown in Figure \@ref(fig:gvfcurves) in the lower right panel. First check the two sequent depths.
+The hydraulic jump will either begin at _yn1_ (and jump to the sequent depth for _yn1_) or end at _yn2_ (beginning at the sequent depth for _yn2_). The possibilities are shown in Figure \@ref(fig:gvfcurves) in the lower right panel. First check the two sequent depths.
 ```{r hydj-loc2, message=FALSE, warning=FALSE}
 yn1_seq <- hydraulics::sequent_depth(Q = 8, b = 3, y=yn1, m = 0, units = "SI")$y_seq
 yn2_seq <- hydraulics::sequent_depth(Q = 8, b = 3, y=yn2, m = 0, units = "SI")$y_seq
