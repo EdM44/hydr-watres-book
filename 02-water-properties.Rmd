@@ -91,12 +91,12 @@ which can be discretized:
   \frac{v_2-v_1}{v_1}=-\frac{p_2-p_1}{E_v}
   (\#eq:bm-2)
 \end{equation}
-where v is the specific volume ($v=\frac{1}{\rho}$) and p is pressure.
+where $v$ is the specific volume ($v=\frac{1}{\rho}$) and $p$ is pressure.
 
 Example \@ref(exm:ex-bm) shows one application of this.
 
 ::: {.example #ex-bm}
-A barrel of water has an initial temperature of 15 $^\circ$C at atmospheric pressure (p=0 Pa gage). Plot the  pressure the barrel must exert the have no change in volume as the water warms to 20 $^\circ$C.
+A barrel of water has an initial temperature of 15 $^\circ$C at atmospheric pressure (p=0 Pa gage). Plot the pressure the barrel must exert to have no change in volume as the water warms to 20 $^\circ$C.
 :::
 ```{r out.width='20%', out.extra='style="float:right; padding:10px"', echo=FALSE}
   knitr::include_graphics("images/barrel-36724.png")
