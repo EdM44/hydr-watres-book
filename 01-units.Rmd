@@ -19,7 +19,7 @@ sig <- function (y,z) {
 }
 df <- data.frame(
   Quantity = c("Length","Acceleration", "Mass", "Force","Density", "Energy/Work","Flowrate","Kinematic viscocity","Power","Pressure","Specific Weight","Velocity","(Dynamic) Viscocity","Volume"),
-  Symbol = c("L","a","m","F","$\\rho$","","Q","$\\nu$","","p","$\\gamma$","V","$\\nu$","$\\forall$"),
+  Symbol = c("L","a","m","F","$\\rho$","","Q","$\\nu$","","p","$\\gamma$","V","$\\mu$","$\\forall$"),
   Dimensions = c("$L$","$LT^{-2}$","$M$","$F$","$ML^{-3}$","FL","$L^{3}/T$","$L^{2}/T$","$FLT^{-1}$","$FL^{-2}$","$FL^{-3}$","$LT^{-1}$","$FTL^{-2}$","$L^3$"),
   US_Units = c("$ft$","$ft/s^2$","$slug$","$lb$","$slug/ft^3$","${ft}\\cdot{lb}$","$ft^{3}/s$=cfs","$ft^{2}/s$","${ft}\\cdot{lb/s}$","$lb/in^2=psi$","$lb/ft^3$","$ft/s$","${lb}\\cdot{s/ft^2}$","$ft^3$"),
   SI_units = c("$m$","$m/s^{2}$", "$kg$","$N$","$kg/m^3$", "${N}\\cdot{m}=joule (J)$", "$m^{3}/s$","$m^{2}/s$", "${N}\\cdot{m/s}=watt (W)$", "$N/m^2=Pa$", "$N/m^3$","$m/s$","${N}\\cdot{s/m^2}={Pa}\\cdot{s}$","$m^3$"),
