@@ -4,6 +4,7 @@ exm:unlabeled-div-2
 tab:water-props-SI
 tab:water-props-Eng
 exm:ex-bucket
+exm:ex-slr
 eq:bm-1
 eq:bm-2
 exm:ex-bm
@@ -81,6 +82,12 @@ eq:hj-eq3
 eq:hj-eq4
 fig:hj-2
 exm:hj-loc
+fig:pipe-bend-1
+eq:newton-1
+eq:momentum-1
+fig:pipe-bend-2
+eq:momentum-ex1
+eq:momentum-ex2
 fig:pump-1
 eq:dw-pump1
 eq:energy-pump
@@ -130,11 +137,12 @@ gvf-section
 the-direct-step-method
 standard-step-method
 hj-section
+sequent-or-conjugate-depths
 location-of-a-hydraulic-jump
 momentum-in-water-flow
+equations-of-linear-momentum
+the-momentum-equation-in-pipe-design
 pumps-and-how-they-operate-in-a-hydraulic-system
 defining-the-system-curve
 defining-the-pump-characteristic-curve
 finding-the-operating-point
-url-your-book-url-like-httpsbookdown.orgyihuibookdown
-exm:ex-slr

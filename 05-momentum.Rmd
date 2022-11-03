@@ -1,4 +1,79 @@
 # Momentum in water flow
 
-[Content forthcoming]
+When moving water changes direction or velocity, an external force must be associated with the change. In civil engineering infrastructure this is ubiquitous and the forces associated with must be accounted for in design.
 
+```{r pipe-bend-1, echo=FALSE, fig.align="center", fig.cap="Water pipe on Capitol Hill, Seattle."}
+  knitr::include_graphics("images/Water_pipe_on_Capitol_Hill,_Seattle,_July_31,_1923_(MOHAI_3418).jpg")
+```
+
+## Equations of linear momentum
+
+Newton's law relates the forces applied to a body to the rate of change of linear momentum, as in Equation \@ref(eq:newton-1)
+\begin{equation}
+  \sum{\overrightarrow{F}}=\frac{d\left(m\overrightarrow{V}\right)}{dt}
+  (\#eq:newton-1)
+\end{equation}
+
+For fluid flow in a hydraulic system carrying a flow Q, the equation can be written in any linear direction (x-direction in this example) as in Equation \@ref(eq:momentum-1).
+
+\begin{equation}
+  \sum{F_x}=\rho{Q}\left(V_{2x}-V_{1x}\right)
+  (\#eq:momentum-1)
+\end{equation}
+where $\rho{Q}$ is the mass flux through the system, $V_{1x}$ is the velocity in the x-direction where flow enters the system, and $V_{2x}$ is the velocity in the x-direction where flow leaves the system. $\sum{F_x}$ is the vector sum of all external forces acting on the system in the x-direction.
+
+It should be noted that the values of _V_ are the average cross-sectional velocity. A momentum correction factor ($\beta$), can be applied when the velocity is highly non-uniform across the cross-section. In nearly all civil engineering applications the adjustment factor is close enough to 1 where it is ignored in the calculations.
+
+## The momentum equation in pipe design
+
+One of the most common civil engineering applications of the momentum equation is providing the lateral restraint where a pipe bend occurs. One approach to provide the external force to keep the pipe in equilibrium is to use a thrust block, as illustrated in Figure \@ref(fig:pipe-bend-2) [@ductile_iron_pipe_research_association_thrust_2016].
+
+```{r pipe-bend-2, echo=FALSE, fig.align="center", fig.cap="A sketch of a pipe bend with a thrust block."}
+  knitr::include_graphics("images/thrust_block.PNG")
+```
+
+::: {.example #pipe-1-1}
+An horizontal 18-inch diameter pipe carries flow Q of water at 68$^\circ$F with a pressure of 60 psi and encounters a bend of angle $\theta=30^\circ$. Show how the reaction force, R varies with the flow rate through the bend for flows up to 20 ft^3^/s.
+:::
+Taking the control volume to be the bend, the external forces acting on the bend are shown in Figure \@ref(fig:pipe-bend-cv).
+```{r pipe-bend-cv, out.width='60%', out.extra='style="float:right; padding:10px"', echo=FALSE}
+  knitr::include_graphics("images/ex-momentum-1.PNG")
+```
+Note that if the pipe were not horizontal, the weight of the water in the pipe would also need to be included.
+
+Including all of the external forces in the x-direction on left side of Equation \@ref(eq:momentum-1) and recognizing that V~1x~=V~1~ and V~2x~=V~2~cos$\theta$ produces:
+$$P_1A_1-P_2A_2cos\theta-R_x=\rho{Q}\left(V_{2}cos\theta-V_{1}\right)$$
+Rearranging to solve for R~x~ gives Equation \@ref(eq:momentum-ex1).
+\begin{equation}
+  R_x=P_1A_1-P_2A_2cos\theta-\rho{Q}\left(V_{2}cos\theta-V_{1}\right)
+  (\#eq:momentum-ex1)
+\end{equation}
+Similarly in the y-direction Equation \@ref(eq:momentum-ex2) can be assembled, noting that V~1y~=0 and V~2y~=$-$V~2~sin$\theta$ .
+\begin{equation}
+  R_y=P_2A_2sin\theta-\rho{Q}\left(-V_{2}sin\theta\right)
+  (\#eq:momentum-ex2)
+\end{equation}
+
+This can be set up in R in many ways, such as the following.
+```{r momentum-ex3, message=FALSE, warning=FALSE}
+#Input Data -- ensure units are consistent in ft, lbf (pound force), sec
+D1 <- units::set_units(18/12, ft)
+D2 <- units::set_units(18/12, ft)
+P1 <- units::set_units(60*144, lbf/ft^2) #convert psi to lbf/ft^2
+P2 <- units::set_units(60*144, lbf/ft^2)
+theta <- 30*(pi/180) #convert to radians for sin, cos functions
+rho <- hydraulics::dens(T=68, units="Eng", ret_units = TRUE)
+
+# calculations - vary flow from 0 to 20 ft^3/s
+Q <- units::set_units(seq(0,20,1), ft^3/s)
+A1 <- pi/4*D1^2
+A2 <- pi/4*D2^2
+V1 <- Q/A1
+V2 <- Q/A2
+Rx <- P1*A1-P2*A2*cos(theta)-rho*Q*(V2*cos(theta)-V1)
+Ry <- P2*A2*sin(theta)-rho*Q*(-V2*sin(theta))
+R <- sqrt(Rx^2 + Ry^2)
+plot(Q,R)
+```
+
+When Q=0, only the pressure terms contribute to _R_. This plot shows that for typical water main conditions the change in direction of the velocity vectors adds a small amount (less than 3% in this example) to the calculated _R_ value. This is why design guidelines for water mains often neglect the velocity term in Equation \@ref(eq:momentum-1). In other industrial or laboratory conditions is may not be valid to neglect that term.

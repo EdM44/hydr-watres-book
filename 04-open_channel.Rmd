@@ -484,6 +484,8 @@ In the discussion of critical flow in Section \@ref(crit-section), the concept o
   knitr::include_graphics("images/hydr_jump_usbr.PNG")
 ```
 
+### Sequent (or conjugate) depths
+
 The two depths on either side of a hydraulic jump are called **sequent depths** or **conjugate depths**. The relationship between them can be established using the momentum equation to develop an general expression (for any open channel) for the **momentum function, M**, as in Equation \@ref(eq:hj-eq1).
 \begin{equation}
   M=Ah_c+\frac{Q^2}{gA}
