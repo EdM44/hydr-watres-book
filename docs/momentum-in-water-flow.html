@@ -26,7 +26,7 @@ engineering exercises using R.</p>" />
 <meta name="author" content="Ed Maurer" />
 
 
-<meta name="date" content="2022-11-02" />
+<meta name="date" content="2022-11-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -290,9 +290,14 @@ Figure 6.2: A sketch of a pipe bend with a thrust block.
 <div class="example">
 <p><span id="exm:pipe-1-1" class="example"><strong>Example 6.1  </strong></span>An horizontal 18-inch diameter pipe carries flow Q of water at 68<span class="math inline">\(^\circ\)</span>F with a pressure of 60 psi and encounters a bend of angle <span class="math inline">\(\theta=30^\circ\)</span>. Show how the reaction force, R varies with the flow rate through the bend for flows up to 20 ft<sup>3</sup>/s. Ignore head loss through the bend.</p>
 </div>
-<p>Taking the control volume to be the bend, the external forces acting on the bend are shown in Figure <a href="#fig:pipe-bend-cv"><strong>??</strong></a>.
-<img src="images/ex-momentum-1.PNG" width="60%" style="float:right; padding:10px" />
-Note that if the pipe were not horizontal, the weight of the water in the pipe would also need to be included.</p>
+Taking the control volume to be the bend, the external forces acting on the bend are shown in Figure <a href="momentum-in-water-flow.html#fig:pipe-bend-cv">6.3</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pipe-bend-cv"></span>
+<img src="images/ex-momentum-1.PNG" alt="External forces on the pipe." width="60%" />
+<p class="caption">
+Figure 6.3: External forces on the pipe.
+</p>
+</div>
+<p>Note that if the pipe were not horizontal, the weight of the water in the pipe would also need to be included.</p>
 <p>Including all of the external forces in the x-direction on left side of Equation <a href="momentum-in-water-flow.html#eq:momentum-1">(6.2)</a> and recognizing that V<sub>1x</sub>=V<sub>1</sub> and V<sub>2x</sub>=V<sub>2</sub>cos<span class="math inline">\(\theta\)</span> produces:
 <span class="math display">\[P_1A_1-P_2A_2cos\theta-R_x=\rho{Q}\left(V_{2}cos\theta-V_{1}\right)\]</span>
 Rearranging to solve for R<sub>x</sub> gives Equation <a href="momentum-in-water-flow.html#eq:momentum-ex1">(6.3)</a>.

@@ -36,7 +36,7 @@ One of the most common civil engineering applications of the momentum equation i
 An horizontal 18-inch diameter pipe carries flow Q of water at 68$^\circ$F with a pressure of 60 psi and encounters a bend of angle $\theta=30^\circ$. Show how the reaction force, R varies with the flow rate through the bend for flows up to 20 ft^3^/s. Ignore head loss through the bend.
 :::
 Taking the control volume to be the bend, the external forces acting on the bend are shown in Figure \@ref(fig:pipe-bend-cv).
-```{r pipe-bend-cv, out.width='60%', out.extra='style="float:right; padding:10px"', echo=FALSE}
+```{r pipe-bend-cv, out.width='60%', fig.align="center", echo=FALSE, fig.cap="External forces on the pipe."}
   knitr::include_graphics("images/ex-momentum-1.PNG")
 ```
 Note that if the pipe were not horizontal, the weight of the water in the pipe would also need to be included.
