@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Properties of Water | Hydraulics and Water Resources: Examples Using R</title>
+  <title>Chapter 2 Properties of water (and air) | Hydraulics and Water Resources: Examples Using R</title>
   <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
 engineering exercises using R.</p>" />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Properties of Water | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:title" content="Chapter 2 Properties of water (and air) | Hydraulics and Water Resources: Examples Using R" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
@@ -17,7 +17,7 @@ engineering exercises using R.</p>" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Properties of Water | Hydraulics and Water Resources: Examples Using R" />
+  <meta name="twitter:title" content="Chapter 2 Properties of water (and air) | Hydraulics and Water Resources: Examples Using R" />
   
   <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
 engineering exercises using R.</p>" />
@@ -26,7 +26,7 @@ engineering exercises using R.</p>" />
 <meta name="author" content="Ed Maurer" />
 
 
-<meta name="date" content="2022-11-02" />
+<meta name="date" content="2022-11-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -34,7 +34,7 @@ engineering exercises using R.</p>" />
   
   
 <link rel="prev" href="units-in-fluid-mechanics.html"/>
-<link rel="next" href="water-flowing-in-pipes-energy-losses.html"/>
+<link rel="next" href="hydrostatics---forces-exerted-by-water-bodies.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -168,75 +168,84 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
-<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of Water</a>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of water (and air)</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
 <li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
-<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>3</b> Water Flowing in Pipes: Energy Losses</a>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>3.1</b> Important dimensionless quantity</a></li>
-<li class="chapter" data-level="3.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>3.2</b> Friction Loss in Circular Pipes</a></li>
-<li class="chapter" data-level="3.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>3.3</b> Solving Pipe friction problems</a></li>
-<li class="chapter" data-level="3.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>3.4</b> Solving for head loss (Type 1 problems)</a>
-<ul>
-<li class="chapter" data-level="3.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>3.4.1</b> Solving for head loss by manual iteration</a></li>
-<li class="chapter" data-level="3.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>3.4.2</b> Solving for headloss using an empirical approximation</a></li>
-<li class="chapter" data-level="3.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>3.4.3</b> Solving for head loss using an equation solver</a></li>
-<li class="chapter" data-level="3.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>3.4.4</b> Solving for head loss using an R package</a></li>
-</ul></li>
-<li class="chapter" data-level="3.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>3.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
-<ul>
-<li class="chapter" data-level="3.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>3.5.1</b> Solving for Q (or V) using manual iteration</a></li>
-<li class="chapter" data-level="3.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>3.5.2</b> Solving for Q Using an Explicit Equation</a></li>
-<li class="chapter" data-level="3.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>3.5.3</b> Solving for Q Using an R package</a></li>
-</ul></li>
-<li class="chapter" data-level="3.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>3.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
-<ul>
-<li class="chapter" data-level="3.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>3.6.1</b> Solving for D using manual iterations</a></li>
-<li class="chapter" data-level="3.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>3.6.2</b> Solving for D using an equation solver</a></li>
-</ul></li>
-<li class="chapter" data-level="3.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>3.7</b> Parallel pipes: solving a system of equations</a></li>
-<li class="chapter" data-level="3.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>3.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>4</b> Flow in open channels</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> An important dimensionless quantity</a></li>
-<li class="chapter" data-level="4.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>4.2</b> Equations for open channel flow</a></li>
-<li class="chapter" data-level="4.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>4.3</b> Trapezoidal channels</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>4.3.1</b> Solving the Manning equation in R</a></li>
-<li class="chapter" data-level="4.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>4.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
-<li class="chapter" data-level="4.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>4.3.3</b> Solving the Manning equation using a spreadsheet like Excel</a></li>
-<li class="chapter" data-level="4.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>4.3.4</b> Optimal trapezoidal geometry</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>4.4</b> Circular Channels (flowing partially full)</a>
-<ul>
-<li class="chapter" data-level="4.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>4.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
-</ul></li>
-<li class="chapter" data-level="4.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>4.5</b> Critical flow</a></li>
-<li class="chapter" data-level="4.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>4.6</b> Gradually varied steady flow</a>
-<ul>
-<li class="chapter" data-level="4.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>4.6.1</b> The direct step method</a></li>
-<li class="chapter" data-level="4.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>4.6.2</b> Standard step method</a></li>
-</ul></li>
-<li class="chapter" data-level="4.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>4.7</b> Rapidly varied flow (the hydraulic jump)</a>
-<ul>
-<li class="chapter" data-level="4.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>4.7.1</b> Sequent (or conjugate) depths</a></li>
-<li class="chapter" data-level="4.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>4.7.2</b> Location of a hydraulic jump</a></li>
+<li class="chapter" data-level="2.3.1" data-path="properties-of-water.html"><a href="properties-of-water.html#ideal-gas-law"><i class="fa fa-check"></i><b>2.3.1</b> Ideal gas law</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>5</b> Momentum in water flow</a>
+<li class="chapter" data-level="3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html"><i class="fa fa-check"></i><b>3</b> Hydrostatics - forces exerted by water bodies</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#equations-of-linear-momentum"><i class="fa fa-check"></i><b>5.1</b> Equations of linear momentum</a></li>
-<li class="chapter" data-level="5.2" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#the-momentum-equation-in-pipe-design"><i class="fa fa-check"></i><b>5.2</b> The momentum equation in pipe design</a></li>
+<li class="chapter" data-level="3.1" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#pressure-and-force"><i class="fa fa-check"></i><b>3.1</b> Pressure and force</a></li>
+<li class="chapter" data-level="3.2" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane"><i class="fa fa-check"></i><b>3.2</b> Force on a plane area</a></li>
+<li class="chapter" data-level="3.3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#forces-on-curved-surfaces"><i class="fa fa-check"></i><b>3.3</b> Forces on curved surfaces</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>6</b> Pumps and how they operate in a hydraulic system</a>
+<li class="chapter" data-level="4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>4</b> Water flowing in pipes: energy losses</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>6.1</b> Defining the system curve</a></li>
-<li class="chapter" data-level="6.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>6.2</b> Defining the pump characteristic curve</a></li>
-<li class="chapter" data-level="6.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>6.3</b> Finding the operating point</a></li>
+<li class="chapter" data-level="4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>4.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>4.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>4.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>4.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="4.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>4.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="4.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>4.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="4.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>4.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>4.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>4.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="4.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>4.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="4.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>4.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>4.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>5</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>5.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="5.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>5.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="5.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>5.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>5.3.1</b> Solving the Manning equation in R</a></li>
+<li class="chapter" data-level="5.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>5.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="5.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>5.3.3</b> Solving the Manning equation using a spreadsheet like Excel</a></li>
+<li class="chapter" data-level="5.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>5.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>5.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>5.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>5.5</b> Critical flow</a></li>
+<li class="chapter" data-level="5.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>5.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>5.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="5.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>5.6.2</b> Standard step method</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>5.7</b> Rapidly varied flow (the hydraulic jump)</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>5.7.1</b> Sequent (or conjugate) depths</a></li>
+<li class="chapter" data-level="5.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>5.7.2</b> Location of a hydraulic jump</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>6</b> Momentum in water flow</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#equations-of-linear-momentum"><i class="fa fa-check"></i><b>6.1</b> Equations of linear momentum</a></li>
+<li class="chapter" data-level="6.2" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#the-momentum-equation-in-pipe-design"><i class="fa fa-check"></i><b>6.2</b> The momentum equation in pipe design</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>7</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>7.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="7.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>7.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="7.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>7.3</b> Finding the operating point</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
@@ -257,7 +266,7 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="properties-of-water" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Properties of Water<a href="properties-of-water.html#properties-of-water" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<h1><span class="header-section-number">Chapter 2</span> Properties of water (and air)<a href="properties-of-water.html#properties-of-water" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Fundamental properties of water allow the description of the forces it exerts and how it behaves while in motion. Many were listed in Chapter .</p>
 <p>A summary of basic water properties, which vary with temperature, is shown in Table <a href="properties-of-water.html#tab:water-props-SI">2.1</a> for SI units and Table <a href="properties-of-water.html#tab:water-props-Eng">2.2</a> for US (or Eng) units.</p>
 <table class="table table-striped" style="font-size: 10px; margin-left: auto; margin-right: auto;">
@@ -2051,7 +2060,89 @@ slug ft-3
 <p>As with water property functions, the data in the table can be extracted using individual commands for use in calculations. All atmospheric functions have input arguments of altitude (<em>ft</em> or <em>m</em>), unit system (<em>SI</em> or <em>Eng</em>), and whether or not units should be returned.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="properties-of-water.html#cb9-1" aria-hidden="true" tabindex="-1"></a>hydraulics<span class="sc">::</span><span class="fu">atmpres</span>(<span class="at">alt =</span> <span class="dv">3000</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb9-2"><a href="properties-of-water.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 70121.14 [Pa]</span></span></code></pre></div>
+<div id="ideal-gas-law" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Ideal gas law<a href="properties-of-water.html#ideal-gas-law" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Because air is compressible, its density changes with pressure, and the temperature responds to compression. These are related through the ideal gas law, Equation <a href="properties-of-water.html#eq:igl1">(2.6)</a></p>
+<p><span class="math display" id="eq:igl1">\[\begin{equation}
+  \begin{split}
+    p={\rho}RT\\
+    p{\forall}=mRT
+    \end{split}
+  \tag{2.6}
+\end{equation}\]</span>
+where <span class="math inline">\(p\)</span> is <strong>absolute</strong> pressure, <span class="math inline">\(\forall\)</span> is the volume, <span class="math inline">\(R\)</span> is the gas constant, <span class="math inline">\(T\)</span> is <strong>absolute</strong> temperature, and <span class="math inline">\(m\)</span> is the mass of the gas.</p>
+<p>When air changes its condition between two states, the ideal gas law can be restated as Equation <a href="properties-of-water.html#eq:igl2">(2.7)</a></p>
+<p><span class="math display" id="eq:igl2">\[\begin{equation}
+  \frac{p_1{\forall_1}}{T_1}=\frac{p_2{\forall_2}}{T_2}
+  \tag{2.7}
+\end{equation}\]</span></p>
+<p>Two convenient forms of Equation <a href="properties-of-water.html#eq:igl2">(2.7)</a> apply for specific conditions. If mass is conserved, and conditions are isothermal, m, R, T are constant (<strong>isothermal</strong> conditions):
+<span class="math display" id="eq:igl3">\[\begin{equation}
+  p_1{\forall_1}=p_2{\forall_2}
+  \tag{2.8}
+\end{equation}\]</span></p>
+<p>If mass is conserved and temperature changes adiabatically (meaning no heat is exchanged with surroundings) and reversibly, these are <strong>isentropic</strong> conditions, governed by Equations <a href="properties-of-water.html#eq:igl4">(2.9)</a>.
+<span class="math display" id="eq:igl4">\[\begin{equation}
+  \begin{split}
+    p_1{\forall_1}^k=p_2{\forall_2}^k\\
+    \frac{T_2}{T_1}=\left(\frac{p_2}{p_1}\right)^{\frac{k-1}{k}}
+  \end{split}
+  \tag{2.9}
+\end{equation}\]</span></p>
+<p>Properties of air used in these formulations of the ideal gas law are shown in Table <a href="properties-of-water.html#tab:ideal-gas">2.5</a>.</p>
+<table class="table table-striped" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:ideal-gas">Table 2.5: </span>Air properties at standard sea-level atmospheric pressure
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Gas Constant, R
+</th>
+<th style="text-align:left;">
+Sp. Heat, cp
+</th>
+<th style="text-align:left;">
+Sp. Heat, cv
+</th>
+<th style="text-align:right;">
+Sp. Heat Ratio, k
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1715 ft lbf degR-1 slug-1
+</td>
+<td style="text-align:left;">
+6000 ft lbf degR-1 slug-1
+</td>
+<td style="text-align:left;">
+4285 ft lbf degR-1 slug-1
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+287 m N K-1 kg-1
+</td>
+<td style="text-align:left;">
+1003 m N K-1 kg-1
+</td>
+<td style="text-align:left;">
+717 m N K-1 kg-1
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+</tr>
+</tbody>
+</table>
 
+</div>
 </div>
 </div>
             </section>
@@ -2060,7 +2151,7 @@ slug ft-3
         </div>
       </div>
 <a href="units-in-fluid-mechanics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="water-flowing-in-pipes-energy-losses.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="hydrostatics---forces-exerted-by-water-bodies.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

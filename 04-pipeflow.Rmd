@@ -1,4 +1,4 @@
-# Water Flowing in Pipes: Energy Losses
+# Water flowing in pipes: energy losses
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(

@@ -1,4 +1,4 @@
-# Properties of Water {#properties-of-water}
+# Properties of water (and air) {#properties-of-water}
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -202,3 +202,72 @@ As with water property functions, the data in the table can be extracted using i
 ```{r waterprops-atmex}
 hydraulics::atmpres(alt = 3000, units = "SI", ret_units = TRUE)
 ```
+
+### Ideal gas law 
+
+Because air is compressible, its density changes with pressure, and the temperature responds to compression. These are related through the ideal gas law, Equation  \@ref(eq:igl1)
+
+\begin{equation}
+  \begin{split}
+    p={\rho}RT\\
+    p{\forall}=mRT
+    \end{split}
+  (\#eq:igl1)
+\end{equation}
+where $p$ is **absolute** pressure, $\forall$ is the volume, $R$ is the gas constant, $T$ is **absolute** temperature, and $m$ is the mass of the gas.
+
+When air changes its condition between two states, the ideal gas law can be restated as Equation \@ref(eq:igl2)
+
+\begin{equation}
+  \frac{p_1{\forall_1}}{T_1}=\frac{p_2{\forall_2}}{T_2}
+  (\#eq:igl2)
+\end{equation}
+
+Two convenient forms of Equation \@ref(eq:igl2) apply for specific conditions. If mass is conserved, and conditions are isothermal, m, R, T are constant (**isothermal** conditions):
+\begin{equation}
+  p_1{\forall_1}=p_2{\forall_2}
+  (\#eq:igl3)
+\end{equation}
+
+If mass is conserved and temperature changes adiabatically (meaning no heat is exchanged with surroundings) and reversibly, these are **isentropic** conditions, governed by Equations \@ref(eq:igl4).
+\begin{equation}
+  \begin{split}
+    p_1{\forall_1}^k=p_2{\forall_2}^k\\
+    \frac{T_2}{T_1}=\left(\frac{p_2}{p_1}\right)^{\frac{k-1}{k}}
+  \end{split}
+  (\#eq:igl4)
+\end{equation}
+
+Properties of air used in these formulations of the ideal gas law are shown in Table \@ref(tab:ideal-gas).
+
+```{r ideal-gas, echo=FALSE, message=FALSE, warnings=FALSE}
+R1 <- units::set_units(1715,"ft*lbf/(slug*degR)")
+cp1 <- units::set_units(6000,"ft*lbf/(slug*degR)")
+cv1 <- units::set_units(4285,"ft*lbf/(slug*degR)")
+k1 <- round(cp1/cv1,2)
+R2 <- units::set_units(R1,"N*m/(kg*K)")
+cp2 <- units::set_units(cp1,"N*m/(kg*K)")
+cv2 <- units::set_units(cv1,"N*m/(kg*K)")
+k2 <- round(cp2/cv2,2)
+df1 <- data.frame(
+  R = as.character(paste(round(units::drop_units(R1),0),units::deparse_unit(R1))),
+  cp = as.character(paste(round(units::drop_units(cp1),0),units::deparse_unit(cp1))),
+  cv = as.character(paste(round(units::drop_units(cv1),0),units::deparse_unit(cv1))),
+  k = units::drop_units(k1)
+  )
+df2 <- data.frame(
+  R = as.character(paste(round(units::drop_units(R2),0),units::deparse_unit(R2))),
+  cp = as.character(paste(round(units::drop_units(cp2),0),units::deparse_unit(cp2))),
+  cv = as.character(paste(round(units::drop_units(cv2),0),units::deparse_unit(cv2))),
+  k = units::drop_units(k2)
+  )
+
+knitr::kable(rbind(df1,df2), col.names = c("Gas Constant, R",
+                           "Sp. Heat, cp",
+                           "Sp. Heat, cv",
+                           "Sp. Heat Ratio, k"),
+            booktabs = TRUE,
+            caption = 'Air properties at standard sea-level atmospheric pressure') %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", font_size = 10)
+```
+

@@ -1,0 +1,157 @@
+# Hydrostatics - forces exerted by water bodies
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+When water is motionless its weight exerts a pressure on surfaces with which it is in contact. The force is function of the density of the fluid and the depth.
+
+(ref:figdam) The Clywedog dam by Nigel Brown, [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0), via Wikimedia Commons 
+
+```{r out.width='70%', echo=FALSE, fig.align="center", fig.cap='(ref:figdam)'}
+  knitr::include_graphics("images/The_Clywedog_dam_-_geograph.org.uk_-_1893308.jpg")
+```
+
+## Pressure and force
+
+A consideration of all of the forces acting on a particle in a fluid in equilibrium produces Equation \@ref(eq:pf-1).
+\begin{equation}
+  \frac{dp}{dz}=-{\gamma}
+  (\#eq:pf-1)
+\end{equation}
+where $p$ is pressure ($p=F/A$), $z$ is height measured upward from a datum, and ${\gamma}$ is the specific weight of the fluid ($\gamma={\rho}g$).  Rewritten using depth (downward from the water surface), $h$, produces Equation \@ref(eq:pf-2).
+\begin{equation}
+  h=\frac{p}{\gamma}
+  (\#eq:pf-2)
+\end{equation}
+
+::: {.example #ex-pf}
+Find the force on the bottom of a 0.4 m diameter barrel filled with (20 $^\circ$C) water for barrel heights from 0.5 m to 1.5 m.
+:::
+```{r out.width='20%', out.extra='style="float:right; padding:10px"', echo=FALSE}
+  knitr::include_graphics("images/barrel-36724.png")
+```
+```{r hs-ex1, out.width="60%", fig.cap="Force on barrel bottom.", warning=FALSE, message=FALSE}
+area <- pi/4*0.4^2
+gamma <- hydraulics::specwt(T = 20, units = 'SI')
+heights <- seq(from=0.5, to=1.5, by=0.05)
+pressures <-  gamma * heights
+forces <- pressures * area
+plot(forces,heights, xlab="Total force on barrel bottom, N", ylab="Depth of water, m", type="l")
+grid()
+```
+
+## Force on a plane area {#hs-plane}
+
+(ref:figfsp) Forces on a plane area, by Ertunc, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0), via Wikimedia Commons 
+
+For a submerged flat surface, the magnitude of the hydrostatic force can be found using Equation \@ref(eq:hsp-1).
+\begin{equation}
+  F={\gamma}y_c\sin{\theta}A={\gamma}h_cA
+  (\#eq:hsp-1)
+\end{equation}
+
+The force is located as defined by Equation \@ref(eq:hsp-2).
+\begin{equation}
+  y_p=y_c+\frac{I_c}{y_cA}
+  (\#eq:hsp-2)
+\end{equation}
+
+The variables correspond to the definitions in Figure \@ref(fig:hsp-def).
+```{r hsp-def, out.width='60%', echo=FALSE, fig.align="center", fig.cap='(ref:figfsp)'}
+  knitr::include_graphics("images/1024px-Hydrostatic_force_on_submerged_plane.png")
+```
+
+The location of the centroid and the moment of inertia, $I_c$ for some common shapes are shown in Figure \@ref(fig:centroids-I) [@moore_j_mechanics_2022]. The variables correspond to the definitions in Figure \@ref(fig:centroids-I).
+```{r centroids-I, out.width='85%', echo=FALSE, fig.align="center", fig.cap='Centroids and moments of inertia for common shapes'}
+  knitr::include_graphics("images/centroids_common_shapes.png")
+```
+
+::: {.example #ex-hsp}
+A 6 m long hinged gate with a width of 1 m (into the paper) is at an angle of 60^o^ and is held in place by a horizontal cable. Plot the tension in the cable, $T$, as the water depth, $h$, varies from 0.1 to 4 m in depth. Ignore the weight of the gate.
+:::
+```{r ex-hspfig, out.width='60%', echo=FALSE, fig.align="center", fig.cap='Reservoir with hinged gate (Olivier Cleyne, CC0 license, via Wikimedia Commons)'}
+  knitr::include_graphics("images/1024px-Water_reservoir_door_cable.svg.png")
+```
+The surface area of the gate that is wetted is $A=L{\cdot}w=\frac{h{\cdot}w}{\sin(60)}$. The wetted area is rectangular, so $h_c=\frac{h}{2}$. The magnitude of the force uses \@ref(eq:hsp-1): $$F={\gamma}h_cA={\gamma}\frac{h}{2}\frac{h{\cdot}w}{\sin(60)}$$
+
+The distance along the plane from the water surface to the centroid of the wetted area is $y_c=\frac{1}{2}\frac{h}{\sin(60)}$. The moment of inertia for the rectangular wetted area is $I_c=\frac{1}{12}w\left(\frac{h}{\sin(60)}\right)^3$.
+
+Taking moments about the hinge at the bottom of the gate yields $T{\cdot}6\sin(60)-F{\cdot}\left(\frac{h}{\sin(60)}-y_p\right)=0$ or $T=\frac{F}{6\cdot\sin(60)}\left(\frac{h}{\sin(60)}-y_p\right)$
+
+These equations can be used in R to create the desired plot.
+```{r hs-ex2, out.width="60%", warning=FALSE, message=FALSE}
+gate_length <- 6.0
+w <- 1.0
+theta <- 60*pi/180  #convert angle to radians
+h <- seq(from=0.1, to=4.1, by=0.25)
+gamma <- hydraulics::specwt(T = 20, units = 'SI')
+area <- h*w/sin(theta)
+hc <- h/2
+Force <- gamma*hc*area
+yc <- (1/2)*h/(sin(theta))
+Ic <- (1/12)*w*(h/sin(theta))^3
+yp <- yc + (Ic/(yc*area))
+Tension <- Force/(gate_length*sin(theta)) * (h/sin(theta) - yp)
+plot(Tension,h, xlab="Cable tension, N", ylab="Depth of water, m", type="l")
+grid()
+```
+
+## Forces on curved surfaces
+
+For forces on curved surfaces, the procedure is often to calculate the vertical, $F_V$, and horizontal, $F_H$, hydrostatic forces separately. $F_H$ is simpler, since it is the horizontal force on a (plane) vertical projection of the submerged surface, so the methods of Section \@ref(hs-plane) apply.
+
+The vertical component, $F_V$, for a submerged surface with water above has a magnitude of the weight of the water above it, which acts through the center of volume. For a curved surface with water below it the magnitude of $F_V$ is the volume of the 'mising' water that would be above it, and the force acts upward.
+
+(ref:figfsc) Forces on curved surfaces, by Ertunc, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0), via Wikimedia Commons 
+
+```{r hsc-def, out.width='60%', echo=FALSE, fig.align="center", fig.cap='(ref:figfsc)'}
+  knitr::include_graphics("images/Hydrostatic_force_on_curved_submerged_surface.png")
+```
+
+A classic example of a curved surface in civil engineering hydraulics is a radial (or Tainter) gate, as in Figure \@ref(fig:hsc-gate).
+```{r hsc-gate, out.width='60%', echo=FALSE, fig.align="center", fig.cap='Radial gates on the Rogue River, OR.'}
+  knitr::include_graphics("images/radialgates_RogueRiver_Oregon_USA.jpg")
+```
+
+To simplify the geometry, a problem is presented in Example \@ref(exm:ex-hsc) where the gate meets the base at a horizontal angle.
+
+::: {.example #ex-hsc}
+A radial gate with radius R=6 m and a width of 1 m (into the paper) controls water. Find the horizontal and vertical hydrostatic forces for depths, $h$, from 0 to 6 m.
+:::
+```{r ex-hscfig, out.width='60%', echo=FALSE, fig.align="center"}
+  knitr::include_graphics("images/radial_gate_problem.PNG")
+```
+The horizontal hydrostatic force is that acting on a rectangle of height $h$ and width $w$: $$F_h=\frac{1}{2}{\gamma}h^2w$$ which acts at a height of $y_c=\frac{h}{3}$ from the bottom of the gate.
+
+The vertical component has a magnitude equal to the weight of the 'missing' water indicated on the sketch. The calculation of its volume requires the area of a circular sector minus the area of a triangle above it.
+```{r ex-hscfig2, out.width='30%', out.extra='style="float:right; padding:10px"',echo=FALSE}
+  knitr::include_graphics("images/radial_gate_problem_fv.PNG")
+```
+The angle, $\theta$ is found using geometry to be ${\theta}=cos^{-1}\left(\frac{R-h}{R}\right)$. 
+Using the equations for areas of these two components as in Figure \@ref(fig:centroids-I), the following is obtained:
+$$F_v={\gamma}w\left(\frac{R^2\theta}{2}-\frac{R-h}{2}R\sin{\theta}\right)$$
+
+The line of action of $F_v$ can be determined by combining the components for centroids of the composite shapes, again following Figure \@ref(fig:centroids-I). Because the line of action of the resultant force on a curcular gate must pass through the center of the circle (since hydrostatic forces always act normal to the gate), the moments about the hinge of $F_x$ and $F_y$ must equal zero. This produces the equation:
+$$x_c=\frac{F_h\left(R-h/3\right)}{F_v}$$
+
+These equations can be solved in many ways, such as the following.
+```{r hs-ex3, out.width="60%", warning=FALSE, message=FALSE}
+R <- units::set_units(6.0, m)
+w <- units::set_units(1.0, m)
+gamma <- hydraulics::specwt(T = 20, units = 'SI', ret_units = TRUE)
+h <- units::set_units(seq(from=0, to=6, by=1), m)
+#angle in radians throughout, units not needed
+theta <- units::drop_units(acos((R-h)/R)) 
+area <- h*w/sin(theta)
+Fh <- (1/2)*gamma*h^2*w
+yc <- h/3
+Fv <- gamma*w*((R^2*theta)/2 - ((R-h)/2) * R*sin(theta))
+xc <- Fh*(R-h/3)/Fv
+Ftotal <- sqrt(Fh^2+Fv^2)
+tibble::tibble(h=h, Fh=Fh, yc=yc, Fv=Fv, xc=xc, Ftotal=Ftotal)
+```
+

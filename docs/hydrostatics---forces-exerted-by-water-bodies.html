@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Hydrostatics - forces exerted by water bodies | Hydraulics and Water Resources: Examples Using R</title>
+  <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Hydrostatics - forces exerted by water bodies | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Hydrostatics - forces exerted by water bodies | Hydraulics and Water Resources: Examples Using R" />
+  
+  <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+<meta name="author" content="Ed Maurer" />
+
+
+<meta name="date" content="2022-11-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="properties-of-water.html"/>
+<link rel="next" href="water-flowing-in-pipes-energy-losses.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of water (and air)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
+<li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="properties-of-water.html"><a href="properties-of-water.html#ideal-gas-law"><i class="fa fa-check"></i><b>2.3.1</b> Ideal gas law</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html"><i class="fa fa-check"></i><b>3</b> Hydrostatics - forces exerted by water bodies</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#pressure-and-force"><i class="fa fa-check"></i><b>3.1</b> Pressure and force</a></li>
+<li class="chapter" data-level="3.2" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane"><i class="fa fa-check"></i><b>3.2</b> Force on a plane area</a></li>
+<li class="chapter" data-level="3.3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#forces-on-curved-surfaces"><i class="fa fa-check"></i><b>3.3</b> Forces on curved surfaces</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>4</b> Water flowing in pipes: energy losses</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>4.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>4.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>4.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>4.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="4.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>4.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="4.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>4.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="4.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>4.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>4.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>4.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="4.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>4.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="4.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>4.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>4.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>5</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>5.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="5.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>5.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="5.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>5.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>5.3.1</b> Solving the Manning equation in R</a></li>
+<li class="chapter" data-level="5.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>5.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="5.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>5.3.3</b> Solving the Manning equation using a spreadsheet like Excel</a></li>
+<li class="chapter" data-level="5.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>5.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>5.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>5.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>5.5</b> Critical flow</a></li>
+<li class="chapter" data-level="5.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>5.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>5.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="5.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>5.6.2</b> Standard step method</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>5.7</b> Rapidly varied flow (the hydraulic jump)</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>5.7.1</b> Sequent (or conjugate) depths</a></li>
+<li class="chapter" data-level="5.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>5.7.2</b> Location of a hydraulic jump</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>6</b> Momentum in water flow</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#equations-of-linear-momentum"><i class="fa fa-check"></i><b>6.1</b> Equations of linear momentum</a></li>
+<li class="chapter" data-level="6.2" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#the-momentum-equation-in-pipe-design"><i class="fa fa-check"></i><b>6.2</b> The momentum equation in pipe design</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>7</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>7.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="7.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>7.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="7.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>7.3</b> Finding the operating point</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hydraulics and Water Resources: Examples Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="hydrostatics---forces-exerted-by-water-bodies" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Hydrostatics - forces exerted by water bodies<a href="hydrostatics---forces-exerted-by-water-bodies.html#hydrostatics---forces-exerted-by-water-bodies" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>When water is motionless its weight exerts a pressure on surfaces with which it is in contact. The force is function of the density of the fluid and the depth.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
+<img src="images/The_Clywedog_dam_-_geograph.org.uk_-_1893308.jpg" alt="The Clywedog dam by Nigel Brown, CC BY-SA 2.0, via Wikimedia Commons" width="70%" />
+<p class="caption">
+Figure 3.1: The Clywedog dam by Nigel Brown, <a href="https://creativecommons.org/licenses/by-sa/2.0">CC BY-SA 2.0</a>, via Wikimedia Commons
+</p>
+</div>
+<div id="pressure-and-force" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Pressure and force<a href="hydrostatics---forces-exerted-by-water-bodies.html#pressure-and-force" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A consideration of all of the forces acting on a particle in a fluid in equilibrium produces Equation <a href="hydrostatics---forces-exerted-by-water-bodies.html#eq:pf-1">(3.1)</a>.
+<span class="math display" id="eq:pf-1">\[\begin{equation}
+  \frac{dp}{dz}=-{\gamma}
+  \tag{3.1}
+\end{equation}\]</span>
+where <span class="math inline">\(p\)</span> is pressure (<span class="math inline">\(p=F/A\)</span>), <span class="math inline">\(z\)</span> is height measured upward from a datum, and <span class="math inline">\({\gamma}\)</span> is the specific weight of the fluid (<span class="math inline">\(\gamma={\rho}g\)</span>). Rewritten using depth (downward from the water surface), <span class="math inline">\(h\)</span>, produces Equation <a href="hydrostatics---forces-exerted-by-water-bodies.html#eq:pf-2">(3.2)</a>.
+<span class="math display" id="eq:pf-2">\[\begin{equation}
+  h=\frac{p}{\gamma}
+  \tag{3.2}
+\end{equation}\]</span></p>
+<div class="example">
+<p><span id="exm:ex-pf" class="example"><strong>Example 3.1  </strong></span>Find the force on the bottom of a 0.4 m diameter barrel filled with (20 <span class="math inline">\(^\circ\)</span>C) water for barrel heights from 0.5 m to 1.5 m.</p>
+</div>
+<p><img src="images/barrel-36724.png" width="20%" style="float:right; padding:10px" /></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb10-1" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> pi<span class="sc">/</span><span class="dv">4</span><span class="sc">*</span><span class="fl">0.4</span><span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb10-2"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb10-2" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">specwt</span>(<span class="at">T =</span> <span class="dv">20</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb10-3"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb10-3" aria-hidden="true" tabindex="-1"></a>heights <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="fl">0.5</span>, <span class="at">to=</span><span class="fl">1.5</span>, <span class="at">by=</span><span class="fl">0.05</span>)</span>
+<span id="cb10-4"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb10-4" aria-hidden="true" tabindex="-1"></a>pressures <span class="ot">&lt;-</span>  gamma <span class="sc">*</span> heights</span>
+<span id="cb10-5"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb10-5" aria-hidden="true" tabindex="-1"></a>forces <span class="ot">&lt;-</span> pressures <span class="sc">*</span> area</span>
+<span id="cb10-6"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(forces,heights, <span class="at">xlab=</span><span class="st">&quot;Total force on barrel bottom, N&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Depth of water, m&quot;</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span>
+<span id="cb10-7"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:hs-ex1"></span>
+<img src="hydr-watres_main_files/figure-html/hs-ex1-1.png" alt="Force on barrel bottom." width="60%" />
+<p class="caption">
+Figure 3.2: Force on barrel bottom.
+</p>
+</div>
+</div>
+<div id="hs-plane" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Force on a plane area<a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+<p>For a submerged flat surface, the magnitude of the hydrostatic force can be found using Equation <a href="hydrostatics---forces-exerted-by-water-bodies.html#eq:hsp-1">(3.3)</a>.
+<span class="math display" id="eq:hsp-1">\[\begin{equation}
+  F={\gamma}y_c\sin{\theta}A={\gamma}h_cA
+  \tag{3.3}
+\end{equation}\]</span></p>
+<p>The force is located as defined by Equation <a href="hydrostatics---forces-exerted-by-water-bodies.html#eq:hsp-2">(3.4)</a>.
+<span class="math display" id="eq:hsp-2">\[\begin{equation}
+  y_p=y_c+\frac{I_c}{y_cA}
+  \tag{3.4}
+\end{equation}\]</span></p>
+The variables correspond to the definitions in Figure <a href="hydrostatics---forces-exerted-by-water-bodies.html#fig:hsp-def">3.3</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hsp-def"></span>
+<img src="images/1024px-Hydrostatic_force_on_submerged_plane.png" alt="Forces on a plane area, by Ertunc, CC BY-SA 4.0, via Wikimedia Commons" width="60%" />
+<p class="caption">
+Figure 3.3: Forces on a plane area, by Ertunc, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via Wikimedia Commons
+</p>
+</div>
+The location of the centroid and the moment of inertia, <span class="math inline">\(I_c\)</span> for some common shapes are shown in Figure <a href="hydrostatics---forces-exerted-by-water-bodies.html#fig:centroids-I">3.4</a> <span class="citation">(<a href="references.html#ref-moore_j_mechanics_2022" role="doc-biblioref">Moore, J. et al. 2022</a>)</span>. The variables correspond to the definitions in Figure <a href="hydrostatics---forces-exerted-by-water-bodies.html#fig:centroids-I">3.4</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:centroids-I"></span>
+<img src="images/centroids_common_shapes.png" alt="Centroids and moments of inertia for common shapes" width="85%" />
+<p class="caption">
+Figure 3.4: Centroids and moments of inertia for common shapes
+</p>
+</div>
+<div class="example">
+<p><span id="exm:ex-hsp" class="example"><strong>Example 3.2  </strong></span>A 6 m long hinged gate with a width of 1 m (into the paper) is at an angle of 60<sup>o</sup> and is held in place by a horizontal cable. Plot the tension in the cable, <span class="math inline">\(T\)</span>, as the water depth, <span class="math inline">\(h\)</span>, varies from 0.1 to 4 m in depth. Ignore the weight of the gate.</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ex-hspfig"></span>
+<img src="images/1024px-Water_reservoir_door_cable.svg.png" alt="Reservoir with hinged gate (Olivier Cleyne, CC0 license, via Wikimedia Commons)" width="60%" />
+<p class="caption">
+Figure 3.5: Reservoir with hinged gate (Olivier Cleyne, CC0 license, via Wikimedia Commons)
+</p>
+</div>
+<p>The surface area of the gate that is wetted is <span class="math inline">\(A=L{\cdot}w=\frac{h{\cdot}w}{\sin(60)}\)</span>. The wetted area is rectangular, so <span class="math inline">\(h_c=\frac{h}{2}\)</span>. The magnitude of the force uses <a href="hydrostatics---forces-exerted-by-water-bodies.html#eq:hsp-1">(3.3)</a>: <span class="math display">\[F={\gamma}h_cA={\gamma}\frac{h}{2}\frac{h{\cdot}w}{\sin(60)}\]</span></p>
+<p>The distance along the plane from the water surface to the centroid of the wetted area is <span class="math inline">\(y_c=\frac{1}{2}\frac{h}{\sin(60)}\)</span>. The moment of inertia for the rectangular wetted area is <span class="math inline">\(I_c=\frac{1}{12}w\left(\frac{h}{\sin(60)}\right)^3\)</span>.</p>
+<p>Taking moments about the hinge at the bottom of the gate yields <span class="math inline">\(T{\cdot}6\sin(60)-F{\cdot}\left(\frac{h}{\sin(60)}-y_p\right)=0\)</span> or <span class="math inline">\(T=\frac{F}{6\cdot\sin(60)}\left(\frac{h}{\sin(60)}-y_p\right)\)</span></p>
+<p>These equations can be used in R to create the desired plot.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-1" aria-hidden="true" tabindex="-1"></a>gate_length <span class="ot">&lt;-</span> <span class="fl">6.0</span></span>
+<span id="cb11-2"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fl">1.0</span></span>
+<span id="cb11-3"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-3" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="dv">60</span><span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>  <span class="co">#convert angle to radians</span></span>
+<span id="cb11-4"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-4" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="fl">0.1</span>, <span class="at">to=</span><span class="fl">4.1</span>, <span class="at">by=</span><span class="fl">0.25</span>)</span>
+<span id="cb11-5"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-5" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">specwt</span>(<span class="at">T =</span> <span class="dv">20</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb11-6"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-6" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> h<span class="sc">*</span>w<span class="sc">/</span><span class="fu">sin</span>(theta)</span>
+<span id="cb11-7"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-7" aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> h<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb11-8"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-8" aria-hidden="true" tabindex="-1"></a>Force <span class="ot">&lt;-</span> gamma<span class="sc">*</span>hc<span class="sc">*</span>area</span>
+<span id="cb11-9"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-9" aria-hidden="true" tabindex="-1"></a>yc <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)<span class="sc">*</span>h<span class="sc">/</span>(<span class="fu">sin</span>(theta))</span>
+<span id="cb11-10"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-10" aria-hidden="true" tabindex="-1"></a>Ic <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>)<span class="sc">*</span>w<span class="sc">*</span>(h<span class="sc">/</span><span class="fu">sin</span>(theta))<span class="sc">^</span><span class="dv">3</span></span>
+<span id="cb11-11"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-11" aria-hidden="true" tabindex="-1"></a>yp <span class="ot">&lt;-</span> yc <span class="sc">+</span> (Ic<span class="sc">/</span>(yc<span class="sc">*</span>area))</span>
+<span id="cb11-12"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-12" aria-hidden="true" tabindex="-1"></a>Tension <span class="ot">&lt;-</span> Force<span class="sc">/</span>(gate_length<span class="sc">*</span><span class="fu">sin</span>(theta)) <span class="sc">*</span> (h<span class="sc">/</span><span class="fu">sin</span>(theta) <span class="sc">-</span> yp)</span>
+<span id="cb11-13"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Tension,h, <span class="at">xlab=</span><span class="st">&quot;Cable tension, N&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Depth of water, m&quot;</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span>
+<span id="cb11-14"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<p><img src="hydr-watres_main_files/figure-html/hs-ex2-1.png" width="60%" /></p>
+</div>
+<div id="forces-on-curved-surfaces" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Forces on curved surfaces<a href="hydrostatics---forces-exerted-by-water-bodies.html#forces-on-curved-surfaces" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For forces on curved surfaces, the procedure is often to calculate the vertical, <span class="math inline">\(F_V\)</span>, and horizontal, <span class="math inline">\(F_H\)</span>, hydrostatic forces separately. <span class="math inline">\(F_H\)</span> is simpler, since it is the horizontal force on a (plane) vertical projection of the submerged surface, so the methods of Section <a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane">3.2</a> apply.</p>
+<p>The vertical component, <span class="math inline">\(F_V\)</span>, for a submerged surface with water above has a magnitude of the weight of the water above it, which acts through the center of volume. For a curved surface with water below it the magnitude of <span class="math inline">\(F_V\)</span> is the volume of the ‘mising’ water that would be above it, and the force acts upward.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hsc-def"></span>
+<img src="images/Hydrostatic_force_on_curved_submerged_surface.png" alt="Forces on curved surfaces, by Ertunc, CC BY-SA 4.0, via Wikimedia Commons" width="60%" />
+<p class="caption">
+Figure 3.6: Forces on curved surfaces, by Ertunc, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via Wikimedia Commons
+</p>
+</div>
+A classic example of a curved surface in civil engineering hydraulics is a radial (or Tainter) gate, as in Figure <a href="hydrostatics---forces-exerted-by-water-bodies.html#fig:hsc-gate">3.7</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hsc-gate"></span>
+<img src="images/radialgates_RogueRiver_Oregon_USA.jpg" alt="Radial gates on the Rogue River, OR." width="60%" />
+<p class="caption">
+Figure 3.7: Radial gates on the Rogue River, OR.
+</p>
+</div>
+<p>To simplify the geometry, a problem is presented in Example <a href="hydrostatics---forces-exerted-by-water-bodies.html#exm:ex-hsc">3.3</a> where the gate meets the base at a horizontal angle.</p>
+<div class="example">
+<p><span id="exm:ex-hsc" class="example"><strong>Example 3.3  </strong></span>A radial gate with radius R=6 m and a width of 1 m (into the paper) controls water. Find the horizontal and vertical hydrostatic forces for depths, <span class="math inline">\(h\)</span>, from 0 to 6 m.</p>
+</div>
+<p><img src="images/radial_gate_problem.PNG" width="60%" style="display: block; margin: auto;" />
+The horizontal hydrostatic force is that acting on a rectangle of height <span class="math inline">\(h\)</span> and width <span class="math inline">\(w\)</span>: <span class="math display">\[F_h=\frac{1}{2}{\gamma}h^2w\]</span> which acts at a height of <span class="math inline">\(y_c=\frac{h}{3}\)</span> from the bottom of the gate.</p>
+<p>The vertical component has a magnitude equal to the weight of the ‘missing’ water indicated on the sketch. The calculation of its volume requires the area of a circular sector minus the area of a triangle above it.
+<img src="images/radial_gate_problem_fv.PNG" width="30%" style="float:right; padding:10px" />
+The angle, <span class="math inline">\(\theta\)</span> is found using geometry to be <span class="math inline">\({\theta}=cos^{-1}\left(\frac{R-h}{R}\right)\)</span>.
+Using the equations for areas of these two components as in Figure <a href="hydrostatics---forces-exerted-by-water-bodies.html#fig:centroids-I">3.4</a>, the following is obtained:
+<span class="math display">\[F_v={\gamma}w\left(\frac{R^2\theta}{2}-\frac{R-h}{2}R\sin{\theta}\right)\]</span></p>
+<p>The line of action of <span class="math inline">\(F_v\)</span> can be determined by combining the components for centroids of the composite shapes, again following Figure <a href="hydrostatics---forces-exerted-by-water-bodies.html#fig:centroids-I">3.4</a>. Because the line of action of the resultant force on a curcular gate must pass through the center of the circle (since hydrostatic forces always act normal to the gate), the moments about the hinge of <span class="math inline">\(F_x\)</span> and <span class="math inline">\(F_y\)</span> must equal zero. This produces the equation:
+<span class="math display">\[x_c=\frac{F_h\left(R-h/3\right)}{F_v}\]</span></p>
+<p>These equations can be solved in many ways, such as the following.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-1" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">6.0</span>, m)</span>
+<span id="cb12-2"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">1.0</span>, m)</span>
+<span id="cb12-3"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">specwt</span>(<span class="at">T =</span> <span class="dv">20</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-4"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-4" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fu">seq</span>(<span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">6</span>, <span class="at">by=</span><span class="dv">1</span>), m)</span>
+<span id="cb12-5"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#angle in radians throughout, units not needed</span></span>
+<span id="cb12-6"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-6" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">drop_units</span>(<span class="fu">acos</span>((R<span class="sc">-</span>h)<span class="sc">/</span>R)) </span>
+<span id="cb12-7"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-7" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> h<span class="sc">*</span>w<span class="sc">/</span><span class="fu">sin</span>(theta)</span>
+<span id="cb12-8"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-8" aria-hidden="true" tabindex="-1"></a>Fh <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)<span class="sc">*</span>gamma<span class="sc">*</span>h<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>w</span>
+<span id="cb12-9"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-9" aria-hidden="true" tabindex="-1"></a>yc <span class="ot">&lt;-</span> h<span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb12-10"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-10" aria-hidden="true" tabindex="-1"></a>Fv <span class="ot">&lt;-</span> gamma<span class="sc">*</span>w<span class="sc">*</span>((R<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>theta)<span class="sc">/</span><span class="dv">2</span> <span class="sc">-</span> ((R<span class="sc">-</span>h)<span class="sc">/</span><span class="dv">2</span>) <span class="sc">*</span> R<span class="sc">*</span><span class="fu">sin</span>(theta))</span>
+<span id="cb12-11"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-11" aria-hidden="true" tabindex="-1"></a>xc <span class="ot">&lt;-</span> Fh<span class="sc">*</span>(R<span class="sc">-</span>h<span class="sc">/</span><span class="dv">3</span>)<span class="sc">/</span>Fv</span>
+<span id="cb12-12"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-12" aria-hidden="true" tabindex="-1"></a>Ftotal <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(Fh<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span>Fv<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb12-13"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-13" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">h=</span>h, <span class="at">Fh=</span>Fh, <span class="at">yc=</span>yc, <span class="at">Fv=</span>Fv, <span class="at">xc=</span>xc, <span class="at">Ftotal=</span>Ftotal)</span>
+<span id="cb12-14"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 7 × 6</span></span>
+<span id="cb12-15"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     h      Fh    yc      Fv     xc  Ftotal</span></span>
+<span id="cb12-16"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [m]     [N]   [m]     [N]    [m]     [N]</span></span>
+<span id="cb12-17"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   0      0  0          0  NaN         0 </span></span>
+<span id="cb12-18"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   1   4896. 0.333  22041.   1.26  22578.</span></span>
+<span id="cb12-19"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3   2  19585. 0.667  60665.   1.72  63748.</span></span>
+<span id="cb12-20"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   3  44067. 1     108261.   2.04 116886.</span></span>
+<span id="cb12-21"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5   4  78341. 1.33  161583.   2.26 179573.</span></span>
+<span id="cb12-22"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6   5 122408. 1.67  218398.   2.43 250363.</span></span>
+<span id="cb12-23"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7   6 176268. 2     276881.   2.55 328228.</span></span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="properties-of-water.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="water-flowing-in-pipes-energy-losses.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
