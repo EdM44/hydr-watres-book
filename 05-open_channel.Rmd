@@ -297,12 +297,12 @@ For any channel geometry and flow rate a convenient plot is a specific energy di
 \end{equation}
 It can be interpreted as the total energy head, or energy per unit weight, relative to the channel bottom.
 
-For a trapezoidal channel, critical flow conditions occur as described by Equation \@ref(eq:crit-1). Combining that with trapezoidal geometry produces Equation \@ref(eq:spen2)
+For a **trapezoidal** channel, critical flow conditions occur as described by Equation \@ref(eq:crit-1). Combining that with trapezoidal geometry produces Equation \@ref(eq:spen2)
 \begin{equation}
   \frac{Q^2}{g}=\frac{\left(by_c+m{y_c}^2\right)^3}{b+2my_c}
   (\#eq:spen2)
 \end{equation}
-where y_c indicates critical flow depth.
+where $y_c$ indicates critical flow depth.
 
 This is important for understanding what may happen to the water surface when flow encounters an obstacle or transition. For the channel of Example \@ref(exm:manningtopt), the diagram is 
 ```{r manningt-4, fig.width = 4, fig.asp = 1.0}
@@ -345,7 +345,7 @@ If the water surface passes through critical depth (from supercritical to subcri
 ### The direct step method
 
 The direct step method looks at two cross sections in a channel where depths, $y_1$ and $y_2$ are defined. 
-```{r gvffig1, out.width='80%', echo=FALSE, fig.align="center"}
+```{r gvffig1, out.width='60%', echo=FALSE, fig.align="center"}
   knitr::include_graphics("images/direct-step.png")
 ```
 
@@ -399,7 +399,7 @@ depth_incr <- (y2 - y1) / nsteps
 depths <- seq(from=y1, to=y2, by=depth_incr)
 ```
 
-First check to see if the flow is subcritical or supercritical and find the normal depth. Critical and normal depths can be calculated using the _manningt_ function in the _hydraulics_ package, as in Example \@ref(exm:oc-2). However, because other functionality of the _rivr_ package is used, these will be calculated using functions from the _rivr_ package. 
+First check to see if the flow is subcritical or supercritical and find the normal depth. Critical and normal depths can be calculated using the _manningt_ function in the _hydraulics_ package, as in Example \@ref(exm:oc-2). However, because other functionality of the [rivr](https://cran.r-project.org/package=rivr) package is used, these will be calculated using functions from the _rivr_ package. 
 ```{r gvfsol-2, message=FALSE, warning=FALSE}
 rivr::critical_depth(Q = Q, yopt = y1, g = g, B = bottom_width , SS = side_slope)
 #note using either depth for yopt produces the same answer
@@ -455,7 +455,7 @@ This produces the same result, and verifies that the water surface profile is ty
 
 The standard step method works similarly to the direct step method, except from one known depth the second depth is determined at a known distance, _L_. This is a preferred method when the depth at a critical location, such as a bridge, is needed.
 
-The _rivr_ package implements the standard step method in its _compute\_profile_ function. To compare it to the direct step method, check the depth at $y_2$ given the total distance from Example \@ref(exm:gvfx1).
+The [rivr](https://cran.r-project.org/package=rivr) package implements the standard step method in its _compute\_profile_ function. To compare it to the direct step method, check the depth at $y_2$ given the total distance from Example \@ref(exm:gvfx1).
 
 ::: {.example #gvfx2}
 For the same channel and flow rate as Example \@ref(exm:gvfx1), determine the depth of water at the distance _L_ determined above.

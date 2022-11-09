@@ -7,7 +7,7 @@
   <title>Chapter 5 Flow in open channels | Hydraulics and Water Resources: Examples Using R</title>
   <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
 engineering exercises using R.</p>" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Flow in open channels | Hydraulics and Water Resources: Examples Using R" />
   <meta property="og:type" content="book" />
@@ -26,7 +26,7 @@ engineering exercises using R.</p>" />
 <meta name="author" content="Ed Maurer" />
 
 
-<meta name="date" content="2022-11-08" />
+<meta name="date" content="2022-11-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -632,12 +632,12 @@ For an existing pipe, a common problem is the determination of the depth, <em>y<
   \tag{5.18}
 \end{equation}\]</span>
 It can be interpreted as the total energy head, or energy per unit weight, relative to the channel bottom.</p>
-<p>For a trapezoidal channel, critical flow conditions occur as described by Equation <a href="flow-in-open-channels.html#eq:crit-1">(5.4)</a>. Combining that with trapezoidal geometry produces Equation <a href="flow-in-open-channels.html#eq:spen2">(5.19)</a>
+<p>For a <strong>trapezoidal</strong> channel, critical flow conditions occur as described by Equation <a href="flow-in-open-channels.html#eq:crit-1">(5.4)</a>. Combining that with trapezoidal geometry produces Equation <a href="flow-in-open-channels.html#eq:spen2">(5.19)</a>
 <span class="math display" id="eq:spen2">\[\begin{equation}
   \frac{Q^2}{g}=\frac{\left(by_c+m{y_c}^2\right)^3}{b+2my_c}
   \tag{5.19}
 \end{equation}\]</span>
-where y_c indicates critical flow depth.</p>
+where <span class="math inline">\(y_c\)</span> indicates critical flow depth.</p>
 <p>This is important for understanding what may happen to the water surface when flow encounters an obstacle or transition. For the channel of Example <a href="flow-in-open-channels.html#exm:manningtopt">5.3</a>, the diagram is</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="flow-in-open-channels.html#cb39-1" aria-hidden="true" tabindex="-1"></a>hydraulics<span class="sc">::</span><span class="fu">spec_energy_trap</span>( <span class="at">Q =</span> <span class="dv">360</span>, <span class="at">b =</span> <span class="dv">20</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">scale =</span> <span class="dv">4</span>, <span class="at">units =</span> <span class="st">&quot;Eng&quot;</span> )</span></code></pre></div>
 <p><img src="hydr-watres_main_files/figure-html/manningt-4-1.png" width="384" /></p>
@@ -674,7 +674,7 @@ Figure 5.4: Types of flow profiles with changes in slope or roughness
 <div id="the-direct-step-method" class="section level3 hasAnchor" number="5.6.1">
 <h3><span class="header-section-number">5.6.1</span> The direct step method<a href="flow-in-open-channels.html#the-direct-step-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The direct step method looks at two cross sections in a channel where depths, <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span> are defined.
-<img src="images/direct-step.png" width="80%" style="display: block; margin: auto;" /></p>
+<img src="images/direct-step.png" width="60%" style="display: block; margin: auto;" /></p>
 <p>The distance between these two cross-sections, <span class="math inline">\({\Delta}X\)</span>, is calculated using Equation <a href="flow-in-open-channels.html#eq:gvf1">(5.20)</a>
 <span class="math display" id="eq:gvf1">\[\begin{equation}
   {\Delta}X=\frac{E_1-E_2}{\overline{S}-S_0}
@@ -720,7 +720,7 @@ Where E is the specific energy from Equation <a href="flow-in-open-channels.html
 <span id="cb41-28"><a href="flow-in-open-channels.html#cb41-28" aria-hidden="true" tabindex="-1"></a><span class="co">#find depth increment for each step, depths at which to solve</span></span>
 <span id="cb41-29"><a href="flow-in-open-channels.html#cb41-29" aria-hidden="true" tabindex="-1"></a>depth_incr <span class="ot">&lt;-</span> (y2 <span class="sc">-</span> y1) <span class="sc">/</span> nsteps</span>
 <span id="cb41-30"><a href="flow-in-open-channels.html#cb41-30" aria-hidden="true" tabindex="-1"></a>depths <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span>y1, <span class="at">to=</span>y2, <span class="at">by=</span>depth_incr)</span></code></pre></div>
-<p>First check to see if the flow is subcritical or supercritical and find the normal depth. Critical and normal depths can be calculated using the <em>manningt</em> function in the <em>hydraulics</em> package, as in Example <a href="flow-in-open-channels.html#exm:oc-2">5.2</a>. However, because other functionality of the <em>rivr</em> package is used, these will be calculated using functions from the <em>rivr</em> package.</p>
+<p>First check to see if the flow is subcritical or supercritical and find the normal depth. Critical and normal depths can be calculated using the <em>manningt</em> function in the <em>hydraulics</em> package, as in Example <a href="flow-in-open-channels.html#exm:oc-2">5.2</a>. However, because other functionality of the <a href="https://cran.r-project.org/package=rivr">rivr</a> package is used, these will be calculated using functions from the <em>rivr</em> package.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="flow-in-open-channels.html#cb42-1" aria-hidden="true" tabindex="-1"></a>rivr<span class="sc">::</span><span class="fu">critical_depth</span>(<span class="at">Q =</span> Q, <span class="at">yopt =</span> y1, <span class="at">g =</span> g, <span class="at">B =</span> bottom_width , <span class="at">SS =</span> side_slope)</span>
 <span id="cb42-2"><a href="flow-in-open-channels.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8555011</span></span>
 <span id="cb42-3"><a href="flow-in-open-channels.html#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co">#note using either depth for yopt produces the same answer</span></span>
@@ -777,7 +777,7 @@ Figure 5.5: Variation of number of calculation steps to final calculated distanc
 <div id="standard-step-method" class="section level3 hasAnchor" number="5.6.2">
 <h3><span class="header-section-number">5.6.2</span> Standard step method<a href="flow-in-open-channels.html#standard-step-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The standard step method works similarly to the direct step method, except from one known depth the second depth is determined at a known distance, <em>L</em>. This is a preferred method when the depth at a critical location, such as a bridge, is needed.</p>
-<p>The <em>rivr</em> package implements the standard step method in its <em>compute_profile</em> function. To compare it to the direct step method, check the depth at <span class="math inline">\(y_2\)</span> given the total distance from Example <a href="flow-in-open-channels.html#exm:gvfx1">5.5</a>.</p>
+<p>The <a href="https://cran.r-project.org/package=rivr">rivr</a> package implements the standard step method in its <em>compute_profile</em> function. To compare it to the direct step method, check the depth at <span class="math inline">\(y_2\)</span> given the total distance from Example <a href="flow-in-open-channels.html#exm:gvfx1">5.5</a>.</p>
 <div class="example">
 <p><span id="exm:gvfx2" class="example"><strong>Example 5.7  </strong></span>For the same channel and flow rate as Example <a href="flow-in-open-channels.html#exm:gvfx1">5.5</a>, determine the depth of water at the distance <em>L</em> determined above.</p>
 </div>
