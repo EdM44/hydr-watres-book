@@ -99,6 +99,7 @@ eq:hj-eq1
 eq:hj-eq2
 eq:hj-eq3
 eq:hj-eq4
+exm:seq-x1
 fig:hj-2
 exm:hj-loc
 fig:pipe-bend-1

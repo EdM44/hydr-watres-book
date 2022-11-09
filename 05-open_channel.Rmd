@@ -512,9 +512,9 @@ Again, for the case of a **rectangular** channel, the energy head loss through a
   (\#eq:hj-eq4)
 \end{equation}
 
-Given that the momentum function must be conserved on either side of a hydraulic jump, finding the sequent depth for any known depth becomes straightforward for trapezoidal shapes. Setting M~1~ = M~2~ in Equation \@ref(eq:hj-eq2) allows the use of a solver, as in Example  \@ref(exm:seq_x1).
+Given that the momentum function must be conserved on either side of a hydraulic jump, finding the sequent depth for any known depth becomes straightforward for trapezoidal shapes. Setting M~1~ = M~2~ in Equation \@ref(eq:hj-eq2) allows the use of a solver, as in Example  \@ref(exm:seq-x1).
 
-::: {.example #seq_x1}
+::: {.example #seq-x1}
 A trapezoidal channel with a bottom width of 0.5 m and a side slope of 1:1 carries a flow of 0.2 m^3/s. The depth on one side of a hydraulic jump is 0.1 m. Find the sequent depth, the energy head loss, and the power dissipation in Watts.
 :::
 ```{r hydj-x1, message=FALSE, warning=FALSE}
