@@ -44,6 +44,8 @@ plot(forces,heights, xlab="Total force on barrel bottom, N", ylab="Depth of wate
 grid()
 ```
 
+The linear relationship is what was expected.
+
 ## Force on a plane area {#hs-plane}
 
 (ref:figfsp) Forces on a plane area, by Ertunc, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0), via Wikimedia Commons 
@@ -125,7 +127,7 @@ A radial gate with radius R=6 m and a width of 1 m (into the paper) controls wat
 ```{r ex-hscfig, out.width='60%', echo=FALSE, fig.align="center"}
   knitr::include_graphics("images/radial_gate_problem.PNG")
 ```
-The horizontal hydrostatic force is that acting on a rectangle of height $h$ and width $w$: $$F_h=\frac{1}{2}{\gamma}h^2w$$ which acts at a height of $y_c=\frac{h}{3}$ from the bottom of the gate.
+The horizontal hydrostatic force is that acting on a rectangle of height $h$ and width $w$: $$F_H=\frac{1}{2}{\gamma}h^2w$$ which acts at a height of $y_c=\frac{h}{3}$ from the bottom of the gate.
 
 The vertical component has a magnitude equal to the weight of the 'missing' water indicated on the sketch. The calculation of its volume requires the area of a circular sector minus the area of a triangle above it.
 ```{r ex-hscfig2, out.width='30%', out.extra='style="float:right; padding:10px"',echo=FALSE}
@@ -133,11 +135,12 @@ The vertical component has a magnitude equal to the weight of the 'missing' wate
 ```
 The angle, $\theta$ is found using geometry to be ${\theta}=cos^{-1}\left(\frac{R-h}{R}\right)$. 
 Using the equations for areas of these two components as in Figure \@ref(fig:centroids-I), the following is obtained:
-$$F_v={\gamma}w\left(\frac{R^2\theta}{2}-\frac{R-h}{2}R\sin{\theta}\right)$$
+$$F_V={\gamma}w\left(\frac{R^2\theta}{2}-\frac{R-h}{2}R\sin{\theta}\right)$$
 
-The line of action of $F_v$ can be determined by combining the components for centroids of the composite shapes, again following Figure \@ref(fig:centroids-I). Because the line of action of the resultant force on a curcular gate must pass through the center of the circle (since hydrostatic forces always act normal to the gate), the moments about the hinge of $F_x$ and $F_y$ must equal zero. This produces the equation:
-$$x_c=\frac{F_h\left(R-h/3\right)}{F_v}$$
-
+The line of action of $F_V$ can be determined by combining the components for centroids of the composite shapes, again following Figure \@ref(fig:centroids-I). Because the line of action of the resultant force on a curcular gate must pass through the center of the circle (since hydrostatic forces always act normal to the gate), the moments about the hinge of $F_H$ and $F_V$ must equal zero. 
+$$\sum{M}_{hinge}=0=F_H\left(R-h/3\right)-F_V{\cdot}x_c$$
+This produces the equation:
+$$x_c=\frac{F_H\left(R-h/3\right)}{F_V}$$
 These equations can be solved in many ways, such as the following.
 ```{r hs-ex3, out.width="60%", warning=FALSE, message=FALSE}
 R <- units::set_units(6.0, m)

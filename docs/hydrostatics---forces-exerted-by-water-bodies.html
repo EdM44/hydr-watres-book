@@ -304,6 +304,7 @@ where <span class="math inline">\(p\)</span> is pressure (<span class="math inli
 Figure 3.2: Force on barrel bottom.
 </p>
 </div>
+<p>The linear relationship is what was expected.</p>
 </div>
 <div id="hs-plane" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Force on a plane area<a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -384,15 +385,17 @@ Figure 3.7: Radial gates on the Rogue River, OR.
 <p><span id="exm:ex-hsc" class="example"><strong>Example 3.3  </strong></span>A radial gate with radius R=6 m and a width of 1 m (into the paper) controls water. Find the horizontal and vertical hydrostatic forces for depths, <span class="math inline">\(h\)</span>, from 0 to 6 m.</p>
 </div>
 <p><img src="images/radial_gate_problem.PNG" width="60%" style="display: block; margin: auto;" />
-The horizontal hydrostatic force is that acting on a rectangle of height <span class="math inline">\(h\)</span> and width <span class="math inline">\(w\)</span>: <span class="math display">\[F_h=\frac{1}{2}{\gamma}h^2w\]</span> which acts at a height of <span class="math inline">\(y_c=\frac{h}{3}\)</span> from the bottom of the gate.</p>
+The horizontal hydrostatic force is that acting on a rectangle of height <span class="math inline">\(h\)</span> and width <span class="math inline">\(w\)</span>: <span class="math display">\[F_H=\frac{1}{2}{\gamma}h^2w\]</span> which acts at a height of <span class="math inline">\(y_c=\frac{h}{3}\)</span> from the bottom of the gate.</p>
 <p>The vertical component has a magnitude equal to the weight of the ‘missing’ water indicated on the sketch. The calculation of its volume requires the area of a circular sector minus the area of a triangle above it.
 <img src="images/radial_gate_problem_fv.PNG" width="30%" style="float:right; padding:10px" />
 The angle, <span class="math inline">\(\theta\)</span> is found using geometry to be <span class="math inline">\({\theta}=cos^{-1}\left(\frac{R-h}{R}\right)\)</span>.
 Using the equations for areas of these two components as in Figure <a href="hydrostatics---forces-exerted-by-water-bodies.html#fig:centroids-I">3.4</a>, the following is obtained:
-<span class="math display">\[F_v={\gamma}w\left(\frac{R^2\theta}{2}-\frac{R-h}{2}R\sin{\theta}\right)\]</span></p>
-<p>The line of action of <span class="math inline">\(F_v\)</span> can be determined by combining the components for centroids of the composite shapes, again following Figure <a href="hydrostatics---forces-exerted-by-water-bodies.html#fig:centroids-I">3.4</a>. Because the line of action of the resultant force on a curcular gate must pass through the center of the circle (since hydrostatic forces always act normal to the gate), the moments about the hinge of <span class="math inline">\(F_x\)</span> and <span class="math inline">\(F_y\)</span> must equal zero. This produces the equation:
-<span class="math display">\[x_c=\frac{F_h\left(R-h/3\right)}{F_v}\]</span></p>
-<p>These equations can be solved in many ways, such as the following.</p>
+<span class="math display">\[F_V={\gamma}w\left(\frac{R^2\theta}{2}-\frac{R-h}{2}R\sin{\theta}\right)\]</span></p>
+<p>The line of action of <span class="math inline">\(F_V\)</span> can be determined by combining the components for centroids of the composite shapes, again following Figure <a href="hydrostatics---forces-exerted-by-water-bodies.html#fig:centroids-I">3.4</a>. Because the line of action of the resultant force on a curcular gate must pass through the center of the circle (since hydrostatic forces always act normal to the gate), the moments about the hinge of <span class="math inline">\(F_H\)</span> and <span class="math inline">\(F_V\)</span> must equal zero.
+<span class="math display">\[\sum{M}_{hinge}=0=F_H\left(R-h/3\right)-F_V{\cdot}x_c\]</span>
+This produces the equation:
+<span class="math display">\[x_c=\frac{F_H\left(R-h/3\right)}{F_V}\]</span>
+These equations can be solved in many ways, such as the following.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-1" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">6.0</span>, m)</span>
 <span id="cb12-2"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">1.0</span>, m)</span>
 <span id="cb12-3"><a href="hydrostatics---forces-exerted-by-water-bodies.html#cb12-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">specwt</span>(<span class="at">T =</span> <span class="dv">20</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
