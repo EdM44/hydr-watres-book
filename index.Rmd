@@ -1,7 +1,8 @@
 --- 
 title: "Hydraulics and Water Resources: Examples Using R"
 author: 
-  - Ed Maurer ^[Civil, Environmental, and Sustainable Engineering, Santa Clara University, https://www.engr.scu.edu/~emaurer/]
+  - name: Ed Maurer ^[https://www.engr.scu.edu/~emaurer/]
+    affiliation: Civil, Environmental, and Sustainable Engineering Department, Santa Clara University
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
