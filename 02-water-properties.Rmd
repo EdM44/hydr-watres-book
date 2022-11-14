@@ -116,7 +116,7 @@ These very high pressures required to compress water, even by a small fraction, 
 
 ## Properties important for moving water
 
-When describing the behavior of moving water in civil engineering infrastructure like pipes and channels there are three primary water properties used used in calculations, all of which vary with water temperature: density ($\rho$), dynamic viscosity($\mu$), and kinematic viscosity($\nu$), which are related by Equation \@ref(eq:test-eq)
+When describing the behavior of moving water in civil engineering infrastructure like pipes and channels there are three primary water properties used used in calculations, all of which vary with water temperature: density ($\rho$), dynamic viscosity($\mu$), and kinematic viscosity($\nu$), which are related by Equation \@ref(eq:test-eq).
 
 \begin{equation}
   \nu=\frac{\mu}{\rho}
@@ -128,7 +128,7 @@ Viscosity is caused by interaction of the fluid molecules as they are subjected 
   knitr::include_graphics("images/viscosity_cracker.jpg")
 ```
 
-If the velocity of the marshmallow filling varies linearly, it will be stationary (V=0) at the bottom and moving at the same velocity as the upper cracker at the top (V=U). The the force needed to move the upper cracker can be calculate using Equation \@ref(eq:visc1)
+If the velocity of the marshmallow filling varies linearly, it will be stationary (V=0) at the bottom and moving at the same velocity as the upper cracker at the top (V=U). The force needed to move the upper cracker can be calculated using Equation \@ref(eq:visc1)
 
 \begin{equation}
   F=A{\mu}\frac{dV}{dy}
@@ -161,7 +161,7 @@ units::set_units(tau*A, N)
 units::set_units(tau*A, lbf)
 ```
 
-Water is less viscous than marshmallow, so viscosity has much lower values than in the example. Values for water can be obtained using the _hydraulics_ R package for calculations,  using the _dens_, _dvisc_, and _kvisc_. All of the water property functions can accept a list of input temperature values, enabling visualization of a property with varying water temperature, as shown in Figure \@ref(fig:waterprops-3b).
+Water is less viscous than marshmallow, so viscosity for water has much lower values than in the example. Values for water can be obtained using the _hydraulics_ R package for calculations,  using the _dens_, _dvisc_, and _kvisc_. All of the water property functions can accept a list of input temperature values, enabling visualization of a property with varying water temperature, as shown in Figure \@ref(fig:waterprops-3b).
 
 ```{r waterprops-3b, out.width="60%", fig.cap="Variation of kinematic viscosity with temperature."}
 Ts <- seq(0, 100, 10)

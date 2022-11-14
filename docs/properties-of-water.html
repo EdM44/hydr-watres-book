@@ -23,10 +23,10 @@ engineering exercises using R.</p>" />
 engineering exercises using R.</p>" />
   
 
-<meta name="author" content="Ed Maurer" />
+<meta name="author" content="Ed Maurer " />
 
 
-<meta name="date" content="2022-11-09" />
+<meta name="date" content="2022-11-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1537,14 +1537,14 @@ Figure 2.1: Approximate change in pressure as water temperature increases.
 </div>
 <div id="properties-important-for-moving-water" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Properties important for moving water<a href="properties-of-water.html#properties-important-for-moving-water" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>When describing the behavior of moving water in civil engineering infrastructure like pipes and channels there are three primary water properties used used in calculations, all of which vary with water temperature: density (<span class="math inline">\(\rho\)</span>), dynamic viscosity(<span class="math inline">\(\mu\)</span>), and kinematic viscosity(<span class="math inline">\(\nu\)</span>), which are related by Equation <a href="properties-of-water.html#eq:test-eq">(2.3)</a></p>
+<p>When describing the behavior of moving water in civil engineering infrastructure like pipes and channels there are three primary water properties used used in calculations, all of which vary with water temperature: density (<span class="math inline">\(\rho\)</span>), dynamic viscosity(<span class="math inline">\(\mu\)</span>), and kinematic viscosity(<span class="math inline">\(\nu\)</span>), which are related by Equation <a href="properties-of-water.html#eq:test-eq">(2.3)</a>.</p>
 <p><span class="math display" id="eq:test-eq">\[\begin{equation}
   \nu=\frac{\mu}{\rho}
   \tag{2.3}
 \end{equation}\]</span></p>
 <p>Viscosity is caused by interaction of the fluid molecules as they are subjected to a shearing force. This is often illustrated by a conceptual sketch of two parallel plates, one fixed and one moving at a constant speed, with a fluid in between. Perhaps more intuitively, a smore can be used.
 <img src="images/viscosity_cracker.jpg" width="60%" /></p>
-<p>If the velocity of the marshmallow filling varies linearly, it will be stationary (V=0) at the bottom and moving at the same velocity as the upper cracker at the top (V=U). The the force needed to move the upper cracker can be calculate using Equation <a href="properties-of-water.html#eq:visc1">(2.4)</a></p>
+<p>If the velocity of the marshmallow filling varies linearly, it will be stationary (V=0) at the bottom and moving at the same velocity as the upper cracker at the top (V=U). The force needed to move the upper cracker can be calculated using Equation <a href="properties-of-water.html#eq:visc1">(2.4)</a></p>
 <p><span class="math display" id="eq:visc1">\[\begin{equation}
   F=A{\mu}\frac{dV}{dy}
   \tag{2.4}
@@ -1572,7 +1572,7 @@ where y is the distance between the crackers and A is the cross-sectional area o
 <span id="cb7-12"><a href="properties-of-water.html#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2e-04 [N]</span></span>
 <span id="cb7-13"><a href="properties-of-water.html#cb7-13" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tau<span class="sc">*</span>A, lbf)</span>
 <span id="cb7-14"><a href="properties-of-water.html#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4.496179e-05 [lbf]</span></span></code></pre></div>
-<p>Water is less viscous than marshmallow, so viscosity has much lower values than in the example. Values for water can be obtained using the <em>hydraulics</em> R package for calculations, using the <em>dens</em>, <em>dvisc</em>, and <em>kvisc</em>. All of the water property functions can accept a list of input temperature values, enabling visualization of a property with varying water temperature, as shown in Figure <a href="properties-of-water.html#fig:waterprops-3b">2.2</a>.</p>
+<p>Water is less viscous than marshmallow, so viscosity for water has much lower values than in the example. Values for water can be obtained using the <em>hydraulics</em> R package for calculations, using the <em>dens</em>, <em>dvisc</em>, and <em>kvisc</em>. All of the water property functions can accept a list of input temperature values, enabling visualization of a property with varying water temperature, as shown in Figure <a href="properties-of-water.html#fig:waterprops-3b">2.2</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="properties-of-water.html#cb8-1" aria-hidden="true" tabindex="-1"></a>Ts <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>)</span>
 <span id="cb8-2"><a href="properties-of-water.html#cb8-2" aria-hidden="true" tabindex="-1"></a>nus <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">kvisc</span>(<span class="at">T =</span> Ts, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
 <span id="cb8-3"><a href="properties-of-water.html#cb8-3" aria-hidden="true" tabindex="-1"></a>xlbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Temperature, &quot;</span> (degree<span class="sc">*</span>C))</span>
