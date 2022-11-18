@@ -1,6 +1,6 @@
 # Momentum in water flow
 
-When moving water changes direction or velocity, an external force must be associated with the change. In civil engineering infrastructure this is ubiquitous and the forces associated with must be accounted for in design.
+When moving water changes direction or velocity, an external force must be associated with the change. In civil engineering infrastructure this is ubiquitous and the forces associated with this must be accounted for in design.
 
 ```{r pipe-bend-1, echo=FALSE, fig.align="center", fig.cap="Water pipe on Capitol Hill, Seattle."}
   knitr::include_graphics("images/Water_pipe_on_Capitol_Hill,_Seattle,_July_31,_1923_(MOHAI_3418).jpg")
