@@ -192,7 +192,7 @@ If you need to solve for multiple roots, you will need to start from different i
 
 ### Optimal trapezoidal geometry
 
-Most fluid mechanics texts that include open channel flow include a derivation of optimal geometry for a trapezoidal channel. This is also called the most efficient cross section. What this means is for a given _A_ and _m_, there is an optimal flow depth and bottom width for the channel, defined by Equations \ref(eq:topt1) and \ref(eq:topt2).
+Most fluid mechanics texts that include open channel flow include a derivation of optimal geometry for a trapezoidal channel. This is also called the most efficient cross section. What this means is for a given _A_ and _m_, there is an optimal flow depth and bottom width for the channel, defined by Equations \@ref(eq:topt1) and \@ref(eq:topt2).
 
 \begin{equation}
   b_{opt}=2y\left(\sqrt{1+m^2}-m\right)
@@ -515,13 +515,13 @@ Again, for the case of a **rectangular** channel, the energy head loss through a
 Given that the momentum function must be conserved on either side of a hydraulic jump, finding the sequent depth for any known depth becomes straightforward for trapezoidal shapes. Setting M~1~ = M~2~ in Equation \@ref(eq:hj-eq2) allows the use of a solver, as in Example  \@ref(exm:seq-x1).
 
 ::: {.example #seq-x1}
-A trapezoidal channel with a bottom width of 0.5 m and a side slope of 1:1 carries a flow of 0.2 m^3/s. The depth on one side of a hydraulic jump is 0.1 m. Find the sequent depth, the energy head loss, and the power dissipation in Watts.
+A trapezoidal channel with a bottom width of 0.5 m and a side slope of 1:1 carries a flow of 0.2 m^3^/s. The depth on one side of a hydraulic jump is 0.1 m. Find the sequent depth, the energy head loss, and the power dissipation in Watts.
 :::
 ```{r hydj-x1, message=FALSE, warning=FALSE}
 flow <- 0.2
 ans <- hydraulics::sequent_depth(Q=flow,b=0.5,y=0.1,m=1,units = "SI", ret_units = TRUE)
 #print output of function
-ans
+as.data.frame(ans)
 #Find energy head loss
 hl <- abs(ans$E - ans$E_seq)
 hl
@@ -539,12 +539,12 @@ The energy loss across hydraulic jumps varies with the Froude number of the inco
 
 ### Location of a hydraulic jump
 
-In hydraulic infrastructure where hydraulic jumps will occur there are usually engineered features, such as baffles or basins, to force a hydraulic jump to occur in specific locations, to protect downstream waterways from the turbulent effects of an uncontrolled hydraulic jump. In the absence of engineered features to cause a jump, the location of a hydraulic jump can be determined using the concepts of Sections \@ref{gvf-section} and \@ref{hj-section}.
+In hydraulic infrastructure where hydraulic jumps will occur there are usually engineered features, such as baffles or basins, to force a hydraulic jump to occur in specific locations, to protect downstream waterways from the turbulent effects of an uncontrolled hydraulic jump. In the absence of engineered features to cause a jump, the location of a hydraulic jump can be determined using the concepts of Sections \@ref(gvf-section) and \@ref(hj-section).
 
 Example \@ref(exm:hj-loc) demonstrates the determination of the location of a hydraulic jump when normal flow conditions exist at some distance upstream and downstream of the jump.
 
 ::: {.example #hj-loc}
-A rectangular (a trapezoid with side slope, m=0) concrete channel with a bottom width of 3 m carries a flow of 8 m^3/s. The upstream channel slopes steeply at S~o~=0.018 and discharges onto a mild slope of S~o~=0.0015. Determine the height of the jump and its location.
+A rectangular (a trapezoid with side slope, m=0) concrete channel with a bottom width of 3 m carries a flow of 8 m^3^/s. The upstream channel slopes steeply at S~o~=0.018 and discharges onto a mild slope of S~o~=0.0015. Determine the height of the jump and its location.
 :::
 First find the normal depth on each slope, and the critical depth for the channel.
 ```{r hydj-loc1, message=FALSE, warning=FALSE}
