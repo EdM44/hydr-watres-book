@@ -4,7 +4,10 @@ authors:
   - family-names: Ed
     given-names: Maurer
     orcid: "https://orcid.org/0000-0001-7134-487X"
-title: Hydraulics and Water Resources: Examples Using R
+title: "Hydraulics and Water Resources: Examples Using R"
 version: v0.1.0
-doi: 10.5281/zenodo.7576843
-date-released: 2023-01-27
+identifiers:
+  - description: "This is the bookdown reference for water resources in R"
+    type: doi
+    value: 10.5281/zenodo.7576843
+date-released: "2023-01-27"
