@@ -4,6 +4,7 @@ author:
 - name: '[Ed Maurer](https://www.engr.scu.edu/~emaurer)'
   affiliation: "Professor, [Civil, Environmental, and Sustainable Engineering Department,
     Santa Clara University](https://www.scu.edu/engineering/academic-programs/engineering/ce/)"
+    
 date: "`r Sys.Date()`"
 output: pdf_document
 documentclass: book
