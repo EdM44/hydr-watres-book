@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 Designing for floods: flood hydrology | Hydraulics and Water Resources: Examples Using R</title>
+  <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 Designing for floods: flood hydrology | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 Designing for floods: flood hydrology | Hydraulics and Water Resources: Examples Using R" />
+  
+  <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+
+
+<meta name="date" content="2023-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="fate-of-precipitation.html"/>
+<link rel="next" href="sustainability-in-design-planning-for-change.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of water (and air)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
+<li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="properties-of-water.html"><a href="properties-of-water.html#ideal-gas-law"><i class="fa fa-check"></i><b>2.3.1</b> Ideal gas law</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html"><i class="fa fa-check"></i><b>3</b> Hydrostatics - forces exerted by water bodies</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#pressure-and-force"><i class="fa fa-check"></i><b>3.1</b> Pressure and force</a></li>
+<li class="chapter" data-level="3.2" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane"><i class="fa fa-check"></i><b>3.2</b> Force on a plane area</a></li>
+<li class="chapter" data-level="3.3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#forces-on-curved-surfaces"><i class="fa fa-check"></i><b>3.3</b> Forces on curved surfaces</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>4</b> Water flowing in pipes: energy losses</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>4.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>4.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>4.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>4.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="4.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>4.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="4.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>4.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="4.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>4.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>4.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>4.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="4.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>4.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="4.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>4.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>4.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>5</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>5.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="5.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>5.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="5.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>5.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>5.3.1</b> Solving the Manning equation in R</a></li>
+<li class="chapter" data-level="5.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>5.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="5.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>5.3.3</b> Solving the Manning equation using a spreadsheet like Excel</a></li>
+<li class="chapter" data-level="5.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>5.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>5.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>5.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>5.5</b> Critical flow</a></li>
+<li class="chapter" data-level="5.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>5.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>5.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="5.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>5.6.2</b> Standard step method</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>5.7</b> Rapidly varied flow (the hydraulic jump)</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>5.7.1</b> Sequent (or conjugate) depths</a></li>
+<li class="chapter" data-level="5.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>5.7.2</b> Location of a hydraulic jump</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>6</b> Momentum in water flow</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#equations-of-linear-momentum"><i class="fa fa-check"></i><b>6.1</b> Equations of linear momentum</a></li>
+<li class="chapter" data-level="6.2" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#the-momentum-equation-in-pipe-design"><i class="fa fa-check"></i><b>6.2</b> The momentum equation in pipe design</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>7</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>7.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="7.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>7.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="7.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>7.3</b> Finding the operating point</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html"><i class="fa fa-check"></i><b>8</b> The hydrologic cycle and precipitation</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-observations"><i class="fa fa-check"></i><b>8.1</b> Precipitation observations</a></li>
+<li class="chapter" data-level="8.2" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precip-freq"><i class="fa fa-check"></i><b>8.2</b> Precipitation frequency</a></li>
+<li class="chapter" data-level="8.3" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-gauge-consistency-double-mass-curves"><i class="fa fa-check"></i><b>8.3</b> Precipitation gauge consistency – double mass curves</a></li>
+<li class="chapter" data-level="8.4" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-interpolation-and-areal-averaging"><i class="fa fa-check"></i><b>8.4</b> Precipitation interpolation and areal averaging</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html"><i class="fa fa-check"></i><b>9</b> Fate of precipitation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#interception"><i class="fa fa-check"></i><b>9.1</b> Interception</a></li>
+<li class="chapter" data-level="9.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#infiltration"><i class="fa fa-check"></i><b>9.2</b> Infiltration</a></li>
+<li class="chapter" data-level="9.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#evaporation"><i class="fa fa-check"></i><b>9.3</b> Evaporation</a></li>
+<li class="chapter" data-level="9.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow"><i class="fa fa-check"></i><b>9.4</b> Snow</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#observations"><i class="fa fa-check"></i><b>9.4.1</b> Observations</a></li>
+<li class="chapter" data-level="9.4.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#basic-snowmelt-theory-and-simple-models"><i class="fa fa-check"></i><b>9.4.2</b> Basic snowmelt theory and simple models</a></li>
+<li class="chapter" data-level="9.4.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow-model-calibration"><i class="fa fa-check"></i><b>9.4.3</b> Snow model calibration</a></li>
+<li class="chapter" data-level="9.4.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#estimating-climate-change-impacts-on-snow"><i class="fa fa-check"></i><b>9.4.4</b> Estimating climate change impacts on snow</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#watershed-analysis"><i class="fa fa-check"></i><b>9.5</b> Watershed analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html"><i class="fa fa-check"></i><b>10</b> Designing for floods: flood hydrology</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#engineering-design-requires-probability-and-statistics"><i class="fa fa-check"></i><b>10.1</b> Engineering design requires probability and statistics</a></li>
+<li class="chapter" data-level="10.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#ffa1"><i class="fa fa-check"></i><b>10.2</b> Estimating floods when you have peak flow observations - flood frequency analysis</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#installing-helpful-packages"><i class="fa fa-check"></i><b>10.2.1</b> Installing helpful packages</a></li>
+<li class="chapter" data-level="10.2.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#download-manipulate-and-plot-the-data-for-a-site"><i class="fa fa-check"></i><b>10.2.2</b> Download, manipulate, and plot the data for a site</a></li>
+<li class="chapter" data-level="10.2.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#flood-frequency-analysis"><i class="fa fa-check"></i><b>10.2.3</b> Flood frequency analysis</a></li>
+<li class="chapter" data-level="10.2.4" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#creating-a-flood-frequency-plot"><i class="fa fa-check"></i><b>10.2.4</b> Creating a flood frequency plot</a></li>
+<li class="chapter" data-level="10.2.5" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#other-software-for-peak-flow-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Other software for peak flow analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#estimating-floods-from-precipitation"><i class="fa fa-check"></i><b>10.3</b> Estimating floods from precipitation</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html"><i class="fa fa-check"></i><b>11</b> Sustainability in design: planning for change</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#perturbing-a-system"><i class="fa fa-check"></i><b>11.1</b> Perturbing a system</a></li>
+<li class="chapter" data-level="11.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-hydrologic-data"><i class="fa fa-check"></i><b>11.2</b> Detecting changes in hydrologic data</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-step-change"><i class="fa fa-check"></i><b>11.2.1</b> Detecting a step change</a></li>
+<li class="chapter" data-level="11.2.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-monotonic-trend"><i class="fa fa-check"></i><b>11.2.2</b> Detecting a monotonic trend</a></li>
+<li class="chapter" data-level="11.2.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#choosing-whether-to-use-parametric-or-non-parametric-tests"><i class="fa fa-check"></i><b>11.2.3</b> Choosing whether to use parametric or non-parametric tests</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-extreme-events"><i class="fa fa-check"></i><b>11.3</b> Detecting changes in extreme events</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#obtaining-and-preparing-sea-level-data"><i class="fa fa-check"></i><b>11.3.1</b> Obtaining and preparing sea-level data</a></li>
+<li class="chapter" data-level="11.3.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#conducting-the-extreme-event-analysis"><i class="fa fa-check"></i><b>11.3.2</b> Conducting the extreme event analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html"><i class="fa fa-check"></i><b>12</b> Management of water resources systems</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#a-simple-linear-system-with-two-decision-variables"><i class="fa fa-check"></i><b>12.1</b> A simple linear system with two decision variables</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#overview-of-problem-formulation"><i class="fa fa-check"></i><b>12.1.1</b> Overview of problem formulation</a></li>
+<li class="chapter" data-level="12.1.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-an-example"><i class="fa fa-check"></i><b>12.1.2</b> Setting up an example</a></li>
+<li class="chapter" data-level="12.1.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#graphing-the-solution-space"><i class="fa fa-check"></i><b>12.1.3</b> Graphing the solution space</a></li>
+<li class="chapter" data-level="12.1.4" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r"><i class="fa fa-check"></i><b>12.1.4</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.1.5" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#interpreting-the-optimal-results"><i class="fa fa-check"></i><b>12.1.5</b> Interpreting the optimal results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-complex-linear-programming-reservoir-operation"><i class="fa fa-check"></i><b>12.2</b> More complex linear programming: reservoir operation</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#problem-summary"><i class="fa fa-check"></i><b>12.2.1</b> Problem summary</a></li>
+<li class="chapter" data-level="12.2.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r-1"><i class="fa fa-check"></i><b>12.2.2</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.2.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#building-the-linear-model"><i class="fa fa-check"></i><b>12.2.3</b> Building the linear model</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-realistic-reservoir-operation-non-linear-programming"><i class="fa fa-check"></i><b>12.3</b> More Realistic Reservoir Operation: non-linear programming</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#reservoir-operation"><i class="fa fa-check"></i><b>12.3.1</b> Reservoir operation</a></li>
+<li class="chapter" data-level="12.3.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#performing-stochastic-dynamic-programming"><i class="fa fa-check"></i><b>12.3.2</b> Performing stochastic dynamic programming</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="groundwater.html"><a href="groundwater.html"><i class="fa fa-check"></i><b>13</b> Groundwater</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hydraulics and Water Resources: Examples Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="designing-for-floods-flood-hydrology" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Designing for floods: flood hydrology<a href="designing-for-floods-flood-hydrology.html#designing-for-floods-flood-hydrology" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:flood"></span>
+<img src="images/Fort_Kent_Maine_Bridge_during_flood_2008.jpg" alt="The international bridge between Fort Kent, Maine and Clair, New Brunswick during a flood (source: NOAA)" width="50%" />
+<p class="caption">
+Figure 10.1: The international bridge between Fort Kent, Maine and Clair, New Brunswick during a flood (source: NOAA)
+</p>
+</div>
+<p>Flood hydrology is generally the description of how frequently a flood of a certain level will be exceeded in a specified period. This was discussed briefly in the section on precipitation frequency, Section <a href="the-hydrologic-cycle-and-precipitation.html#precip-freq">8.2</a>.</p>
+<p>The <em>hydromisc</em> package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on <a href="https://github.com/EdM44/hydromisc">the github site for the package</a>.</p>
+<div id="engineering-design-requires-probability-and-statistics" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Engineering design requires probability and statistics<a href="designing-for-floods-flood-hydrology.html#engineering-design-requires-probability-and-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before diving into peak flow analysis, it helps to refresh your background in basic probability and statistics. Some excellent resources for this using R as the primary tool are:</p>
+<ul>
+<li><a href="https://ww2.coastal.edu/kingw/statistics/R-tutorials/prob.html">A very brief tutorial, by Prof. W.B. King</a></li>
+<li><a href="https://github.com/gjkerns/IPSUR/blob/master/inst/doc/IPSUR.pdf">A more thorough text, by Prof. G. Jay Kerns</a>. This has <a href="https://ipsur.org/">a companion R package</a>.</li>
+<li><a href="https://rpubs.com/hfairwea/ebook">An online flood hydrology reference based in R, by Prof. Helen Fairweather</a></li>
+</ul>
+<p>Rather than repeat what is in those references, a couple of short demonstrations here will show some of the skills needed for flood hydrology. The first example illustrates binomial probabilities, which are useful for events with only two possible outcomes (e.g., a flood happens or it doesn’t), where each outcome is independent and probabilities of each are constant. <em>R</em> functions for distributions use a first letter to designate what it returns: <em>d</em> is the density, <em>p</em> is the (cumulative) distribution, <em>q</em> is the quantile, <em>r</em> is a random sequence.</p>
+<p>In <em>R</em> the defaults for probabilities are to define them as <span class="math inline">\(P[X~\le~x]\)</span>, or a probability of non-exceedance. Recall that a probability of exceedance is simply 1 - (probability of non-exceedance), or <span class="math inline">\(P[X~\gt~x] ~=~ 1-P[X~\le~x]\)</span>. In <em>R</em>, for quantiles or probabilities (using functions beginning with <em>q</em> or <em>p</em> like <em>pnorm</em> or <em>qlnorm</em>) setting the argument <em>lower.tail</em> to <em>FALSE</em> uses a probability of exceedance instead of non-exceedance.</p>
+<div class="example">
+<p><span id="exm:ex-flood1" class="example"><strong>Example 10.1  </strong></span>A temporary dam is constructed while a repair is built. It will be in place 5 years and is designed to protect against floods up to a 20-year recurrence interval (i.e., there is a <span class="math inline">\(p=\frac{1}{20}=0.05\)</span>, or 5% chance, that it will be exceeded in any one year). What is the probability of (a) no failure in the 5 year period, and (b) at least two failures in 5 years.</p>
+</div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="designing-for-floods-flood-hydrology.html#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (a) </span></span>
+<span id="cb78-2"><a href="designing-for-floods-flood-hydrology.html#cb78-2" aria-hidden="true" tabindex="-1"></a>ans1 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="fl">0.05</span>)</span>
+<span id="cb78-3"><a href="designing-for-floods-flood-hydrology.html#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Probability of exactly zero occurrences in 5 years = %.4f %%&quot;</span>,<span class="dv">100</span><span class="sc">*</span>ans1))</span>
+<span id="cb78-4"><a href="designing-for-floods-flood-hydrology.html#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Probability of exactly zero occurrences in 5 years = 77.3781 %</span></span>
+<span id="cb78-5"><a href="designing-for-floods-flood-hydrology.html#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (b)</span></span>
+<span id="cb78-6"><a href="designing-for-floods-flood-hydrology.html#cb78-6" aria-hidden="true" tabindex="-1"></a>ans2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pbinom</span>(<span class="dv">1</span>,<span class="dv">5</span>,.<span class="dv">05</span>) <span class="co"># or pbinom(1,5,.05, lower.tail=FALSE)</span></span>
+<span id="cb78-7"><a href="designing-for-floods-flood-hydrology.html#cb78-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Probability of 2 or more failures in 5 years = %.2f %%&quot;</span>,<span class="dv">100</span><span class="sc">*</span>ans2))</span>
+<span id="cb78-8"><a href="designing-for-floods-flood-hydrology.html#cb78-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Probability of 2 or more failures in 5 years = 2.26 %</span></span></code></pre></div>
+<p>While the next example uses normally distributed data, most data in hydrology are better described by other distributions.</p>
+<div class="example">
+<p><span id="exm:ex-flood2" class="example"><strong>Example 10.2  </strong></span>Annual average streamflows in some location are normally distributed with a mean annual flow of 20 m<span class="math inline">\(^3\)</span>/s and a standard deviation of 6 m<span class="math inline">\(^3\)</span>/s. Find (a) the probability of experiencing a year with less than (or equal to) 10 m<span class="math inline">\(^3\)</span>/s, (b) greater than 32 m<span class="math inline">\(^3\)</span>/s, and (c) the annual average flow that would be expected to be exceeded 10% of the time.</p>
+</div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="designing-for-floods-flood-hydrology.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (a)</span></span>
+<span id="cb79-2"><a href="designing-for-floods-flood-hydrology.html#cb79-2" aria-hidden="true" tabindex="-1"></a>ans1 <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">10</span>, <span class="at">mean=</span><span class="dv">20</span>, <span class="at">sd=</span><span class="dv">6</span>)</span>
+<span id="cb79-3"><a href="designing-for-floods-flood-hydrology.html#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Probability of less than 10 = %.2f %%&quot;</span>,<span class="dv">100</span><span class="sc">*</span>ans1))</span>
+<span id="cb79-4"><a href="designing-for-floods-flood-hydrology.html#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Probability of less than 10 = 4.78 %</span></span>
+<span id="cb79-5"><a href="designing-for-floods-flood-hydrology.html#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (b)</span></span>
+<span id="cb79-6"><a href="designing-for-floods-flood-hydrology.html#cb79-6" aria-hidden="true" tabindex="-1"></a>ans2 <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">32</span>, <span class="at">mean=</span><span class="dv">20</span>, <span class="at">sd=</span><span class="dv">6</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>) <span class="co">#or 1 - pnorm(32, mean=20, sd=6)</span></span>
+<span id="cb79-7"><a href="designing-for-floods-flood-hydrology.html#cb79-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Probability of greater than or equal to 30 = %.2f %%&quot;</span>,<span class="dv">100</span><span class="sc">*</span>ans2))</span>
+<span id="cb79-8"><a href="designing-for-floods-flood-hydrology.html#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Probability of greater than or equal to 30 = 2.28 %</span></span>
+<span id="cb79-9"><a href="designing-for-floods-flood-hydrology.html#cb79-9" aria-hidden="true" tabindex="-1"></a><span class="co"># (c)</span></span>
+<span id="cb79-10"><a href="designing-for-floods-flood-hydrology.html#cb79-10" aria-hidden="true" tabindex="-1"></a>ans3 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(.<span class="dv">1</span>, <span class="at">mean=</span><span class="dv">20</span>, <span class="at">sd=</span><span class="dv">6</span>, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span>
+<span id="cb79-11"><a href="designing-for-floods-flood-hydrology.html#cb79-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;flow exceeded 10%% of the time = %.2f m^3/s&quot;</span>,ans3))</span>
+<span id="cb79-12"><a href="designing-for-floods-flood-hydrology.html#cb79-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; flow exceeded 10% of the time = 27.69 m^3/s</span></span>
+<span id="cb79-13"><a href="designing-for-floods-flood-hydrology.html#cb79-13" aria-hidden="true" tabindex="-1"></a><span class="co"># plot to visualize answers</span></span>
+<span id="cb79-14"><a href="designing-for-floods-flood-hydrology.html#cb79-14" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">40</span>,<span class="fl">0.1</span>)</span>
+<span id="cb79-15"><a href="designing-for-floods-flood-hydrology.html#cb79-15" aria-hidden="true" tabindex="-1"></a>y<span class="ot">&lt;-</span> <span class="fu">pnorm</span>(x,<span class="at">mean=</span><span class="dv">20</span>,<span class="at">sd=</span><span class="dv">6</span>)</span>
+<span id="cb79-16"><a href="designing-for-floods-flood-hydrology.html#cb79-16" aria-hidden="true" tabindex="-1"></a>xlbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="fu">paste</span>(Flow, <span class="st">&quot;,&quot;</span>, <span class="sc">~</span> m<span class="sc">^</span><span class="st">&quot;3&quot;</span><span class="sc">/</span>s))</span>
+<span id="cb79-17"><a href="designing-for-floods-flood-hydrology.html#cb79-17" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x ,y ,<span class="at">type=</span><span class="st">&quot;l&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab =</span> xlbl, <span class="at">ylab=</span> <span class="st">&quot;Prob. of non-exceedance&quot;</span>)</span>
+<span id="cb79-18"><a href="designing-for-floods-flood-hydrology.html#cb79-18" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">10</span>,<span class="at">col=</span><span class="st">&quot;black&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb79-19"><a href="designing-for-floods-flood-hydrology.html#cb79-19" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">32</span>,<span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb79-20"><a href="designing-for-floods-flood-hydrology.html#cb79-20" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.9</span>,<span class="at">col=</span><span class="st">&quot;green&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb79-21"><a href="designing-for-floods-flood-hydrology.html#cb79-21" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>,<span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;(a)&quot;</span>,<span class="st">&quot;(b)&quot;</span>,<span class="st">&quot;(c)&quot;</span>),<span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;black&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>), <span class="at">cex=</span><span class="fl">0.8</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:flood-2"></span>
+<img src="hydr-watres_main_files/figure-html/flood-2-1.png" alt="Illustration of three solutions." width="70%" />
+<p class="caption">
+Figure 10.2: Illustration of three solutions.
+</p>
+</div>
+</div>
+<div id="ffa1" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Estimating floods when you have peak flow observations - flood frequency analysis<a href="designing-for-floods-flood-hydrology.html#ffa1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For an area fortunate enough to have a long record (i.e., several decades or more) of observations, estimating flood risk is a matter of statistical data analysis. In the U.S., data, collected by the U.S. Geological Survey (USGS), can be accessed through the <a href="https://dashboard.waterdata.usgs.gov/app/nwd/">National Water Dashboard</a>. Sometimes for discontinued stations it is easier to locate data through the <a href="https://maps.waterdata.usgs.gov/mapper">older USGS map interface</a>. For any site, data may be downloaded to a file, and the peakfq (watstore) format, designed to be imported into the <a href="https://water.usgs.gov/software/PeakFQ/">PeakFQ software</a>, is easy to work with in <em>R</em>.</p>
+<div id="installing-helpful-packages" class="section level3 hasAnchor" number="10.2.1">
+<h3><span class="header-section-number">10.2.1</span> Installing helpful packages<a href="designing-for-floods-flood-hydrology.html#installing-helpful-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The USGS has developed many <em>R</em> packages, including one for retrieval of data, <a href="https://cran.r-project.org/package=dataRetrieval">dataRetrieval</a>. Since this resides on CRAN, the package can be installed with (the use of ‘!requireNamespace’ skips the installation if it already is installed):</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="designing-for-floods-flood-hydrology.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;dataRetrieval&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;dataRetrieval&quot;</span>)</span></code></pre></div>
+<p>Other USGS packages that are very helpful for peak flow analysis are not on CRAN, but rather housed in a <a href="https://code.usgs.gov/water">USGS repository</a>. The easiest way to install packages from that archive is using the <a href="https://cran.r-project.org/package=install.load">install.load</a> package. Then the <em>install_load</em> command will first search the standard CRAN archive for the package, and if it is not found there the USGS archive is searched. Packages are also loaded (equivalent to using the <em>library</em> command). <em>install_load</em> also installs dependencies of packages, so here installing <em>smwrGraphs</em> also installs <em>smwrBase</em>. The prefix <em>smwr</em> refers to their use in support of the excellent reference <a href="https://pubs.er.usgs.gov/publication/tm4A3">Statistical Methods in Water Resources</a>.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="designing-for-floods-flood-hydrology.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;install.load&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;install.load&quot;</span>)</span>
+<span id="cb81-2"><a href="designing-for-floods-flood-hydrology.html#cb81-2" aria-hidden="true" tabindex="-1"></a>install.load<span class="sc">::</span><span class="fu">install_load</span>(<span class="st">&quot;smwrGraphs&quot;</span>)  <span class="co">#this command also installs smwrBase</span></span></code></pre></div>
+<p>Lastly, the <a href="https://cran.r-project.org/package=lmomco">lmomco</a> package has extensive capabilities to work with many forms of probability distributions, and has functions for calculating distribution parameters (like skew) that we will use.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="designing-for-floods-flood-hydrology.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;lmomco&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;lmomco&quot;</span>)</span></code></pre></div>
+</div>
+<div id="download-manipulate-and-plot-the-data-for-a-site" class="section level3 hasAnchor" number="10.2.2">
+<h3><span class="header-section-number">10.2.2</span> Download, manipulate, and plot the data for a site<a href="designing-for-floods-flood-hydrology.html#download-manipulate-and-plot-the-data-for-a-site" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+Using the older USGS site mapper, and specifying that inactive stations should also be included, many stations in the south Bay Area in California are shown in Figure <a href="designing-for-floods-flood-hydrology.html#fig:usgs-sites">10.3</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:usgs-sites"></span>
+<img src="images/usgs_stations_select.png" alt="Active and Inactive USGS sites recording peak flows." width="80%" />
+<p class="caption">
+Figure 10.3: Active and Inactive USGS sites recording peak flows.
+</p>
+</div>
+<p>While the data could be downloaded and saved locally through that link, it is convenient here to use the dataRetrieval command.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="designing-for-floods-flood-hydrology.html#cb83-1" aria-hidden="true" tabindex="-1"></a>Qpeak_download <span class="ot">&lt;-</span> dataRetrieval<span class="sc">::</span><span class="fu">readNWISpeak</span>(<span class="at">siteNumbers=</span><span class="st">&quot;11169000&quot;</span>)</span></code></pre></div>
+<p>The data used here are also available as part of the <em>hydromisc</em> package, and may be obtained by typing <em>hydromisc::Qpeak_download</em>.</p>
+<p>It is always helpful to look at the downloaded data frame before doing anything with it. There are many columns that are not needed or that have repeated information. There are also some rows that have no data (‘NA’ values). It is also useful to change some column names to something more intuitive. We will need to define the water year (a water year begins October 1 and ends September 30).</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="designing-for-floods-flood-hydrology.html#cb84-1" aria-hidden="true" tabindex="-1"></a>Qpeak <span class="ot">&lt;-</span> Qpeak_download[<span class="sc">!</span><span class="fu">is.na</span>(Qpeak_download<span class="sc">$</span>peak_dt),<span class="fu">c</span>(<span class="st">&#39;peak_dt&#39;</span>,<span class="st">&#39;peak_va&#39;</span>)]</span>
+<span id="cb84-2"><a href="designing-for-floods-flood-hydrology.html#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(Qpeak)[<span class="fu">colnames</span>(Qpeak)<span class="sc">==</span><span class="st">&quot;peak_dt&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Date&quot;</span></span>
+<span id="cb84-3"><a href="designing-for-floods-flood-hydrology.html#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(Qpeak)[<span class="fu">colnames</span>(Qpeak)<span class="sc">==</span><span class="st">&quot;peak_va&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Peak&quot;</span></span>
+<span id="cb84-4"><a href="designing-for-floods-flood-hydrology.html#cb84-4" aria-hidden="true" tabindex="-1"></a>Qpeak<span class="sc">$</span>wy <span class="ot">&lt;-</span> smwrBase<span class="sc">::</span><span class="fu">waterYear</span>(Qpeak<span class="sc">$</span>Date)</span></code></pre></div>
+<p>The data have now been simplified so that can be used more easily in the subsequent flood frequency analysis. Data should always be plotted, which can be done many ways. As a demonstration of highlighting specific years in a barplot, the strongest El Niño years (in 1930-2002) from <a href="https://psl.noaa.gov/enso/climaterisks/years/top24enso.html">NOAA Physical Sciences Lab</a> can be highlighted in red.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="designing-for-floods-flood-hydrology.html#cb85-1" aria-hidden="true" tabindex="-1"></a>xlbl <span class="ot">&lt;-</span> <span class="st">&quot;Water Year&quot;</span></span>
+<span id="cb85-2"><a href="designing-for-floods-flood-hydrology.html#cb85-2" aria-hidden="true" tabindex="-1"></a>ylbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Peak Flow, &quot;</span> <span class="sc">~</span> ft<span class="sc">^</span>{<span class="dv">3</span>}<span class="sc">/</span>s)</span>
+<span id="cb85-3"><a href="designing-for-floods-flood-hydrology.html#cb85-3" aria-hidden="true" tabindex="-1"></a>nino_years <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1983</span>,<span class="dv">1998</span>,<span class="dv">1992</span>,<span class="dv">1931</span>,<span class="dv">1973</span>,<span class="dv">1987</span>,<span class="dv">1941</span>,<span class="dv">1958</span>,<span class="dv">1966</span>, <span class="dv">1995</span>)</span>
+<span id="cb85-4"><a href="designing-for-floods-flood-hydrology.html#cb85-4" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>)[(Qpeak<span class="sc">$</span>wy <span class="sc">%in%</span> nino_years) <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb85-5"><a href="designing-for-floods-flood-hydrology.html#cb85-5" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(Qpeak<span class="sc">$</span>Peak, <span class="at">names.arg =</span> Qpeak<span class="sc">$</span>wy, <span class="at">xlab =</span> xlbl, <span class="at">ylab=</span>ylbl, <span class="at">col=</span>cols)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pf-3"></span>
+<img src="hydr-watres_main_files/figure-html/pf-3-1.png" alt="Annual peak flows for USGS gauge 11169000, highlighting strong El Niño years in red." width="70%" />
+<p class="caption">
+Figure 10.4: Annual peak flows for USGS gauge 11169000, highlighting strong El Niño years in red.
+</p>
+</div>
+</div>
+<div id="flood-frequency-analysis" class="section level3 hasAnchor" number="10.2.3">
+<h3><span class="header-section-number">10.2.3</span> Flood frequency analysis<a href="designing-for-floods-flood-hydrology.html#flood-frequency-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The general formula used for flood frequency analysis is Equation <a href="designing-for-floods-flood-hydrology.html#eq:ff-1">(10.1)</a>.
+<span class="math display" id="eq:ff-1">\[\begin{equation}
+  y=\overline{y}+Ks_y
+    \tag{10.1}
+\end{equation}\]</span>
+where <em>y</em> is the flow at the designated return period, <span class="math inline">\(\overline{y}\)</span> is the mean of all <span class="math inline">\(y\)</span> values and <span class="math inline">\(s_y\)</span> is the standard deviation. In most instances, <span class="math inline">\(y\)</span> is a log-transformed flow; in the US a base-10 logarithm is generally used. <span class="math inline">\(K\)</span> is a frequency factor, which is a function of the return period, the parent distribution, and often the skew of the <em>y</em> values. The guidance of the USGS (as in <a href="https://pubs.usgs.gov/tm/04/b05/tm4b5.pdf">Guidelines for Determining Flood Flow Frequency, Bulletin 17C</a>) <span class="citation">(<a href="references.html#ref-england_jf_guidelines_2019" role="doc-biblioref">England, J.F. et al. 2019</a>)</span> is to use the log-Pearson Type III (LP-III) distribution for flood frequency data, though in different settings other distributions can perform comparably. For using the LP-III distribution, we will need several statistical properties of the data: mean, standard deviation, and skew, all of the log-transformed data, calculated as follows.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="designing-for-floods-flood-hydrology.html#cb86-1" aria-hidden="true" tabindex="-1"></a>mn <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">log10</span>(Qpeak<span class="sc">$</span>Peak))</span>
+<span id="cb86-2"><a href="designing-for-floods-flood-hydrology.html#cb86-2" aria-hidden="true" tabindex="-1"></a>std <span class="ot">&lt;-</span> <span class="fu">sd</span>(<span class="fu">log10</span>(Qpeak<span class="sc">$</span>Peak))</span>
+<span id="cb86-3"><a href="designing-for-floods-flood-hydrology.html#cb86-3" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> lmomco<span class="sc">::</span><span class="fu">pmoms</span>(<span class="fu">log10</span>(Qpeak<span class="sc">$</span>Peak))<span class="sc">$</span>skew</span></code></pre></div>
+<p>With those calculated, a defined return period can be chosen and the flood frequency factors, from Equation <a href="designing-for-floods-flood-hydrology.html#eq:ff-1">(10.1)</a>, calculated for that return period (the example here is for a 50-year return period). The <em>qnorm</em> function from base R and the <em>qpearsonIII</em> function from the <em>smwrBase</em> package make this straightforward, and <em>K</em> values for Equation <a href="designing-for-floods-flood-hydrology.html#eq:ff-1">(10.1)</a> are obtained for a lognormal, <em>Knorm</em>, and LP-III, <em>Klp3</em>.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="designing-for-floods-flood-hydrology.html#cb87-1" aria-hidden="true" tabindex="-1"></a>RP <span class="ot">&lt;-</span> <span class="dv">50</span> </span>
+<span id="cb87-2"><a href="designing-for-floods-flood-hydrology.html#cb87-2" aria-hidden="true" tabindex="-1"></a>Knorm <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span>RP) </span>
+<span id="cb87-3"><a href="designing-for-floods-flood-hydrology.html#cb87-3" aria-hidden="true" tabindex="-1"></a>Klp3 <span class="ot">&lt;-</span> smwrBase<span class="sc">::</span><span class="fu">qpearsonIII</span>(<span class="dv">1-1</span><span class="sc">/</span>RP, <span class="at">skew =</span> g)</span></code></pre></div>
+<p>Now the flood frequency equation <a href="designing-for-floods-flood-hydrology.html#eq:ff-1">(10.1)</a> can be applied to calculate the flows associated with the 50-year return period for each of the distributions. Remember to take the anti-log of your answer to return to standard units.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="designing-for-floods-flood-hydrology.html#cb88-1" aria-hidden="true" tabindex="-1"></a>Qpk_LN <span class="ot">&lt;-</span> mn <span class="sc">+</span> Knorm <span class="sc">*</span> std</span>
+<span id="cb88-2"><a href="designing-for-floods-flood-hydrology.html#cb88-2" aria-hidden="true" tabindex="-1"></a>Qpk_LP3 <span class="ot">&lt;-</span> mn <span class="sc">+</span> Klp3 <span class="sc">*</span> std</span>
+<span id="cb88-3"><a href="designing-for-floods-flood-hydrology.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">&quot;RP = %d years, Qpeak LN = %.0f cfs, Qpeak LP3 = %.0f&quot;</span>,RP,<span class="dv">10</span><span class="sc">^</span>Qpk_LN,<span class="dv">10</span><span class="sc">^</span>Qpk_LP3)</span>
+<span id="cb88-4"><a href="designing-for-floods-flood-hydrology.html#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;RP = 50 years, Qpeak LN = 18362 cfs, Qpeak LP3 = 12396&quot;</span></span></code></pre></div>
+</div>
+<div id="creating-a-flood-frequency-plot" class="section level3 hasAnchor" number="10.2.4">
+<h3><span class="header-section-number">10.2.4</span> Creating a flood frequency plot<a href="designing-for-floods-flood-hydrology.html#creating-a-flood-frequency-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Different probability distributions can produce very different results for a design flood flow. Plotting the historical observations along with the distributions, the lognormal and LP-III in this case, can help explain why they differ, and provide indications of which fits the data better.</p>
+<p>We cannot say exactly what the probability of seeing any observed flood exceeded would be. However, given a long record, the probability can be described using the general “plotting position” equation from Bulletin 17C, as in Equation <a href="designing-for-floods-flood-hydrology.html#eq:pp-1">(10.2)</a>.
+<span class="math display" id="eq:pp-1">\[\begin{equation}
+  p_i=\frac{i-a}{n+1-2a}
+    \tag{10.2}
+\end{equation}\]</span>
+where <em>n</em> is the total number of data points (annual peak flows in this case), <span class="math inline">\(p_i\)</span> is the exceedance probability of flood observation <em>i</em>, where flows are ranked in descending order (so the largest observed flood has <span class="math inline">\(i=1\)</span> ad the smallest is <span class="math inline">\(i=n\)</span>). The parameter <em>a</em> is between 0 and 0.5. For simplicity, the following will use <span class="math inline">\(a=0\)</span>, so the plotting Equation <a href="designing-for-floods-flood-hydrology.html#eq:pp-1">(10.2)</a> becomes the Weibull formula, Equation <a href="designing-for-floods-flood-hydrology.html#eq:pp-2">(10.3)</a>.
+<span class="math display" id="eq:pp-2">\[\begin{equation}
+  p_i=\frac{i}{n+1}
+    \tag{10.3}
+\end{equation}\]</span></p>
+<p>While not necessary, to add probabilities to the annual flow sequence we will create a new data frame consisting of the observed peak flows, sorted in descending order.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="designing-for-floods-flood-hydrology.html#cb89-1" aria-hidden="true" tabindex="-1"></a>df_pp <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">list</span>(<span class="st">&#39;Obs_peak&#39;</span><span class="ot">=</span><span class="fu">sort</span>(Qpeak<span class="sc">$</span>Peak,<span class="at">decreasing =</span> <span class="cn">TRUE</span>)))</span></code></pre></div>
+<p>This can be done with fewer commands, but here is an example where first a rank column is created (1=highest peak in the record of N years), followed by adding columns for the exceedance and non-exceedence probabilities:</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="designing-for-floods-flood-hydrology.html#cb90-1" aria-hidden="true" tabindex="-1"></a>df_pp<span class="sc">$</span>rank <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">seq</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(df_pp<span class="sc">$</span>Obs_peak)))</span>
+<span id="cb90-2"><a href="designing-for-floods-flood-hydrology.html#cb90-2" aria-hidden="true" tabindex="-1"></a>df_pp<span class="sc">$</span>exc_prob <span class="ot">&lt;-</span> (df_pp<span class="sc">$</span>rank<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">length</span>(df_pp<span class="sc">$</span>Obs_peak)))</span>
+<span id="cb90-3"><a href="designing-for-floods-flood-hydrology.html#cb90-3" aria-hidden="true" tabindex="-1"></a>df_pp<span class="sc">$</span>ne_prob <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span>df_pp<span class="sc">$</span>exc_prob</span></code></pre></div>
+<p>For each of the non-exceedance probabilities calculated for the observed peak flows, use the flood frequency equation <a href="designing-for-floods-flood-hydrology.html#eq:ff-1">(10.1)</a> to estimate the peak flow that would be predicted by a lognormal or LP-III distribution. This is the same thing that was done above for a specified return period, but now it will be “applied” to an entire column.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="designing-for-floods-flood-hydrology.html#cb91-1" aria-hidden="true" tabindex="-1"></a>df_pp<span class="sc">$</span>LN_peak <span class="ot">&lt;-</span> <span class="fu">mapply</span>(<span class="cf">function</span>(x) {<span class="dv">10</span><span class="sc">^</span>(mn<span class="sc">+</span>std<span class="sc">*</span><span class="fu">qnorm</span>(x))}, df_pp<span class="sc">$</span>ne_prob)</span>
+<span id="cb91-2"><a href="designing-for-floods-flood-hydrology.html#cb91-2" aria-hidden="true" tabindex="-1"></a>df_pp<span class="sc">$</span>LP3_peak <span class="ot">&lt;-</span> <span class="fu">mapply</span>(<span class="cf">function</span>(x) {<span class="dv">10</span><span class="sc">^</span>(mn<span class="sc">+</span>std<span class="sc">*</span>smwrBase<span class="sc">::</span><span class="fu">qpearsonIII</span>(x, <span class="at">skew=</span>g))},df_pp<span class="sc">$</span>ne_prob)</span></code></pre></div>
+<p>There are many packages that create probability plots (see, for example, the versatile <a href="https://cran.r-project.org/package=scales">scales</a> package for ggplot2). For this example the USGS <em>smwrGraphs</em> package is used. First, for aesthetics, create x- and y- axis labels.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="designing-for-floods-flood-hydrology.html#cb92-1" aria-hidden="true" tabindex="-1"></a>ylbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Peak Flow, &quot;</span> <span class="sc">~</span> ft<span class="sc">^</span>{<span class="dv">3</span>}<span class="sc">/</span>s)</span>
+<span id="cb92-2"><a href="designing-for-floods-flood-hydrology.html#cb92-2" aria-hidden="true" tabindex="-1"></a>xlbl <span class="ot">&lt;-</span> <span class="st">&quot;Non-exceedence Probability&quot;</span></span></code></pre></div>
+<p>The <em>smwrGraphs</em> package works most easily if it writes output directly to a file, a PNG file in this case, using the <em>setPNG</em> command; the file name and its dimensions in inches are given as arguments, and the PNG device is opened for writing. This is followed by commands to plot the data on a graph. Technically, the data are plotted to an object here is called <em>prob.pl</em>. The <em>probPlot</em> command plots the observed peaks as points, where the <em>alpha</em> argument is the <em>a</em> in Equation <a href="designing-for-floods-flood-hydrology.html#eq:pp-1">(10.2)</a>. Additional points or lines are added with the addXY command, used here to add the LN and LP3 data as lines (one solid, one dashed). Finally, a legend is added (the USGS refers to that as an “Explanation”), and the output PNG file is closed with the <em>dev.off()</em> command.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="designing-for-floods-flood-hydrology.html#cb93-1" aria-hidden="true" tabindex="-1"></a>smwrGraphs<span class="sc">::</span><span class="fu">setPNG</span>(<span class="st">&quot;probplot_smwr.png&quot;</span>,<span class="fl">6.5</span>, <span class="fl">3.5</span>)</span>
+<span id="cb93-2"><a href="designing-for-floods-flood-hydrology.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  width height </span></span>
+<span id="cb93-3"><a href="designing-for-floods-flood-hydrology.html#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    6.5    3.5 </span></span>
+<span id="cb93-4"><a href="designing-for-floods-flood-hydrology.html#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Setting up markdown graphics device:  probplot_smwr.png&quot;</span></span>
+<span id="cb93-5"><a href="designing-for-floods-flood-hydrology.html#cb93-5" aria-hidden="true" tabindex="-1"></a>prob.pl <span class="ot">&lt;-</span> smwrGraphs<span class="sc">::</span><span class="fu">probPlot</span>(df_pp<span class="sc">$</span>Obs_peak, <span class="at">alpha =</span> <span class="fl">0.0</span>, <span class="at">Plot=</span><span class="fu">list</span>(<span class="at">what=</span><span class="st">&quot;points&quot;</span>,<span class="at">size=</span><span class="fl">0.05</span>,<span class="at">name=</span><span class="st">&quot;Obs&quot;</span>), <span class="at">xtitle=</span>xlbl, <span class="at">ytitle=</span>ylbl)</span>
+<span id="cb93-6"><a href="designing-for-floods-flood-hydrology.html#cb93-6" aria-hidden="true" tabindex="-1"></a>prob.pl <span class="ot">&lt;-</span> smwrGraphs<span class="sc">::</span><span class="fu">addXY</span>(df_pp<span class="sc">$</span>ne_prob,df_pp<span class="sc">$</span>LN_peak,<span class="at">Plot=</span><span class="fu">list</span>(<span class="at">what=</span><span class="st">&quot;lines&quot;</span>,<span class="at">name=</span><span class="st">&quot;LN&quot;</span>),<span class="at">current=</span>prob.pl)</span>
+<span id="cb93-7"><a href="designing-for-floods-flood-hydrology.html#cb93-7" aria-hidden="true" tabindex="-1"></a>prob.pl <span class="ot">&lt;-</span> smwrGraphs<span class="sc">::</span><span class="fu">addXY</span>(df_pp<span class="sc">$</span>ne_prob,df_pp<span class="sc">$</span>LP3_peak,<span class="at">Plot=</span><span class="fu">list</span>(<span class="at">what=</span><span class="st">&quot;lines&quot;</span>,<span class="at">type=</span><span class="st">&quot;dashed&quot;</span>,<span class="at">name=</span><span class="st">&quot;LP3&quot;</span>),<span class="at">current=</span>prob.pl)</span>
+<span id="cb93-8"><a href="designing-for-floods-flood-hydrology.html#cb93-8" aria-hidden="true" tabindex="-1"></a>smwrGraphs<span class="sc">::</span><span class="fu">addExplanation</span>(prob.pl,<span class="st">&quot;ul&quot;</span>,<span class="at">title=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb93-9"><a href="designing-for-floods-flood-hydrology.html#cb93-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb93-10"><a href="designing-for-floods-flood-hydrology.html#cb93-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; png </span></span>
+<span id="cb93-11"><a href="designing-for-floods-flood-hydrology.html#cb93-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   2</span></span></code></pre></div>
+The output won’t be immediately visible in RStudio – navigate to the file and click on it to view it. Figure <a href="designing-for-floods-flood-hydrology.html#fig:ff-out">10.5</a> shows the output from the above commands.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ff-out"></span>
+<img src="images/probplot_smwr.png" alt="Probability plot for USGS gauge 11169000 for years 1930-2002." width="70%" />
+<p class="caption">
+Figure 10.5: Probability plot for USGS gauge 11169000 for years 1930-2002.
+</p>
+</div>
+</div>
+<div id="other-software-for-peak-flow-analysis" class="section level3 hasAnchor" number="10.2.5">
+<h3><span class="header-section-number">10.2.5</span> Other software for peak flow analysis<a href="designing-for-floods-flood-hydrology.html#other-software-for-peak-flow-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Much of the analysis above can be achieved using the <a href="https://water.usgs.gov/software/PeakFQ/">PeakFQ</a> software developed by the USGS. It incorporates the methods in Bulletin 17C via a graphical interface and can import data in the <em>watstore</em> format as discussed above in Section <a href="designing-for-floods-flood-hydrology.html#ffa1">10.2</a>.</p>
+<p>The USGS has also produced the <a href="https://cran.r-project.org/package=MGBT">MGBT</a> R package to perform many of the statistical calculations involved in the Bulletin 17C procedures.</p>
+</div>
+</div>
+<div id="estimating-floods-from-precipitation" class="section level2 hasAnchor" number="10.3">
+<h2><span class="header-section-number">10.3</span> Estimating floods from precipitation<a href="designing-for-floods-flood-hydrology.html#estimating-floods-from-precipitation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When extensive streamflow data are not available, flood risk can be estimated from precipitation and the characteristics of the area contributing flow to a point. While not covered here (or not yet…), there has been extensive development of hydrological modeling using R, summarized in recent papers <span class="citation">(<a href="references.html#ref-astagneau_technical_2021" role="doc-biblioref">Astagneau et al. 2021</a>; <a href="references.html#ref-slater_using_2019" role="doc-biblioref">Slater et al. 2019</a>)</span>.</p>
+<p>Straightforward application of methods to estimate peak flows or hydrographs resulting from design storms can by writing code to apply the Rational Formula (included in the <a href="https://cran.r-project.org/package=VFS">VFS</a> and <a href="https://github.com/hydrocodes/hydRopUrban">hydRopUrban</a> packages, for example) or the <a href="https://directives.sc.egov.usda.gov/17755.wba">NRCS peak flow method</a>.</p>
+<p>For more sophisticated analysis of water supply and drought, continuous modeling is required. A very good introduction to hydrological modeling in R, including model calibration and assessment, is included in the <a href="https://vt-hydroinformatics.github.io/modelingintro.html">Hydroinformatics at VT</a> reference by JP Gannon.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="fate-of-precipitation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sustainability-in-design-planning-for-change.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

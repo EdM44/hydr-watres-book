@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 11 Sustainability in design: planning for change | Hydraulics and Water Resources: Examples Using R</title>
+  <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 11 Sustainability in design: planning for change | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 11 Sustainability in design: planning for change | Hydraulics and Water Resources: Examples Using R" />
+  
+  <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+
+
+<meta name="date" content="2023-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="designing-for-floods-flood-hydrology.html"/>
+<link rel="next" href="management-of-water-resources-systems.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of water (and air)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
+<li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="properties-of-water.html"><a href="properties-of-water.html#ideal-gas-law"><i class="fa fa-check"></i><b>2.3.1</b> Ideal gas law</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html"><i class="fa fa-check"></i><b>3</b> Hydrostatics - forces exerted by water bodies</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#pressure-and-force"><i class="fa fa-check"></i><b>3.1</b> Pressure and force</a></li>
+<li class="chapter" data-level="3.2" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane"><i class="fa fa-check"></i><b>3.2</b> Force on a plane area</a></li>
+<li class="chapter" data-level="3.3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#forces-on-curved-surfaces"><i class="fa fa-check"></i><b>3.3</b> Forces on curved surfaces</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>4</b> Water flowing in pipes: energy losses</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>4.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>4.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>4.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>4.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="4.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>4.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="4.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>4.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="4.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>4.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>4.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>4.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="4.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>4.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="4.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>4.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>4.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>5</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>5.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="5.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>5.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="5.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>5.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>5.3.1</b> Solving the Manning equation in R</a></li>
+<li class="chapter" data-level="5.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>5.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="5.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>5.3.3</b> Solving the Manning equation using a spreadsheet like Excel</a></li>
+<li class="chapter" data-level="5.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>5.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>5.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>5.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>5.5</b> Critical flow</a></li>
+<li class="chapter" data-level="5.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>5.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>5.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="5.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>5.6.2</b> Standard step method</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>5.7</b> Rapidly varied flow (the hydraulic jump)</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>5.7.1</b> Sequent (or conjugate) depths</a></li>
+<li class="chapter" data-level="5.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>5.7.2</b> Location of a hydraulic jump</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>6</b> Momentum in water flow</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#equations-of-linear-momentum"><i class="fa fa-check"></i><b>6.1</b> Equations of linear momentum</a></li>
+<li class="chapter" data-level="6.2" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#the-momentum-equation-in-pipe-design"><i class="fa fa-check"></i><b>6.2</b> The momentum equation in pipe design</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>7</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>7.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="7.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>7.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="7.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>7.3</b> Finding the operating point</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html"><i class="fa fa-check"></i><b>8</b> The hydrologic cycle and precipitation</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-observations"><i class="fa fa-check"></i><b>8.1</b> Precipitation observations</a></li>
+<li class="chapter" data-level="8.2" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precip-freq"><i class="fa fa-check"></i><b>8.2</b> Precipitation frequency</a></li>
+<li class="chapter" data-level="8.3" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-gauge-consistency-double-mass-curves"><i class="fa fa-check"></i><b>8.3</b> Precipitation gauge consistency – double mass curves</a></li>
+<li class="chapter" data-level="8.4" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-interpolation-and-areal-averaging"><i class="fa fa-check"></i><b>8.4</b> Precipitation interpolation and areal averaging</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html"><i class="fa fa-check"></i><b>9</b> Fate of precipitation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#interception"><i class="fa fa-check"></i><b>9.1</b> Interception</a></li>
+<li class="chapter" data-level="9.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#infiltration"><i class="fa fa-check"></i><b>9.2</b> Infiltration</a></li>
+<li class="chapter" data-level="9.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#evaporation"><i class="fa fa-check"></i><b>9.3</b> Evaporation</a></li>
+<li class="chapter" data-level="9.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow"><i class="fa fa-check"></i><b>9.4</b> Snow</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#observations"><i class="fa fa-check"></i><b>9.4.1</b> Observations</a></li>
+<li class="chapter" data-level="9.4.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#basic-snowmelt-theory-and-simple-models"><i class="fa fa-check"></i><b>9.4.2</b> Basic snowmelt theory and simple models</a></li>
+<li class="chapter" data-level="9.4.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow-model-calibration"><i class="fa fa-check"></i><b>9.4.3</b> Snow model calibration</a></li>
+<li class="chapter" data-level="9.4.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#estimating-climate-change-impacts-on-snow"><i class="fa fa-check"></i><b>9.4.4</b> Estimating climate change impacts on snow</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#watershed-analysis"><i class="fa fa-check"></i><b>9.5</b> Watershed analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html"><i class="fa fa-check"></i><b>10</b> Designing for floods: flood hydrology</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#engineering-design-requires-probability-and-statistics"><i class="fa fa-check"></i><b>10.1</b> Engineering design requires probability and statistics</a></li>
+<li class="chapter" data-level="10.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#ffa1"><i class="fa fa-check"></i><b>10.2</b> Estimating floods when you have peak flow observations - flood frequency analysis</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#installing-helpful-packages"><i class="fa fa-check"></i><b>10.2.1</b> Installing helpful packages</a></li>
+<li class="chapter" data-level="10.2.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#download-manipulate-and-plot-the-data-for-a-site"><i class="fa fa-check"></i><b>10.2.2</b> Download, manipulate, and plot the data for a site</a></li>
+<li class="chapter" data-level="10.2.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#flood-frequency-analysis"><i class="fa fa-check"></i><b>10.2.3</b> Flood frequency analysis</a></li>
+<li class="chapter" data-level="10.2.4" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#creating-a-flood-frequency-plot"><i class="fa fa-check"></i><b>10.2.4</b> Creating a flood frequency plot</a></li>
+<li class="chapter" data-level="10.2.5" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#other-software-for-peak-flow-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Other software for peak flow analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#estimating-floods-from-precipitation"><i class="fa fa-check"></i><b>10.3</b> Estimating floods from precipitation</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html"><i class="fa fa-check"></i><b>11</b> Sustainability in design: planning for change</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#perturbing-a-system"><i class="fa fa-check"></i><b>11.1</b> Perturbing a system</a></li>
+<li class="chapter" data-level="11.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-hydrologic-data"><i class="fa fa-check"></i><b>11.2</b> Detecting changes in hydrologic data</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-step-change"><i class="fa fa-check"></i><b>11.2.1</b> Detecting a step change</a></li>
+<li class="chapter" data-level="11.2.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-monotonic-trend"><i class="fa fa-check"></i><b>11.2.2</b> Detecting a monotonic trend</a></li>
+<li class="chapter" data-level="11.2.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#choosing-whether-to-use-parametric-or-non-parametric-tests"><i class="fa fa-check"></i><b>11.2.3</b> Choosing whether to use parametric or non-parametric tests</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-extreme-events"><i class="fa fa-check"></i><b>11.3</b> Detecting changes in extreme events</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#obtaining-and-preparing-sea-level-data"><i class="fa fa-check"></i><b>11.3.1</b> Obtaining and preparing sea-level data</a></li>
+<li class="chapter" data-level="11.3.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#conducting-the-extreme-event-analysis"><i class="fa fa-check"></i><b>11.3.2</b> Conducting the extreme event analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html"><i class="fa fa-check"></i><b>12</b> Management of water resources systems</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#a-simple-linear-system-with-two-decision-variables"><i class="fa fa-check"></i><b>12.1</b> A simple linear system with two decision variables</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#overview-of-problem-formulation"><i class="fa fa-check"></i><b>12.1.1</b> Overview of problem formulation</a></li>
+<li class="chapter" data-level="12.1.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-an-example"><i class="fa fa-check"></i><b>12.1.2</b> Setting up an example</a></li>
+<li class="chapter" data-level="12.1.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#graphing-the-solution-space"><i class="fa fa-check"></i><b>12.1.3</b> Graphing the solution space</a></li>
+<li class="chapter" data-level="12.1.4" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r"><i class="fa fa-check"></i><b>12.1.4</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.1.5" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#interpreting-the-optimal-results"><i class="fa fa-check"></i><b>12.1.5</b> Interpreting the optimal results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-complex-linear-programming-reservoir-operation"><i class="fa fa-check"></i><b>12.2</b> More complex linear programming: reservoir operation</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#problem-summary"><i class="fa fa-check"></i><b>12.2.1</b> Problem summary</a></li>
+<li class="chapter" data-level="12.2.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r-1"><i class="fa fa-check"></i><b>12.2.2</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.2.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#building-the-linear-model"><i class="fa fa-check"></i><b>12.2.3</b> Building the linear model</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-realistic-reservoir-operation-non-linear-programming"><i class="fa fa-check"></i><b>12.3</b> More Realistic Reservoir Operation: non-linear programming</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#reservoir-operation"><i class="fa fa-check"></i><b>12.3.1</b> Reservoir operation</a></li>
+<li class="chapter" data-level="12.3.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#performing-stochastic-dynamic-programming"><i class="fa fa-check"></i><b>12.3.2</b> Performing stochastic dynamic programming</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="groundwater.html"><a href="groundwater.html"><i class="fa fa-check"></i><b>13</b> Groundwater</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hydraulics and Water Resources: Examples Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sustainability-in-design-planning-for-change" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">Chapter 11</span> Sustainability in design: planning for change<a href="sustainability-in-design-planning-for-change.html#sustainability-in-design-planning-for-change" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cc1"></span>
+<img src="images/global-surface-temperature.png" alt="Yearly surface temperature compared to the 20th-century average from 1880–2022, from Climate.gov" width="50%" />
+<p class="caption">
+Figure 11.1: Yearly surface temperature compared to the 20th-century average from 1880–2022, from <a href="https://www.climate.gov/news-features/understanding-climate/climate-change-global-temperature">Climate.gov</a>
+</p>
+</div>
+<p>All systems engineered to last more than a decade or two, so everything civil engineers work on, will need to be designed to be resilient to dramatic environmental changes. As societies respond to the impacts of a disrupted climate, demands for water, energy, housing, food, and other essential services will change. This will result in economic disruption as well. This chapter presents a few ways long-term sustainability can be considered, looking at sensitivity of systems, detection of shifts or trends, and how economic and management may respond. This is much more brief than this rich topic deserves.</p>
+<p>The <em>hydromisc</em> package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on <a href="https://github.com/EdM44/hydromisc">the github site for the package</a>.</p>
+<div id="perturbing-a-system" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Perturbing a system<a href="sustainability-in-design-planning-for-change.html#perturbing-a-system" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>when a system is perturbed it can respond in many ways. A useful classification of these was developed by <span class="citation">(<a href="references.html#ref-marshall_framing_2005" role="doc-biblioref">Marshall and Toffel 2005</a>)</span>. Figure <a href="sustainability-in-design-planning-for-change.html#fig:pert1">11.2</a> is an adaptation of Figure 2 from that paper.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pert1"></span>
+<img src="images/perturbed_system.png" alt="Pathways of recovery or degradation a system may take after initial perturbation." width="50%" />
+<p class="caption">
+Figure 11.2: Pathways of recovery or degradation a system may take after initial perturbation.
+</p>
+</div>
+<p>In essence, after a system is degraded, it can eventually rebound to its original condition (Type 1), rebound to some other state that is degraded from its original (Types 2 and 3), or completely collapse (Type 4). Which path it taken depends on the degree of the initial disruption and the ability of the system to recover.</p>
+While originally cast with time as the x-axis, Figure <a href="sustainability-in-design-planning-for-change.html#fig:pert1">11.2</a> is equally applicable when looking at a system that travels over a distance, such as a flowing river. The form of the curves in Figure <a href="sustainability-in-design-planning-for-change.html#fig:pert1">11.2</a> appear similar to a classic dissolved oxygen sag curve, as in Figure <a href="sustainability-in-design-planning-for-change.html#fig:do-1">11.3</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:do-1"></span>
+<img src="images/do_curve1.png" alt="Dissolved oxygen levels in a steam following an input of waste (source: EPA)." width="40%" />
+<p class="caption">
+Figure 11.3: Dissolved oxygen levels in a steam following an input of waste (source: EPA).
+</p>
+</div>
+<p>The Streeter-Phelps equation describes the response of the dissolved oxygen (DO) levels in a water body to a perturbation, such as the discharge of wastewater with a high oxygen demand. Some important assumptions are that steady-state conditions exist, and the flow moves as <em>plug flow</em>, progressing downstream along a one-dimensional path. Following is Streeter-Phelps Equation <a href="sustainability-in-design-planning-for-change.html#eq:do-1">(11.1)</a>.
+<span class="math display" id="eq:do-1">\[\begin{equation}
+  D=C_s-C=\frac{K_1^\prime L_0}{K_2^\prime - K_1^\prime}\left(e^{-K_1^\prime t}-e^{-K_2^\prime t}\right)+D_0e^{-K_2^\prime t}
+    \tag{11.1}
+\end{equation}\]</span>
+where <span class="math inline">\(D\)</span> is the DO deficit, <span class="math inline">\(C_s\)</span> is the saturation DO concentration, <span class="math inline">\(C\)</span> is the DO concentration, <span class="math inline">\(D_0\)</span> is the initial DO deficit, <span class="math inline">\(L_0\)</span> is the ultimate (first-stage) BOD at the discharge, calculated by Equation <a href="sustainability-in-design-planning-for-change.html#eq:do-2">(11.2)</a>.
+<span class="math display" id="eq:do-2">\[\begin{equation}
+  L_0=\frac{BOD_5}{1-e^{-K_1^\prime t}}
+    \tag{11.2}
+\end{equation}\]</span>
+<span class="math inline">\(K_1^\prime\)</span> and <span class="math inline">\(K_2^\prime\)</span> are the deoxygenation and reaeration coefficients, both adjusted for temperature. Usually the coefficients <span class="math inline">\(K_1\)</span> and <span class="math inline">\(K_2\)</span> are defined at 20<span class="math inline">\(^\circ\)</span>C, and then adjusted by empirical relationships for the actual water temperature using Equation <a href="sustainability-in-design-planning-for-change.html#eq:do-3">(11.3)</a>.
+<span class="math display" id="eq:do-3">\[\begin{equation}
+  K^\prime = K\theta ^{T-20}
+  \tag{11.3}
+\end{equation}\]</span>
+where <span class="math inline">\(\theta\)</span> is set to typical values of 1.135 for <span class="math inline">\(K_1\)</span> for <span class="math inline">\(T\le20^\circ C\)</span> (and 1.056 otherwise) and 1.024 for <span class="math inline">\(K_2\)</span>.</p>
+<p>As a demonstration, functions (only available for SI units) in the <em>hydromisc</em> package can be used to explore the recovery of an aquatic system from a perturbation, as in Example <a href="sustainability-in-design-planning-for-change.html#exm:ex-docurve">11.1</a>.</p>
+<div class="example">
+<p><span id="exm:ex-docurve" class="example"><strong>Example 11.1  </strong></span>A river with a flow of 7 <span class="math inline">\(m^3/s\)</span> and a velocity of 1.4 m/s has effluent discharged into it at a rate of 1.5 <span class="math inline">\(m^3/s\)</span>. The river upstream of the discharge has a temperature of 15<span class="math inline">\(^\circ\)</span>C, a <span class="math inline">\(BOD_5\)</span> of 1 mg/L, and a dissolved oxygen saturation of 90 percent. The effluent is 21<span class="math inline">\(^\circ\)</span>C with a <span class="math inline">\(BOD_5\)</span> of 180 mg/L and a dissolved oxygen saturation of 0 percent. The deoxygenation rate constant (at 20<span class="math inline">\(^\circ\)</span>C) is 0.4 <span class="math inline">\(d^{-1}\)</span>, and the reaeration rate constant is 0.8 <span class="math inline">\(d^{-1}\)</span>. Create a plot of DO as a percent of saturation (y-axis) vs. distance in km (x-axis).</p>
+</div>
+<p>First set up the model parameters.</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="sustainability-in-design-planning-for-change.html#cb94-1" aria-hidden="true" tabindex="-1"></a>Q <span class="ot">&lt;-</span> <span class="dv">7</span>             <span class="co"># flow of stream, m3/s</span></span>
+<span id="cb94-2"><a href="sustainability-in-design-planning-for-change.html#cb94-2" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fl">1.4</span>           <span class="co"># velocity of stream, m/s</span></span>
+<span id="cb94-3"><a href="sustainability-in-design-planning-for-change.html#cb94-3" aria-hidden="true" tabindex="-1"></a>Qeff <span class="ot">&lt;-</span> <span class="fl">1.5</span>        <span class="co"># flow rate of effluent, m3/s</span></span>
+<span id="cb94-4"><a href="sustainability-in-design-planning-for-change.html#cb94-4" aria-hidden="true" tabindex="-1"></a>DOsatupstr <span class="ot">&lt;-</span> <span class="dv">90</span>   <span class="co"># DO saturation upstream of effluent discharge, %</span></span>
+<span id="cb94-5"><a href="sustainability-in-design-planning-for-change.html#cb94-5" aria-hidden="true" tabindex="-1"></a>DOsateff <span class="ot">&lt;-</span> <span class="dv">0</span>      <span class="co"># DO saturation of effluent discharge, %</span></span>
+<span id="cb94-6"><a href="sustainability-in-design-planning-for-change.html#cb94-6" aria-hidden="true" tabindex="-1"></a>Triv <span class="ot">&lt;-</span> <span class="dv">15</span>         <span class="co"># temperature of receiving water, C</span></span>
+<span id="cb94-7"><a href="sustainability-in-design-planning-for-change.html#cb94-7" aria-hidden="true" tabindex="-1"></a>Teff <span class="ot">&lt;-</span> <span class="dv">21</span>         <span class="co"># temperature of effluent, C</span></span>
+<span id="cb94-8"><a href="sustainability-in-design-planning-for-change.html#cb94-8" aria-hidden="true" tabindex="-1"></a>BOD5riv <span class="ot">&lt;-</span> <span class="dv">1</span>       <span class="co"># 5-day BOD of receiving water, mg/L</span></span>
+<span id="cb94-9"><a href="sustainability-in-design-planning-for-change.html#cb94-9" aria-hidden="true" tabindex="-1"></a>BOD5eff <span class="ot">&lt;-</span> <span class="dv">180</span>     <span class="co"># 5-day BOD of effluent, mg/L</span></span>
+<span id="cb94-10"><a href="sustainability-in-design-planning-for-change.html#cb94-10" aria-hidden="true" tabindex="-1"></a>K1 <span class="ot">&lt;-</span> <span class="fl">0.4</span>          <span class="co"># deoxygenation rate constant at 20C, 1/day</span></span>
+<span id="cb94-11"><a href="sustainability-in-design-planning-for-change.html#cb94-11" aria-hidden="true" tabindex="-1"></a>K2 <span class="ot">&lt;-</span> <span class="fl">0.8</span>          <span class="co"># reaeration rate constant at 20C, 1/day</span></span></code></pre></div>
+<p>Calculate some of the variables needed for the Streeter-Phelps model. Type <em>?hydromisc::DO_functions</em> for more information on the DO-related functions in the <em>hydromisc</em> package.</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="sustainability-in-design-planning-for-change.html#cb95-1" aria-hidden="true" tabindex="-1"></a>Tmix <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">Mixture</span>(Q, Triv, Qeff, Teff)</span>
+<span id="cb95-2"><a href="sustainability-in-design-planning-for-change.html#cb95-2" aria-hidden="true" tabindex="-1"></a>K1adj <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">Kadj_deox</span>(<span class="at">K1=</span>K1, <span class="at">T=</span>Tmix)</span>
+<span id="cb95-3"><a href="sustainability-in-design-planning-for-change.html#cb95-3" aria-hidden="true" tabindex="-1"></a>K2adj <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">Kadj_reox</span>(<span class="at">K2=</span>K2, <span class="at">T=</span>Tmix)</span>
+<span id="cb95-4"><a href="sustainability-in-design-planning-for-change.html#cb95-4" aria-hidden="true" tabindex="-1"></a>BOD5mix <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">Mixture</span>(Q, BOD5riv, Qeff, BOD5eff)</span>
+<span id="cb95-5"><a href="sustainability-in-design-planning-for-change.html#cb95-5" aria-hidden="true" tabindex="-1"></a>L0 <span class="ot">&lt;-</span> BOD5mix<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">exp</span>(<span class="sc">-</span>K1adj<span class="sc">*</span><span class="dv">5</span>)) <span class="co">#BOD5 - ultimate</span></span></code></pre></div>
+<p>Find the dissolved oxygen for 100 percent saturation (assuming no salinity) and the initial DO deficit at the point of discharge.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="sustainability-in-design-planning-for-change.html#cb96-1" aria-hidden="true" tabindex="-1"></a>Cs <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">O2sat</span>(Tmix) <span class="co">#DO saturation, mg/l</span></span>
+<span id="cb96-2"><a href="sustainability-in-design-planning-for-change.html#cb96-2" aria-hidden="true" tabindex="-1"></a>C0 <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">Mixture</span>(Q, DOsatupstr<span class="sc">/</span><span class="fl">100.</span><span class="sc">*</span>Cs, Qeff, DOsateff<span class="sc">/</span><span class="fl">100.</span><span class="sc">*</span>Cs) <span class="co">#DO init, mg/l</span></span>
+<span id="cb96-3"><a href="sustainability-in-design-planning-for-change.html#cb96-3" aria-hidden="true" tabindex="-1"></a>D0 <span class="ot">&lt;-</span> Cs <span class="sc">-</span> C0 <span class="co">#initial deficit</span></span></code></pre></div>
+<p>Determine a set of distances where the DO deficit will be calculated, and the corresponding times for the flow to travel that distance.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="sustainability-in-design-planning-for-change.html#cb97-1" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="fl">0.5</span>, <span class="at">to=</span><span class="dv">800</span>, <span class="at">by=</span><span class="dv">5</span>)</span>
+<span id="cb97-2"><a href="sustainability-in-design-planning-for-change.html#cb97-2" aria-hidden="true" tabindex="-1"></a>ts <span class="ot">&lt;-</span> xs<span class="sc">*</span><span class="dv">1000</span><span class="sc">/</span>(V<span class="sc">*</span><span class="dv">86400</span>)</span></code></pre></div>
+<p>Finally, calculate the DO (as a percent of saturation) and plot the results.</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="sustainability-in-design-planning-for-change.html#cb98-1" aria-hidden="true" tabindex="-1"></a>DO_def <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">DOdeficit</span>(<span class="at">t=</span>ts, <span class="at">K1=</span>K1adj, <span class="at">K2=</span>K2adj, <span class="at">L0=</span>L0, <span class="at">D0=</span>D0)</span>
+<span id="cb98-2"><a href="sustainability-in-design-planning-for-change.html#cb98-2" aria-hidden="true" tabindex="-1"></a>DO_mgl <span class="ot">&lt;-</span> Cs <span class="sc">-</span> DO_def</span>
+<span id="cb98-3"><a href="sustainability-in-design-planning-for-change.html#cb98-3" aria-hidden="true" tabindex="-1"></a>DO_pct <span class="ot">&lt;-</span> <span class="dv">100</span><span class="sc">*</span>DO_mgl<span class="sc">/</span>Cs</span>
+<span id="cb98-4"><a href="sustainability-in-design-planning-for-change.html#cb98-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xs,DO_pct,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">800</span>),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>),<span class="at">type=</span><span class="st">&quot;l&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Distance, km&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;DO, %&quot;</span>)</span>
+<span id="cb98-5"><a href="sustainability-in-design-planning-for-change.html#cb98-5" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:dosag-4"></span>
+<img src="hydr-watres_main_files/figure-html/dosag-4-1.png" alt="Dissolved oxygen for this example." width="50%" />
+<p class="caption">
+Figure 11.4: Dissolved oxygen for this example.
+</p>
+</div>
+<p>For this example, the saturation DO concentration is 9.9 mg/L, meaning the minimum value of the curve corresponds to about 4 mg/L. The <a href="https://www.epa.gov/system/files/documents/2021-07/parameter-factsheet_do.pdf">EPA</a> notes that values this low are below that recommended for the protection of aquatic life in freshwater. This shows that while the ecosystem has not collapsed, (i.e., following a Type 4 curve in Figure <a href="sustainability-in-design-planning-for-change.html#fig:pert1">11.2</a>), effective ecosystem functions may be lost.</p>
+</div>
+<div id="detecting-changes-in-hydrologic-data" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Detecting changes in hydrologic data<a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-hydrologic-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+Planning for decades or more requires the ability to determine whether changes are occurring or have already occurred. Two types of changes will be considered here: step changes, caused by an abrupt change such as deforestation or a new pollutant source, and monotonic (either always increasing or decreasing) trends, caused by more gradual shifts. these are illustrated in Figures <a href="sustainability-in-design-planning-for-change.html#fig:changef1">11.5</a> and <a href="sustainability-in-design-planning-for-change.html#fig:changef2">11.6</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:changef1"></span>
+<img src="images/step_change.png" alt="A shift in phosphorus concentrations (source: USGS Scientific Investigations Report 2017-5006, App. 4, https://doi.org/10.3133/sir20175006)." width="50%" />
+<p class="caption">
+Figure 11.5: A shift in phosphorus concentrations (source: USGS Scientific Investigations Report 2017-5006, App. 4, <a href="https://doi.org/10.3133/sir20175006" class="uri">https://doi.org/10.3133/sir20175006</a>).
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:changef2"></span>
+<img src="images/trend_change.png" alt="A trend in annual peak streamflow. (source: USGS Professional Paper 1869, https://doi.org/10.3133/pp1869)." width="50%" />
+<p class="caption">
+Figure 11.6: A trend in annual peak streamflow. (source: USGS Professional Paper 1869, <a href="https://doi.org/10.3133/pp1869" class="uri">https://doi.org/10.3133/pp1869</a>).
+</p>
+</div>
+Before performing calculations related to trend significance, refer to Chapter 4 of <a href="https://pubs.er.usgs.gov/publication/tm4A3">Statistical Methods in Water Resources</a> <span class="citation">(<a href="references.html#ref-helsel_dr_statistical_2020" role="doc-biblioref">Helsel, D.R. et al. 2020</a>)</span> to review the relationship between hypothesis testing and statistical significance. Figure <a href="sustainability-in-design-planning-for-change.html#fig:hypo1">11.7</a> from that reference illustrates this.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hypo1"></span>
+<img src="images/hypothesis_tests.png" alt="Four possible results of hypothesis testing. (source: Helsel et al., 2020)." width="50%" />
+<p class="caption">
+Figure 11.7: Four possible results of hypothesis testing. (source: Helsel et al., 2020).
+</p>
+</div>
+<p>In the context of the example that follows, the null hypothesis, H0, is usually a statement that no trend exists. The <span class="math inline">\(\alpha\)</span>-value (the significance level) is the probability of incorrectly rejecting the null hypothesis, that is rejecting H0 when it is in fact true. The significance level that is acceptable is a decision that must be made – a common value of <span class="math inline">\(\alpha\)</span>=0.05 (5 percent) significance, also referred to as <span class="math inline">\(1-\alpha=0.95\)</span> (95 percent) confidence.</p>
+<p>A statistical test will produce a <em>p-value</em>, which is essentially the likelihood that the null hypothesis is true, or more technically, the probability of obtaining the calculated test statistic (on one more extreme) when the null hypothesis is true. Again, in the context of trend detection, small p-values (less than <span class="math inline">\(\alpha\)</span>) indicate greater confidence for rejecting the null hypothesis and thus supporting the existence of a “statistically significant” trend.</p>
+<p>One of the most robust impacts of a warming climate is the impact on snow. In California, historically the peak of snow accumulation tended to occur roughly on April 1 on average. To demonstrate methods for detecting changes data from the Four Trees Cooperative Snow Sensor site in California, obtained from the <a href="https://www.nrcs.usda.gov/wps/portal/wcc/">USDA National Water and Climate Center</a>. These data are available as part of the <em>hydromisc</em> package.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="sustainability-in-design-planning-for-change.html#cb99-1" aria-hidden="true" tabindex="-1"></a>swe <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span>four_trees_swe</span>
+<span id="cb99-2"><a href="sustainability-in-design-planning-for-change.html#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(swe<span class="sc">$</span>Year, swe<span class="sc">$</span>April_1_SWE_in, <span class="at">xlab=</span><span class="st">&quot;Year&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;April 1 Snow Water Equivalent, in&quot;</span>)</span>
+<span id="cb99-3"><a href="sustainability-in-design-planning-for-change.html#cb99-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(zoo<span class="sc">::</span><span class="fu">rollmean</span>(swe, <span class="at">k=</span><span class="dv">5</span>), <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">cex=</span><span class="fl">1.4</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:change-1"></span>
+<img src="hydr-watres_main_files/figure-html/change-1-1.png" alt="April 1 snow water equivalent at Four Trees station, CA. The dashed line is a 5-year moving average." width="50%" />
+<p class="caption">
+Figure 11.8: April 1 snow water equivalent at Four Trees station, CA. The dashed line is a 5-year moving average.
+</p>
+</div>
+<p>A plot is always useful – here a 5-year moving average, or rolling mean, is added (using the <a href="https://cran.r-project.org/package=zoo">zoo</a> package), to make any trends more observable.</p>
+<div id="detecting-a-step-change" class="section level3 hasAnchor" number="11.2.1">
+<h3><span class="header-section-number">11.2.1</span> Detecting a step change<a href="sustainability-in-design-planning-for-change.html#detecting-a-step-change" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When there is a step change in a record, you need to test that the difference between
+the “before” and “after” conditions is large enough relative to natural variability that is can be confidently described as a change. In other words, whether the change is <em>significant</em> must be determined. This is done by breaking the data into two-samples and applying a statistical test, such as a t-test or the nonparametric rank-sum (or Mann-Whitney U) test.</p>
+<p>While for this example there is no obvious reason to break this data at any particular year, we’ll just look at the first and second halves. Separate the two subsets of years into two arrays of (y) values (not data frames in this case) and then create a boxplot of the two periods.</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="sustainability-in-design-planning-for-change.html#cb100-1" aria-hidden="true" tabindex="-1"></a>yvalues1 <span class="ot">&lt;-</span> swe<span class="sc">$</span>April_1_SWE_in[(swe<span class="sc">$</span>Year <span class="sc">&gt;=</span> <span class="dv">1980</span>) <span class="sc">&amp;</span> (swe<span class="sc">$</span>Year <span class="sc">&lt;=</span> <span class="dv">2001</span>)]</span>
+<span id="cb100-2"><a href="sustainability-in-design-planning-for-change.html#cb100-2" aria-hidden="true" tabindex="-1"></a>yvalues2 <span class="ot">&lt;-</span> swe<span class="sc">$</span>April_1_SWE_in[(swe<span class="sc">$</span>Year <span class="sc">&gt;=</span> <span class="dv">2002</span>) <span class="sc">&amp;</span> (swe<span class="sc">$</span>Year <span class="sc">&lt;=</span> <span class="dv">2023</span>)]</span>
+<span id="cb100-3"><a href="sustainability-in-design-planning-for-change.html#cb100-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(yvalues1,yvalues2,<span class="at">names=</span><span class="fu">c</span>(<span class="st">&quot;1980-2001&quot;</span>,<span class="st">&quot;2002-2023&quot;</span>),<span class="at">boxwex=</span><span class="fl">0.2</span>,<span class="at">ylab=</span><span class="st">&quot;swe, in&quot;</span>) </span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:step-1"></span>
+<img src="hydr-watres_main_files/figure-html/step-1-1.png" alt="Comparison of two records of SWE at Four Trees station, CA." width="60%" />
+<p class="caption">
+Figure 11.9: Comparison of two records of SWE at Four Trees station, CA.
+</p>
+</div>
+<p>Calculate the means and medians of the two periods, just for illustration.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="sustainability-in-design-planning-for-change.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(yvalues1)</span>
+<span id="cb101-2"><a href="sustainability-in-design-planning-for-change.html#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 19.76364</span></span>
+<span id="cb101-3"><a href="sustainability-in-design-planning-for-change.html#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(yvalues2)</span>
+<span id="cb101-4"><a href="sustainability-in-design-planning-for-change.html#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 15.44545</span></span>
+<span id="cb101-5"><a href="sustainability-in-design-planning-for-change.html#cb101-5" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(yvalues1)</span>
+<span id="cb101-6"><a href="sustainability-in-design-planning-for-change.html#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 17.8</span></span>
+<span id="cb101-7"><a href="sustainability-in-design-planning-for-change.html#cb101-7" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(yvalues2)</span>
+<span id="cb101-8"><a href="sustainability-in-design-planning-for-change.html#cb101-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 7.9</span></span></code></pre></div>
+<p>The mean for the later period is lower, as is the median. the question to pose is whether these differences are statistically significant. The following tests allow that determination.</p>
+<div id="method-1-using-a-t-test." class="section level4 hasAnchor" number="11.2.1.1">
+<h4><span class="header-section-number">11.2.1.1</span> Method 1: Using a t-test.<a href="sustainability-in-design-planning-for-change.html#method-1-using-a-t-test." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A t-test determines the significance of a difference in the mean between two samples under a number of assumptions. These include independence of each data point (in this example, that any year’s April 1 SWE is uncorrelated with prior years) and that the data are normally distributed. This is performed with the <em>t.test</em> function. The alternative argument is included that the test is “two sided”; a one-sided test would test for one group being only greater than or less than the other, but here we only want to test whether they are different. The <em>paired</em> argument is set to FALSE since there is no correspondence between the order of values in each subset of years.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="sustainability-in-design-planning-for-change.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(yvalues1, yvalues2, <span class="at">var.equal =</span> <span class="cn">FALSE</span>, <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span>, <span class="at">paired =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb102-2"><a href="sustainability-in-design-planning-for-change.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb102-3"><a href="sustainability-in-design-planning-for-change.html#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
+<span id="cb102-4"><a href="sustainability-in-design-planning-for-change.html#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb102-5"><a href="sustainability-in-design-planning-for-change.html#cb102-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  yvalues1 and yvalues2</span></span>
+<span id="cb102-6"><a href="sustainability-in-design-planning-for-change.html#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 0.91863, df = 40.084, p-value = 0.3638</span></span>
+<span id="cb102-7"><a href="sustainability-in-design-planning-for-change.html#cb102-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></span>
+<span id="cb102-8"><a href="sustainability-in-design-planning-for-change.html#cb102-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb102-9"><a href="sustainability-in-design-planning-for-change.html#cb102-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -5.181634 13.817998</span></span>
+<span id="cb102-10"><a href="sustainability-in-design-planning-for-change.html#cb102-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb102-11"><a href="sustainability-in-design-planning-for-change.html#cb102-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean of x mean of y </span></span>
+<span id="cb102-12"><a href="sustainability-in-design-planning-for-change.html#cb102-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  19.76364  15.44545</span></span></code></pre></div>
+<p>Here the p-value is 0.36, a value much greater than <span class="math inline">\(\alpha = 0.05\)</span>, so the null hypothesis cannot be rejected. The difference in the means is not significant based on this test.</p>
+</div>
+<div id="method-2-wilcoxon-rank-sum-or-mann-whitney-u-test." class="section level4 hasAnchor" number="11.2.1.2">
+<h4><span class="header-section-number">11.2.1.2</span> Method 2: Wilcoxon rank-sum (or Mann-Whitney U) test.<a href="sustainability-in-design-planning-for-change.html#method-2-wilcoxon-rank-sum-or-mann-whitney-u-test." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Like the t-test, the rank-sum test produces a <em>p-value</em>, but it measures a more generic measure of “central tendency” (such as a median) rather than a mean. Assumptions about independence of data are still necessary, but there is no requirement of normality of the distribution of data. It is less affected by outliers or a few extreme values than the t-test.</p>
+<p>This is performed with a standard R function. Other arguments are set as with the t-test.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="sustainability-in-design-planning-for-change.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(yvalues1, yvalues2, <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span>, <span class="at">paired=</span><span class="cn">FALSE</span>) </span>
+<span id="cb103-2"><a href="sustainability-in-design-planning-for-change.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in wilcox.test.default(yvalues1, yvalues2, alternative = &quot;two.sided&quot;, :</span></span>
+<span id="cb103-3"><a href="sustainability-in-design-planning-for-change.html#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cannot compute exact p-value with ties</span></span>
+<span id="cb103-4"><a href="sustainability-in-design-planning-for-change.html#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb103-5"><a href="sustainability-in-design-planning-for-change.html#cb103-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Wilcoxon rank sum test with continuity correction</span></span>
+<span id="cb103-6"><a href="sustainability-in-design-planning-for-change.html#cb103-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb103-7"><a href="sustainability-in-design-planning-for-change.html#cb103-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  yvalues1 and yvalues2</span></span>
+<span id="cb103-8"><a href="sustainability-in-design-planning-for-change.html#cb103-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; W = 297, p-value = 0.1999</span></span>
+<span id="cb103-9"><a href="sustainability-in-design-planning-for-change.html#cb103-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true location shift is not equal to 0</span></span></code></pre></div>
+<p>The p-value is much lower than with the t-test, showing less influence of the two very high SWE values in the second half of the record.</p>
+</div>
+</div>
+<div id="detecting-a-monotonic-trend" class="section level3 hasAnchor" number="11.2.2">
+<h3><span class="header-section-number">11.2.2</span> Detecting a monotonic trend<a href="sustainability-in-design-planning-for-change.html#detecting-a-monotonic-trend" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In a similar way to the step change, a monotonic trend can be tested using parameteric or non-parametric methods. Here we use the entire record to detect trends over the entire period. Linear regression may be used as a parametric method, which makes assumptions similar to the t-test (that residuals of the data are normally distributed). If the data do not conform to a normal distribution, the Mann-Kendall test can be applied, which is a non-parametric test.</p>
+<div id="method-1-regression" class="section level4 hasAnchor" number="11.2.2.1">
+<h4><span class="header-section-number">11.2.2.1</span> Method 1: Regression<a href="sustainability-in-design-planning-for-change.html#method-1-regression" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To perform a linear regression in R, build a linear regression model (lm). This can take the <em>swe</em> data frame as input data, specifying the columns to relate linearly.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="sustainability-in-design-planning-for-change.html#cb104-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(April_1_SWE_in <span class="sc">~</span> Year, <span class="at">data =</span> swe) </span>
+<span id="cb104-2"><a href="sustainability-in-design-planning-for-change.html#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m)<span class="sc">$</span>coefficients</span>
+<span id="cb104-3"><a href="sustainability-in-design-planning-for-change.html#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Estimate  Std. Error    t value  Pr(&gt;|t|)</span></span>
+<span id="cb104-4"><a href="sustainability-in-design-planning-for-change.html#cb104-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 347.3231078 370.6915171  0.9369600 0.3541359</span></span>
+<span id="cb104-5"><a href="sustainability-in-design-planning-for-change.html#cb104-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Year         -0.1647357   0.1852031 -0.8894868 0.3788081</span></span></code></pre></div>
+<p>The row for “Year” provides the data on the slope. The slope shows SWE declines by 0.16 inches/year based on regression. The p-value for the slope is 0.379, much larger than the typical <span class="math inline">\(\alpha\)</span>, meaning we cannot claim that a significant slope exists based on this test. So while a declining April 1 snowpack is observed at this location, it is not outside of the natural variability of the data based on a regression analysis.</p>
+</div>
+<div id="method-2-mann-kendall" class="section level4 hasAnchor" number="11.2.2.2">
+<h4><span class="header-section-number">11.2.2.2</span> Method 2: Mann-Kendall<a href="sustainability-in-design-planning-for-change.html#method-2-mann-kendall" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To conduct a Mann-Kendall trend test, additional packages need to be installed. There are a number available; what is shown below is one method.</p>
+<p>A non-parametric trend test (and plot) requires a few extra packages, which are installed like this:</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="sustainability-in-design-planning-for-change.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&#39;Kendall&#39;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&#39;Kendall&#39;</span>)</span>
+<span id="cb105-2"><a href="sustainability-in-design-planning-for-change.html#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;Kendall&#39; was built under R version 4.2.3</span></span>
+<span id="cb105-3"><a href="sustainability-in-design-planning-for-change.html#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&#39;zyp&#39;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&#39;zyp&#39;</span>)</span>
+<span id="cb105-4"><a href="sustainability-in-design-planning-for-change.html#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;zyp&#39; was built under R version 4.2.3</span></span></code></pre></div>
+<p>Now the significance of the trend can be calculated. The slope associated with this test, the “Thiel-Sen slope”, is calculated using the <em>zyp</em> package.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="sustainability-in-design-planning-for-change.html#cb106-1" aria-hidden="true" tabindex="-1"></a>mk <span class="ot">&lt;-</span> Kendall<span class="sc">::</span><span class="fu">MannKendall</span>(swe<span class="sc">$</span>April_1_SWE_in)</span>
+<span id="cb106-2"><a href="sustainability-in-design-planning-for-change.html#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mk)</span>
+<span id="cb106-3"><a href="sustainability-in-design-planning-for-change.html#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Score =  -99 , Var(Score) = 9729</span></span>
+<span id="cb106-4"><a href="sustainability-in-design-planning-for-change.html#cb106-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; denominator =  934.4292</span></span>
+<span id="cb106-5"><a href="sustainability-in-design-planning-for-change.html#cb106-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; tau = -0.106, 2-sided pvalue =0.32044</span></span>
+<span id="cb106-6"><a href="sustainability-in-design-planning-for-change.html#cb106-6" aria-hidden="true" tabindex="-1"></a>ss <span class="ot">&lt;-</span> zyp<span class="sc">::</span><span class="fu">zyp.sen</span>(April_1_SWE_in <span class="sc">~</span> Year, <span class="at">data=</span>swe) </span>
+<span id="cb106-7"><a href="sustainability-in-design-planning-for-change.html#cb106-7" aria-hidden="true" tabindex="-1"></a>ss<span class="sc">$</span>coefficients</span>
+<span id="cb106-8"><a href="sustainability-in-design-planning-for-change.html#cb106-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Intercept        Year </span></span>
+<span id="cb106-9"><a href="sustainability-in-design-planning-for-change.html#cb106-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 291.1637542  -0.1385452</span></span></code></pre></div>
+<p>The non-parametric slope shows April 1 SWE declining by 0.14 inches per year over the period. Again, however, the p-value is greater than the typical <span class="math inline">\(\alpha\)</span>, so based on this method the trend is not significantly different from zero. As with the tests for a step change, the p-value is lower for the nonparametric test.</p>
+<p>A summary plot of the slopes of both methods is helpful.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="sustainability-in-design-planning-for-change.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(swe<span class="sc">$</span>Year,swe<span class="sc">$</span>April_1_SWE_in, <span class="at">xlab =</span> <span class="st">&quot;Year&quot;</span>,<span class="at">ylab =</span> <span class="st">&quot;Snow water equivalent, in&quot;</span>)</span>
+<span id="cb107-2"><a href="sustainability-in-design-planning-for-change.html#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(swe<span class="sc">$</span>Year,m<span class="sc">$</span>fitted.values, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;black&quot;</span>)</span>
+<span id="cb107-3"><a href="sustainability-in-design-planning-for-change.html#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> ss<span class="sc">$</span>coefficients[<span class="st">&quot;Intercept&quot;</span>], <span class="at">b =</span> ss<span class="sc">$</span>coefficients[<span class="st">&quot;Year&quot;</span>], <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb107-4"><a href="sustainability-in-design-planning-for-change.html#cb107-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;Observations&quot;</span>,<span class="st">&quot;Regression&quot;</span>,<span class="st">&quot;Thiel-Sen&quot;</span>),  </span>
+<span id="cb107-5"><a href="sustainability-in-design-planning-for-change.html#cb107-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;black&quot;</span>,<span class="st">&quot;black&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="at">lty =</span> <span class="fu">c</span>(<span class="cn">NA</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="cn">NA</span>,<span class="cn">NA</span>), <span class="at">cex=</span><span class="fl">0.8</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:trend-4"></span>
+<img src="hydr-watres_main_files/figure-html/trend-4-1.png" alt="Trends of SWE at Four Trees station, CA." width="60%" />
+<p class="caption">
+Figure 11.10: Trends of SWE at Four Trees station, CA.
+</p>
+</div>
+</div>
+</div>
+<div id="choosing-whether-to-use-parametric-or-non-parametric-tests" class="section level3 hasAnchor" number="11.2.3">
+<h3><span class="header-section-number">11.2.3</span> Choosing whether to use parametric or non-parametric tests<a href="sustainability-in-design-planning-for-change.html#choosing-whether-to-use-parametric-or-non-parametric-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Using the parameteric tests above (t-test, regression) requires making an assumption about the underlying distribution of the data, which non-parametric tests do not require. When using a parametric test, the assumption of normality can be tested. For example, for the regression residuals can be tested with the following, where the null hypothesis is that the data are nomally distributed.</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="sustainability-in-design-planning-for-change.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(m<span class="sc">$</span>residuals)<span class="sc">$</span>p.value</span>
+<span id="cb108-2"><a href="sustainability-in-design-planning-for-change.html#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.003647395</span></span></code></pre></div>
+<p>This produces a very small p-value (p &lt; 0.01), meaning the null hypothesis that the residuals are normally distributed is rejected with &gt;99% confidence. This means non-parametric test is more appropriate. In general, non-parametric tests are preferred in hydrologic work because data (and residuals) are rarely normally distributed.</p>
+</div>
+</div>
+<div id="detecting-changes-in-extreme-events" class="section level2 hasAnchor" number="11.3">
+<h2><span class="header-section-number">11.3</span> Detecting changes in extreme events<a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-extreme-events" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>when looking at extreme events like the 100-year high tide, the methods are similar to those used in flood frequency analysis. One distinction is that flood frequency often uses a Gumbel or Log-Pearson type 3 distribution. For sea-level rise (and many other extreme events) other distributions are employed, with one common one being the Generalized Extreme Value (GEV), the cumulative distribution of which is described by Equation <a href="sustainability-in-design-planning-for-change.html#eq:extr-1">(11.4)</a>.
+<span class="math display" id="eq:extr-1">\[\begin{equation}
+  F\left(x;\mu,\sigma,\xi\right)=exp\left[-\left(1+\xi\left(\frac{x-\mu}{\sigma}\right)\right)^{-1/\xi}\right]
+  \tag{11.4}
+\end{equation}\]</span>
+The three parameters <span class="math inline">\(\xi\)</span>, <span class="math inline">\(\mu\)</span>, and <span class="math inline">\(\sigma\)</span> represent a shape, location, and scale of the distribution function. These distribution parameter can be determined using observations of extremes over a long period or over different periods of record, much as the mean, standard, deviation, and skew are used in flood frequency calculations. The distribution can then be used to estimate the probability associated with a specific magnitude event, or conversely the event magnitude associated with a defined risk level. An excellent example of that is from <span class="citation">Tebaldi, Strauss, and Zervas (<a href="references.html#ref-tebaldi_modelling_2012" role="doc-biblioref">2012</a>)</span> who analyzed projected extreme sea level changes through the 21st century.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:slrpk-1"></span>
+<img src="images/erl405394f4_online.jpg" alt="Projected return periods by 2050 for floods that are 100 yr events during 1959–2008, Tebaldi et al., 2012" width="60%" />
+<p class="caption">
+Figure 11.11: Projected return periods by 2050 for floods that are 100 yr events during 1959–2008, <a href="https://iopscience.iop.org/article/10.1088/1748-9326/7/1/014032">Tebaldi et al., 2012</a>
+</p>
+</div>
+<p>An example using the GEV with sea level data is illustrated below. The <span class="citation">Tebaldi, Strauss, and Zervas (<a href="references.html#ref-tebaldi_modelling_2012" role="doc-biblioref">2012</a>)</span> paper uses the R package <a href="https://cran.r-project.org/package=extRemes">extRemes</a>, which we will use here. The same package has been used to study extreme wind, precipitation, temperature, streamflow, and other events, so it is a very versatile and widely-used package. Install the package if it is not already installed.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="sustainability-in-design-planning-for-change.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&#39;extRemes&#39;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&#39;extRemes&#39;</span>)</span>
+<span id="cb109-2"><a href="sustainability-in-design-planning-for-change.html#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;extRemes&#39; was built under R version 4.2.3</span></span>
+<span id="cb109-3"><a href="sustainability-in-design-planning-for-change.html#cb109-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;Lmoments&#39; was built under R version 4.2.2</span></span></code></pre></div>
+<div id="obtaining-and-preparing-sea-level-data" class="section level3 hasAnchor" number="11.3.1">
+<h3><span class="header-section-number">11.3.1</span> Obtaining and preparing sea-level data<a href="sustainability-in-design-planning-for-change.html#obtaining-and-preparing-sea-level-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+Sea-level data can be downloaded directly into R using the <a href="https://cran.r-project.org/package=rnoaa">rnoaa</a> package. However, NOAA also has a very intuitive interface that allows geographical searching and preliminary viewing of data. From the <a href="https://tidesandcurrents.noaa.gov">NOAA Tines &amp; Currents site</a> one can search an area of interest and find a tide gauge with a long record.
+Figure <a href="sustainability-in-design-planning-for-change.html#fig:slr-1">11.12</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:slr-1"></span>
+<img src="images/noaa_tides_currents_site.png" alt="Identification of a sea-level gauge on the NOAA Tides &amp; Currents site." width="55%" />
+<p class="caption">
+Figure 11.12: Identification of a sea-level gauge on the NOAA Tides &amp; Currents site.
+</p>
+</div>
+<p>By exploring the data inventory for this station, on its home page, the gauge has a very long record, being established in 1854, with measurement of extremes for over a century. Avoid selecting a partial month, or you may not have the ability to download monthly data. Monthly data were downloaded and saved as a csv file, which is available with the <em>hydromisc</em> package.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="sustainability-in-design-planning-for-change.html#cb110-1" aria-hidden="true" tabindex="-1"></a>datafile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sealevel_9414290_wl.csv&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
+<span id="cb110-2"><a href="sustainability-in-design-planning-for-change.html#cb110-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(datafile,<span class="at">header=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p>These data were saved in metric units, so all levels are in meters above the selected tidal datum. there are dates indicating the month associated with each value (and day 1 is in there as a placeholder).</p>
+<p>If there are any missing data they may be labeled as “NaN”. If you see that, a clean way to address it is to first change the missing data to NA (which R recognizes) with a command such as</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="sustainability-in-design-planning-for-change.html#cb111-1" aria-hidden="true" tabindex="-1"></a>dat[dat <span class="sc">==</span> <span class="st">&quot;NaN&quot;</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
+<p>For this example we are looking at extreme tide levels, so only retain the “Highest” and “Date” columns.</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="sustainability-in-design-planning-for-change.html#cb112-1" aria-hidden="true" tabindex="-1"></a>peak_sl <span class="ot">&lt;-</span> <span class="fu">subset</span>(dat, <span class="at">select=</span><span class="fu">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;Highest&quot;</span>))</span></code></pre></div>
+<p>A final data preparation is to create an annual time series with the the maximum tide level in any year. One way to facilitate this is to add a column of “year.” Then the data can be aggregated by year, creating a new data frame, taking the maximum value for each year (many other functions, like mean, median, etc. can also be used). In this example the column names are changed to make it easier to work with the data. Also, the year column is converted to an integer for plotting purposes. Any rows with NA values are removed.</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="sustainability-in-design-planning-for-change.html#cb113-1" aria-hidden="true" tabindex="-1"></a>peak_sl<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">strftime</span>(peak_sl<span class="sc">$</span>Date, <span class="st">&quot;%Y&quot;</span>))</span>
+<span id="cb113-2"><a href="sustainability-in-design-planning-for-change.html#cb113-2" aria-hidden="true" tabindex="-1"></a>peak_sl_ann <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(peak_sl<span class="sc">$</span>Highest,<span class="at">by=</span><span class="fu">list</span>(peak_sl<span class="sc">$</span>year),<span class="at">FUN=</span>max, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb113-3"><a href="sustainability-in-design-planning-for-change.html#cb113-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(peak_sl_ann) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;peak_m&quot;</span>)</span>
+<span id="cb113-4"><a href="sustainability-in-design-planning-for-change.html#cb113-4" aria-hidden="true" tabindex="-1"></a>peak_sl_ann <span class="ot">&lt;-</span> <span class="fu">na.exclude</span>(peak_sl_ann)</span></code></pre></div>
+<p>A plot is always helpful.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="sustainability-in-design-planning-for-change.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(peak_sl_ann<span class="sc">$</span>year,peak_sl_ann<span class="sc">$</span>peak_m,<span class="at">xlab=</span><span class="st">&quot;Year&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;Annual Peak Sea Level, m&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:slr-2"></span>
+<img src="hydr-watres_main_files/figure-html/slr-2-1.png" alt="Annual highest sea-levels relative to MLLW at gauge 9414290." width="55%" />
+<p class="caption">
+Figure 11.13: Annual highest sea-levels relative to MLLW at gauge 9414290.
+</p>
+</div>
+</div>
+<div id="conducting-the-extreme-event-analysis" class="section level3 hasAnchor" number="11.3.2">
+<h3><span class="header-section-number">11.3.2</span> Conducting the extreme event analysis<a href="sustainability-in-design-planning-for-change.html#conducting-the-extreme-event-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The question we will attempt to address is whether the 100-year peak tide level (the level exceeded with a 1 percent probability) has increased between the 1900-1930 and 1990-2020 periods. Extract a subset of the data for one periods and fit a GEV distribution to the values.</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="sustainability-in-design-planning-for-change.html#cb115-1" aria-hidden="true" tabindex="-1"></a>peak_sl_sub1 <span class="ot">&lt;-</span> <span class="fu">subset</span>(peak_sl_ann, year <span class="sc">&gt;=</span> <span class="dv">1900</span> <span class="sc">&amp;</span> year <span class="sc">&lt;=</span> <span class="dv">1930</span>)</span>
+<span id="cb115-2"><a href="sustainability-in-design-planning-for-change.html#cb115-2" aria-hidden="true" tabindex="-1"></a>gevfit1 <span class="ot">&lt;-</span> extRemes<span class="sc">::</span><span class="fu">fevd</span>(peak_sl_sub1<span class="sc">$</span>peak_m)</span>
+<span id="cb115-3"><a href="sustainability-in-design-planning-for-change.html#cb115-3" aria-hidden="true" tabindex="-1"></a>gevfit1<span class="sc">$</span>results<span class="sc">$</span>par</span>
+<span id="cb115-4"><a href="sustainability-in-design-planning-for-change.html#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   location      scale      shape </span></span>
+<span id="cb115-5"><a href="sustainability-in-design-planning-for-change.html#cb115-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2.0747606  0.1004844 -0.2480902</span></span></code></pre></div>
+<p>A plot of return periods for the fit distribution is available as well.</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="sustainability-in-design-planning-for-change.html#cb116-1" aria-hidden="true" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">plot.fevd</span>(gevfit1, <span class="at">type=</span><span class="st">&quot;rl&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:slr-4"></span>
+<img src="hydr-watres_main_files/figure-html/slr-4-1.png" alt="Return periods based on the fit GEV distribution for 1900-1930. Points are observations; dashed lines enclose the 95% confidence interval." width="55%" />
+<p class="caption">
+Figure 11.14: Return periods based on the fit GEV distribution for 1900-1930. Points are observations; dashed lines enclose the 95% confidence interval.
+</p>
+</div>
+<p>As is usually the case, a statistical model does well in the area with observations, but the uncertainty increases for extreme values (like estimating a 500-year event from a 30-year record). A longer record produces better (less uncertain) estimates at higher return periods.</p>
+<p>Based on the GEV fit, the 100-year recurrence interval extreme tide is determined using:</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="sustainability-in-design-planning-for-change.html#cb117-1" aria-hidden="true" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">return.level</span>(gevfit1, <span class="at">return.period =</span> <span class="dv">100</span>, <span class="at">do.ci =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb117-2"><a href="sustainability-in-design-planning-for-change.html#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb117-3"><a href="sustainability-in-design-planning-for-change.html#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Preparing to calculate  95 % CI for  100-year return level </span></span>
+<span id="cb117-4"><a href="sustainability-in-design-planning-for-change.html#cb117-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb117-5"><a href="sustainability-in-design-planning-for-change.html#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Model is   fixed </span></span>
+<span id="cb117-6"><a href="sustainability-in-design-planning-for-change.html#cb117-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb117-7"><a href="sustainability-in-design-planning-for-change.html#cb117-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Using Normal Approximation Method.</span></span>
+<span id="cb117-8"><a href="sustainability-in-design-planning-for-change.html#cb117-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extRemes::fevd(x = peak_sl_sub1$peak_m)</span></span>
+<span id="cb117-9"><a href="sustainability-in-design-planning-for-change.html#cb117-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb117-10"><a href="sustainability-in-design-planning-for-change.html#cb117-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Normal Approx.&quot;</span></span>
+<span id="cb117-11"><a href="sustainability-in-design-planning-for-change.html#cb117-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb117-12"><a href="sustainability-in-design-planning-for-change.html#cb117-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;100-year return level: 2.35&quot;</span></span>
+<span id="cb117-13"><a href="sustainability-in-design-planning-for-change.html#cb117-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb117-14"><a href="sustainability-in-design-planning-for-change.html#cb117-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;95% Confidence Interval: (2.2579, 2.4429)&quot;</span></span></code></pre></div>
+<p>A check can be done using the reverse calculation, estimating the return period associated with a specified value of highest water level. This can be done by extracting the three GEV parameters, then running the <em>pevd</em> command.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="sustainability-in-design-planning-for-change.html#cb118-1" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> gevfit1<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;location&quot;</span>]]</span>
+<span id="cb118-2"><a href="sustainability-in-design-planning-for-change.html#cb118-2" aria-hidden="true" tabindex="-1"></a>sca <span class="ot">&lt;-</span> gevfit1<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;scale&quot;</span>]]</span>
+<span id="cb118-3"><a href="sustainability-in-design-planning-for-change.html#cb118-3" aria-hidden="true" tabindex="-1"></a>shp <span class="ot">&lt;-</span> gevfit1<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;shape&quot;</span>]]</span>
+<span id="cb118-4"><a href="sustainability-in-design-planning-for-change.html#cb118-4" aria-hidden="true" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">pevd</span>(<span class="fl">2.35</span>, <span class="at">loc =</span> loc, <span class="at">scale =</span> sca , <span class="at">shape =</span> shp, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;GEV&quot;</span>))</span>
+<span id="cb118-5"><a href="sustainability-in-design-planning-for-change.html#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9898699</span></span></code></pre></div>
+<p>This returns a value of 0.99 (this is the CDF value, or the probability of non-exceedence, F). Recalling that return period, <span class="math inline">\(T=1/P=1/(1-F)\)</span>, where P=prob. of exceedence; F=prob. of non-exceedence, the result that 2.35 meters is the 100-year highest water level is validated.</p>
+<p>Repeating the calculation for a more recent period:</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="sustainability-in-design-planning-for-change.html#cb119-1" aria-hidden="true" tabindex="-1"></a>peak_sl_sub2 <span class="ot">&lt;-</span> <span class="fu">subset</span>(peak_sl_ann, year <span class="sc">&gt;=</span> <span class="dv">1990</span> <span class="sc">&amp;</span> year <span class="sc">&lt;=</span> <span class="dv">2020</span>)</span>
+<span id="cb119-2"><a href="sustainability-in-design-planning-for-change.html#cb119-2" aria-hidden="true" tabindex="-1"></a>gevfit2 <span class="ot">&lt;-</span> extRemes<span class="sc">::</span><span class="fu">fevd</span>(peak_sl_sub2<span class="sc">$</span>peak_m)</span>
+<span id="cb119-3"><a href="sustainability-in-design-planning-for-change.html#cb119-3" aria-hidden="true" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">return.level</span>(gevfit2, <span class="at">return.period =</span> <span class="dv">100</span>, <span class="at">do.ci =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb119-4"><a href="sustainability-in-design-planning-for-change.html#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb119-5"><a href="sustainability-in-design-planning-for-change.html#cb119-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Preparing to calculate  95 % CI for  100-year return level </span></span>
+<span id="cb119-6"><a href="sustainability-in-design-planning-for-change.html#cb119-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb119-7"><a href="sustainability-in-design-planning-for-change.html#cb119-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Model is   fixed </span></span>
+<span id="cb119-8"><a href="sustainability-in-design-planning-for-change.html#cb119-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb119-9"><a href="sustainability-in-design-planning-for-change.html#cb119-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Using Normal Approximation Method.</span></span>
+<span id="cb119-10"><a href="sustainability-in-design-planning-for-change.html#cb119-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extRemes::fevd(x = peak_sl_sub2$peak_m)</span></span>
+<span id="cb119-11"><a href="sustainability-in-design-planning-for-change.html#cb119-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb119-12"><a href="sustainability-in-design-planning-for-change.html#cb119-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Normal Approx.&quot;</span></span>
+<span id="cb119-13"><a href="sustainability-in-design-planning-for-change.html#cb119-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb119-14"><a href="sustainability-in-design-planning-for-change.html#cb119-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;100-year return level: 2.597&quot;</span></span>
+<span id="cb119-15"><a href="sustainability-in-design-planning-for-change.html#cb119-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb119-16"><a href="sustainability-in-design-planning-for-change.html#cb119-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;95% Confidence Interval: (2.3983, 2.7957)&quot;</span></span></code></pre></div>
+<p>This returns a 100-year high tide of 2.6 m for 1990-2020, a 10.6 % increase over 1900-1930.Another way to look at this is to find out how the frequency of the past (in this case, the 1900-1930) 100-year event has changed with rising sea levels. Repeating the calculations from before to capture the GEV parameters for the later period, and then plugging in the 100-year high tide from the early period:</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="sustainability-in-design-planning-for-change.html#cb120-1" aria-hidden="true" tabindex="-1"></a>loc2 <span class="ot">&lt;-</span> gevfit2<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;location&quot;</span>]]</span>
+<span id="cb120-2"><a href="sustainability-in-design-planning-for-change.html#cb120-2" aria-hidden="true" tabindex="-1"></a>sca2 <span class="ot">&lt;-</span> gevfit2<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;scale&quot;</span>]]</span>
+<span id="cb120-3"><a href="sustainability-in-design-planning-for-change.html#cb120-3" aria-hidden="true" tabindex="-1"></a>shp2 <span class="ot">&lt;-</span> gevfit2<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;shape&quot;</span>]]</span>
+<span id="cb120-4"><a href="sustainability-in-design-planning-for-change.html#cb120-4" aria-hidden="true" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">pevd</span>(<span class="fl">2.35</span>, <span class="at">loc =</span> loc2, <span class="at">scale =</span> sca2 , <span class="at">shape =</span> shp2, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;GEV&quot;</span>))</span>
+<span id="cb120-5"><a href="sustainability-in-design-planning-for-change.html#cb120-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.7220968</span></span></code></pre></div>
+<p>This returns a value of 0.72 (72% non-exceedence, or 28% exceedance, in other words we expect to see an annual high tide of 2.35 m or higher in 28% of the years). The return period of this is calculated as above: T = 1/(1-0.72) = 3.6 years. So, what was the 100-year event in 1900-1930 is about a 4-year event now.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="designing-for-floods-flood-hydrology.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="management-of-water-resources-systems.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

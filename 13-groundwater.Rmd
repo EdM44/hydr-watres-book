@@ -1,0 +1,9 @@
+# Groundwater
+
+(ref:figgw1) A conceptual aquifer with a pumping well [U.S. Geological survey](https://www.usgs.gov/special-topics/water-science-school/science/aquifers-and-groundwater)
+
+```{r gw-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='(ref:figgw1)'}
+knitr::include_graphics('images/usgs-groundwater1.png')
+```
+
+Groundwater content is forthcoming...

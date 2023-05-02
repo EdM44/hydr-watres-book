@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 12 Management of water resources systems | Hydraulics and Water Resources: Examples Using R</title>
+  <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 12 Management of water resources systems | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 12 Management of water resources systems | Hydraulics and Water Resources: Examples Using R" />
+  
+  <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+
+
+<meta name="date" content="2023-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sustainability-in-design-planning-for-change.html"/>
+<link rel="next" href="groundwater.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of water (and air)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
+<li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="properties-of-water.html"><a href="properties-of-water.html#ideal-gas-law"><i class="fa fa-check"></i><b>2.3.1</b> Ideal gas law</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html"><i class="fa fa-check"></i><b>3</b> Hydrostatics - forces exerted by water bodies</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#pressure-and-force"><i class="fa fa-check"></i><b>3.1</b> Pressure and force</a></li>
+<li class="chapter" data-level="3.2" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane"><i class="fa fa-check"></i><b>3.2</b> Force on a plane area</a></li>
+<li class="chapter" data-level="3.3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#forces-on-curved-surfaces"><i class="fa fa-check"></i><b>3.3</b> Forces on curved surfaces</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>4</b> Water flowing in pipes: energy losses</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>4.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>4.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>4.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>4.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="4.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>4.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="4.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>4.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="4.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>4.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>4.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>4.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="4.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>4.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="4.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>4.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>4.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>5</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>5.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="5.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>5.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="5.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>5.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>5.3.1</b> Solving the Manning equation in R</a></li>
+<li class="chapter" data-level="5.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>5.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="5.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>5.3.3</b> Solving the Manning equation using a spreadsheet like Excel</a></li>
+<li class="chapter" data-level="5.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>5.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>5.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>5.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>5.5</b> Critical flow</a></li>
+<li class="chapter" data-level="5.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>5.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>5.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="5.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>5.6.2</b> Standard step method</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>5.7</b> Rapidly varied flow (the hydraulic jump)</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>5.7.1</b> Sequent (or conjugate) depths</a></li>
+<li class="chapter" data-level="5.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>5.7.2</b> Location of a hydraulic jump</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>6</b> Momentum in water flow</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#equations-of-linear-momentum"><i class="fa fa-check"></i><b>6.1</b> Equations of linear momentum</a></li>
+<li class="chapter" data-level="6.2" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#the-momentum-equation-in-pipe-design"><i class="fa fa-check"></i><b>6.2</b> The momentum equation in pipe design</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>7</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>7.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="7.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>7.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="7.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>7.3</b> Finding the operating point</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html"><i class="fa fa-check"></i><b>8</b> The hydrologic cycle and precipitation</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-observations"><i class="fa fa-check"></i><b>8.1</b> Precipitation observations</a></li>
+<li class="chapter" data-level="8.2" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precip-freq"><i class="fa fa-check"></i><b>8.2</b> Precipitation frequency</a></li>
+<li class="chapter" data-level="8.3" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-gauge-consistency-double-mass-curves"><i class="fa fa-check"></i><b>8.3</b> Precipitation gauge consistency – double mass curves</a></li>
+<li class="chapter" data-level="8.4" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-interpolation-and-areal-averaging"><i class="fa fa-check"></i><b>8.4</b> Precipitation interpolation and areal averaging</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html"><i class="fa fa-check"></i><b>9</b> Fate of precipitation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#interception"><i class="fa fa-check"></i><b>9.1</b> Interception</a></li>
+<li class="chapter" data-level="9.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#infiltration"><i class="fa fa-check"></i><b>9.2</b> Infiltration</a></li>
+<li class="chapter" data-level="9.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#evaporation"><i class="fa fa-check"></i><b>9.3</b> Evaporation</a></li>
+<li class="chapter" data-level="9.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow"><i class="fa fa-check"></i><b>9.4</b> Snow</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#observations"><i class="fa fa-check"></i><b>9.4.1</b> Observations</a></li>
+<li class="chapter" data-level="9.4.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#basic-snowmelt-theory-and-simple-models"><i class="fa fa-check"></i><b>9.4.2</b> Basic snowmelt theory and simple models</a></li>
+<li class="chapter" data-level="9.4.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow-model-calibration"><i class="fa fa-check"></i><b>9.4.3</b> Snow model calibration</a></li>
+<li class="chapter" data-level="9.4.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#estimating-climate-change-impacts-on-snow"><i class="fa fa-check"></i><b>9.4.4</b> Estimating climate change impacts on snow</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#watershed-analysis"><i class="fa fa-check"></i><b>9.5</b> Watershed analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html"><i class="fa fa-check"></i><b>10</b> Designing for floods: flood hydrology</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#engineering-design-requires-probability-and-statistics"><i class="fa fa-check"></i><b>10.1</b> Engineering design requires probability and statistics</a></li>
+<li class="chapter" data-level="10.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#ffa1"><i class="fa fa-check"></i><b>10.2</b> Estimating floods when you have peak flow observations - flood frequency analysis</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#installing-helpful-packages"><i class="fa fa-check"></i><b>10.2.1</b> Installing helpful packages</a></li>
+<li class="chapter" data-level="10.2.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#download-manipulate-and-plot-the-data-for-a-site"><i class="fa fa-check"></i><b>10.2.2</b> Download, manipulate, and plot the data for a site</a></li>
+<li class="chapter" data-level="10.2.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#flood-frequency-analysis"><i class="fa fa-check"></i><b>10.2.3</b> Flood frequency analysis</a></li>
+<li class="chapter" data-level="10.2.4" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#creating-a-flood-frequency-plot"><i class="fa fa-check"></i><b>10.2.4</b> Creating a flood frequency plot</a></li>
+<li class="chapter" data-level="10.2.5" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#other-software-for-peak-flow-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Other software for peak flow analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#estimating-floods-from-precipitation"><i class="fa fa-check"></i><b>10.3</b> Estimating floods from precipitation</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html"><i class="fa fa-check"></i><b>11</b> Sustainability in design: planning for change</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#perturbing-a-system"><i class="fa fa-check"></i><b>11.1</b> Perturbing a system</a></li>
+<li class="chapter" data-level="11.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-hydrologic-data"><i class="fa fa-check"></i><b>11.2</b> Detecting changes in hydrologic data</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-step-change"><i class="fa fa-check"></i><b>11.2.1</b> Detecting a step change</a></li>
+<li class="chapter" data-level="11.2.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-monotonic-trend"><i class="fa fa-check"></i><b>11.2.2</b> Detecting a monotonic trend</a></li>
+<li class="chapter" data-level="11.2.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#choosing-whether-to-use-parametric-or-non-parametric-tests"><i class="fa fa-check"></i><b>11.2.3</b> Choosing whether to use parametric or non-parametric tests</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-extreme-events"><i class="fa fa-check"></i><b>11.3</b> Detecting changes in extreme events</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#obtaining-and-preparing-sea-level-data"><i class="fa fa-check"></i><b>11.3.1</b> Obtaining and preparing sea-level data</a></li>
+<li class="chapter" data-level="11.3.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#conducting-the-extreme-event-analysis"><i class="fa fa-check"></i><b>11.3.2</b> Conducting the extreme event analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html"><i class="fa fa-check"></i><b>12</b> Management of water resources systems</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#a-simple-linear-system-with-two-decision-variables"><i class="fa fa-check"></i><b>12.1</b> A simple linear system with two decision variables</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#overview-of-problem-formulation"><i class="fa fa-check"></i><b>12.1.1</b> Overview of problem formulation</a></li>
+<li class="chapter" data-level="12.1.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-an-example"><i class="fa fa-check"></i><b>12.1.2</b> Setting up an example</a></li>
+<li class="chapter" data-level="12.1.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#graphing-the-solution-space"><i class="fa fa-check"></i><b>12.1.3</b> Graphing the solution space</a></li>
+<li class="chapter" data-level="12.1.4" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r"><i class="fa fa-check"></i><b>12.1.4</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.1.5" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#interpreting-the-optimal-results"><i class="fa fa-check"></i><b>12.1.5</b> Interpreting the optimal results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-complex-linear-programming-reservoir-operation"><i class="fa fa-check"></i><b>12.2</b> More complex linear programming: reservoir operation</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#problem-summary"><i class="fa fa-check"></i><b>12.2.1</b> Problem summary</a></li>
+<li class="chapter" data-level="12.2.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r-1"><i class="fa fa-check"></i><b>12.2.2</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.2.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#building-the-linear-model"><i class="fa fa-check"></i><b>12.2.3</b> Building the linear model</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-realistic-reservoir-operation-non-linear-programming"><i class="fa fa-check"></i><b>12.3</b> More Realistic Reservoir Operation: non-linear programming</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#reservoir-operation"><i class="fa fa-check"></i><b>12.3.1</b> Reservoir operation</a></li>
+<li class="chapter" data-level="12.3.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#performing-stochastic-dynamic-programming"><i class="fa fa-check"></i><b>12.3.2</b> Performing stochastic dynamic programming</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="groundwater.html"><a href="groundwater.html"><i class="fa fa-check"></i><b>13</b> Groundwater</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hydraulics and Water Resources: Examples Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="management-of-water-resources-systems" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Management of water resources systems<a href="management-of-water-resources-systems.html#management-of-water-resources-systems" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:wrsys1"></span>
+<img src="images/Lookout_Point_Dam.jpg" alt="Lookout Point Dam on the Middle Fork Willamette River source: U.S. Army Corps of Engineers" width="50%" />
+<p class="caption">
+Figure 12.1: Lookout Point Dam on the Middle Fork Willamette River <a href="https://or.water.usgs.gov/proj/mfw_ssr_temp/">source: U.S. Army Corps of Engineers</a>
+</p>
+</div>
+<p>Water resources systems tend to provide a variety of benefits, such as flood control, hydroelectric power, recreation, navigation, and irrigation. Each of these provides a benefit that can quantified, and there are also associated costs that can be quantified. A challenge engineers face is how to manage a system to balance the different uses. Mathematical optimization, which can take many forms, is employed to do this.</p>
+<p>Introductions to linear programming and other forms of optimization are plentiful. for a background on the concepts and theories, refer to other references. An excellent, comprehensive reference is Water Resource Systems Planning and Management <span class="citation">(<a href="references.html#ref-loucks_water_2017" role="doc-biblioref">Loucks and Van Beek 2017</a>)</span>, <a href="https://link.springer.com/book/10.1007/978-3-319-44234-1">freely available online</a>.</p>
+<p>What follows is a demonstration of using some of these optimization methods, but no recap of the theory is provided here. What follows uses linear systems, where the objective function and constraints are all linear functions of the decision variables.</p>
+<p>The <em>hydromisc</em> package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on <a href="https://github.com/EdM44/hydromisc">the github site for the package</a>.</p>
+<div id="a-simple-linear-system-with-two-decision-variables" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> A simple linear system with two decision variables<a href="management-of-water-resources-systems.html#a-simple-linear-system-with-two-decision-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="overview-of-problem-formulation" class="section level3 hasAnchor" number="12.1.1">
+<h3><span class="header-section-number">12.1.1</span> Overview of problem formulation<a href="management-of-water-resources-systems.html#overview-of-problem-formulation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>One of the simplest systems to optimize is a linear system of two variables, which means a graphical solution in 2-d is possible. This first demonstration is one example, a reworking of a textbook example <span class="citation">(<a href="references.html#ref-wurbs_water_2002" role="doc-biblioref">2002</a>)</span>.</p>
+<p>To set up a solution, three things must be described:</p>
+<ul>
+<li>the decision variables – the variables for which optimal values are sought</li>
+<li>the constraints – physical or other limitations on the decision variables (or combinations of them)</li>
+<li>the objective function – an expression, using the decision variables, of what is to be minimized or maximized.</li>
+</ul>
+</div>
+<div id="setting-up-an-example" class="section level3 hasAnchor" number="12.1.2">
+<h3><span class="header-section-number">12.1.2</span> Setting up an example<a href="management-of-water-resources-systems.html#setting-up-an-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="example">
+<p><span id="exm:ex-lm1" class="example"><strong>Example 12.1  </strong></span></p>
+To supply water to a community, there are two sources of water available with different levels of total dissolved solids (TDS): groundwater (TDS=980 mg/l) and surface water from a reservoir (TDS=100 mg/l). The first two constraints are that a total demand of water of 7,500 <span class="math inline">\(m^3\)</span>must be met, and the delivered water (mixed groundwater and reservoir supplies) can have a maximum TDS of 500 mg/l. This is illustrated in Figure <a href="management-of-water-resources-systems.html#fig:ls-1">12.2</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ls-1"></span>
+<img src="images/optim_2_variable.png" alt="A schematic of the system for this example." width="50%" />
+<p class="caption">
+Figure 12.2: A schematic of the system for this example.
+</p>
+</div>
+<p>Two additional constraints are that groundwater withdrawal cannot exceed 4,000 <span class="math inline">\(m^3\)</span> and reservoir withdrawals cannot exceed 7,500 <span class="math inline">\(m^3\)</span>. There are two decision variables: X1=groundwater and X2=reservoir supply. The objective is to minimize the reservoir withdrawal while meeting the constraints.</p>
+</div>
+<p>The TDS constraint is reorganized as:
+<span class="math display">\[\frac{800~X1+100~X2}{X1+X2}\le 400~~~or~~~ 400~X1-300~X2\le 0\]</span>
+Rewriting the other three constraints as functions of the decision variables:
+<span class="math display">\[\begin{align*}
+X1+X2 \ge 7500 \\
+X1 \le 4000 \\
+X2 \le 7500
+\end{align*}\]</span></p>
+</div>
+<div id="graphing-the-solution-space" class="section level3 hasAnchor" number="12.1.3">
+<h3><span class="header-section-number">12.1.3</span> Graphing the solution space<a href="management-of-water-resources-systems.html#graphing-the-solution-space" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+While this can only be done easily for systems with only two decision variables, a plot of the solution space can be done here by graphing all of the constrains and shading the region where all constraints are satisfied.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:lm-2"></span>
+<img src="hydr-watres_main_files/figure-html/lm-2-1.png" alt="The solution space, shown as the cross-hatched area." width="50%" />
+<p class="caption">
+Figure 12.3: The solution space, shown as the cross-hatched area.
+</p>
+</div>
+<p>In the feasible region, it is clear that the minimum reservoir supply, X2, would be a little larger than 4,000 <span class="math inline">\(m^3\)</span>.</p>
+</div>
+<div id="setting-up-the-problem-in-r" class="section level3 hasAnchor" number="12.1.4">
+<h3><span class="header-section-number">12.1.4</span> Setting up the problem in R<a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>An <em>R</em> package to use for solving linear programming problems is the <a href="https://cran.r-project.org/package=lpSolveAPI">lpSolveAPI</a> package. Install that if necessary, and also install the <a href="https://cran.r-project.org/package=knitr">knitr</a> and <a href="https://cran.r-project.org/package=kableExtra">kableExtra</a> packages, since it is very useful for printing the many tables that linear programming involves.</p>
+<p>Begin by creating an empty linear model. The (0,2) means zero constraints (they’ll be added later) and 2 decision variables. The next two lines just assign names to the decision variables. Because we will use many functions of the <em>lpSolveAPI</em> package, load the library first. For convenience, <em>kableExtra</em> package too.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="management-of-water-resources-systems.html#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lpSolveAPI)</span>
+<span id="cb121-2"><a href="management-of-water-resources-systems.html#cb121-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb121-3"><a href="management-of-water-resources-systems.html#cb121-3" aria-hidden="true" tabindex="-1"></a>example.lp <span class="ot">&lt;-</span> lpSolveAPI<span class="sc">::</span><span class="fu">make.lp</span>(<span class="dv">0</span>,<span class="dv">2</span>)</span>
+<span id="cb121-4"><a href="management-of-water-resources-systems.html#cb121-4" aria-hidden="true" tabindex="-1"></a>ColNames <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;X1&quot;</span>,<span class="st">&quot;X2&quot;</span>)</span>
+<span id="cb121-5"><a href="management-of-water-resources-systems.html#cb121-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(example.lp) <span class="ot">&lt;-</span> ColNames</span></code></pre></div>
+<p>Now set up the objective function. Minimization is the default goal of this R function, but we’ll set it anyway to be clear. The second argument is the vector of coefficients for the decision variables, meaning X2 is minimized.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="management-of-water-resources-systems.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.objfn</span>(example.lp,<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) </span>
+<span id="cb122-2"><a href="management-of-water-resources-systems.html#cb122-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">lp.control</span>(example.lp, <span class="at">sense=</span><span class="st">&quot;min&quot;</span>) <span class="co">#save output to a dummy variable</span></span></code></pre></div>
+<p>The next step is to define the constraints. Four constraints were listed above. Additional constraints could be added that <span class="math inline">\(X1\ge 0\)</span> and <span class="math inline">\(X2\ge 0\)</span>, however, variable ranges in this LP solver are [0,infinity] by default, so for this example and we do not need to include constraints for positive results. If necessary, decision variable valid ranges can be set using <em>set.bounds()</em>.</p>
+Constraints are defined with the <em>add.constraint</em> command. Figure <a href="management-of-water-resources-systems.html#fig:lm-5">12.4</a> provides an annotated example of the use of an add.constraint command.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:lm-5"></span>
+<img src="images/constraint_equation.png" alt="Annotated example of an add.constraint command." width="70%" />
+<p class="caption">
+Figure 12.4: Annotated example of an add.constraint command.
+</p>
+</div>
+<p>Type ?add.constraint in the console for additional details.</p>
+<p>The four constrains for this example are added with:</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="management-of-water-resources-systems.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add.constraint</span>(example.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">400</span>,<span class="sc">-</span><span class="dv">300</span>), <span class="at">type=</span><span class="st">&quot;&lt;=&quot;</span>, <span class="at">rhs=</span><span class="dv">0</span>, <span class="at">indices=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb123-2"><a href="management-of-water-resources-systems.html#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add.constraint</span>(example.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&gt;=&quot;</span>, <span class="at">rhs=</span><span class="dv">7500</span>)</span>
+<span id="cb123-3"><a href="management-of-water-resources-systems.html#cb123-3" aria-hidden="true" tabindex="-1"></a><span class="fu">add.constraint</span>(example.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">type=</span><span class="st">&quot;&lt;=&quot;</span>, <span class="at">rhs=</span><span class="dv">4000</span>)</span>
+<span id="cb123-4"><a href="management-of-water-resources-systems.html#cb123-4" aria-hidden="true" tabindex="-1"></a><span class="fu">add.constraint</span>(example.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&lt;=&quot;</span>, <span class="at">rhs=</span><span class="dv">7500</span>)</span></code></pre></div>
+<p>That completes the setup of the linear model. You can view the model to verify the values you entered by typing the name of the model.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="management-of-water-resources-systems.html#cb124-1" aria-hidden="true" tabindex="-1"></a>example.lp</span>
+<span id="cb124-2"><a href="management-of-water-resources-systems.html#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model name: </span></span>
+<span id="cb124-3"><a href="management-of-water-resources-systems.html#cb124-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             X1    X2          </span></span>
+<span id="cb124-4"><a href="management-of-water-resources-systems.html#cb124-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Minimize     0     1          </span></span>
+<span id="cb124-5"><a href="management-of-water-resources-systems.html#cb124-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R1         400  -300  &lt;=     0</span></span>
+<span id="cb124-6"><a href="management-of-water-resources-systems.html#cb124-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R2           1     1  &gt;=  7500</span></span>
+<span id="cb124-7"><a href="management-of-water-resources-systems.html#cb124-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R3           1     0  &lt;=  4000</span></span>
+<span id="cb124-8"><a href="management-of-water-resources-systems.html#cb124-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R4           0     1  &lt;=  7500</span></span>
+<span id="cb124-9"><a href="management-of-water-resources-systems.html#cb124-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Kind       Std   Std          </span></span>
+<span id="cb124-10"><a href="management-of-water-resources-systems.html#cb124-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Type      Real  Real          </span></span>
+<span id="cb124-11"><a href="management-of-water-resources-systems.html#cb124-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Upper      Inf   Inf          </span></span>
+<span id="cb124-12"><a href="management-of-water-resources-systems.html#cb124-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Lower        0     0</span></span></code></pre></div>
+<p>If it has a large number of decision variables it only prints a summary, but in that case you can use <code>write.lp(example.lp, "example_lp.txt", "lp")</code> to create a viewable file with the model.</p>
+<p>Now the model can be solved.</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="management-of-water-resources-systems.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(example.lp)</span>
+<span id="cb125-2"><a href="management-of-water-resources-systems.html#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<p>If the solver finds an optimal solution it will return a zero.</p>
+</div>
+<div id="interpreting-the-optimal-results" class="section level3 hasAnchor" number="12.1.5">
+<h3><span class="header-section-number">12.1.5</span> Interpreting the optimal results<a href="management-of-water-resources-systems.html#interpreting-the-optimal-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>View the final value of the objective function by retrieving it and printing it:</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="management-of-water-resources-systems.html#cb126-1" aria-hidden="true" tabindex="-1"></a>optimal_solution <span class="ot">&lt;-</span> <span class="fu">get.objective</span>(example.lp)</span>
+<span id="cb126-2"><a href="management-of-water-resources-systems.html#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Optimal Solution = &quot;</span>,<span class="fu">round</span>(optimal_solution,<span class="dv">2</span>),<span class="at">sep=</span><span class="st">&quot;&quot;</span>))</span>
+<span id="cb126-3"><a href="management-of-water-resources-systems.html#cb126-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Optimal Solution = 4285.71&quot;</span></span></code></pre></div>
+<p>For more detail, recover the values of each of the decision variables.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="management-of-water-resources-systems.html#cb127-1" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">get.variables</span>(example.lp)</span></code></pre></div>
+<p>Next you can print the sensitivity report – a vector of M constraints followed by N decision variables. It helps to create a data frame for viewing and printing the results. Nicer printing is achieved using the kable and kableExtra functions.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="management-of-water-resources-systems.html#cb128-1" aria-hidden="true" tabindex="-1"></a>sens <span class="ot">&lt;-</span> <span class="fu">get.sensitivity.obj</span>(example.lp)<span class="sc">$</span>objfrom</span>
+<span id="cb128-2"><a href="management-of-water-resources-systems.html#cb128-2" aria-hidden="true" tabindex="-1"></a>results1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">variable=</span>ColNames,<span class="at">value=</span>vars,<span class="at">gradient=</span><span class="fu">as.integer</span>(sens))</span>
+<span id="cb128-3"><a href="management-of-water-resources-systems.html#cb128-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(results1, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+variable
+</th>
+<th style="text-align:right;">
+value
+</th>
+<th style="text-align:right;">
+gradient
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+X1
+</td>
+<td style="text-align:right;">
+3214.286
+</td>
+<td style="text-align:right;">
+-1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X2
+</td>
+<td style="text-align:right;">
+4285.714
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>The above shows decision variable values for the optimal solution. The Gradient is the change in the objective function for a unit increase in the decision variable. Here a negative gradient for decision variable <span class="math inline">\(X1\)</span>, the groundwater withdrawal, means that increasing the groundwater withdrawal will have a negative effect on the objective function, (to minimize <span class="math inline">\(X2\)</span>): that is intuitive, since increasing groundwater withdrawal can reduce reservoir supply on a one-to-one basis.</p>
+<p>To look at which constraints are binding, retrieve the $duals part of the output.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="management-of-water-resources-systems.html#cb129-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">get.constraints</span>(example.lp)) <span class="co">#number of constraints</span></span>
+<span id="cb129-2"><a href="management-of-water-resources-systems.html#cb129-2" aria-hidden="true" tabindex="-1"></a>duals <span class="ot">&lt;-</span> <span class="fu">get.sensitivity.rhs</span>(example.lp)<span class="sc">$</span>duals[<span class="dv">1</span><span class="sc">:</span>m]</span>
+<span id="cb129-3"><a href="management-of-water-resources-systems.html#cb129-3" aria-hidden="true" tabindex="-1"></a>results2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">constraint=</span><span class="fu">c</span>(<span class="fu">seq</span>(<span class="dv">1</span><span class="sc">:</span>m)),<span class="at">multiplier=</span>duals)</span>
+<span id="cb129-4"><a href="management-of-water-resources-systems.html#cb129-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(results2, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+constraint
+</th>
+<th style="text-align:right;">
+multiplier
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+-0.0014286
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.5714286
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+</tbody>
+</table>
+<p>The multipliers for each constraint are referred to as Lagrange multipliers (or shadow prices). Non-zero values of the multiplier indicate a binding capability of that constraint, and the change in the objective function that would result from a unit change in that value. Zero values are non-binding, since a unit change in their value has no effect on the optimal result. For example, constraint 3, that <span class="math inline">\(X1 \le 4000\)</span>, with a multiplier of zero, could be changed (at least a small amount – there can be a limit after which it can become binding) with no effect on the optimal solution. Similarly, if constraint 2, <span class="math inline">\(X1+X2 \ge 7500\)</span>, were were increased, the objective function (the optimal reservoir supply) would also increase.</p>
+</div>
+</div>
+<div id="more-complex-linear-programming-reservoir-operation" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> More complex linear programming: reservoir operation<a href="management-of-water-resources-systems.html#more-complex-linear-programming-reservoir-operation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Water resources systems are far too complicated to be summarized by two decision variables and only a few constraints, as above. Example <a href="management-of-water-resources-systems.html#exm:ex-lmr">12.2</a> demonstrate how the same procedure can be applied to a slightly more complex system. This is a reformulation of an example from the same text as referenced above <span class="citation">(<a href="references.html#ref-wurbs_water_2002" role="doc-biblioref">Wurbs and James 2002</a>)</span>.</p>
+<div class="example">
+<p><span id="exm:ex-lmr" class="example"><strong>Example 12.2  </strong></span>A river flows into a storage reservoir where the operator must decide how much water to release each month. For simplicity, inflows will by described by a fixed sequence of 12 monthly flows. There are two downstream needs to satisfy: hydropower generation and irrigation diversions. Benefits are derived from these two uses: revenues are $ 800 per 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span> of water diverted for irrigation, and $ 350 per 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span> for hydropower generation. The objective is to determine the releases that will maximize the total revenue.</p>
+There are physical characteristics of the system that provide some constraints, and others are derived from basic physics, such as the conservation of mass. A schematic of the system is shown in Figure <a href="management-of-water-resources-systems.html#fig:lmr-f1">12.5</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:lmr-f1"></span>
+<img src="images/reservoir_system.png" alt="A schematic of the water resources system for this example." width="50%" />
+<p class="caption">
+Figure 12.5: A schematic of the water resources system for this example.
+</p>
+</div>
+Diversions through the penstock to the hydropower facility are limited to its capacity of 160 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span>/month. For reservoir releases less than that, all of the released water can generate hydropower; flows above that capacity will spill without generating hydropower benefits. The reservoir has a maximum volume of 550 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span>, so anything above that will have to be released. Assume the reservoir is at half capacity initially. The irrigation demand varies by month, and diversions up to the demand will produce benefits. These are:
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Month
+</th>
+<th style="text-align:right;">
+Demand, 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span>
+</th>
+<th style="text-align:left;">
+Month
+</th>
+<th style="text-align:right;">
+Demand, 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span>
+</th>
+<th style="text-align:left;">
+Month
+</th>
+<th style="text-align:right;">
+Demand, 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Jan (1)
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+May (5)
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+Sep (9)
+</td>
+<td style="text-align:right;">
+180
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Feb (2)
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Jun (6)
+</td>
+<td style="text-align:right;">
+130
+</td>
+<td style="text-align:left;">
+Oct (10)
+</td>
+<td style="text-align:right;">
+110
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mar (3)
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Jul (7)
+</td>
+<td style="text-align:right;">
+230
+</td>
+<td style="text-align:left;">
+Nov (11)
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Apr (4)
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Aug (8)
+</td>
+<td style="text-align:right;">
+250
+</td>
+<td style="text-align:left;">
+Dec (12)
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="problem-summary" class="section level3 hasAnchor" number="12.2.1">
+<h3><span class="header-section-number">12.2.1</span> Problem summary<a href="management-of-water-resources-systems.html#problem-summary" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are 48 decision variables in this problem, 12 monthly values for reservoir storage (s<span class="math inline">\(_1\)</span>-s<span class="math inline">\(_12\)</span>), release (r<span class="math inline">\(_1\)</span>-r<span class="math inline">\(_{12}\)</span>), hydropower generation (h<span class="math inline">\(_1\)</span>-h<span class="math inline">\(_{12}\)</span>), and agricultural diversion (d<span class="math inline">\(_1\)</span>-d<span class="math inline">\(_{12}\)</span>).</p>
+<p>The objective function is to maximize the revenue, which is expressed by Equation <a href="management-of-water-resources-systems.html#eq:lmr-eq1">(12.1)</a>.
+<span class="math display" id="eq:lmr-eq1">\[\begin{equation}
+  Maximize~ x_0=\sum_{i=1}^{12}\left(350h_i+800d_i\right)
+    \tag{12.1}
+\end{equation}\]</span></p>
+<p>Constraints will need to be described to apply the limits to hydropower diversion and storage capacity, and to limit agricultural diversions to no more than the demand.</p>
+</div>
+<div id="setting-up-the-problem-in-r-1" class="section level3 hasAnchor" number="12.2.2">
+<h3><span class="header-section-number">12.2.2</span> Setting up the problem in R<a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Create variables for the known or assumed initial values for the system.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="management-of-water-resources-systems.html#cb130-1" aria-hidden="true" tabindex="-1"></a>penstock_cap <span class="ot">&lt;-</span> <span class="dv">160</span>        <span class="co">#penstock capacity in million m3/month</span></span>
+<span id="cb130-2"><a href="management-of-water-resources-systems.html#cb130-2" aria-hidden="true" tabindex="-1"></a>res_cap <span class="ot">&lt;-</span> <span class="dv">550</span>             <span class="co">#reservoir capacity in million m3</span></span>
+<span id="cb130-3"><a href="management-of-water-resources-systems.html#cb130-3" aria-hidden="true" tabindex="-1"></a>res_init_vol <span class="ot">&lt;-</span> res_cap<span class="sc">/</span><span class="dv">2</span>  <span class="co">#set initial reservoir capacity equal to half of capacity</span></span>
+<span id="cb130-4"><a href="management-of-water-resources-systems.html#cb130-4" aria-hidden="true" tabindex="-1"></a>irrig_dem <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">40</span>,<span class="dv">130</span>,<span class="dv">230</span>,<span class="dv">250</span>,<span class="dv">180</span>,<span class="dv">110</span>,<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb130-5"><a href="management-of-water-resources-systems.html#cb130-5" aria-hidden="true" tabindex="-1"></a>revenue_water <span class="ot">&lt;-</span> <span class="dv">800</span>       <span class="co">#revenue for delivered irrigation water, $/million m3</span></span>
+<span id="cb130-6"><a href="management-of-water-resources-systems.html#cb130-6" aria-hidden="true" tabindex="-1"></a>revenue_power <span class="ot">&lt;-</span> <span class="dv">350</span>       <span class="co">#revenue for power generated, $/million m3</span></span></code></pre></div>
+<p>A <a href="https://cran.r-project.org/web/views/TimeSeries.html">time series</a> of 20 years (January 2000 through December 2019) of monthly flows for this exercise is included with the <em>hydromisc</em> package. Load that and extract the first 12 months to use in this example.</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="management-of-water-resources-systems.html#cb131-1" aria-hidden="true" tabindex="-1"></a>inflows_20years <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span>inflows_20years</span>
+<span id="cb131-2"><a href="management-of-water-resources-systems.html#cb131-2" aria-hidden="true" tabindex="-1"></a>inflows <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">window</span>(inflows_20years, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">1</span>), <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">12</span>)))</span></code></pre></div>
+<p>It helps to illustrate how the irrigation demands and inflows vary, and therefore why storage might be useful in regulating flow to provide more reliable irrigation deliveries.</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="management-of-water-resources-systems.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mgp=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb132-2"><a href="management-of-water-resources-systems.html#cb132-2" aria-hidden="true" tabindex="-1"></a>ylbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="dv">10</span> <span class="sc">^</span><span class="dv">6</span> <span class="sc">~</span> m <span class="sc">^</span><span class="dv">3</span><span class="sc">/</span>month)</span>
+<span id="cb132-3"><a href="management-of-water-resources-systems.html#cb132-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(inflows, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Month&quot;</span>, <span class="at">ylab=</span>ylbl)</span>
+<span id="cb132-4"><a href="management-of-water-resources-systems.html#cb132-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(irrig_dem, <span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb132-5"><a href="management-of-water-resources-systems.html#cb132-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="fu">c</span>(<span class="st">&quot;Inflows&quot;</span>,<span class="st">&quot;Irrigation Demand&quot;</span>),<span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;darkgreen&quot;</span>))</span>
+<span id="cb132-6"><a href="management-of-water-resources-systems.html#cb132-6" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:lmr-f2"></span>
+<img src="hydr-watres_main_files/figure-html/lmr-f2-1.png" alt="Inflows and irrigation demand." width="50%" />
+<p class="caption">
+Figure 12.6: Inflows and irrigation demand.
+</p>
+</div>
+</div>
+<div id="building-the-linear-model" class="section level3 hasAnchor" number="12.2.3">
+<h3><span class="header-section-number">12.2.3</span> Building the linear model<a href="management-of-water-resources-systems.html#building-the-linear-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Following the same steps as for a simple 2-variable problem, begin by setting up a linear model. Because there are so many decision variables, it helps to add names to them.</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="management-of-water-resources-systems.html#cb133-1" aria-hidden="true" tabindex="-1"></a>reser.lp <span class="ot">&lt;-</span> <span class="fu">make.lp</span>(<span class="dv">0</span>,<span class="dv">48</span>)</span>
+<span id="cb133-2"><a href="management-of-water-resources-systems.html#cb133-2" aria-hidden="true" tabindex="-1"></a>DecisionVarNames <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">paste0</span>(<span class="st">&quot;s&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>),<span class="fu">paste0</span>(<span class="st">&quot;r&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>),<span class="fu">paste0</span>(<span class="st">&quot;h&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>),<span class="fu">paste0</span>(<span class="st">&quot;d&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>))</span>
+<span id="cb133-3"><a href="management-of-water-resources-systems.html#cb133-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(reser.lp) <span class="ot">&lt;-</span> DecisionVarNames</span></code></pre></div>
+From this point on, the decision variables will be addressed by their indices, that is, their numeric position in this sequence of 48 values. To summarize their positions:
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Decision Variables
+</th>
+<th style="text-align:left;">
+Indices (columns)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Storage (s1-s12)
+</td>
+<td style="text-align:left;">
+1-12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Release (r1-r12)
+</td>
+<td style="text-align:left;">
+13-24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hydropower (h1-h12)
+</td>
+<td style="text-align:left;">
+25-36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Irrigation diversion (d1-d12)
+</td>
+<td style="text-align:left;">
+37-48
+</td>
+</tr>
+</tbody>
+</table>
+<p>Using these indices as a guide, set up the objective function and initialize the linear model. While not necessary, redirecting the output of the <em>lp.control</em> to a variable prevents a lot of output to the console. The following takes the revenue from hydropower and irrigation (in $ per 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span>/month), multiplies them by the 12 monthly values for the hydropower flows and the irrigation deliveries, and sets the objective to maximize their sum, as described by Equation <a href="management-of-water-resources-systems.html#eq:lmr-eq1">(12.1)</a>.</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="management-of-water-resources-systems.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.objfn</span>(reser.lp,<span class="fu">c</span>(<span class="fu">rep</span>(revenue_power,<span class="dv">12</span>),<span class="fu">rep</span>(revenue_water,<span class="dv">12</span>)),<span class="at">indices =</span> <span class="fu">c</span>(<span class="dv">25</span><span class="sc">:</span><span class="dv">48</span>))</span>
+<span id="cb134-2"><a href="management-of-water-resources-systems.html#cb134-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">lp.control</span>(reser.lp, <span class="at">sense=</span><span class="st">&quot;max&quot;</span>)</span></code></pre></div>
+<p>With the LP setup, the constraints need to be applied. Negative releases, storage, or river flows don’t make sense, so they all need to be positive, so <span class="math inline">\(st\ge0\)</span>, <span class="math inline">\(rt\ge0\)</span>, <span class="math inline">\(ht\ge0\)</span> for all 12 months, but because the <em>lpSolveAPI</em> package assumes all decision variables have a range of <span class="math inline">\(0\le x\le \infty\)</span> these do not need to be explicitly added as constraints. When using other software packages these may need to be included.</p>
+<div id="constraints-1-12-maximum-storage" class="section level4 hasAnchor" number="12.2.3.1">
+<h4><span class="header-section-number">12.2.3.1</span> Constraints 1-12: Maximum storage<a href="management-of-water-resources-systems.html#constraints-1-12-maximum-storage" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The maximum capacity of the reservoir cannot be exceeded in any month, or <span class="math inline">\(st\le 600\)</span> for all 12 months. This can be added in a simple loop:</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="management-of-water-resources-systems.html#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>)) {</span>
+<span id="cb135-2"><a href="management-of-water-resources-systems.html#cb135-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&lt;=&quot;</span>, <span class="at">rhs=</span>res_cap, <span class="at">indices=</span><span class="fu">c</span>(i))</span>
+<span id="cb135-3"><a href="management-of-water-resources-systems.html#cb135-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="constraints-13-24-irrigation-diversions" class="section level4 hasAnchor" number="12.2.3.2">
+<h4><span class="header-section-number">12.2.3.2</span> Constraints 13-24: Irrigation diversions<a href="management-of-water-resources-systems.html#constraints-13-24-irrigation-diversions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The irrigation diversions should never exceed the demand. While for some months they are set to zero, since decision variables are all assumed non-negative, we can just assign all irrigation deliveries using the <span class="math inline">\(\le\)</span> operator.</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="management-of-water-resources-systems.html#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>)) {</span>
+<span id="cb136-2"><a href="management-of-water-resources-systems.html#cb136-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&lt;=&quot;</span>, <span class="at">rhs=</span>irrig_dem[i], <span class="at">indices=</span><span class="fu">c</span>(i<span class="sc">+</span><span class="dv">36</span>))</span>
+<span id="cb136-3"><a href="management-of-water-resources-systems.html#cb136-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="constraints-25-36-hydropower" class="section level4 hasAnchor" number="12.2.3.3">
+<h4><span class="header-section-number">12.2.3.3</span> Constraints 25-36: Hydropower<a href="management-of-water-resources-systems.html#constraints-25-36-hydropower" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Hydropower release cannot exceed the penstock capacity in any month: <span class="math inline">\(ht\le 180\)</span> for all 12 months. This can be done following the example above for the maximum storage constraint</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="management-of-water-resources-systems.html#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>)) {</span>
+<span id="cb137-2"><a href="management-of-water-resources-systems.html#cb137-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&lt;=&quot;</span>, <span class="at">rhs=</span>penstock_cap, <span class="at">indices=</span><span class="fu">c</span>(i<span class="sc">+</span><span class="dv">24</span>))</span>
+<span id="cb137-3"><a href="management-of-water-resources-systems.html#cb137-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="constraints-37-48-reservoir-release" class="section level4 hasAnchor" number="12.2.3.4">
+<h4><span class="header-section-number">12.2.3.4</span> Constraints 37-48: Reservoir release<a href="management-of-water-resources-systems.html#constraints-37-48-reservoir-release" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Reservoir release must equal or exceed irrigation deliveries, which is another way of saying that the water remaining in the river after the diversion cannot be negative. In other words <span class="math inline">\(r1-d1\ge 0\)</span>, <span class="math inline">\(r2-d2\ge 0\)</span>, … for all 12 months. For constraints involving more than one decision variable the constraint equations look a little different, and keeping track of the indices associated with each decision variable is essential.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="management-of-water-resources-systems.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>)) {</span>
+<span id="cb138-2"><a href="management-of-water-resources-systems.html#cb138-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&gt;=&quot;</span>, <span class="at">rhs=</span><span class="dv">0</span>, <span class="at">indices=</span><span class="fu">c</span>(i<span class="sc">+</span><span class="dv">12</span>,i<span class="sc">+</span><span class="dv">36</span>))</span>
+<span id="cb138-3"><a href="management-of-water-resources-systems.html#cb138-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="constraints-49-60-hydropower" class="section level4 hasAnchor" number="12.2.3.5">
+<h4><span class="header-section-number">12.2.3.5</span> Constraints 49-60: Hydropower<a href="management-of-water-resources-systems.html#constraints-49-60-hydropower" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Hydropower generation will be less than or equal to reservoir release in every month, or <span class="math inline">\(r1-h1\ge 0\)</span>, <span class="math inline">\(r2-h2\ge 0\)</span>, … for all 12 months.</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="management-of-water-resources-systems.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>)) {</span>
+<span id="cb139-2"><a href="management-of-water-resources-systems.html#cb139-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&gt;=&quot;</span>, <span class="at">rhs=</span><span class="dv">0</span>, <span class="at">indices=</span><span class="fu">c</span>(i<span class="sc">+</span><span class="dv">12</span>,i<span class="sc">+</span><span class="dv">24</span>))</span>
+<span id="cb139-3"><a href="management-of-water-resources-systems.html#cb139-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="constraints-61-72-conservation-of-mass" class="section level4 hasAnchor" number="12.2.3.6">
+<h4><span class="header-section-number">12.2.3.6</span> Constraints 61-72: Conservation of mass<a href="management-of-water-resources-systems.html#constraints-61-72-conservation-of-mass" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Finally, considering the reservoir, the inflow minus the outflow in any month must equal the change in storage over that month. That can be expressed in an equation with decision variables on the left side as:
+<span class="math display">\[s[t]-s[t-1]+r[t]=inflow[t]\]</span>
+where <span class="math inline">\(t\)</span> is a month from 1-12 and <span class="math inline">\(s[t]\)</span> is the storage at the end of month <span class="math inline">\(t\)</span>. We need to use the initial reservoir volume (assumed above) for the first month’s mass balance, so the above would become <span class="math inline">\(s[1]-s[initial]+r[1]=inflow[1]\)</span>, or <span class="math inline">\(s[1]+r[1]=inflow[1]+s[initial]\)</span>. All subsequent months can be assigned in a loop,</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="management-of-water-resources-systems.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;=&quot;</span>, <span class="at">rhs=</span>inflows[<span class="dv">1</span>]<span class="sc">+</span>res_init_vol, <span class="at">indices=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">13</span>))</span>
+<span id="cb140-2"><a href="management-of-water-resources-systems.html#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>,<span class="dv">12</span>)) {</span>
+<span id="cb140-3"><a href="management-of-water-resources-systems.html#cb140-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;=&quot;</span>, <span class="at">rhs=</span>inflows[i], <span class="at">indices=</span><span class="fu">c</span>(i,i<span class="dv">-1</span>,i<span class="sc">+</span><span class="dv">12</span>))</span>
+<span id="cb140-4"><a href="management-of-water-resources-systems.html#cb140-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+This completes the LP model setup. Especially for larger models, it is helpful to save the model. You can use something like <code>write.lp(reser.lp, "reservoir_LP.txt", "lp")</code> to create a file (readable using any text file viewer, like <em>Notepad++</em>) with all of the model details. It can also be read into R with the <em>read.lp</em> command to load the complete LP. The beginning of the file for this LP looks like:
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:lmr-f11"></span>
+<img src="images/write.lp_output.png" alt="The top of the linear model file produced by write.lp()." width="70%" />
+<p class="caption">
+Figure 12.7: The top of the linear model file produced by write.lp().
+</p>
+</div>
+</div>
+<div id="solving-the-model-and-interpreting-output" class="section level4 hasAnchor" number="12.2.3.7">
+<h4><span class="header-section-number">12.2.3.7</span> Solving the model and interpreting output<a href="management-of-water-resources-systems.html#solving-the-model-and-interpreting-output" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Solve the LP and retrieve the value of the objective function.</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="management-of-water-resources-systems.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(reser.lp)</span>
+<span id="cb141-2"><a href="management-of-water-resources-systems.html#cb141-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb141-3"><a href="management-of-water-resources-systems.html#cb141-3" aria-hidden="true" tabindex="-1"></a><span class="fu">get.objective</span>(reser.lp)</span>
+<span id="cb141-4"><a href="management-of-water-resources-systems.html#cb141-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1230930</span></span></code></pre></div>
+<p>To look at the hydropower generation, and to see how often spill occurs, it helps to view the associated decision variables (as noted above, these are indices 12-24 and 25-36).</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="management-of-water-resources-systems.html#cb142-1" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">get.variables</span>(reser.lp)       <span class="co"># retrieve decision variable values</span></span>
+<span id="cb142-2"><a href="management-of-water-resources-systems.html#cb142-2" aria-hidden="true" tabindex="-1"></a>results0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">variable=</span>DecisionVarNames,<span class="at">value=</span>vars)</span>
+<span id="cb142-3"><a href="management-of-water-resources-systems.html#cb142-3" aria-hidden="true" tabindex="-1"></a>r0 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(results0[<span class="dv">13</span><span class="sc">:</span><span class="dv">24</span>, ], results0[<span class="dv">25</span><span class="sc">:</span><span class="dv">36</span>, ])</span>
+<span id="cb142-4"><a href="management-of-water-resources-systems.html#cb142-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(r0) <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb142-5"><a href="management-of-water-resources-systems.html#cb142-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(r0) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Decision Variable&quot;</span>,<span class="st">&quot;Value&quot;</span>,<span class="st">&quot;Decision Variable&quot;</span>,<span class="st">&quot;Value&quot;</span>)</span>
+<span id="cb142-6"><a href="management-of-water-resources-systems.html#cb142-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(r0, <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb142-7"><a href="management-of-water-resources-systems.html#cb142-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>,<span class="st">&quot;condensed&quot;</span>),<span class="at">full_width =</span> F)</span></code></pre></div>
+<table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Decision Variable
+</th>
+<th style="text-align:right;">
+Value
+</th>
+<th style="text-align:left;">
+Decision Variable
+</th>
+<th style="text-align:right;">
+Value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+r1
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+<td style="text-align:left;">
+h1
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r2
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+<td style="text-align:left;">
+h2
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r3
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+<td style="text-align:left;">
+h3
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r4
+</td>
+<td style="text-align:right;">
+89.44193
+</td>
+<td style="text-align:left;">
+h4
+</td>
+<td style="text-align:right;">
+89.44193
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r5
+</td>
+<td style="text-align:right;">
+40.00000
+</td>
+<td style="text-align:left;">
+h5
+</td>
+<td style="text-align:right;">
+40.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r6
+</td>
+<td style="text-align:right;">
+130.00000
+</td>
+<td style="text-align:left;">
+h6
+</td>
+<td style="text-align:right;">
+130.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r7
+</td>
+<td style="text-align:right;">
+230.00000
+</td>
+<td style="text-align:left;">
+h7
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r8
+</td>
+<td style="text-align:right;">
+197.58616
+</td>
+<td style="text-align:left;">
+h8
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r9
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+<td style="text-align:left;">
+h9
+</td>
+<td style="text-align:right;">
+160.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r10
+</td>
+<td style="text-align:right;">
+112.03054
+</td>
+<td style="text-align:left;">
+h10
+</td>
+<td style="text-align:right;">
+112.03054
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r11
+</td>
+<td style="text-align:right;">
+96.96217
+</td>
+<td style="text-align:left;">
+h11
+</td>
+<td style="text-align:right;">
+96.96217
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+r12
+</td>
+<td style="text-align:right;">
+105.45502
+</td>
+<td style="text-align:left;">
+h12
+</td>
+<td style="text-align:right;">
+105.45502
+</td>
+</tr>
+</tbody>
+</table>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:lmr-f12"></span>
+<img src="hydr-watres_main_files/figure-html/lmr-f12-1.png" alt="Reservoir releases and hydropower water use for optimal solution." width="50%" />
+<p class="caption">
+Figure 12.8: Reservoir releases and hydropower water use for optimal solution.
+</p>
+</div>
+<p>For this optimal solution, the releases exceed the capacity of the penstock supplying the hydropower plant in July and August, meaning there would be reservoir spill during those months.</p>
+Another part of the output that is important is to what degree irrigation demand is met. the irrigation delivery is associated with decision variables with indices 37-48.
+<table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Decision Variable
+</th>
+<th style="text-align:right;">
+Value
+</th>
+<th style="text-align:right;">
+Irrigation Demand, 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+d1
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d2
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d3
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d4
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d5
+</td>
+<td style="text-align:right;">
+40.0000
+</td>
+<td style="text-align:right;">
+40
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d6
+</td>
+<td style="text-align:right;">
+130.0000
+</td>
+<td style="text-align:right;">
+130
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d7
+</td>
+<td style="text-align:right;">
+230.0000
+</td>
+<td style="text-align:right;">
+230
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d8
+</td>
+<td style="text-align:right;">
+197.5862
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d9
+</td>
+<td style="text-align:right;">
+160.0000
+</td>
+<td style="text-align:right;">
+180
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d10
+</td>
+<td style="text-align:right;">
+110.0000
+</td>
+<td style="text-align:right;">
+110
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d11
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d12
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>August and September see a shortfall in irrigation deliveries where full demand is not met.</p>
+<p>Finally, finding which constraints are binding can provide insights into how a system might be modified to improve the optimal solution. This is done similarly to the simpler problem above, by retrieving the <em>duals</em> portion of the sensitivity results. To address the question of whether the size of the reservoir is a binding constraint, that is, whether increasing reservoir size would improve the optimal results, only the first 12 constraints are printed.</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="management-of-water-resources-systems.html#cb143-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">get.constraints</span>(reser.lp))             <span class="co"># retrieve the number of constraints</span></span>
+<span id="cb143-2"><a href="management-of-water-resources-systems.html#cb143-2" aria-hidden="true" tabindex="-1"></a>duals <span class="ot">&lt;-</span> <span class="fu">get.sensitivity.rhs</span>(reser.lp)<span class="sc">$</span>duals[<span class="dv">1</span><span class="sc">:</span>m]</span>
+<span id="cb143-3"><a href="management-of-water-resources-systems.html#cb143-3" aria-hidden="true" tabindex="-1"></a>results2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Constraint=</span><span class="fu">c</span>(<span class="fu">seq</span>(<span class="dv">1</span><span class="sc">:</span>m)),<span class="at">Multiplier=</span>duals)</span>
+<span id="cb143-4"><a href="management-of-water-resources-systems.html#cb143-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(results2[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,], <span class="at">booktabs =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb143-5"><a href="management-of-water-resources-systems.html#cb143-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>,<span class="st">&quot;condensed&quot;</span>),<span class="at">full_width =</span> F)</span></code></pre></div>
+<table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Constraint
+</th>
+<th style="text-align:right;">
+Multiplier
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+450
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>For this example, in only one month would a larger reservoir have a positive impact on the maximum revenue.</p>
+</div>
+</div>
+</div>
+<div id="more-realistic-reservoir-operation-non-linear-programming" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> More Realistic Reservoir Operation: non-linear programming<a href="management-of-water-resources-systems.html#more-realistic-reservoir-operation-non-linear-programming" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>While the simple examples above illustrate how an optimal solution can be determined for a linear (and deterministic) reservoir system, in reality reservoirs are much more complex. Most reservoir operation studies use sophisticated software to develop and apply Rule Curves for reservoirs, aiming to optimally store and release water, preserving the storage pools as needed. Figure <a href="management-of-water-resources-systems.html#fig:sdp-1">12.9</a> shows how reservoir volumes are managed.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sdp-1"></span>
+<img src="images/usacoe_dam_curves.png" alt="Sample reservoir operating goals U.S. Army Corps of Engineers" width="65%" />
+<p class="caption">
+Figure 12.9: Sample reservoir operating goals <a href="https://www.swt.usace.army.mil/Portals/41/docs/library/td-pubs/how_lakes_managed.pdf">U.S. Army Corps of Engineers</a>
+</p>
+</div>
+<p>Many rule curves depend on the condition of the system at some prior time. Figure <a href="management-of-water-resources-systems.html#fig:sdp-2">12.10</a> shows a rule curve used to operate Folsom Reservoir on the American River in California, where the target storage depends on the total upstream storage available.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sdp-2"></span>
+<img src="images/folsom_rule_curve.png" alt="Multiple rule corves based on upstream storage U.S. Army Corps of Engineers Report RD-48" width="45%" />
+<p class="caption">
+Figure 12.10: Multiple rule corves based on upstream storage <a href="https://www.hec.usace.army.mil/publications/ResearchDocuments/RD-48.pdf">U.S. Army Corps of Engineers Report RD-48</a>
+</p>
+</div>
+<p>One method for deriving an optimal solution for the nonlinear and random processes in a water resources system is stochastic dynamic programming (SDP). Like LP, SDP uses algorithms that optimize an objective function under specified constraints. However, SDP can accommodate non-linear, dynamic outcomes, such as those associated with floods risks or other stochastic events. SDP can combine the stochastic information with reservoir management actions, where the outcome of decisions can be dependent on the state of the system (as in Figure <a href="management-of-water-resources-systems.html#fig:sdp-2">12.10</a>). Constraints can be set to be met a certain percentage of the time, rather than always.</p>
+<div id="reservoir-operation" class="section level3 hasAnchor" number="12.3.1">
+<h3><span class="header-section-number">12.3.1</span> Reservoir operation<a href="management-of-water-resources-systems.html#reservoir-operation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>While SDP is a topic that is far more advanced than what will be covered here, one R package will be introduced. For reservoir optimization, the <a href="https://cran.r-project.org/package=reservoir">R package reservoir</a> can use SDP to derive an optimal operating rule for a reservoir given a sequence of inflows using a single or multiple constraints. The package can also take any derived rule curve and operate a reservoir using it, which is what will be demonstrated here.</p>
+<p>First, place the optimal releases, according to the LP above, into a new vector to be used as a set of target releases for the reservoir operation.</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="management-of-water-resources-systems.html#cb144-1" aria-hidden="true" tabindex="-1"></a>target_release <span class="ot">&lt;-</span> results0[<span class="dv">13</span><span class="sc">:</span><span class="dv">24</span>, ]<span class="sc">$</span>value</span></code></pre></div>
+<p>The reservoir can be operated (for the same 12-month period, with the same 12 inflows as above) with a single command.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="management-of-water-resources-systems.html#cb145-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> reservoir<span class="sc">::</span><span class="fu">simRes</span>(inflows, target_release, res_cap, <span class="at">plot =</span> F)</span></code></pre></div>
+<p>The total revenue from hydropower generation and irrigation deliveries is computed as follows.</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="management-of-water-resources-systems.html#cb146-1" aria-hidden="true" tabindex="-1"></a>irrig_releases <span class="ot">&lt;-</span> <span class="fu">pmin</span>(x<span class="sc">$</span>releases,irrig_dem)</span>
+<span id="cb146-2"><a href="management-of-water-resources-systems.html#cb146-2" aria-hidden="true" tabindex="-1"></a>irrig_benefits <span class="ot">&lt;-</span> <span class="fu">sum</span>(irrig_releases<span class="sc">*</span>revenue_water)</span>
+<span id="cb146-3"><a href="management-of-water-resources-systems.html#cb146-3" aria-hidden="true" tabindex="-1"></a>hydro_releases <span class="ot">&lt;-</span> <span class="fu">pmin</span>(x<span class="sc">$</span>releases,penstock_cap)</span>
+<span id="cb146-4"><a href="management-of-water-resources-systems.html#cb146-4" aria-hidden="true" tabindex="-1"></a>hydro_benefits <span class="ot">&lt;-</span> hydro_releases<span class="sc">*</span>revenue_power</span>
+<span id="cb146-5"><a href="management-of-water-resources-systems.html#cb146-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(irrig_benefits,hydro_benefits)</span>
+<span id="cb146-6"><a href="management-of-water-resources-systems.html#cb146-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1230930</span></span></code></pre></div>
+<p>Unsurprisingly, this produces the same result as with the LP example.</p>
+</div>
+<div id="performing-stochastic-dynamic-programming" class="section level3 hasAnchor" number="12.3.2">
+<h3><span class="header-section-number">12.3.2</span> Performing stochastic dynamic programming<a href="management-of-water-resources-systems.html#performing-stochastic-dynamic-programming" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The optimal releases, or target releases, were established based on a single year. the SDP in the <em>reservoir</em> package can be used to determine optimal releases based on a time series of inflows. Here the entire 20-year inflow sequence is used to generate a multiobjective optimal solution for the system. A weighting must be applied to describe the importance of meeting different parts of the objective function. The target release(s) cannot be zero, so a small constant is added.</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="management-of-water-resources-systems.html#cb147-1" aria-hidden="true" tabindex="-1"></a>weight_water <span class="ot">&lt;-</span> revenue_water<span class="sc">/</span>(revenue_water <span class="sc">+</span> revenue_power)</span>
+<span id="cb147-2"><a href="management-of-water-resources-systems.html#cb147-2" aria-hidden="true" tabindex="-1"></a>weight_power <span class="ot">&lt;-</span> revenue_power<span class="sc">/</span>(revenue_water <span class="sc">+</span> revenue_power)</span>
+<span id="cb147-3"><a href="management-of-water-resources-systems.html#cb147-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> reservoir<span class="sc">::</span><span class="fu">sdp_multi</span>(inflows_20years, <span class="at">cap=</span>res_cap, <span class="at">target =</span> irrig_dem<span class="fl">+0.01</span>, </span>
+<span id="cb147-4"><a href="management-of-water-resources-systems.html#cb147-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">R_max =</span> penstock_cap, <span class="at">spill_targ =</span> <span class="fl">0.95</span>, </span>
+<span id="cb147-5"><a href="management-of-water-resources-systems.html#cb147-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">weights =</span> <span class="fu">c</span>(weight_water, weight_power, <span class="fl">0.00</span>), </span>
+<span id="cb147-6"><a href="management-of-water-resources-systems.html#cb147-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">loss_exp =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">tol=</span><span class="fl">0.99</span>, <span class="at">S_initial=</span><span class="fl">0.5</span>, <span class="at">plot=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="management-of-water-resources-systems.html#cb148-1" aria-hidden="true" tabindex="-1"></a>irrig_releases2 <span class="ot">&lt;-</span> <span class="fu">pmin</span>(z<span class="sc">$</span>releases,irrig_dem)</span>
+<span id="cb148-2"><a href="management-of-water-resources-systems.html#cb148-2" aria-hidden="true" tabindex="-1"></a>irrig_benefits2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(irrig_releases2<span class="sc">*</span>revenue_water)</span>
+<span id="cb148-3"><a href="management-of-water-resources-systems.html#cb148-3" aria-hidden="true" tabindex="-1"></a>hydro_releases2 <span class="ot">&lt;-</span> <span class="fu">pmin</span>(z<span class="sc">$</span>releases,penstock_cap)</span>
+<span id="cb148-4"><a href="management-of-water-resources-systems.html#cb148-4" aria-hidden="true" tabindex="-1"></a>hydro_benefits2 <span class="ot">&lt;-</span> hydro_releases2<span class="sc">*</span>revenue_power</span>
+<span id="cb148-5"><a href="management-of-water-resources-systems.html#cb148-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(irrig_benefits2,hydro_benefits2)<span class="sc">/</span><span class="dv">20</span></span>
+<span id="cb148-6"><a href="management-of-water-resources-systems.html#cb148-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 911240</span></span></code></pre></div>
+<p>For a 20-year period, the average annual revenue will always be less than that for a single year where the optimal releases are designed based on that same year.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sustainability-in-design-planning-for-change.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="groundwater.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

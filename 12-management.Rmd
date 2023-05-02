@@ -1,0 +1,402 @@
+# Management of water resources systems
+
+(ref:figwrm1) Lookout Point Dam on the Middle Fork Willamette River [source: U.S. Army Corps of Engineers](https://or.water.usgs.gov/proj/mfw_ssr_temp/)
+
+```{r wrsys1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='(ref:figwrm1)'}
+knitr::include_graphics('images/Lookout_Point_Dam.jpg')
+```
+
+Water resources systems tend to provide a variety of benefits, such as flood control, hydroelectric power, recreation, navigation, and irrigation. Each of these provides a benefit that can quantified, and there are also associated costs that can be quantified. A challenge engineers face is how to manage a system to balance the different uses. Mathematical optimization, which can take many forms, is employed to do this.
+
+Introductions to linear programming and other forms of optimization are plentiful. for a background on the concepts and theories, refer to other references. An excellent, comprehensive reference is Water Resource Systems Planning and Management [@loucks_water_2017], [freely available online](https://link.springer.com/book/10.1007/978-3-319-44234-1).
+
+What follows is a demonstration of using some of these optimization methods, but no recap of the theory is provided here. What follows uses linear systems, where the objective function and constraints are all linear functions of the decision variables.
+
+The _hydromisc_ package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on [the github site for the package](https://github.com/EdM44/hydromisc).
+
+## A simple linear system with two decision variables
+
+### Overview of problem formulation
+
+One of the simplest systems to optimize is a linear system of two variables, which means a graphical solution in 2-d is possible. This first demonstration is one example, a reworking of a textbook example [-@wurbs_water_2002].
+
+To set up a solution, three things must be described:
+
+* the decision variables -- the variables for which optimal values are sought
+* the constraints -- physical or other limitations on the decision variables (or combinations of them)
+* the objective function -- an expression, using the decision variables, of what is to be minimized or maximized.
+
+### Setting up an example
+
+::: {.example #ex-lm1}
+To supply water to a community, there are two sources of water available with different levels of total dissolved solids (TDS): groundwater (TDS=980 mg/l) and surface water from a reservoir (TDS=100 mg/l). The first two constraints are that a total demand of water of 7,500 $m^3$must be met, and the delivered water (mixed groundwater and reservoir supplies) can have a maximum TDS of 500 mg/l. This is illustrated in Figure \@ref(fig:ls-1).
+```{r ls-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='A schematic of the system for this example.'}
+knitr::include_graphics('images/optim_2_variable.png')
+```
+
+Two additional constraints are that groundwater withdrawal cannot exceed 4,000 $m^3$ and reservoir withdrawals cannot exceed 7,500 $m^3$. There are two decision variables: X1=groundwater and X2=reservoir supply. The objective is to minimize the reservoir withdrawal while meeting the constraints.
+:::
+The TDS constraint is reorganized as:
+$$\frac{800~X1+100~X2}{X1+X2}\le 400~~~or~~~ 400~X1-300~X2\le 0$$
+Rewriting the other three constraints as functions of the decision variables:
+\begin{align*}
+X1+X2 \ge 7500 \\
+X1 \le 4000 \\
+X2 \le 7500
+\end{align*}
+
+### Graphing the solution space
+
+While this can only be done easily for systems with only two decision variables, a plot of the solution space can be done here by graphing all of the constrains and shading the region where all constraints are satisfied.
+```{r lm-2, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='The solution space, shown as the cross-hatched area.'}
+#first create an empty plot space
+plot(NA,xlim=c(0,7500),ylim=c(0,7500), xaxs="i",yaxs="i",xlab="X1",ylab = "X2")
+a <- curve(x*400/300, add = TRUE, col="red") # First curve
+b <- curve(7500-x, add = TRUE, col="green") # Second curve
+c <- abline(v = 4000)
+d <- abline(h = 7500)
+polygon(x = c(0,4000,4000,3214.3,3214.3,0),
+        y = c(7500,7500,1.33*4000,4285.7,4285.7,7500), 
+        density=10, angle=0, border=NULL)
+grid()
+```
+
+In the feasible region, it is clear that the minimum reservoir supply, X2, would be a little larger than 4,000 $m^3$.
+
+### Setting up the problem in R
+
+An _R_ package to use for solving linear programming problems is the [lpSolveAPI](https://cran.r-project.org/package=lpSolveAPI) package. Install that if necessary, and also install the [knitr](https://cran.r-project.org/package=knitr) and  [kableExtra](https://cran.r-project.org/package=kableExtra) packages, since it is very useful for printing the many tables that linear programming involves.
+
+Begin by creating an empty linear model. The (0,2) means zero constraints (they’ll be added later) and 2 decision variables. The next two lines just assign names to the decision variables. Because we will use many functions of the _lpSolveAPI_ package, load the library first. For convenience, _kableExtra_ package too.
+```{r lm-3, message=FALSE}
+library(lpSolveAPI)
+library(kableExtra)
+example.lp <- lpSolveAPI::make.lp(0,2)
+ColNames <- c("X1","X2")
+colnames(example.lp) <- ColNames
+```
+
+Now set up the objective function. Minimization is the default goal of this R function, but we'll set it anyway to be clear. The second argument is the vector of coefficients for the decision variables, meaning X2 is minimized.
+```{r lm-4, message=FALSE}
+set.objfn(example.lp,c(0,1)) 
+x <- lp.control(example.lp, sense="min") #save output to a dummy variable
+```
+
+The next step is to define the constraints. Four constraints were listed above. Additional constraints could be added that $X1\ge 0$ and $X2\ge 0$, however, variable ranges in this LP solver are [0,infinity] by default, so for this example and we do not need to include constraints for positive results. If necessary, decision variable valid ranges can be set using _set.bounds()_. 
+
+Constraints are defined with the _add.constraint_ command. Figure \@ref(fig:lm-5) provides an annotated example of the use of an add.constraint command.
+```{r lm-5, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "70%", fig.cap='Annotated example of an add.constraint command.'}
+knitr::include_graphics('images/constraint_equation.png')
+```
+Type ?add.constraint in the console for additional details. 
+
+The four constrains for this example are added with:
+```{r lm-5x, message=FALSE}
+add.constraint(example.lp, xt=c(400,-300), type="<=", rhs=0, indices=c(1,2))
+add.constraint(example.lp, xt=c(1,1), type=">=", rhs=7500)
+add.constraint(example.lp, xt=c(1,0), type="<=", rhs=4000)
+add.constraint(example.lp, xt=c(0,1), type="<=", rhs=7500)
+```
+
+That completes the setup of the linear model. You can view the model to verify the values you entered by typing the name of the model.
+```{r lm-6, message=FALSE}
+example.lp
+```
+If it has a large number of decision variables it only prints a summary, but in that case you can use `write.lp(example.lp, "example_lp.txt", "lp")` to create a viewable file with the model.
+
+Now the model can be solved.
+```{r lm-7, message=FALSE}
+solve(example.lp)
+```
+If the solver finds an optimal solution it will return a zero.
+
+### Interpreting the optimal results
+
+View the final value of the objective function by retrieving it and printing it:
+```{r lm-7x, message=FALSE}
+optimal_solution <- get.objective(example.lp)
+print(paste0("Optimal Solution = ",round(optimal_solution,2),sep=""))
+```
+For more detail, recover the values of each of the decision variables.
+```{r lm-8, message=FALSE}
+vars <- get.variables(example.lp)
+```
+
+Next you can print the sensitivity report -- a vector of M constraints followed by N decision variables. It helps to create a data frame for viewing and printing the results. Nicer printing is achieved using the kable and kableExtra functions.
+```{r lm-9, message=FALSE}
+sens <- get.sensitivity.obj(example.lp)$objfrom
+results1 <- data.frame(variable=ColNames,value=vars,gradient=as.integer(sens))
+kbl(results1, booktabs = TRUE) %>% kable_styling(full_width = F)
+```
+The above shows decision variable values for the optimal solution. The Gradient is the change in the objective function for a unit increase in the decision variable. Here a negative gradient for decision variable $X1$, the groundwater withdrawal, means that increasing the groundwater withdrawal will have a negative effect on the objective function, (to minimize $X2$): that is intuitive, since increasing groundwater withdrawal can reduce reservoir supply on a one-to-one basis.
+
+To look at which constraints are binding, retrieve the $duals part of the output.
+```{r lm-10, message=FALSE}
+m <- length(get.constraints(example.lp)) #number of constraints
+duals <- get.sensitivity.rhs(example.lp)$duals[1:m]
+results2 <- data.frame(constraint=c(seq(1:m)),multiplier=duals)
+kbl(results2, booktabs = TRUE) %>% kable_styling(full_width = F)
+```
+The multipliers for each constraint are referred to as Lagrange multipliers (or shadow prices). Non-zero values of the multiplier indicate a binding capability of that constraint, and the change in the objective function that would result from a unit change in that value. Zero values are non-binding, since a unit change in their value has no effect on the optimal result. For example, constraint 3, that $X1 \le 4000$, with a multiplier of zero, could be changed (at least a small amount -- there can be a limit after which it can become binding) with no effect on the optimal solution. Similarly, if constraint 2, $X1+X2 \ge 7500$, were were increased, the objective function (the optimal reservoir supply) would also increase.
+
+## More complex linear programming: reservoir operation
+
+Water resources systems are far too complicated to be summarized by two decision variables and only a few constraints, as above. Example \@ref(exm:ex-lmr) demonstrate how the same procedure can be applied to a slightly more complex system. This is a reformulation of an example from the same text as referenced above [@wurbs_water_2002].
+
+::: {.example #ex-lmr}
+A river flows into a storage reservoir where the operator must decide how much water to release each month. For simplicity, inflows will by described by a fixed sequence of 12 monthly flows. There are two downstream needs to satisfy: hydropower generation and irrigation diversions. Benefits are derived from these two uses: revenues are $ 800 per 10$^6$m$^3$ of water diverted for irrigation, and $ 350 per 10$^6$m$^3$ for hydropower generation. The objective is to determine the releases that will maximize the total revenue.
+
+There are physical characteristics of the system that provide some constraints, and others are derived from basic physics, such as the conservation of mass. A schematic of the system is shown in Figure \@ref(fig:lmr-f1).
+```{r lmr-f1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='A schematic of the water resources system for this example.'}
+knitr::include_graphics('images/reservoir_system.png')
+```
+
+Diversions through the penstock to the hydropower facility are limited to its capacity of 160 10$^6$m$^3$/month. For reservoir releases less than that, all of the released water can generate hydropower; flows above that capacity will spill without generating hydropower benefits. The reservoir has a maximum volume of 550 10$^6$m$^3$, so anything above that will have to be released. Assume the reservoir is at half capacity initially. The irrigation demand varies by month, and diversions up to the demand will produce benefits. These are:
+```{r lmr-1, message=FALSE, echo=FALSE}
+x <- data.frame(
+  Month=paste0(month.abb[seq(1,12)]," (",seq(1,12),")"),
+  Demand=c(0,0,0,0,40,130,230,250,180,110,0,0))
+names(x)[2] <- paste0("Demand, ","10$^6$m$^3$")
+kbl(cbind(x[1:4,],x[5:8,],x[9:12,]), booktabs = TRUE) %>% kable_styling(full_width = F)
+```
+:::
+
+### Problem summary
+
+There are 48 decision variables in this problem, 12 monthly values for reservoir storage (s$_1$-s$_12$), release (r$_1$-r$_{12}$), hydropower generation (h$_1$-h$_{12}$), and agricultural diversion (d$_1$-d$_{12}$).
+
+The objective function is to maximize the revenue, which is expressed by Equation \@ref(eq:lmr-eq1).
+\begin{equation}
+  Maximize~ x_0=\sum_{i=1}^{12}\left(350h_i+800d_i\right)
+    (\#eq:lmr-eq1)
+\end{equation} 
+
+Constraints will need to be described to apply the limits to hydropower diversion and storage capacity, and to limit agricultural diversions to no more than the demand.
+
+### Setting up the problem in R
+
+Create variables for the known or assumed initial values for the system.
+```{r lmr-2, message=FALSE, echo=TRUE}
+penstock_cap <- 160        #penstock capacity in million m3/month
+res_cap <- 550             #reservoir capacity in million m3
+res_init_vol <- res_cap/2  #set initial reservoir capacity equal to half of capacity
+irrig_dem <- c(0,0,0,0,40,130,230,250,180,110,0,0)
+revenue_water <- 800       #revenue for delivered irrigation water, $/million m3
+revenue_power <- 350       #revenue for power generated, $/million m3
+```
+
+A [time series](https://cran.r-project.org/web/views/TimeSeries.html) of 20 years (January 2000 through December 2019) of monthly flows for this exercise is included with the _hydromisc_ package. Load that and extract the first 12 months to use in this example.
+```{r lmr-3, message=FALSE, echo=TRUE}
+inflows_20years <- hydromisc::inflows_20years
+inflows <- as.numeric(window(inflows_20years, start = c(2000, 1), end = c(2000, 12)))
+```
+
+It helps to illustrate how the irrigation demands and inflows vary, and therefore why storage might be useful in regulating flow to provide more reliable irrigation deliveries.
+```{r lmr-f2, message=FALSE, echo=TRUE, fig.align = 'center', out.width = "50%", fig.cap='Inflows and irrigation demand.'}
+par(mgp=c(2,1,0))
+ylbl <- expression(10 ^6 ~ m ^3/month)
+plot(inflows, type="l", col="blue", xlab="Month", ylab=ylbl)
+lines(irrig_dem, col="darkgreen", lty=2)
+legend("topright",c("Inflows","Irrigation Demand"),lty = c(1,2), col=c("blue","darkgreen"))
+grid()
+```
+### Building the linear model
+
+Following the same steps as for a simple 2-variable problem, begin by setting up a linear model. Because there are so many decision variables, it helps to add names to them.
+```{r lmr-3x, message=FALSE, echo=TRUE}
+reser.lp <- make.lp(0,48)
+DecisionVarNames <- c(paste0("s",1:12),paste0("r",1:12),paste0("h",1:12),paste0("d",1:12))
+colnames(reser.lp) <- DecisionVarNames
+```
+
+From this point on, the decision variables will be addressed by their indices, that is, their numeric position in this sequence of 48 values. To summarize their positions:
+```{r lmr-4, message=FALSE, echo=FALSE}
+x2 <- data.frame(
+  V=c("Storage (s1-s12)","Release (r1-r12)","Hydropower (h1-h12)","Irrigation diversion (d1-d12)"),
+  I=c("1-12","13-24","25-36","37-48"))
+names(x2) <- c("Decision Variables","Indices (columns)")
+kbl(x2, booktabs = TRUE) %>% kable_styling(full_width = F)
+```
+
+Using these indices as a guide, set up the objective function and initialize the linear model. While not necessary, redirecting the output of the _lp.control_ to a variable prevents a lot of output to the console. The following takes the revenue from hydropower and irrigation (in $ per 10$^6$m$^3$/month), multiplies them by the 12 monthly values for the hydropower flows and the irrigation deliveries, and sets the objective to maximize their sum, as described by Equation \@ref(eq:lmr-eq1).
+```{r lmr-5, message=FALSE, echo=TRUE}
+set.objfn(reser.lp,c(rep(revenue_power,12),rep(revenue_water,12)),indices = c(25:48))
+x <- lp.control(reser.lp, sense="max")
+```
+
+With the LP setup, the constraints need to be applied. Negative releases, storage, or river flows don’t make sense, so they all need to be positive, so $st\ge0$, $rt\ge0$, $ht\ge0$ for all 12 months, but because the _lpSolveAPI_ package assumes all decision variables have a range of $0\le x\le \infty$ these do not need to be explicitly added as constraints. When using other software packages these may need to be included.
+
+#### Constraints 1-12: Maximum storage
+The maximum capacity of the reservoir cannot be exceeded in any month, or $st\le 600$ for all 12 months. This can be added in a simple loop:
+```{r lmr-6, message=FALSE, echo=TRUE}
+for (i in seq(1,12)) {
+  add.constraint(reser.lp, xt=c(1), type="<=", rhs=res_cap, indices=c(i))
+}
+```
+
+#### Constraints 13-24: Irrigation diversions
+The irrigation diversions should never exceed the demand. While for some months they are set to zero, since decision variables are all assumed non-negative, we can just assign all irrigation deliveries using the $\le$ operator.
+
+```{r lmr-7, message=FALSE, echo=TRUE}
+for (i in seq(1,12)) {
+  add.constraint(reser.lp, xt=c(1), type="<=", rhs=irrig_dem[i], indices=c(i+36))
+}
+```
+
+#### Constraints 25-36: Hydropower
+Hydropower release cannot exceed the penstock capacity in any month: $ht\le 180$ for all 12 months. This can be done following the example above for the maximum storage constraint
+```{r lmr-8, message=FALSE, echo=TRUE}
+for (i in seq(1,12)) {
+  add.constraint(reser.lp, xt=c(1), type="<=", rhs=penstock_cap, indices=c(i+24))
+}
+```
+
+#### Constraints 37-48: Reservoir release 
+Reservoir release must equal or exceed irrigation deliveries, which is another way of saying that the water remaining in the river after the diversion cannot be negative. In other words $r1-d1\ge 0$, $r2-d2\ge 0$, ... for all 12 months. For constraints involving more than one decision variable the constraint equations look a little different, and keeping track of the indices associated with each decision variable is essential.
+```{r lmr-9, message=FALSE, echo=TRUE}
+for (i in seq(1,12)) {
+  add.constraint(reser.lp, xt=c(1,-1), type=">=", rhs=0, indices=c(i+12,i+36))
+}
+```
+
+#### Constraints 49-60: Hydropower
+Hydropower generation will be less than or equal to reservoir release in every month, or $r1-h1\ge 0$, $r2-h2\ge 0$, ... for all 12 months.
+```{r lmr-10, message=FALSE, echo=TRUE}
+for (i in seq(1,12)) {
+  add.constraint(reser.lp, xt=c(1,-1), type=">=", rhs=0, indices=c(i+12,i+24))
+}
+```
+
+#### Constraints 61-72: Conservation of mass
+Finally, considering the reservoir, the inflow minus the outflow in any month must equal the change in storage over that month. That can be expressed in an equation with decision variables on the left side as:
+$$s[t]-s[t-1]+r[t]=inflow[t]$$
+where $t$ is a month from 1-12 and $s[t]$ is the storage at the end of month $t$. We need to use the initial reservoir volume (assumed above) for the first month's mass balance, so the above would become $s[1]-s[initial]+r[1]=inflow[1]$, or $s[1]+r[1]=inflow[1]+s[initial]$. All subsequent months can be assigned in a loop,
+```{r lmr-11, message=FALSE, echo=TRUE}
+add.constraint(reser.lp, xt=c(1,1), type="=", rhs=inflows[1]+res_init_vol, indices=c(1,13))
+for (i in seq(2,12)) {
+  add.constraint(reser.lp, xt=c(1,-1,1), type="=", rhs=inflows[i], indices=c(i,i-1,i+12))
+}
+```
+
+This completes the LP model setup. Especially for larger models, it is helpful to save the model. You can use something like `write.lp(reser.lp, "reservoir_LP.txt", "lp")` to create a file (readable using any text file viewer, like _Notepad++_) with all of the model details. It can also be read into R with the _read.lp_ command to load the complete LP. The beginning of the file for this LP looks like:
+```{r lmr-f11, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "70%", fig.cap='The top of the linear model file produced by write.lp().'}
+knitr::include_graphics('images/write.lp_output.png')
+```
+
+#### Solving the model and interpreting output
+
+Solve the LP and retrieve the value of the objective function.
+```{r lmr-12, message=FALSE, echo=TRUE}
+solve(reser.lp)
+get.objective(reser.lp)
+```
+
+To look at the hydropower generation, and to see how often spill occurs, it helps to view the associated decision variables (as noted above, these are indices 12-24 and 25-36).
+```{r lmr-12x, message=FALSE, echo=TRUE}
+vars <- get.variables(reser.lp)       # retrieve decision variable values
+results0 <- data.frame(variable=DecisionVarNames,value=vars)
+r0 <- cbind(results0[13:24, ], results0[25:36, ])
+rownames(r0) <- c()
+names(r0) <- c("Decision Variable","Value","Decision Variable","Value")
+kbl(r0, booktabs = TRUE) %>% 
+  kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
+```
+
+```{r lmr-f12, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Reservoir releases and hydropower water use for optimal solution.'}
+ylbl <- expression(10 ^6 ~ m ^3/month)
+plot(r0[,2], type="l", col="blue", xlab="Month", ylab=ylbl)
+lines(r0[,4], col="darkgreen", lty=2)
+legend("topright",c("Releases","Hydropower"),lty = c(1,2))
+grid()
+```
+
+For this optimal solution, the releases exceed the capacity of the penstock supplying the hydropower plant in July and August, meaning there would be reservoir spill during those months.
+
+Another part of the output that is important is to what degree irrigation demand is met. the irrigation delivery is associated with decision variables with indices 37-48.
+```{r lmr-13, message=FALSE, echo=FALSE}
+x1 <- cbind(results0[37:48, ], irrig_dem)
+rownames(x1) <- c()
+names(x1) <- c("Decision Variable","Value",paste0("Irrigation Demand, ","10$^6$m$^3$"))
+kbl(x1, booktabs = TRUE) %>% 
+  kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
+```
+
+August and September see a shortfall in irrigation deliveries where full demand is not met.
+
+Finally, finding which constraints are binding can provide insights into how a system might be modified to improve the optimal solution. This is done similarly to the simpler problem above, by retrieving the _duals_ portion of the sensitivity results. To address the question of whether the size of the reservoir is a binding constraint, that is, whether increasing reservoir size would improve the optimal results, only the first 12 constraints are printed.
+```{r lmr-14, message=FALSE, echo=TRUE}
+m <- length(get.constraints(reser.lp))             # retrieve the number of constraints
+duals <- get.sensitivity.rhs(reser.lp)$duals[1:m]
+results2 <- data.frame(Constraint=c(seq(1:m)),Multiplier=duals)
+kbl(results2[1:12,], booktabs = TRUE) %>% 
+  kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
+```
+
+For this example, in only one month would a larger reservoir have a positive impact on the maximum revenue.
+
+## More Realistic Reservoir Operation: non-linear programming
+
+While the simple examples above illustrate how an optimal solution can be determined for a linear (and deterministic) reservoir system, in reality reservoirs are much more complex. Most reservoir operation studies use sophisticated software to develop and apply Rule Curves for reservoirs, aiming to optimally store and release water, preserving the storage pools as needed. Figure \@ref(fig:sdp-1) shows how reservoir volumes are managed.
+
+(ref:figsdp1) Sample reservoir operating goals [U.S. Army Corps of Engineers](https://www.swt.usace.army.mil/Portals/41/docs/library/td-pubs/how_lakes_managed.pdf)
+
+```{r sdp-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "65%", fig.cap='(ref:figsdp1)'}
+knitr::include_graphics('images/usacoe_dam_curves.png')
+```
+
+Many rule curves depend on the condition of the system at some prior time. Figure \@ref(fig:sdp-2) shows a rule curve used to operate Folsom Reservoir on the American River in California, where the target storage depends on the total upstream storage available.
+
+(ref:figsdp2) Multiple rule corves based on upstream storage [U.S. Army Corps of Engineers Report RD-48](https://www.hec.usace.army.mil/publications/ResearchDocuments/RD-48.pdf)
+
+```{r sdp-2, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "45%", fig.cap='(ref:figsdp2)'}
+knitr::include_graphics('images/folsom_rule_curve.png')
+```
+
+One method for deriving an optimal solution for the nonlinear and random processes in a water resources system is stochastic dynamic programming (SDP). Like LP, SDP uses algorithms that optimize an objective function under specified constraints. However, SDP can accommodate non-linear, dynamic outcomes, such as those associated with floods risks or other stochastic events. SDP can combine the stochastic information with reservoir management actions, where the outcome of decisions can be dependent on the state of the system (as in Figure \@ref(fig:sdp-2)). Constraints can be set to be met a certain percentage of the time, rather than always.
+
+### Reservoir operation
+
+While SDP is a topic that is far more advanced than what will be covered here, one R package will be introduced. For reservoir optimization, the [R package reservoir](https://cran.r-project.org/package=reservoir) can use SDP to derive an optimal operating rule for a reservoir given a sequence of inflows using a single or multiple constraints. The package can also take any derived rule curve and operate a reservoir using it, which is what will be demonstrated here.
+
+First, place the optimal releases, according to the LP above, into a new vector to be used as a set of target releases for the reservoir operation.
+
+```{r sdp-3, message=FALSE, echo=TRUE}
+target_release <- results0[13:24, ]$value
+```
+
+The reservoir can be operated (for the same 12-month period, with the same 12 inflows as above) with a single command.
+```{r sdp-4, message=FALSE, warning=FALSE, echo=TRUE}
+x <- reservoir::simRes(inflows, target_release, res_cap, plot = F)
+```
+
+The total revenue from hydropower generation and irrigation deliveries is computed as follows.
+```{r sdp-5, message=FALSE, echo=TRUE}
+irrig_releases <- pmin(x$releases,irrig_dem)
+irrig_benefits <- sum(irrig_releases*revenue_water)
+hydro_releases <- pmin(x$releases,penstock_cap)
+hydro_benefits <- hydro_releases*revenue_power
+sum(irrig_benefits,hydro_benefits)
+```
+Unsurprisingly, this produces the same result as with the LP example.
+
+### Performing stochastic dynamic programming
+
+The optimal releases, or target releases, were established based on a single year. the SDP in the _reservoir_ package can be used to determine optimal releases based on a time series of inflows. Here the entire 20-year inflow sequence is used to generate a multiobjective optimal solution for the system. A weighting must be applied to describe the importance of meeting different parts of the objective function. The target release(s) cannot be zero, so a small constant is added.
+
+```{r sdp-6, message=FALSE, warning=FALSE, echo=TRUE}
+weight_water <- revenue_water/(revenue_water + revenue_power)
+weight_power <- revenue_power/(revenue_water + revenue_power)
+z <- reservoir::sdp_multi(inflows_20years, cap=res_cap, target = irrig_dem+0.01, 
+                          R_max = penstock_cap, spill_targ = 0.95, 
+                          weights = c(weight_water, weight_power, 0.00), 
+                          loss_exp = c(1, 1, 1), tol=0.99, S_initial=0.5, plot=FALSE)
+```
+
+```{r sdp-7, message=FALSE, echo=TRUE}
+irrig_releases2 <- pmin(z$releases,irrig_dem)
+irrig_benefits2 <- sum(irrig_releases2*revenue_water)
+hydro_releases2 <- pmin(z$releases,penstock_cap)
+hydro_benefits2 <- hydro_releases2*revenue_power
+sum(irrig_benefits2,hydro_benefits2)/20
+```
+For a 20-year period, the average annual revenue will always be less than that for a single year where the optimal releases are designed based on that same year.

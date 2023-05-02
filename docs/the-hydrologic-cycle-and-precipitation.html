@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 The hydrologic cycle and precipitation | Hydraulics and Water Resources: Examples Using R</title>
+  <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 The hydrologic cycle and precipitation | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 The hydrologic cycle and precipitation | Hydraulics and Water Resources: Examples Using R" />
+  
+  <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+
+
+<meta name="date" content="2023-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="pumps-and-how-they-operate-in-a-hydraulic-system.html"/>
+<link rel="next" href="fate-of-precipitation.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of water (and air)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
+<li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="properties-of-water.html"><a href="properties-of-water.html#ideal-gas-law"><i class="fa fa-check"></i><b>2.3.1</b> Ideal gas law</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html"><i class="fa fa-check"></i><b>3</b> Hydrostatics - forces exerted by water bodies</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#pressure-and-force"><i class="fa fa-check"></i><b>3.1</b> Pressure and force</a></li>
+<li class="chapter" data-level="3.2" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane"><i class="fa fa-check"></i><b>3.2</b> Force on a plane area</a></li>
+<li class="chapter" data-level="3.3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#forces-on-curved-surfaces"><i class="fa fa-check"></i><b>3.3</b> Forces on curved surfaces</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>4</b> Water flowing in pipes: energy losses</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>4.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>4.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>4.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>4.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="4.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>4.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="4.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>4.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="4.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>4.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>4.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>4.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="4.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>4.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="4.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>4.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>4.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>5</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>5.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="5.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>5.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="5.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>5.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>5.3.1</b> Solving the Manning equation in R</a></li>
+<li class="chapter" data-level="5.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>5.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="5.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>5.3.3</b> Solving the Manning equation using a spreadsheet like Excel</a></li>
+<li class="chapter" data-level="5.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>5.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>5.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>5.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>5.5</b> Critical flow</a></li>
+<li class="chapter" data-level="5.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>5.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>5.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="5.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>5.6.2</b> Standard step method</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>5.7</b> Rapidly varied flow (the hydraulic jump)</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>5.7.1</b> Sequent (or conjugate) depths</a></li>
+<li class="chapter" data-level="5.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>5.7.2</b> Location of a hydraulic jump</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>6</b> Momentum in water flow</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#equations-of-linear-momentum"><i class="fa fa-check"></i><b>6.1</b> Equations of linear momentum</a></li>
+<li class="chapter" data-level="6.2" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#the-momentum-equation-in-pipe-design"><i class="fa fa-check"></i><b>6.2</b> The momentum equation in pipe design</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>7</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>7.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="7.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>7.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="7.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>7.3</b> Finding the operating point</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html"><i class="fa fa-check"></i><b>8</b> The hydrologic cycle and precipitation</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-observations"><i class="fa fa-check"></i><b>8.1</b> Precipitation observations</a></li>
+<li class="chapter" data-level="8.2" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precip-freq"><i class="fa fa-check"></i><b>8.2</b> Precipitation frequency</a></li>
+<li class="chapter" data-level="8.3" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-gauge-consistency-double-mass-curves"><i class="fa fa-check"></i><b>8.3</b> Precipitation gauge consistency – double mass curves</a></li>
+<li class="chapter" data-level="8.4" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-interpolation-and-areal-averaging"><i class="fa fa-check"></i><b>8.4</b> Precipitation interpolation and areal averaging</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html"><i class="fa fa-check"></i><b>9</b> Fate of precipitation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#interception"><i class="fa fa-check"></i><b>9.1</b> Interception</a></li>
+<li class="chapter" data-level="9.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#infiltration"><i class="fa fa-check"></i><b>9.2</b> Infiltration</a></li>
+<li class="chapter" data-level="9.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#evaporation"><i class="fa fa-check"></i><b>9.3</b> Evaporation</a></li>
+<li class="chapter" data-level="9.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow"><i class="fa fa-check"></i><b>9.4</b> Snow</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#observations"><i class="fa fa-check"></i><b>9.4.1</b> Observations</a></li>
+<li class="chapter" data-level="9.4.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#basic-snowmelt-theory-and-simple-models"><i class="fa fa-check"></i><b>9.4.2</b> Basic snowmelt theory and simple models</a></li>
+<li class="chapter" data-level="9.4.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow-model-calibration"><i class="fa fa-check"></i><b>9.4.3</b> Snow model calibration</a></li>
+<li class="chapter" data-level="9.4.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#estimating-climate-change-impacts-on-snow"><i class="fa fa-check"></i><b>9.4.4</b> Estimating climate change impacts on snow</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#watershed-analysis"><i class="fa fa-check"></i><b>9.5</b> Watershed analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html"><i class="fa fa-check"></i><b>10</b> Designing for floods: flood hydrology</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#engineering-design-requires-probability-and-statistics"><i class="fa fa-check"></i><b>10.1</b> Engineering design requires probability and statistics</a></li>
+<li class="chapter" data-level="10.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#ffa1"><i class="fa fa-check"></i><b>10.2</b> Estimating floods when you have peak flow observations - flood frequency analysis</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#installing-helpful-packages"><i class="fa fa-check"></i><b>10.2.1</b> Installing helpful packages</a></li>
+<li class="chapter" data-level="10.2.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#download-manipulate-and-plot-the-data-for-a-site"><i class="fa fa-check"></i><b>10.2.2</b> Download, manipulate, and plot the data for a site</a></li>
+<li class="chapter" data-level="10.2.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#flood-frequency-analysis"><i class="fa fa-check"></i><b>10.2.3</b> Flood frequency analysis</a></li>
+<li class="chapter" data-level="10.2.4" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#creating-a-flood-frequency-plot"><i class="fa fa-check"></i><b>10.2.4</b> Creating a flood frequency plot</a></li>
+<li class="chapter" data-level="10.2.5" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#other-software-for-peak-flow-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Other software for peak flow analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#estimating-floods-from-precipitation"><i class="fa fa-check"></i><b>10.3</b> Estimating floods from precipitation</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html"><i class="fa fa-check"></i><b>11</b> Sustainability in design: planning for change</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#perturbing-a-system"><i class="fa fa-check"></i><b>11.1</b> Perturbing a system</a></li>
+<li class="chapter" data-level="11.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-hydrologic-data"><i class="fa fa-check"></i><b>11.2</b> Detecting changes in hydrologic data</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-step-change"><i class="fa fa-check"></i><b>11.2.1</b> Detecting a step change</a></li>
+<li class="chapter" data-level="11.2.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-monotonic-trend"><i class="fa fa-check"></i><b>11.2.2</b> Detecting a monotonic trend</a></li>
+<li class="chapter" data-level="11.2.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#choosing-whether-to-use-parametric-or-non-parametric-tests"><i class="fa fa-check"></i><b>11.2.3</b> Choosing whether to use parametric or non-parametric tests</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-extreme-events"><i class="fa fa-check"></i><b>11.3</b> Detecting changes in extreme events</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#obtaining-and-preparing-sea-level-data"><i class="fa fa-check"></i><b>11.3.1</b> Obtaining and preparing sea-level data</a></li>
+<li class="chapter" data-level="11.3.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#conducting-the-extreme-event-analysis"><i class="fa fa-check"></i><b>11.3.2</b> Conducting the extreme event analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html"><i class="fa fa-check"></i><b>12</b> Management of water resources systems</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#a-simple-linear-system-with-two-decision-variables"><i class="fa fa-check"></i><b>12.1</b> A simple linear system with two decision variables</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#overview-of-problem-formulation"><i class="fa fa-check"></i><b>12.1.1</b> Overview of problem formulation</a></li>
+<li class="chapter" data-level="12.1.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-an-example"><i class="fa fa-check"></i><b>12.1.2</b> Setting up an example</a></li>
+<li class="chapter" data-level="12.1.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#graphing-the-solution-space"><i class="fa fa-check"></i><b>12.1.3</b> Graphing the solution space</a></li>
+<li class="chapter" data-level="12.1.4" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r"><i class="fa fa-check"></i><b>12.1.4</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.1.5" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#interpreting-the-optimal-results"><i class="fa fa-check"></i><b>12.1.5</b> Interpreting the optimal results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-complex-linear-programming-reservoir-operation"><i class="fa fa-check"></i><b>12.2</b> More complex linear programming: reservoir operation</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#problem-summary"><i class="fa fa-check"></i><b>12.2.1</b> Problem summary</a></li>
+<li class="chapter" data-level="12.2.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r-1"><i class="fa fa-check"></i><b>12.2.2</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.2.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#building-the-linear-model"><i class="fa fa-check"></i><b>12.2.3</b> Building the linear model</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-realistic-reservoir-operation-non-linear-programming"><i class="fa fa-check"></i><b>12.3</b> More Realistic Reservoir Operation: non-linear programming</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#reservoir-operation"><i class="fa fa-check"></i><b>12.3.1</b> Reservoir operation</a></li>
+<li class="chapter" data-level="12.3.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#performing-stochastic-dynamic-programming"><i class="fa fa-check"></i><b>12.3.2</b> Performing stochastic dynamic programming</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="groundwater.html"><a href="groundwater.html"><i class="fa fa-check"></i><b>13</b> Groundwater</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hydraulics and Water Resources: Examples Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="the-hydrologic-cycle-and-precipitation" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> The hydrologic cycle and precipitation<a href="the-hydrologic-cycle-and-precipitation.html#the-hydrologic-cycle-and-precipitation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>All of the earlier chapters of this book dealt with the behavior of water in different hydraulic systems, such as canals or pipes. Now we consider the bigger picture of where the water originates, and ultimately how we can estimate how much water is available for different uses, and how much excess (flood) water systems will need to be designed and built to accommodate.</p>
+A fundamental concept is the hydrologic cycle, depicted in Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:hydr-cycle">8.1</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hydr-cycle"></span>
+<img src="images/Watercyclesummary.jpg" alt="The hydrologic cycle (source: John Evans and Howard Periman, USGS)." width="70%" />
+<p class="caption">
+Figure 8.1: The hydrologic cycle (source: John Evans and Howard Periman, USGS).
+</p>
+</div>
+<p>The primary variable in the hydrologic cycle from an engineering perspective is precipitation, since that is the source of the water used and managed in engineered systems.</p>
+<p>The <em>hydromisc</em> package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on <a href="https://github.com/EdM44/hydromisc">the github site for the package</a>.</p>
+<div id="precipitation-observations" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Precipitation observations<a href="the-hydrologic-cycle-and-precipitation.html#precipitation-observations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+Direct measurement of precipitation is done with precipitation gauges, such as shown in Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:srg">8.2</a>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:srg"></span>
+<img src="images/srg3.jpg" alt="National Weather Service standard 8-inch gauge (source: NWS)." width="20%" />
+<p class="caption">
+Figure 8.2: National Weather Service standard 8-inch gauge (source: NWS).
+</p>
+</div>
+<p>Precipitation can vary dramatically over short distances, so point measurements are challenging to work with when characterizing rainfall over a larger area. An image from an atmospheric river event over California is shown in Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:radar">8.3</a>. Reflectivity values are converted to precipitation rates based on calibration with rain gauge observations.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:radar"></span>
+<img src="images/radar.png" alt="A raw radar image showing reflectivity values. Red squared indicated weather radar locations  (source: NOAA)." width="50%" />
+<p class="caption">
+Figure 8.3: A raw radar image showing reflectivity values. Red squared indicated weather radar locations (source: NOAA).
+</p>
+</div>
+<p>There are additional data sets that merge many sources of data to create continuous (spatially and temporally) datasets of precipitation. While these provide excellent resources for large scale studies, we will initially focus on point observations.</p>
+<p>Obtaining precipitation data can be done in many ways. Example <a href="the-hydrologic-cycle-and-precipitation.html#exm:ex-prcp1">8.1</a> demonstrates one method using R using the FedData package.</p>
+<div class="example">
+<p><span id="exm:ex-prcp1" class="example"><strong>Example 8.1  </strong></span>Characterize the rainfall in the city of San Jose, in Santa Clara County.</p>
+</div>
+<p>For the U.S., a good starting point is to use the mapping tools at the <a href="https://www.ncdc.noaa.gov/cdo-web/">NOAA Climate Data Online (CDO) website</a>. From the mapping tools page, select <strong>Observations: Daily</strong> ensure <strong>GHCN Daily</strong> is checked so you’ll look for stations that are part of the Global Historical Climatology Network and search for San Jose, CA. Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:cdo">8.4</a> shows the three stations that lie within the rectangle sketched on the map, and the one that was selected.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cdo"></span>
+<img src="images/noaa_cdo_stations.png" alt="Selection results for a portion of San Jose, CA (source: CDO)." width="50%" />
+<p class="caption">
+Figure 8.4: Selection results for a portion of San Jose, CA (source: CDO).
+</p>
+</div>
+<p>The data can be downloaded directly from the CDO site as a csv file, a sample of which is included with the <em>hydromisc</em> package (the sample also includes air temperature data). Note the units that you specify for the data since they will not appear in the csv file.</p>
+<blockquote>
+<p>Note that this initial station search and data download can be automated in R using other packages:</p>
+<ul>
+<li>Using the <a href="https://cran.r-project.org/package=FedData">FedData</a> package, following a method similar to <a href="http://zevross.com/blog/2016/03/15/using-the-new-r-package-feddata-to-access-federal-open-datasets-including-interactive-graphics">this</a>.</li>
+<li>Using the <a href="https://cran.r-project.org/package=rnoaa">rnoaa</a> package, referring to the <a href="https://docs.ropensci.org/rnoaa/">vignettes</a>.</li>
+</ul>
+</blockquote>
+<p>While formats will vary depending on the source of the data, in this example we can import the csv file directly. Since <em>units</em> were left as ‘standard’ on the CDO website, precipitation is in inches and temperatures in <sup>o</sup>F.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb56-1" aria-hidden="true" tabindex="-1"></a>datafile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;cdo_data_ghcn_23293.csv&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
+<span id="cb56-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb56-2" aria-hidden="true" tabindex="-1"></a>ghcn_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(datafile,<span class="at">header=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p>A little cleanup of the data needs to be done to ensure the DATE column is in date format, and change any missing values (often denoted as 9999 or -9999) to <em>NA</em>. With missing values flagged as <em>NA</em>, R can ignore them, set them to zero, or fill them in with functions like the zoo::na.approx() or na.spline() functions, or using the more sophisticated imputeTS package. finally, add a ‘water year’ column (a water year begins on October 1 and ends September 30).</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-1" aria-hidden="true" tabindex="-1"></a>ghcn_data<span class="sc">$</span>DATE <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(ghcn_data<span class="sc">$</span>DATE, <span class="at">format=</span><span class="st">&quot;%Y-%m-%d&quot;</span>)</span>
+<span id="cb57-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-2" aria-hidden="true" tabindex="-1"></a>ghcn_data<span class="sc">$</span>PRCP[ghcn_data<span class="sc">$</span>PRCP <span class="sc">&lt;=</span> <span class="sc">-</span><span class="dv">999</span> <span class="sc">|</span> ghcn_data<span class="sc">$</span>PRCP <span class="sc">&gt;=</span> <span class="dv">999</span> ] <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb57-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-3" aria-hidden="true" tabindex="-1"></a>wateryr <span class="ot">&lt;-</span> <span class="cf">function</span>(d) {</span>
+<span id="cb57-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">as.numeric</span>(<span class="fu">format</span>(d, <span class="st">&quot;%m&quot;</span>)) <span class="sc">&gt;=</span> <span class="dv">10</span>) {</span>
+<span id="cb57-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-5" aria-hidden="true" tabindex="-1"></a>    wy <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">format</span>(d, <span class="st">&quot;%Y&quot;</span>)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb57-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb57-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-7" aria-hidden="true" tabindex="-1"></a>    wy <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">format</span>(d, <span class="st">&quot;%Y&quot;</span>))</span>
+<span id="cb57-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb57-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb57-10"><a href="the-hydrologic-cycle-and-precipitation.html#cb57-10" aria-hidden="true" tabindex="-1"></a>ghcn_data<span class="sc">$</span>wy <span class="ot">&lt;-</span> <span class="fu">sapply</span>(ghcn_data<span class="sc">$</span>DATE, wateryr)</span></code></pre></div>
+<p>A convenient package for characterizing precipitation is <a href="https://cran.r-project.org/package=hydroTSM">hydroTSM</a>, the output of which is shown in Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:hydrotsm-1">8.5</a></p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hydroTSM)</span>
+<span id="cb58-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="co">#create a simple data frame for plotting</span></span>
+<span id="cb58-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb58-3" aria-hidden="true" tabindex="-1"></a>ghcn_prcp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">date =</span> ghcn_data<span class="sc">$</span>DATE, <span class="at">prcp =</span> ghcn_data<span class="sc">$</span>PRCP )</span>
+<span id="cb58-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co">#convert it to a zoo object</span></span>
+<span id="cb58-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb58-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span>  zoo<span class="sc">::</span><span class="fu">read.zoo</span>(ghcn_prcp)</span>
+<span id="cb58-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb58-6" aria-hidden="true" tabindex="-1"></a>hydroTSM<span class="sc">::</span><span class="fu">hydroplot</span>(x, <span class="at">var.type=</span><span class="st">&quot;Precipitation&quot;</span>, <span class="at">main=</span><span class="st">&quot;&quot;</span>, <span class="at">var.unit=</span><span class="st">&quot;inch&quot;</span>,</span>
+<span id="cb58-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="at">pfreq =</span> <span class="st">&quot;ma&quot;</span>, <span class="at">from=</span><span class="st">&quot;1999-01-01&quot;</span>, <span class="at">to=</span><span class="st">&quot;2022-12-31&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:hydrotsm-1"></span>
+<img src="hydr-watres_main_files/figure-html/hydrotsm-1-1.png" alt="Monthly and annual precipitation summary for San Jose, CA for 1999-2022" width="95%" />
+<p class="caption">
+Figure 8.5: Monthly and annual precipitation summary for San Jose, CA for 1999-2022
+</p>
+</div>
+<p>This presentation shows the seasonality of rainfall in San Jose, with most falling between October and May. The mean is about 12 inches per year, with most years experiencing between 10-15 inches of precipitation. There are functions to produce many statistics such as monthly means.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate monthly sums</span></span>
+<span id="cb59-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb59-2" aria-hidden="true" tabindex="-1"></a>monsums <span class="ot">&lt;-</span> hydroTSM<span class="sc">::</span><span class="fu">daily2monthly</span>(x, sum, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb59-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb59-3" aria-hidden="true" tabindex="-1"></a>monavg <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(hydroTSM<span class="sc">::</span><span class="fu">monthlyfunction</span>(monsums, mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb59-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="co">#if record begins in a month other than January, need to reorder</span></span>
+<span id="cb59-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb59-5" aria-hidden="true" tabindex="-1"></a>monavg <span class="ot">&lt;-</span> monavg[<span class="fu">order</span>(<span class="fu">factor</span>(<span class="fu">row.names</span>(monavg), <span class="at">levels =</span> month.abb)),,drop<span class="ot">=</span><span class="cn">FALSE</span>]</span>
+<span id="cb59-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(monavg)[<span class="dv">1</span>]  <span class="ot">&lt;-</span> <span class="st">&quot;Avg monthly precip, in&quot;</span></span>
+<span id="cb59-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb59-7" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(monavg, <span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb59-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb59-8" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_paper</span>(<span class="at">bootstrap_options =</span> <span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Avg monthly precip, in
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Jan
+</td>
+<td style="text-align:right;">
+2.23
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Feb
+</td>
+<td style="text-align:right;">
+2.26
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mar
+</td>
+<td style="text-align:right;">
+1.75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Apr
+</td>
+<td style="text-align:right;">
+1.03
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+May
+</td>
+<td style="text-align:right;">
+0.26
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jun
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jul
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aug
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sep
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oct
+</td>
+<td style="text-align:right;">
+0.60
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nov
+</td>
+<td style="text-align:right;">
+1.21
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dec
+</td>
+<td style="text-align:right;">
+2.31
+</td>
+</tr>
+</tbody>
+</table>
+<p>The winter of 2016-2017 (water year 2017) was a record wet year for much of California. Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:prcp-2">8.6</a> shows a <strong>hyetograph</strong> the daily values for that year.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb60-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-2" aria-hidden="true" tabindex="-1"></a>ghcn_prcp2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">date =</span> ghcn_data<span class="sc">$</span>DATE, <span class="at">wy =</span> ghcn_data<span class="sc">$</span>wy, <span class="at">prcp =</span> ghcn_data<span class="sc">$</span>PRCP )</span>
+<span id="cb60-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">subset</span>(ghcn_prcp2, wy<span class="sc">==</span><span class="dv">2017</span>), <span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>prcp)) <span class="sc">+</span> </span>
+<span id="cb60-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,<span class="at">color=</span><span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb60-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;&quot;</span>, <span class="at">y=</span><span class="st">&quot;precipitation, inch/day&quot;</span>) <span class="sc">+</span></span>
+<span id="cb60-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;1 month&quot;</span>, <span class="at">date_labels =</span>  <span class="st">&quot;%b %d&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:prcp-2"></span>
+<img src="hydr-watres_main_files/figure-html/prcp-2-1.png" alt="Daily Precipitation for San Jose, CA for water year 2017" width="75%" />
+<p class="caption">
+Figure 8.6: Daily Precipitation for San Jose, CA for water year 2017
+</p>
+</div>
+<p>While many other statistics could be calculated to characterize precipitation, only a handful more will be shown here. One will use a convenient function of the <a href="https://cran.r-project.org/package=seas">seas</a> package. This is used in Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:prcp-3">8.7</a>.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb61-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co">#The average precipitation rate for rainy days (with more then 0.01 inch)</span></span>
+<span id="cb61-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-3" aria-hidden="true" tabindex="-1"></a>avgrainrate <span class="ot">&lt;-</span> ghcn_prcp2[ghcn_prcp2<span class="sc">$</span>prcp <span class="sc">&gt;</span> <span class="fl">0.01</span>,] <span class="sc">|&gt;</span> <span class="fu">group_by</span>(wy) <span class="sc">|&gt;</span></span>
+<span id="cb61-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">prcp =</span> <span class="fu">mean</span>(prcp))</span>
+<span id="cb61-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="co">#the number of rainy days per year</span></span>
+<span id="cb61-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-6" aria-hidden="true" tabindex="-1"></a>nraindays <span class="ot">&lt;-</span> ghcn_prcp2[ghcn_prcp2<span class="sc">$</span>prcp <span class="sc">&gt;</span> <span class="fl">0.01</span>,] <span class="sc">|&gt;</span> <span class="fu">group_by</span>(wy) <span class="sc">|&gt;</span></span>
+<span id="cb61-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">nraindays =</span> <span class="fu">length</span>(prcp))</span>
+<span id="cb61-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Find length of consecutive dry and wet spells for the record</span></span>
+<span id="cb61-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-9" aria-hidden="true" tabindex="-1"></a>days.dry.wet <span class="ot">&lt;-</span> seas<span class="sc">::</span><span class="fu">interarrival</span>(ghcn_prcp, <span class="at">var =</span> <span class="st">&quot;prcp&quot;</span>, <span class="at">p.cut =</span> <span class="fl">0.01</span>, <span class="at">inv =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb61-10"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-10" aria-hidden="true" tabindex="-1"></a><span class="co">#add a water year column to the result</span></span>
+<span id="cb61-11"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-11" aria-hidden="true" tabindex="-1"></a>days.dry.wet<span class="sc">$</span>wy <span class="ot">&lt;-</span> <span class="fu">sapply</span>(days.dry.wet<span class="sc">$</span>date, wateryr)</span>
+<span id="cb61-12"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-12" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> days.dry.wet <span class="sc">|&gt;</span> <span class="fu">group_by</span>(wy) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">cdd =</span> <span class="fu">median</span>(dry, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">cwd =</span> <span class="fu">median</span>(wet, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb61-13"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-13" aria-hidden="true" tabindex="-1"></a>res_long <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(res, <span class="sc">-</span>wy, <span class="at">names_to=</span><span class="st">&quot;statistic&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;consecutive_days&quot;</span>)</span>
+<span id="cb61-14"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(res_long, <span class="fu">aes</span>(<span class="at">x =</span> wy, <span class="at">y =</span> consecutive_days)) <span class="sc">+</span></span>
+<span id="cb61-15"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill =</span> statistic),<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)<span class="sc">+</span></span>
+<span id="cb61-16"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Median consecutive days&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:prcp-3"></span>
+<img src="hydr-watres_main_files/figure-html/prcp-3-1.png" alt="Median concecutive dry days (cdd) and wet days (cwd) for each water year." width="75%" />
+<p class="caption">
+Figure 8.7: Median concecutive dry days (cdd) and wet days (cwd) for each water year.
+</p>
+</div>
+</div>
+<div id="precip-freq" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Precipitation frequency<a href="the-hydrologic-cycle-and-precipitation.html#precip-freq" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For engineering design, the uncertainty in predicting extreme rainfall, floods, or droughts is expressed as risk, typically the probability that a certain event will be equalled or exceeded in any year. The return period, <em>T</em>, is the inverse of the probability of exceedence, so that a storm with a 10% chance of being exceeded in any year (<span class="math inline">\(p_{exceed}~=0.10\)</span>) is a <span class="math inline">\(T=\frac{1}{0.10}=10\)</span> year storm. A 10-year storm can be experienced in multiple consecutive years, so it only means that, on average over very long periods (in a stationary climate) one would expect to see one event every T years.</p>
+<p>In the U.S., precipitation frequency statistics are available at the NOAA Precipitation Frequency Data Server (<a href="https://hdsc.nws.noaa.gov/hdsc/pfds/">PFDS</a>). An example of the graphical data available there is shown in Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:pfds-idf">8.8</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pfds-idf"></span>
+<img src="images/pfds_san_jose.png" alt="Intensity-duration-frequency (IDF) curves from the NOAA PFDS." width="60%" />
+<p class="caption">
+Figure 8.8: Intensity-duration-frequency (IDF) curves from the NOAA PFDS.
+</p>
+</div>
+<p>The calculations performed to produce the IDF curves use decades of daily data, because many years are needed to estimate the frequency with which an event might occur. As a demonstration, however, a single year can be used to illustrate the relationship between intensity and duration, which for durations longer than about 2 hours <span class="citation">(<a href="references.html#ref-mccuen_hydrologic_2016" role="doc-biblioref">McCuen 2016</a>)</span> can be expressed as in Equation <a href="the-hydrologic-cycle-and-precipitation.html#eq:d-f">(8.1)</a>.
+<span class="math display" id="eq:d-f">\[\begin{equation}
+  i = aD^b
+    \tag{8.1}
+\end{equation}\]</span>
+As a power curve, Equation <a href="the-hydrologic-cycle-and-precipitation.html#eq:d-f">(8.1)</a> should be a straight line on a log-linear plot. This is shown in Example <a href="the-hydrologic-cycle-and-precipitation.html#exm:ex-idf1">8.2</a>.</p>
+<div class="example">
+<p><span id="exm:ex-idf1" class="example"><strong>Example 8.2  </strong></span>Use the 2017 water year of rainfall data for the city of San Jose, to plot the relationship between intensity and duration for the 1, 3, 7, and 30-day events.</p>
+</div>
+<p>Begin by calculating the necessary intensity and duration values.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#First extract one water year of data</span></span>
+<span id="cb62-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-2" aria-hidden="true" tabindex="-1"></a>df.one.year <span class="ot">&lt;-</span> <span class="fu">subset</span>(ghcn_prcp, date<span class="sc">&gt;=</span><span class="fu">as.Date</span>(<span class="st">&quot;2016-10-01&quot;</span>) <span class="sc">&amp;</span> </span>
+<span id="cb62-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-3" aria-hidden="true" tabindex="-1"></a>                        date<span class="sc">&lt;=</span><span class="fu">as.Date</span>(<span class="st">&quot;2017-09-30&quot;</span>))</span>
+<span id="cb62-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate the running mean value for the defined durations</span></span>
+<span id="cb62-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-5" aria-hidden="true" tabindex="-1"></a>dur <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">7</span>,<span class="dv">30</span>)</span>
+<span id="cb62-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-6" aria-hidden="true" tabindex="-1"></a>px <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(dur))</span>
+<span id="cb62-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb62-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-8" aria-hidden="true" tabindex="-1"></a>  px[i] <span class="ot">&lt;-</span> <span class="fu">max</span>(zoo<span class="sc">::</span><span class="fu">rollmean</span>(df.one.year<span class="sc">$</span>prcp,dur[i]))</span>
+<span id="cb62-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-10"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-10" aria-hidden="true" tabindex="-1"></a><span class="co">#create the intensity-duration data frame</span></span>
+<span id="cb62-11"><a href="the-hydrologic-cycle-and-precipitation.html#cb62-11" aria-hidden="true" tabindex="-1"></a>df.id <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">duration=</span>dur,<span class="at">intensity=</span>px)</span></code></pre></div>
+<p>Fit the theoretical curve (Equation <a href="the-hydrologic-cycle-and-precipitation.html#eq:d-f">(8.1)</a>) using the nonlinear least squares function of the <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/00Index.html">stats</a> package (included with a base R installation), and plot the results.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fit a power curve to the data</span></span>
+<span id="cb63-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">nls</span>(intensity <span class="sc">~</span> a<span class="sc">*</span>duration<span class="sc">^</span>b, <span class="at">data=</span>df.id, <span class="at">start=</span><span class="fu">list</span>(<span class="at">a=</span><span class="dv">1</span>,<span class="at">b=</span><span class="sc">-</span><span class="fl">0.5</span>))</span>
+<span id="cb63-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co">#find estimated y-values using the fit</span></span>
+<span id="cb63-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-4" aria-hidden="true" tabindex="-1"></a>df.id<span class="sc">$</span>intensity_est <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="fu">list</span>(<span class="at">x =</span> df.id<span class="sc">$</span>duration))</span>
+<span id="cb63-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co">#duration-intensity plot with base graphics</span></span>
+<span id="cb63-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>df.id<span class="sc">$</span>duration,<span class="at">y=</span>df.id<span class="sc">$</span>intensity,<span class="at">log=</span><span class="st">&#39;xy&#39;</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">xaxt=</span><span class="st">&quot;n&quot;</span>,</span>
+<span id="cb63-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Duration, day&quot;</span> , <span class="at">ylab=</span><span class="st">&quot;Intensity, inches/day&quot;</span>)</span>
+<span id="cb63-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x=</span>df.id<span class="sc">$</span>duration,<span class="at">y=</span>df.id<span class="sc">$</span>intensity_est,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb63-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">h =</span> <span class="fu">c</span>(<span class="fu">seq</span>( <span class="fl">0.1</span>,<span class="dv">1</span>,<span class="fl">0.1</span>),<span class="fl">2.0</span>), <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">&quot;lightgray&quot;</span>)</span>
+<span id="cb63-10"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">30</span>), <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">&quot;lightgray&quot;</span>)</span>
+<span id="cb63-11"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-11" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="at">side =</span> <span class="dv">1</span>, <span class="at">at =</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">30</span>) ,<span class="at">labels =</span> T)</span>
+<span id="cb63-12"><a href="the-hydrologic-cycle-and-precipitation.html#cb63-12" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="at">side =</span> <span class="dv">2</span>, <span class="at">at =</span><span class="fu">c</span>(<span class="fu">seq</span>( <span class="fl">0.1</span>,<span class="dv">1</span>,<span class="fl">0.1</span>),<span class="fl">2.0</span>) ,<span class="at">labels =</span> T)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:d-f2"></span>
+<img src="hydr-watres_main_files/figure-html/d-f2-1.png" alt="Intensity-duration relationship for water year 2017. Calculated values are based on daily data; theoretical is the power curve fit." width="60%" />
+<p class="caption">
+Figure 8.9: Intensity-duration relationship for water year 2017. Calculated values are based on daily data; theoretical is the power curve fit.
+</p>
+</div>
+<p>If this were done for many years, the results for any one duration could be combined (one value per year) and sorted in decreasing order. That means the rank assigned to the highest value would be 1, and the lowest value would be the number of years, n. The return period, T, for any event would then be found using Equation <a href="the-hydrologic-cycle-and-precipitation.html#eq:d-f2">(8.2)</a> based on the Weibull plotting position formula.
+<span class="math display" id="eq:d-f2">\[\begin{equation}
+  T=\frac{n+1}{rank}
+    \tag{8.2}
+\end{equation}\]</span>
+That would allow the creation of IDF curves for a point.</p>
+</div>
+<div id="precipitation-gauge-consistency-double-mass-curves" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Precipitation gauge consistency – double mass curves<a href="the-hydrologic-cycle-and-precipitation.html#precipitation-gauge-consistency-double-mass-curves" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The method of using double mass curves to identify changes in an obervation method (such as new instrumentation or a change of location) can be applied to precipitation gauges or any other type of measurement. This method is demonstrated with an example from the U.S. Geological survey <span class="citation">(<a href="references.html#ref-searcy_double-mass_1960" role="doc-biblioref">Searcy and Hardison 1960</a>)</span>.</p>
+<p>The first step is to compile data for a gauge (or better, a set of gauges) that are known to be unperturbed (Station A in the sample data set), and for a suspect gauge though to have experienced a change (Station X is this case).</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb64-1" aria-hidden="true" tabindex="-1"></a>annual_data <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span>precip_double_mass</span>
+<span id="cb64-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb64-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(annual_data, <span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb64-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb64-3" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_paper</span>(<span class="at">bootstrap_options =</span> <span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:right;">
+Station_A
+</th>
+<th style="text-align:right;">
+Station_X
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1926
+</td>
+<td style="text-align:right;">
+39.75
+</td>
+<td style="text-align:right;">
+32.85
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1927
+</td>
+<td style="text-align:right;">
+29.57
+</td>
+<td style="text-align:right;">
+28.08
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1928
+</td>
+<td style="text-align:right;">
+42.01
+</td>
+<td style="text-align:right;">
+33.51
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1929
+</td>
+<td style="text-align:right;">
+41.39
+</td>
+<td style="text-align:right;">
+29.58
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1930
+</td>
+<td style="text-align:right;">
+31.55
+</td>
+<td style="text-align:right;">
+23.76
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1931
+</td>
+<td style="text-align:right;">
+55.54
+</td>
+<td style="text-align:right;">
+58.39
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1932
+</td>
+<td style="text-align:right;">
+48.11
+</td>
+<td style="text-align:right;">
+46.24
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1933
+</td>
+<td style="text-align:right;">
+39.85
+</td>
+<td style="text-align:right;">
+30.34
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1934
+</td>
+<td style="text-align:right;">
+45.40
+</td>
+<td style="text-align:right;">
+46.78
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1935
+</td>
+<td style="text-align:right;">
+44.89
+</td>
+<td style="text-align:right;">
+38.06
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1936
+</td>
+<td style="text-align:right;">
+32.64
+</td>
+<td style="text-align:right;">
+42.82
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1937
+</td>
+<td style="text-align:right;">
+45.87
+</td>
+<td style="text-align:right;">
+37.93
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1938
+</td>
+<td style="text-align:right;">
+46.05
+</td>
+<td style="text-align:right;">
+50.67
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1939
+</td>
+<td style="text-align:right;">
+49.76
+</td>
+<td style="text-align:right;">
+46.85
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1940
+</td>
+<td style="text-align:right;">
+47.26
+</td>
+<td style="text-align:right;">
+50.52
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1941
+</td>
+<td style="text-align:right;">
+37.07
+</td>
+<td style="text-align:right;">
+34.38
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1942
+</td>
+<td style="text-align:right;">
+45.89
+</td>
+<td style="text-align:right;">
+47.60
+</td>
+</tr>
+</tbody>
+</table>
+<p>Accumulate the (annual) precipitation (measured in inches) and plot the values for the suspect station against the reference station(s), as in Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:dm2">8.10</a> .</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-1" aria-hidden="true" tabindex="-1"></a>annual_sum <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">year =</span> annual_data<span class="sc">$</span>Year, </span>
+<span id="cb65-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sum_A =</span> <span class="fu">cumsum</span>(annual_data<span class="sc">$</span>Station_A),</span>
+<span id="cb65-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sum_X =</span> <span class="fu">cumsum</span>(annual_data<span class="sc">$</span>Station_X))</span>
+<span id="cb65-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="co">#create scatterplot with a label on every point</span></span>
+<span id="cb65-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb65-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb65-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;ggrepel&#39; was built under R version 4.2.2</span></span>
+<span id="cb65-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(annual_sum, <span class="fu">aes</span>(sum_X,sum_A, <span class="at">label =</span> year)) <span class="sc">+</span></span>
+<span id="cb65-10"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb65-11"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">size=</span><span class="dv">3</span>, <span class="at">direction =</span> <span class="st">&quot;y&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb65-12"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;Cumulative precipitation at Station A, in&quot;</span>, </span>
+<span id="cb65-13"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Cumulative precipitation at Station X, in&quot;</span>) <span class="sc">+</span></span>
+<span id="cb65-14"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:dm2"></span>
+<img src="hydr-watres_main_files/figure-html/dm2-1.png" alt="A double mass curve." width="60%" />
+<p class="caption">
+Figure 8.10: A double mass curve.
+</p>
+</div>
+<p>The break in slope between 1930 and 1931 appears clear. This should checked with records for the station to verify whether changes did occur at that time. If the data from Station X are to be used to fill other records or estimate long-term averages, the inconsistency needs to be corrected.</p>
+<p>One method to highlight the year at which the break occurs is to plot the residuals from a best fit line to the cumulative data from the two stations, as illustrated by the Food and Agriculture Orgainization <a href="https://www.fao.org/3/x0490e/x0490e0l.htm">FAO</a>.
+<span class="citation">(<a href="references.html#ref-allen_crop_1998" role="doc-biblioref">Allen and United Nations 1998</a>)</span></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb66-1" aria-hidden="true" tabindex="-1"></a>linfit <span class="ot">=</span> <span class="fu">lm</span>(sum_X <span class="sc">~</span> sum_A, <span class="at">data =</span> annual_sum)</span>
+<span id="cb66-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>annual_sum<span class="sc">$</span>year,linfit<span class="sc">$</span>residuals, <span class="at">xlab =</span> <span class="st">&quot;Year&quot;</span>,<span class="at">ylab =</span> <span class="st">&quot;Residual of regression&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-19"></span>
+<img src="hydr-watres_main_files/figure-html/unnamed-chunk-19-1.png" alt="Residuals of the linear fit to the double-mass curve." width="60%" />
+<p class="caption">
+Figure 8.11: Residuals of the linear fit to the double-mass curve.
+</p>
+</div>
+<p>This verifies that after 1930 the steep decline ends, so it may represent a change in location or equipment.</p>
+<p>Adusting the earlier record to be consistent with the later period is done by applying Equation <a href="the-hydrologic-cycle-and-precipitation.html#eq:dm3">(8.3)</a>.
+<span class="math display" id="eq:dm3">\[\begin{equation}
+  y^{&#39;}_i~=\frac{b_2}{b_1}y_i
+    \tag{8.3}
+\end{equation}\]</span>
+where b<sub>2</sub> and b<sub>1</sub> are the slopes after and before the break in slope, respectively, y<sub>i</sub> is original precipitation data, and y<sup>’</sup><sub>i</sub> is the adjusted precipitation. This can be applied as follows.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-1" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sum_X <span class="sc">~</span> sum_A, <span class="at">data =</span> <span class="fu">subset</span>(annual_sum, year <span class="sc">&lt;=</span> <span class="dv">1930</span>))<span class="sc">$</span>coefficients[[<span class="st">&#39;sum_A&#39;</span>]]</span>
+<span id="cb67-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-2" aria-hidden="true" tabindex="-1"></a>b2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sum_X <span class="sc">~</span> sum_A, <span class="at">data =</span> <span class="fu">subset</span>(annual_sum, year <span class="sc">&gt;</span> <span class="dv">1930</span>))<span class="sc">$</span>coefficients[[<span class="st">&#39;sum_A&#39;</span>]]</span>
+<span id="cb67-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Adjust early values and concatenate to later values for Station X</span></span>
+<span id="cb67-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-5" aria-hidden="true" tabindex="-1"></a>adjusted_X <span class="ot">&lt;-</span> <span class="fu">c</span>(annual_data<span class="sc">$</span>Station_X[annual_data<span class="sc">$</span>Year <span class="sc">&lt;=</span> <span class="dv">1930</span>]<span class="sc">*</span>b2<span class="sc">/</span>b1, </span>
+<span id="cb67-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-6" aria-hidden="true" tabindex="-1"></a>                annual_data<span class="sc">$</span>Station_X[annual_data<span class="sc">$</span>Year <span class="sc">&gt;</span> <span class="dv">1930</span>])</span>
+<span id="cb67-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-7" aria-hidden="true" tabindex="-1"></a>annual_sum_adj <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">year =</span> annual_data<span class="sc">$</span>Year, </span>
+<span id="cb67-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-8" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sum_A =</span> <span class="fu">cumsum</span>(annual_data<span class="sc">$</span>Station_A),</span>
+<span id="cb67-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sum_X =</span> <span class="fu">cumsum</span>(adjusted_X))</span>
+<span id="cb67-10"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-11"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Check that slope now appears more consistent</span></span>
+<span id="cb67-12"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(annual_sum_adj, <span class="fu">aes</span>(sum_X,sum_A, <span class="at">label =</span> year)) <span class="sc">+</span></span>
+<span id="cb67-13"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb67-14"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">size=</span><span class="dv">3</span>, <span class="at">direction =</span> <span class="st">&quot;y&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb67-15"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;Cumulative precipitation at Station A, in&quot;</span>, </span>
+<span id="cb67-16"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Cumulative adjusted precipitation at Station X, in&quot;</span>) <span class="sc">+</span></span>
+<span id="cb67-17"><a href="the-hydrologic-cycle-and-precipitation.html#cb67-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:dm4"></span>
+<img src="hydr-watres_main_files/figure-html/dm4-1.png" alt="A double mass curve using adjusted data at Station X." width="60%" />
+<p class="caption">
+Figure 8.12: A double mass curve using adjusted data at Station X.
+</p>
+</div>
+<p>The plot shows a more consistent slope, as expected. Another plot of residuals could also validate the effect of the adjustment.</p>
+</div>
+<div id="precipitation-interpolation-and-areal-averaging" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Precipitation interpolation and areal averaging<a href="the-hydrologic-cycle-and-precipitation.html#precipitation-interpolation-and-areal-averaging" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It is rare that there are precipitation observations exactly where one needs data, which means existing observations must be interpolated to a point of interest. This is also used to fill in missing data in a record using surrounding observations.</p>
+<p>Interpolation is also used to use sparse observations, or observations from a variety of sources, to produce a spatially continuous grid. This is an essential step to estimating the precipitation averaged across an area that contributes streamflow to some location of concern. Estimating areal average precipitation using some simple, manual methods, has been outlined by the U.S. National Weather Service, illustrated in Figure <a href="the-hydrologic-cycle-and-precipitation.html#fig:precip-interp">8.13</a> (source: <a href="https://www.weather.gov/abrfc/map">National Weather Service</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:precip-interp"></span>
+<img src="images/precip_interp.png" alt="Some basic precipitation interpolation methods, from the U.S. National Weather Service." width="80%" />
+<p class="caption">
+Figure 8.13: Some basic precipitation interpolation methods, from the U.S. National Weather Service.
+</p>
+</div>
+<p>With the advent of geographical information system (GIS) software, manual interpolation is not used. Rather, more advanced spatial analysis is performed to interpolate precipitation onto a continuous grid, where the uncertainty (or skill) of different methods can be assessed. Spatial analysis methods to do this are outlined in many other references, such as <a href="https://rspatial.org/analysis/4-interpolation.html">Spatial Data Science</a> and the related book <a href="https://r-spatial.org/book/">Spatial Data Science with applications in R</a>, or the reference <a href="https://r.geocompx.org/">Geocomputation with R</a>.
+<span class="citation">(<a href="references.html#ref-lovelace_geocomputation_2019" role="doc-biblioref">Lovelace, Nowosad, and Münchow 2019</a>; <a href="references.html#ref-pebesma_spatial_2023" role="doc-biblioref">Pebesma and Bivand 2023</a>)</span></p>
+<p>There are also many sources of precipitation data already interpolated to a regular grid. the <a href="https://cran.r-project.org/package=geodata">geodata package</a> provides access to many data sets, including the <a href="https://worldclim.org">Worldclim</a> biophysical data. Another source of global precipitation data, available at daily to monthly scales, is the <a href="https://www.chc.ucsb.edu/data/chirps">CHIRPS</a> data set, which has been widely used in many studies. An example of obtaining and plotting average annual precipitation over Santa Clara County is illustrated below.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load precipitation in mm, already cropped to cover most of California</span></span>
+<span id="cb68-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb68-2" aria-hidden="true" tabindex="-1"></a>datafile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;prcp_cropped.tif&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
+<span id="cb68-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb68-3" aria-hidden="true" tabindex="-1"></a>prcp <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(datafile)</span>
+<span id="cb68-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb68-4" aria-hidden="true" tabindex="-1"></a>scc_bound <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(hydromisc<span class="sc">::</span>scc_county)</span>
+<span id="cb68-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb68-5" aria-hidden="true" tabindex="-1"></a>scc_precip <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(prcp, scc_bound)</span>
+<span id="cb68-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb68-6" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(scc_precip, <span class="at">plg=</span><span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;Precip</span><span class="sc">\n</span><span class="st">(mm)&quot;</span>, <span class="at">title.cex=</span><span class="fl">0.7</span>))</span>
+<span id="cb68-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb68-7" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(scc_bound, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:chirps1"></span>
+<img src="hydr-watres_main_files/figure-html/chirps1-1.png" alt="Annual Average Precipitation over Santa Clara County, mm" width="60%" />
+<p class="caption">
+Figure 8.14: Annual Average Precipitation over Santa Clara County, mm
+</p>
+</div>
+<p>Spatial statistics are easily obtained using <a href="https://cran.r-project.org/package=terra">terra</a>, a versatile package for spatial analysis.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb69-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">summary</span>(scc_precip)</span>
+<span id="cb69-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  chirps.v2.0.1981.2020.40yrs</span></span>
+<span id="cb69-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Min.   : 197.1             </span></span>
+<span id="cb69-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1st Qu.: 354.9             </span></span>
+<span id="cb69-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Median : 447.9             </span></span>
+<span id="cb69-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb69-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mean   : 542.3             </span></span>
+<span id="cb69-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb69-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.: 652.3             </span></span>
+<span id="cb69-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Max.   :1297.2             </span></span>
+<span id="cb69-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  NA&#39;s   :5</span></span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="pumps-and-how-they-operate-in-a-hydraulic-system.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="fate-of-precipitation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,272 @@
+# Fate of precipitation
+
+As precipitation falls and can be caught on vegetation (interception), percolate into the ground (infiltration), return to the atmosphere (evaporation), or become available as runoff (if accumulating as rain or snow). 
+The landscape (land cover and topography) and the time scale of study determine what processes are important. For example, for estimating runoff from an individual storm, interception is likely to be small, as is evaporation. On an annual average over large areas, evaporation will often be the largest component.
+
+Comprehensive hydrology models will estimate abstractions due to infiltration and interception, either by simulating the physics of the phenomenon or by using a lumped parameter that accounts for the effects of abstractions on runoff.
+
+The _hydromisc_ package will need to be installed to access some of the code and data used below. If it is not installed, do so following the instructions on [the github site for the package](https://github.com/EdM44/hydromisc).
+
+## Interception
+
+(ref:figint) Rain interception by John Robert McPherson, [CC BY-SA 4](https://commons.wikimedia.org/wiki/Category:CC-BY-SA-4.0), via Wikimedia Commons 
+
+```{r int-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "60%", fig.cap='(ref:figint)'}
+knitr::include_graphics('images/leaf_interception.jpg')
+```
+
+Interception of rainfall is generally small during individual storms (0.5-2 mm), so it is often ignored, or lumped in with other abstractions, for analyses of flood hydrology. For areas characterized by low intensity rainfall and heavy vegetation, interception can account for a larger portion of the rainfall (for example, up to 25% of annual rainfall in the Pacific Northwest) [@mccuen_hydrologic_2016].
+
+## Infiltration
+
+An early empirical equation describing infiltration rate into soils was developed by Horton in 1939, which takes the form of Equation \@ref(eq:horton).
+\begin{equation}
+  f_p~=~ f_c + \left(f_0 - f_c\right)e^{-kt}
+    (\#eq:horton)
+\end{equation} 
+This describes a potential infiltration rate, $f_p$, beginning at a maximum $f_0$ and decreasing with time toward a minimum value $f_c$ at a rate described by the decay constant $k$. $f_c$ is also equal to the saturated hydraulic conductivity, $K_s$, of the soil. If rainfall rate exceeds $f_c$ then this equation describes the actual infiltration rate with time. If periods of time have rainfall less intense than $f_c$ it is convenient to integrate this to relate the total cumulative depth of water infiltrated, $F$, and the actual infiltration rate, $f_p$, as in Equation \@ref(eq:horton2).
+\begin{equation}
+  F~=~\left[\frac{f_c}{k}ln\left(f_0-f_c\right)+\frac{f_0}{k}\right]-\frac{f_c}{k}ln\left(f_p-f_c\right)-\frac{f_p}{k}
+    (\#eq:horton2)
+\end{equation} 
+
+A more physically based relationship to describe infiltration rate is the Green-Ampt model. It is based on the physical laws describing the propogation of a wetting front downward through a soil column under a ponded water surface. The Green-Ampt relationship is in Equation \@ref(eq:GA1).
+\begin{equation}
+  K_st~=~F-\left(n-\theta_i\right)\Phi_f~ln\left[1+\frac{F}{\left(n-\theta_i\right)\Phi_f}\right]
+    (\#eq:GA1)
+\end{equation} 
+Equation \@ref(eq:GA1) assumes ponding begins at t=0, meaning rainfall rate exceeds $K_s$. When rainfall rates are less than that, adjustments to the method are used. Parameters are shown in the table below.
+
+(ref:figint2) Green-Ampt Parameter Estimates and Ranges based on Soil Texture [USACE](https://www.hec.usace.army.mil/confluence/rasdocs/ras1dtechref/6.1/overview-of-optional-capabilities/modeling-precipitation-and-infiltration/green-ampt)
+
+```{r infilt-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "80%", fig.cap='(ref:figint2)'}
+knitr::include_graphics('images/soil_parameters.png')
+```
+
+While not demonstrated here, parameters for the Horton and Green-Ampt methods can be derived from observed infiltration data using the R package [vadose](https://github.com/gowusu/vadose).
+
+The most widely used method for estimating infiltration is the NRCS method, described in detail in the NRCS document [Estimating Runoff Volume and Peak Discharge](https://directives.sc.egov.usda.gov/46253.wba).This method describes the direct runoff (as a depth), $Q$, resulting from a precipitation event, $P$, as in Equation \@ref(eq:NRCS1).
+\begin{equation}
+  Q~=~\frac{\left(P-I_a\right)^2}{\left(P-I_a\right)+S}
+    (\#eq:NRCS1)
+\end{equation} 
+$S$ is the maximum retention of water by the soil column and $I_a$ is the initial abstraction, commonly estimated as $I_a=0.2S$. Substituting this into Equation \@ref(eq:NRCS1) produces Equation \@ref(eq:NRCS2).
+\begin{equation}
+  Q~=~\frac{\left(P-0.2~S\right)^2}{\left(P+0.8~S\right)}
+    (\#eq:NRCS2)
+\end{equation} 
+This relationship applies as long as $P>0.2~S$; Q=0 otherwise. Values for S are derived from a Curve Number (CN), which summarizes the land cover, soil type and condition: $$CN=\frac{1000}{10+S}$$, where $S$, and subsequently $Q$, are in inches. Equation \@ref(eq:NRCS2) can be rearranged to a form similar to those for the Horton and Green-Ampt equations for cumulative infiltration, $F$. $$F~=~\frac{\left(P-0.2~S\right)S}{P+0.8~S}$$.
+
+## Evaporation
+
+Evaporation is simply the change of water from liquid to vapor state. Because it is difficult to separate evaporation from the soil from transpiration from vegetation, it is usually combined into Evapotranspiration, or ET; see Figure \@ref(fig:et-1).
+
+(ref:figet1) Schematic of ET, from [CIMIS](https://cimis.water.ca.gov)
+
+```{r et-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "35%", fig.cap='(ref:figet1)'}
+knitr::include_graphics('images/eto_overview.gif')
+```
+
+ET can be estimated in a variety of ways, but it is important first to define three types of ET:
+- Potential ET, $ET_p$ or $PET$: essentially the same as the rate that water would evaporate from a free water surface.
+- Reference crop ET, $ET_{ref}$ or $ET_0$: the rate water evaporates from a well-watered reference crop, usually grass of a standard height.
+- Actual ET, $ET$: this is the water used by a crop or other vegetation, usually calculated by adjusting the $ET_0$ term by a crop coefficient that accounts for factors such as the plant height, growth stage, and soil exposure.
+
+Estimating $ET_0$ can be as uncomplicated as using the Thornthwaite equation, which depends only on mean monthly temperatures, to the Penman-Monteith equation, which includes solar and longwave radiation, wind and humidity effects, and reference crop (grass) characteristics. Inclusion of more complexity, especially where observations can supply the needed input, produces more reliable estimates of $ET_0$.One of the most common implementations of the Penman-Monteith equation is the version of the FAO ([FAO Irrigation and drainage paper 56](https://www.fao.org/3/X0490E/x0490e00.htm), or FAO56) [@allen_crop_1998]. Refer to FAO56 for step-by-step instructions on determining each term in the Penman-Monteith equation, Equation \@ref(eq:pm1).
+\begin{equation}
+  \lambda~ET~=~\frac{\Delta\left(R_n-G\right)+\rho_ac_p\frac{\left(e_s-e_a\right)}{r_a}}{\Delta+\gamma\left(1+\frac{r_s}{r_a}\right)}
+    (\#eq:pm1)
+\end{equation} 
+
+Open water evaporation can be calculated using the original Penman equation (1948):
+$$\lambda~E_p~=~\frac{\Delta~R_n+\gamma~E_a}{\Delta~+~\gamma}$$
+where $R_n$ is the net radiation available to evaporate water and $E_a$ is a mass transfer function usually including humidity (or vapor pressure deficit) and wind speed. $\lambda$ is the latent heat of vaporization of water. A common implementation of the Penman equation is
+\begin{equation}
+  \lambda~E_p~=~\frac{\Delta~R_n+\gamma~6.43\left(1+0.536~U_2\right)\left(e_s-e\right)}{\Delta~+~\gamma}
+    (\#eq:pm2)
+\end{equation} 
+Here $E_p$ is in mm/d, $\Delta$ and $\gamma$ are in $kPa~K^{-1}$, $R_n$ is in $MJ~m^{−2}~d^{−1}$, $U_2$ is in m/s, and $e_s$ and $e$ are in kPa. Variables are as defined in FAO56.
+
+Open water evaporation can also be calculated using a modified version of the Penman-Monteith equation \@ref(eq:pm1). In this latter case, vegetation coefficients are not needed, so Equation \@ref(eq:pm1) can be used with $r_s=0$ and $r_a=251/(1+0.536~u_2)$, following [Thom & Oliver, 1977](https://doi.org/10.1002/qj.49710343610).
+
+The R package [Evaporation](https://cran.r-project.org/package=Evapotranspiration) has functions to calculate $ET_0$ using this and many other functions. This is especially useful when calculating PET over many points or through a long time series.
+
+## Snow
+
+### Observations
+
+In mountainous areas a substantial portion of the precipitation may fall as snow, where it can be stored for months before melting and becoming runoff. Any hydrologic analysis in an area affected by snow must account for the dynamics of this natural reservoir and how it affects water supply. In the Western U.S., the most comprehensive observations of snow are part of the [SNOTEL](https://www.nrcs.usda.gov/wps/portal/wcc/home/) (SNOw TELemetry) network. 
+
+```{r snow-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='The SNOTEL network.'}
+knitr::include_graphics('images/snotel_stations.png')
+```
+
+### Basic snowmelt theory and simple models
+
+For snow to melt, heat must be added to first bring the snowpack to the melting point; it takes about 2 kJ/kg to increase snowpack temperature 1$^\circ$C. Additional heat is required for the phase change from ice to water (the latent heat of fusion), about 335 kJ/kg. Heat can be provided by absorbing solar radiation, longwave radiation, ground heat, warm air, warm rain falling on the snowpack or water vapor condensing on the snow. Once snow melts, it can percolate through the snowpack and be retained, similar to water retained by soil, and may re-freeze (releasing the latent heat of fusion, which can then cause more melt).
+
+As with any other hydrologic process, there are many ways it can be modeled, from simplified empirical relationships to complex physics-based representations. While accounting for all of the many processes involved would be a robust approach, often there are not adequate observations to support their use so simpler parameterization are used. Here only the simplest index-based snow model is discussed, as in Equation  \@ref(eq:snow1).
+\begin{equation}
+  M~=~K_d\left(T_a~-~T_b\right)
+    (\#eq:snow1)
+\end{equation} 
+M is the melt rate in mm/d (or in/day), $T_a$ is air temperature (sometimes a daily mean, sometimes a daily maximum), $T_b$ is a base temperature, usually 0$^\circ$C (or 32$^\circ$F), and $K_d$ is a degree-day melt factor in mm/d/$^\circ$C (or in/d/$^\circ$F). The melt factor, $K_d$, is highly dependent on local conditions and on the time of year (as an indicator of the snow pack condition); different $K_d$ factors can be used for different months for example.
+
+Refreezing of melted snow, when temperatures are below $T_b$, can also be estimated using an index model, such as Equation \@ref(eq:snow2).
+\begin{equation}
+  Fr~=~K_f\left(T_b~-~T_a\right)
+    (\#eq:snow2)
+\end{equation} 
+
+Importantly, temperature-index snowmelt relations have been developed primarily for describing snowmelt at the end of season, after the peak of snow accumulation (typically April-May in the mountainous western U.S.), and their use during the snow accumulation season may overestimate melt. Different degree-day factors are often used, with the factors increasing later in the melt season. 
+
+From a hydrologic perspective, the most important snow quality is the snow water equivalent (SWE), which is the depth of water obtained by melting the snow. An example of using a snowmelt index model follows.
+
+::: {.example #ex-snow1}
+Manually calibrate an index snowmelt model for a SNOTEL site using one year of data.
+:::
+Visit the [SNOTEL](https://www.nrcs.usda.gov/wps/portal/wcc/home/) to select a site. In this example site 1050, Horse Meadow, located in California, is used. Next download the data using the [snotelr](https://cran.r-project.org/package=snotelr) package (install the package first, if needed).
+```{r sno-1, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
+sta <- "1050"
+snow_data <- snotelr::snotel_download(site_id = sta, internal = TRUE)
+```
+
+```{r sno-1x, message=FALSE, warning=FALSE, eval=TRUE, echo=FALSE}
+snow_data <- hydromisc::snow_data
+```
+Plot the data to assess the period available and how complete it is.
+```{r sno-2, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "80%", fig.cap = "Snow water equivalent at SNOTEL site 1050."}
+plot(as.Date(snow_data$date), snow_data$snow_water_equivalent,
+     type = "l", xlab = "Date", ylab = "SWE (mm)")
+``` 
+
+Note the units are SI. If you download data directly from the SNOTEL web site the data would be in conventional US units. [snotelr](https://cran.r-project.org/package=snotelr) converts the data to SI units as it imports. The package includes a function _snotel_metric_ that could be used to convert raw data downloaded from the SNOTEL website to SI units.
+
+For this exercise, extract a single (water) year, meaning from 1-Oct to 30-Sep, so an entire winter is in one year. In addition, create a data frame that only includes columns that are needed.
+```{r sno-3, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Snow water equivalent at SNOTEL site 1050 for water year 2009."}
+snow_data_subset <- subset(snow_data, as.Date(date) > as.Date("2008-10-01") &
+ as.Date(date) < as.Date("2009-09-30"))
+snow_data_sel <- subset(snow_data_subset, select=c("date", "snow_water_equivalent", "precipitation", "temperature_mean", "temperature_min", "temperature_max"))
+plot(as.Date(snow_data_sel$date),snow_data_sel$snow_water_equivalent,
+     type = "l",xlab = "Date", ylab = "SWE (mm)")
+grid()
+``` 
+
+Now use a snow index model to simulate the SWE based on temperature and precipitation.  The model used here is a modified version of that used in the [hydromad](http://hydromad.catchment.org/) package. The _snow.sim_ command is used to run a snow index model; type _?hydromisc::snow.sim_ for details on its use. As a summary, the four main parameters you can adjust in the calibration of the model are:
+
+-	The maximum air temperature for snow, _Tmax_. Snow can fall at air temperatures above as high as about 3$^\circ$C, but _Tmax_ is usually lower.
+-	The minimum air temperature for rain, _Tmin_. Rain can fall when near surface air temperatures are below freezing. This may be as low as -1$^\circ$C or maybe just a little lower, and as high as 1$^\circ$C.
+-	Base temperature, _Tmelt_, the temperature at which melt begins. Usually the default of 0$^\circ$C is used, but some adjustment (generally between -2 and 2$^\circ$C) can be applied to improve model calibration.
+-	Snow Melt (Degree-Day) Factor, _kd_, which describes the melting of the snow when temperatures are above freezing. Be careful using values from different references as these are dependent on units. Typical values are between 1 and 5 mm/d/$^\circ$C.
+
+Two additional parameters are optional; their effects are typically small.
+
+-	Degree-Day Factor for freezing, _kf_, of liquid water in the snow pack when temperatures are below freezing. By default it is set to 1$^\circ$C/mm/day, and may vary from 0 to 2 $^\circ$C/mm/day.
+-	Snow water retention factor, _rcap_. When snow melts some of it can be retained via capillarity in the snow pack. It can re-freeze or drain out. This is expressed as a fraction of the snow pack that is frozen. The default is 2.5% (rcap = 0.025).
+
+Start with some assumed values and run the snow model.
+```{r sno-4, message=FALSE, warning=FALSE }
+Tmax_snow <- 3  
+Tmin_rain <- 2
+kd <- 1
+snow_estim <- hydromisc::snow.sim(DATA=snow_data_sel, 
+                                  Tmax=Tmax_snow, 
+                                  Tmin=Tmin_rain,
+                                  kd=kd)
+``` 
+
+Now the simulated values can be compared to the observations. If not installed already, install the [hydroGOF](https://cran.r-project.org/package=hydroGOF) package, which has some useful functions for evaluating how well modeled output fits observations. In the plot that follows we specify three measures of goodness-of-fit:
+
+*	Mean Absolute Error (MAE)
+*	Percent Bias (PBIAS)
+*	Root Mean Square Error divided by the Standard Deviation (RSR)
+These are discussed in detail in other references, but the aim is to calibrate (change the input parameters) until these values are low.
+
+```{r sno-5, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Simulated and Observed SWE at SNOTEL site 1050 for water year 2009."}
+obs <- snow_data_sel$snow_water_equivalent
+sim <- snow_estim$swe_simulated
+hydroGOF::ggof(sim, obs, na.rm = TRUE, dates=snow_data_sel$date,
+               gofs=c("MAE", "RMSE", "PBIAS"),
+               xlab = "", ylab="SWE, mm", 
+               tick.tstep="months", cex=c(0,0),lwd=c(2,2))
+```
+Melt is overestimated in the early part of the year and underestimated during the melt season, showing why a single index is not a very robust model. Applying two _kd_ values, one for early to mid snow season and another for later snowmelt could improve the model, but it would make it less useful for using the model in other situations such as increased temperatures.
+
+### Snow model calibration
+
+While manual model calibration can improve the fit, a more complete calibration involves optimization methods that search the parameter space for the optimal combination of parameter values. A useful tool for doing that is the [optim](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/optim.html) function, part of the _stats_ package installed with base R.
+
+Using the optimization package requires establishing a function that should be minimized, where the parameters to be included in the optimization are the first argument. The _optim_ function requires you to explicitly give ranges over which parameters can be varied, via the upper and lower arguments. An example of this follows, where the four main model parameters noted above are used, and the MAE is minimized.
+```{r sno-6, message=FALSE, warning=FALSE }
+fcn_to_minimize <- function(par,datain, obs){
+  snow_estim <- hydromisc::snow.sim(DATA=datain, Tmax=par[1], Tmin=par[2], kd=par[3], Tmelt=par[4])
+  calib.stats <- hydroGOF::gof(snow_estim$swe_simulated,obs,na.rm=TRUE)
+  objective_stat <- as.numeric(calib.stats['MAE',])
+  return(objective_stat)
+}
+opt_res <- optim(par=c(0.5,1,1,0),fn=fcn_to_minimize,
+                 lower=c(-1,-1,0.5,-2),
+                 upper=c(3,1,5,3),
+                 method="L-BFGS-B",
+                 datain=snow_data_sel,
+                 obs=obs)
+#print out optimal parameters - note Tmax and Tmin can be reversed during optimization
+cat(sprintf("Optimal parameters:\nTmax=%.1f\nTmin=%.1f\nkd=%.2f\nTmelt=%.1f\n",
+            max(opt_res$par[1],opt_res$par[2]),min(opt_res$par[1],opt_res$par[2]),
+            opt_res$par[3],opt_res$par[4]))
+``` 
+The results using the optimal parameters can be plotted to visualize the simulation.
+
+```{r sno-7, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Optimal simulation of SWE at SNOTEL site 1050 for water year 2009."}
+snow_estim_opt <- hydromisc::snow.sim(DATA=snow_data_sel,
+                      Tmax=max(opt_res$par[1],opt_res$par[2]),
+                      Tmin=min(opt_res$par[1],opt_res$par[2]),
+                      kd=opt_res$par[3],
+                      Tmelt=opt_res$par[4])
+obs <- snow_data_sel$snow_water_equivalent
+sim <- snow_estim_opt$swe_simulated
+hydroGOF::ggof(sim, obs, na.rm = TRUE, dates=snow_data_sel$date,
+               gofs=c("MAE", "RMSE", "PBIAS"),
+               xlab = "", ylab="SWE, mm", 
+               tick.tstep="months", cex=c(0,0),lwd=c(2,2))
+```
+It is clear that a simple temperature index model cannot capture the snow dynamics at this location, especially during the winter when melt is significantly overestimated.
+
+### Estimating climate change impacts on snow
+
+Once a reasonable calibration is obtained, the effect of increasing temperatures on SWE can be simulated by including the _deltaT_ argument in the _hydromisc::snow.sim_ command. Here a 3$^\circ$C uniform temperature increase is imposed on the optimal parameterization above.
+```{r sno-8, message=FALSE, warning=FALSE, eval = TRUE, fig.align = 'center', out.width = "60%", fig.cap = "Observed SWE and simulated with observed meteorology and increased temperatures."}
+dT <- 3.0 
+snow_plus3 <- hydromisc::snow.sim(DATA=snow_data_sel,
+                      Tmax=max(opt_res$par[1],opt_res$par[2]),
+                      Tmin=min(opt_res$par[1],opt_res$par[2]),
+                      kd=opt_res$par[3],
+                      Tmelt=opt_res$par[4],
+                      deltaT = dT)
+simplusdT <- snow_plus3$swe_simulated
+# plot the results
+dTlegend  <- expression("Simulated"*+3~degree*C)
+plot(as.Date(snow_data_sel$date),obs,type = "l",xlab = "", ylab = "SWE (mm)")
+lines(as.Date(snow_estim$date),sim,lty=2,col="blue")
+lines(as.Date(snow_estim$date),simplusdT,lty=3,col="red")
+legend("topright", legend = c("Observed", "Simulated",dTlegend),
+       lty = c(1,2,3), col=c("black","blue","red"))
+grid()
+```
+
+## Watershed analysis
+
+Whether precipitation falls as rain or snow, how much is absorbed by plants, consumed by evapotranspiration, and what is left to become runoff, is all determined by watershed characteristics. This can include:
+
+- Watershed area
+- Slope of terrain
+- Elevation variability (a hypsometric curve)
+- Soil types
+- Land cover
+
+Collecting this information begins with obtaining a digital elevation model for an area, identifying any key point  or points on a stream (a watershed outlet), and then delineating the area that drains to that point. This process of watershed delineation is often done with GIS software like ArcGIS or QGIS. The R package [WhiteboxTools](https://www.whiteboxgeo.com/manual/wbt_book/r_interface.html) provides capabilities for advanced terrain analysis in R. 
+
+Demonstrations of the use of these tools for a watershed are in the online book [Hydroinformatics at VT](https://vt-hydroinformatics.github.io/) by JP Gannon. In particular, the chapters on [mapping a stream network](https://vt-hydroinformatics.github.io/rgeoraster.html) and [delineating a watershed](https://vt-hydroinformatics.github.io/rgeowatersheds.html) are excellent resources for exploring these capabilities in R.
+
+For watersheds in the U.S., watersheds, stream networks, and attributes of both can be obtained and viewed using [nhdplusTools](https://cran.r-project.org/package=nhdplusTools). Land cover and soil information can be obtained using the [FedData package](https://cran.r-project.org/package=FedData).
+

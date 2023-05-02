@@ -1,0 +1,277 @@
+# The hydrologic cycle and precipitation
+
+All of the earlier chapters of this book dealt with the behavior of water in different hydraulic systems, such as canals or pipes. Now we consider the bigger picture of where the water originates, and ultimately how we can estimate how much water is available for different uses, and how much excess (flood) water systems will need to be designed and built to accommodate.
+
+A fundamental concept is the hydrologic cycle, depicted in Figure \@ref(fig:hydr-cycle).
+```{r hydr-cycle, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "70%", fig.cap = "The hydrologic cycle (source: John Evans and Howard Periman, USGS)."}
+knitr::include_graphics('images/Watercyclesummary.jpg')
+```
+
+The primary variable in the hydrologic cycle from an engineering perspective is precipitation, since that is the source of the water used and managed in engineered systems.
+
+The _hydromisc_ package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on [the github site for the package](https://github.com/EdM44/hydromisc).
+
+## Precipitation observations
+
+Direct measurement of precipitation is done with precipitation gauges, such as shown in Figure \@ref(fig:srg). 
+```{r srg, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "20%", fig.cap = "National Weather Service standard 8-inch gauge (source: NWS)."}
+knitr::include_graphics('images/srg3.jpg')
+``` 
+
+Precipitation can vary dramatically over short distances, so point measurements are challenging to work with when characterizing rainfall over a larger area. An image from an atmospheric river event over California is shown in Figure \@ref(fig:radar). Reflectivity values are converted to precipitation rates based on calibration with rain gauge observations.
+
+```{r radar, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap = "A raw radar image showing reflectivity values. Red squared indicated weather radar locations  (source: NOAA)."}
+knitr::include_graphics('images/radar.png')
+``` 
+
+There are additional data sets that merge many sources of data to create continuous (spatially and temporally) datasets of precipitation. While these provide excellent resources for large scale studies, we will initially focus on point observations.
+
+Obtaining precipitation data can be done in many ways. Example \@ref(exm:ex-prcp1) demonstrates one method using R using the FedData package.
+
+::: {.example #ex-prcp1}
+Characterize the rainfall in the city of San Jose, in Santa Clara County.
+:::
+For the U.S., a good starting point is to use the mapping tools at the [NOAA Climate Data Online (CDO) website](https://www.ncdc.noaa.gov/cdo-web/). From the mapping tools page, select **Observations: Daily** ensure **GHCN Daily** is checked so you'll look for stations that are part of the Global Historical Climatology Network and search for San Jose, CA. Figure \@ref(fig:cdo) shows the three stations that lie within the rectangle sketched on the map, and the one that was selected.
+
+```{r cdo, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap = "Selection results for a portion of San Jose, CA (source: CDO)."}
+knitr::include_graphics('images/noaa_cdo_stations.png')
+``` 
+
+The data can be downloaded directly from the CDO site as a csv file, a sample of which is included with the _hydromisc_ package (the sample also includes air temperature data). Note the units that you specify for the data since they will not appear in the csv file.
+
+> Note that this initial station search and data download can be automated in R using other packages:
+> 
+> - Using the [FedData](https://cran.r-project.org/package=FedData) package, following a method similar to [this](http://zevross.com/blog/2016/03/15/using-the-new-r-package-feddata-to-access-federal-open-datasets-including-interactive-graphics).
+> - Using the [rnoaa](https://cran.r-project.org/package=rnoaa) package, referring to the [vignettes](https://docs.ropensci.org/rnoaa/).
+
+While formats will vary depending on the source of the data, in this example we can import the csv file directly. Since _units_ were left as 'standard' on the CDO website, precipitation is in inches and temperatures in ^o^F.
+```{r message=FALSE}
+datafile <- system.file("extdata", "cdo_data_ghcn_23293.csv", package="hydromisc")
+ghcn_data <- read.csv(datafile,header=TRUE)
+```
+
+A little cleanup of the data needs to be done to ensure the DATE column is in date format, and change any missing values (often denoted as 9999 or -9999) to _NA_. With missing values flagged as _NA_, R can ignore them, set them to zero, or fill them in with functions like the zoo::na.approx() or na.spline() functions, or using the more sophisticated imputeTS package. finally, add a 'water year' column (a water year begins on October 1 and ends September 30).
+```{r message=FALSE}
+ghcn_data$DATE <- as.Date(ghcn_data$DATE, format="%Y-%m-%d")
+ghcn_data$PRCP[ghcn_data$PRCP <= -999 | ghcn_data$PRCP >= 999 ] = NA
+wateryr <- function(d) {
+  if (as.numeric(format(d, "%m")) >= 10) {
+    wy = as.numeric(format(d, "%Y")) + 1
+  } else {
+    wy = as.numeric(format(d, "%Y"))
+  }
+}
+ghcn_data$wy <- sapply(ghcn_data$DATE, wateryr)
+```
+
+A convenient package for characterizing precipitation is [hydroTSM](https://cran.r-project.org/package=hydroTSM), the output of which is shown in Figure \@ref(fig:hydrotsm-1)
+```{r hydrotsm-1, message=FALSE, warning = FALSE, fig.align = 'center', out.width = "95%", fig.cap="Monthly and annual precipitation summary for San Jose, CA for 1999-2022"}
+library(hydroTSM)
+#create a simple data frame for plotting
+ghcn_prcp <- data.frame(date = ghcn_data$DATE, prcp = ghcn_data$PRCP )
+#convert it to a zoo object
+x <-  zoo::read.zoo(ghcn_prcp)
+hydroTSM::hydroplot(x, var.type="Precipitation", main="", var.unit="inch",
+pfreq = "ma", from="1999-01-01", to="2022-12-31")
+```
+
+This presentation shows the seasonality of rainfall in San Jose, with most falling between October and May. The mean is about 12 inches per year, with most years experiencing between 10-15 inches of precipitation. There are functions to produce many statistics such as monthly means.
+
+```{r hydrotsm-2, message=FALSE, warning = FALSE}
+#calculate monthly sums
+monsums <- hydroTSM::daily2monthly(x, sum, na.rm = TRUE)
+monavg <- as.data.frame(hydroTSM::monthlyfunction(monsums, mean, na.rm = TRUE))
+#if record begins in a month other than January, need to reorder
+monavg <- monavg[order(factor(row.names(monavg), levels = month.abb)),,drop=FALSE]
+colnames(monavg)[1]  <- "Avg monthly precip, in"
+knitr::kable(monavg, digits = 2) |> 
+  kableExtra::kable_paper(bootstrap_options = "striped", full_width = F)
+```
+
+The winter of 2016-2017 (water year 2017) was a record wet year for much of California. Figure \@ref(fig:prcp-2) shows a **hyetograph** the daily values for that year.
+```{r prcp-2, message=FALSE, warning = FALSE, fig.align = 'center', out.width = "75%", fig.cap="Daily Precipitation for San Jose, CA for water year 2017"}
+library(ggplot2)
+ghcn_prcp2 <- data.frame(date = ghcn_data$DATE, wy = ghcn_data$wy, prcp = ghcn_data$PRCP )
+ggplot(subset(ghcn_prcp2, wy==2017), aes(x=date, y=prcp)) + 
+  geom_bar(stat="identity",color="red") +
+  labs(x="", y="precipitation, inch/day") +
+  scale_x_date(date_breaks = "1 month", date_labels =  "%b %d")
+```
+While many other statistics could be calculated to characterize precipitation, only a handful more will be shown here. One will use a convenient function of the [seas](https://cran.r-project.org/package=seas) package. This is used in Figure \@ref(fig:prcp-3).
+
+```{r prcp-3, message=FALSE, warning = FALSE, fig.align = 'center', out.width = "75%", fig.cap="Median concecutive dry days (cdd) and wet days (cwd) for each water year."}
+library(tidyverse)
+#The average precipitation rate for rainy days (with more then 0.01 inch)
+avgrainrate <- ghcn_prcp2[ghcn_prcp2$prcp > 0.01,] |> group_by(wy) |>
+  summarise(prcp = mean(prcp))
+#the number of rainy days per year
+nraindays <- ghcn_prcp2[ghcn_prcp2$prcp > 0.01,] |> group_by(wy) |>
+  summarise(nraindays = length(prcp))
+#Find length of consecutive dry and wet spells for the record
+days.dry.wet <- seas::interarrival(ghcn_prcp, var = "prcp", p.cut = 0.01, inv = FALSE)
+#add a water year column to the result
+days.dry.wet$wy <- sapply(days.dry.wet$date, wateryr)
+res <- days.dry.wet |> group_by(wy) |> summarise(cdd = median(dry, na.rm=TRUE), cwd = median(wet, na.rm=TRUE))
+res_long <- pivot_longer(res, -wy, names_to="statistic", values_to="consecutive_days")
+ggplot(res_long, aes(x = wy, y = consecutive_days)) +
+  geom_bar(aes(fill = statistic),stat = "identity", position = "dodge")+
+  xlab("") + ylab("Median consecutive days")
+```
+## Precipitation frequency {#precip-freq}
+
+For engineering design, the uncertainty in predicting extreme rainfall, floods, or droughts is expressed as risk, typically the probability that a certain event will be equalled or exceeded in any year. The return period, _T_, is the inverse of the probability of exceedence, so that a storm with a 10% chance of being exceeded in any year ($p_{exceed}~=0.10$) is a $T=\frac{1}{0.10}=10$ year storm. A 10-year storm can be experienced in multiple consecutive years, so it only means that, on average over very long periods (in a stationary climate) one would expect to see one event every T years.
+
+In the U.S., precipitation frequency statistics are available at the NOAA Precipitation Frequency Data Server ([PFDS](https://hdsc.nws.noaa.gov/hdsc/pfds/)). An example of the graphical data available there is shown in Figure \@ref(fig:pfds-idf).
+
+```{r pfds-idf, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Intensity-duration-frequency (IDF) curves from the NOAA PFDS."}
+knitr::include_graphics('images/pfds_san_jose.png')
+``` 
+
+The calculations performed to produce the IDF curves use decades of daily data, because many years are needed to estimate the frequency with which an event might occur. As a demonstration, however, a single year can be used to illustrate the relationship between intensity and duration, which for durations longer than about 2 hours [@mccuen_hydrologic_2016] can be expressed as in Equation \@ref(eq:d-f).
+\begin{equation}
+  i = aD^b
+    (\#eq:d-f)
+\end{equation}
+As a power curve, Equation \@ref(eq:d-f) should be a straight line on a log-linear plot. This is shown in Example \@ref(exm:ex-idf1).
+
+::: {.example #ex-idf1}
+Use the 2017 water year of rainfall data for the city of San Jose, to plot the relationship between intensity and duration for the 1, 3, 7, and 30-day events.
+:::
+Begin by calculating the necessary intensity and duration values.
+```{r d-f1, message=FALSE, warning=FALSE}
+#First extract one water year of data
+df.one.year <- subset(ghcn_prcp, date>=as.Date("2016-10-01") & 
+                        date<=as.Date("2017-09-30"))
+#Calculate the running mean value for the defined durations
+dur <- c(1,3,7,30)
+px <- numeric(length(dur))
+for (i in 1:4) {
+  px[i] <- max(zoo::rollmean(df.one.year$prcp,dur[i]))
+}
+#create the intensity-duration data frame
+df.id <- data.frame(duration=dur,intensity=px)
+``` 
+
+Fit the theoretical curve (Equation \@ref(eq:d-f)) using the nonlinear least squares function of the [stats](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/00Index.html) package (included with a base R installation), and plot the results.
+```{r d-f2, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Intensity-duration relationship for water year 2017. Calculated values are based on daily data; theoretical is the power curve fit."}
+#fit a power curve to the data
+fit <- stats::nls(intensity ~ a*duration^b, data=df.id, start=list(a=1,b=-0.5))
+#find estimated y-values using the fit
+df.id$intensity_est <- predict(fit, list(x = df.id$duration))
+#duration-intensity plot with base graphics
+plot(x=df.id$duration,y=df.id$intensity,log='xy', pch=1, xaxt="n",
+     xlab="Duration, day" , ylab="Intensity, inches/day")
+lines(x=df.id$duration,y=df.id$intensity_est,lty=2)
+abline( h = c(seq( 0.1,1,0.1),2.0), lty = 3, col = "lightgray")
+abline( v = c(1,2,3,4,5,7,10,15,20,30), lty = 3, col = "lightgray")
+axis(side = 1, at =c(1,2,3,4,5,7,10,15,20,30) ,labels = T)
+axis(side = 2, at =c(seq( 0.1,1,0.1),2.0) ,labels = T)
+``` 
+
+If this were done for many years, the results for any one duration could be combined (one value per year) and sorted in decreasing order. That means the rank assigned to the highest value would be 1, and the lowest value would be the number of years, n. The return period, T, for any event would then be found using Equation \@ref(eq:d-f2) based on the Weibull plotting position formula.
+\begin{equation}
+  T=\frac{n+1}{rank}
+    (\#eq:d-f2)
+\end{equation}
+That would allow the creation of IDF curves for a point.
+
+## Precipitation gauge consistency -- double mass curves
+
+The method of using double mass curves to identify changes in an obervation method (such as new instrumentation or a change of location) can be applied to precipitation gauges or any other type of measurement. This method is demonstrated with an example from the U.S. Geological survey [@searcy_double-mass_1960]. 
+
+The first step is to compile data for a gauge (or better, a set of gauges) that are known to be unperturbed (Station A in the sample data set), and for a suspect gauge though to have experienced a change (Station X is this case).
+
+```{r dm1, message=FALSE, warning=FALSE}
+annual_data <- hydromisc::precip_double_mass
+knitr::kable(annual_data, digits = 2) |> 
+  kableExtra::kable_paper(bootstrap_options = "striped", full_width = F)
+``` 
+
+Accumulate the (annual) precipitation (measured in inches) and plot the values for the suspect station against the reference station(s), as in Figure \@ref(fig:dm2) .
+
+```{r dm2, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "A double mass curve."}
+annual_sum <- data.frame(year = annual_data$Year, 
+                         sum_A = cumsum(annual_data$Station_A),
+                         sum_X = cumsum(annual_data$Station_X))
+
+#create scatterplot with a label on every point
+library(ggplot2)
+library(ggrepel)
+ggplot(annual_sum, aes(sum_X,sum_A, label = year)) +
+  geom_point() +
+  geom_text_repel(size=3, direction = "y") + 
+  labs(x="Cumulative precipitation at Station A, in", 
+       y="Cumulative precipitation at Station X, in") +
+  theme_bw()
+``` 
+
+The break in slope between 1930 and 1931 appears clear. This should checked with records for the station to verify whether changes did occur at that time. If the data from Station X are to be used to fill other records or estimate long-term averages, the inconsistency needs to be corrected. 
+
+One method to highlight the year at which the break occurs is to plot the  residuals from a best fit line to the cumulative data from the two stations, as illustrated by the Food and Agriculture Orgainization [FAO](https://www.fao.org/3/x0490e/x0490e0l.htm).
+[@allen_crop_1998]
+
+```{r message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Residuals of the linear fit to the double-mass curve."}
+linfit = lm(sum_X ~ sum_A, data = annual_sum)
+plot(x=annual_sum$year,linfit$residuals, xlab = "Year",ylab = "Residual of regression")
+```
+
+This verifies that after 1930 the steep decline ends, so it may represent a change in location or equipment.
+
+Adusting the earlier record to be consistent with the later period is done by applying Equation \@ref(eq:dm3).
+\begin{equation}
+  y^{'}_i~=\frac{b_2}{b_1}y_i
+    (\#eq:dm3)
+\end{equation} 
+where b~2~ and b~1~ are the slopes after and before the break in slope, respectively, y~i~ is original precipitation data, and y^'^~i~ is the adjusted precipitation. This can be applied as follows.
+
+```{r dm4, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "A double mass curve using adjusted data at Station X."}
+b1 <- lm(sum_X ~ sum_A, data = subset(annual_sum, year <= 1930))$coefficients[['sum_A']]
+b2 <- lm(sum_X ~ sum_A, data = subset(annual_sum, year > 1930))$coefficients[['sum_A']]
+
+#Adjust early values and concatenate to later values for Station X
+adjusted_X <- c(annual_data$Station_X[annual_data$Year <= 1930]*b2/b1, 
+                annual_data$Station_X[annual_data$Year > 1930])
+annual_sum_adj <- data.frame(year = annual_data$Year, 
+                         sum_A = cumsum(annual_data$Station_A),
+                         sum_X = cumsum(adjusted_X))
+
+#Check that slope now appears more consistent
+ggplot(annual_sum_adj, aes(sum_X,sum_A, label = year)) +
+  geom_point() +
+  geom_text_repel(size=3, direction = "y") + 
+  labs(x="Cumulative precipitation at Station A, in", 
+       y="Cumulative adjusted precipitation at Station X, in") +
+  theme_bw()
+```
+The plot shows a more consistent slope, as expected. Another plot of residuals could also validate the effect of the adjustment.
+
+## Precipitation interpolation and areal averaging
+
+It is rare that there are precipitation observations exactly where one needs data, which means existing observations must be interpolated to a point of interest. This is also used to fill in missing data in a record using surrounding observations. 
+
+Interpolation is also used to use sparse observations, or observations from a variety of sources, to produce a spatially continuous grid. This is an essential step to estimating the precipitation averaged across an area that contributes streamflow to some location of concern. Estimating areal average precipitation using some simple, manual methods, has been outlined by the U.S. National Weather Service, illustrated in Figure \@ref(fig:precip-interp) (source: [National Weather Service](https://www.weather.gov/abrfc/map)).
+
+```{r precip-interp, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "80%", fig.cap = "Some basic precipitation interpolation methods, from the U.S. National Weather Service."}
+knitr::include_graphics('images/precip_interp.png')
+``` 
+
+With the advent of geographical information system (GIS) software, manual interpolation is not used. Rather, more advanced spatial analysis is performed to interpolate precipitation onto a continuous grid, where the uncertainty (or skill) of different methods can be assessed. Spatial analysis methods to do this are outlined in many other references, such as [Spatial Data Science](https://rspatial.org/analysis/4-interpolation.html) and the related book [Spatial Data Science with applications in R](https://r-spatial.org/book/), or the reference [Geocomputation with R](https://r.geocompx.org/).
+[@lovelace_geocomputation_2019; @pebesma_spatial_2023]
+
+There are also many sources of precipitation data already interpolated to a regular grid. the [geodata package](https://cran.r-project.org/package=geodata) provides access to many data sets, including the [Worldclim](https://worldclim.org) biophysical data. Another source of global precipitation data, available at daily to monthly scales, is the [CHIRPS](https://www.chc.ucsb.edu/data/chirps) data set, which has been widely used in many studies. An example of obtaining and plotting average annual precipitation over Santa Clara County is illustrated below.
+
+```{r chirps1, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Annual Average Precipitation over Santa Clara County, mm"}
+#Load precipitation in mm, already cropped to cover most of California
+datafile <- system.file("extdata", "prcp_cropped.tif", package="hydromisc")
+prcp <- terra::rast(datafile)
+scc_bound <- terra::vect(hydromisc::scc_county)
+scc_precip <- terra::crop(prcp, scc_bound)
+terra::plot(scc_precip, plg=list(title="Precip\n(mm)", title.cex=0.7))
+terra::plot(scc_bound, add=TRUE)
+```
+
+Spatial statistics are easily obtained using [terra](https://cran.r-project.org/package=terra), a versatile package for spatial analysis.
+
+```{r chirps2, message=FALSE }
+terra::summary(scc_precip)
+```

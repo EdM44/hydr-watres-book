@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 Fate of precipitation | Hydraulics and Water Resources: Examples Using R</title>
+  <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 Fate of precipitation | Hydraulics and Water Resources: Examples Using R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 Fate of precipitation | Hydraulics and Water Resources: Examples Using R" />
+  
+  <meta name="twitter:description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
+engineering exercises using R.</p>" />
+  
+
+
+
+<meta name="date" content="2023-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="the-hydrologic-cycle-and-precipitation.html"/>
+<link rel="next" href="designing-for-floods-flood-hydrology.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hydraulics and Water Resources:<br>Examples Using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
+<li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of water (and air)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
+<li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="properties-of-water.html"><a href="properties-of-water.html#ideal-gas-law"><i class="fa fa-check"></i><b>2.3.1</b> Ideal gas law</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html"><i class="fa fa-check"></i><b>3</b> Hydrostatics - forces exerted by water bodies</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#pressure-and-force"><i class="fa fa-check"></i><b>3.1</b> Pressure and force</a></li>
+<li class="chapter" data-level="3.2" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#hs-plane"><i class="fa fa-check"></i><b>3.2</b> Force on a plane area</a></li>
+<li class="chapter" data-level="3.3" data-path="hydrostatics---forces-exerted-by-water-bodies.html"><a href="hydrostatics---forces-exerted-by-water-bodies.html#forces-on-curved-surfaces"><i class="fa fa-check"></i><b>3.3</b> Forces on curved surfaces</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html"><i class="fa fa-check"></i><b>4</b> Water flowing in pipes: energy losses</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#important-dimensionless-quantity"><i class="fa fa-check"></i><b>4.1</b> Important dimensionless quantity</a></li>
+<li class="chapter" data-level="4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#friction-loss-in-circular-pipes"><i class="fa fa-check"></i><b>4.2</b> Friction Loss in Circular Pipes</a></li>
+<li class="chapter" data-level="4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-pipe-friction-problems"><i class="fa fa-check"></i><b>4.3</b> Solving Pipe friction problems</a></li>
+<li class="chapter" data-level="4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#type1"><i class="fa fa-check"></i><b>4.4</b> Solving for head loss (Type 1 problems)</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-by-manual-iteration"><i class="fa fa-check"></i><b>4.4.1</b> Solving for head loss by manual iteration</a></li>
+<li class="chapter" data-level="4.4.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#dwapprox"><i class="fa fa-check"></i><b>4.4.2</b> Solving for headloss using an empirical approximation</a></li>
+<li class="chapter" data-level="4.4.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#coleb-solver"><i class="fa fa-check"></i><b>4.4.3</b> Solving for head loss using an equation solver</a></li>
+<li class="chapter" data-level="4.4.4" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-head-loss-using-an-r-package"><i class="fa fa-check"></i><b>4.4.4</b> Solving for head loss using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-flow-or-velocity-type-2-problems"><i class="fa fa-check"></i><b>4.5</b> Solving for Flow or Velocity (Type 2 problems)</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-or-v-using-manual-iteration"><i class="fa fa-check"></i><b>4.5.1</b> Solving for Q (or V) using manual iteration</a></li>
+<li class="chapter" data-level="4.5.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-explicit-equation"><i class="fa fa-check"></i><b>4.5.2</b> Solving for Q Using an Explicit Equation</a></li>
+<li class="chapter" data-level="4.5.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-q-using-an-r-package"><i class="fa fa-check"></i><b>4.5.3</b> Solving for Q Using an R package</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-pipe-diameter-d-type-3-problems"><i class="fa fa-check"></i><b>4.6</b> Solving for pipe diameter, D (Type 3 problems)</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
+<li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
+<li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html"><i class="fa fa-check"></i><b>5</b> Flow in open channels</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#an-important-dimensionless-quantity"><i class="fa fa-check"></i><b>5.1</b> An important dimensionless quantity</a></li>
+<li class="chapter" data-level="5.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#equations-for-open-channel-flow"><i class="fa fa-check"></i><b>5.2</b> Equations for open channel flow</a></li>
+<li class="chapter" data-level="5.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#trap"><i class="fa fa-check"></i><b>5.3</b> Trapezoidal channels</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-in-r"><i class="fa fa-check"></i><b>5.3.1</b> Solving the Manning equation in R</a></li>
+<li class="chapter" data-level="5.3.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-with-the-hydraulics-r-package"><i class="fa fa-check"></i><b>5.3.2</b> Solving the Manning equation with the <em>hydraulics</em> R package</a></li>
+<li class="chapter" data-level="5.3.3" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-using-a-spreadsheet-like-excel"><i class="fa fa-check"></i><b>5.3.3</b> Solving the Manning equation using a spreadsheet like Excel</a></li>
+<li class="chapter" data-level="5.3.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#optimal-trapezoidal-geometry"><i class="fa fa-check"></i><b>5.3.4</b> Optimal trapezoidal geometry</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#circ"><i class="fa fa-check"></i><b>5.4</b> Circular Channels (flowing partially full)</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>5.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>5.5</b> Critical flow</a></li>
+<li class="chapter" data-level="5.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>5.6</b> Gradually varied steady flow</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>5.6.1</b> The direct step method</a></li>
+<li class="chapter" data-level="5.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>5.6.2</b> Standard step method</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>5.7</b> Rapidly varied flow (the hydraulic jump)</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>5.7.1</b> Sequent (or conjugate) depths</a></li>
+<li class="chapter" data-level="5.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>5.7.2</b> Location of a hydraulic jump</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>6</b> Momentum in water flow</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#equations-of-linear-momentum"><i class="fa fa-check"></i><b>6.1</b> Equations of linear momentum</a></li>
+<li class="chapter" data-level="6.2" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html#the-momentum-equation-in-pipe-design"><i class="fa fa-check"></i><b>6.2</b> The momentum equation in pipe design</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html"><i class="fa fa-check"></i><b>7</b> Pumps and how they operate in a hydraulic system</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-system-curve"><i class="fa fa-check"></i><b>7.1</b> Defining the system curve</a></li>
+<li class="chapter" data-level="7.2" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#defining-the-pump-characteristic-curve"><i class="fa fa-check"></i><b>7.2</b> Defining the pump characteristic curve</a></li>
+<li class="chapter" data-level="7.3" data-path="pumps-and-how-they-operate-in-a-hydraulic-system.html"><a href="pumps-and-how-they-operate-in-a-hydraulic-system.html#finding-the-operating-point"><i class="fa fa-check"></i><b>7.3</b> Finding the operating point</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html"><i class="fa fa-check"></i><b>8</b> The hydrologic cycle and precipitation</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-observations"><i class="fa fa-check"></i><b>8.1</b> Precipitation observations</a></li>
+<li class="chapter" data-level="8.2" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precip-freq"><i class="fa fa-check"></i><b>8.2</b> Precipitation frequency</a></li>
+<li class="chapter" data-level="8.3" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-gauge-consistency-double-mass-curves"><i class="fa fa-check"></i><b>8.3</b> Precipitation gauge consistency – double mass curves</a></li>
+<li class="chapter" data-level="8.4" data-path="the-hydrologic-cycle-and-precipitation.html"><a href="the-hydrologic-cycle-and-precipitation.html#precipitation-interpolation-and-areal-averaging"><i class="fa fa-check"></i><b>8.4</b> Precipitation interpolation and areal averaging</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html"><i class="fa fa-check"></i><b>9</b> Fate of precipitation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#interception"><i class="fa fa-check"></i><b>9.1</b> Interception</a></li>
+<li class="chapter" data-level="9.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#infiltration"><i class="fa fa-check"></i><b>9.2</b> Infiltration</a></li>
+<li class="chapter" data-level="9.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#evaporation"><i class="fa fa-check"></i><b>9.3</b> Evaporation</a></li>
+<li class="chapter" data-level="9.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow"><i class="fa fa-check"></i><b>9.4</b> Snow</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#observations"><i class="fa fa-check"></i><b>9.4.1</b> Observations</a></li>
+<li class="chapter" data-level="9.4.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#basic-snowmelt-theory-and-simple-models"><i class="fa fa-check"></i><b>9.4.2</b> Basic snowmelt theory and simple models</a></li>
+<li class="chapter" data-level="9.4.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow-model-calibration"><i class="fa fa-check"></i><b>9.4.3</b> Snow model calibration</a></li>
+<li class="chapter" data-level="9.4.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#estimating-climate-change-impacts-on-snow"><i class="fa fa-check"></i><b>9.4.4</b> Estimating climate change impacts on snow</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#watershed-analysis"><i class="fa fa-check"></i><b>9.5</b> Watershed analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html"><i class="fa fa-check"></i><b>10</b> Designing for floods: flood hydrology</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#engineering-design-requires-probability-and-statistics"><i class="fa fa-check"></i><b>10.1</b> Engineering design requires probability and statistics</a></li>
+<li class="chapter" data-level="10.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#ffa1"><i class="fa fa-check"></i><b>10.2</b> Estimating floods when you have peak flow observations - flood frequency analysis</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#installing-helpful-packages"><i class="fa fa-check"></i><b>10.2.1</b> Installing helpful packages</a></li>
+<li class="chapter" data-level="10.2.2" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#download-manipulate-and-plot-the-data-for-a-site"><i class="fa fa-check"></i><b>10.2.2</b> Download, manipulate, and plot the data for a site</a></li>
+<li class="chapter" data-level="10.2.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#flood-frequency-analysis"><i class="fa fa-check"></i><b>10.2.3</b> Flood frequency analysis</a></li>
+<li class="chapter" data-level="10.2.4" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#creating-a-flood-frequency-plot"><i class="fa fa-check"></i><b>10.2.4</b> Creating a flood frequency plot</a></li>
+<li class="chapter" data-level="10.2.5" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#other-software-for-peak-flow-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Other software for peak flow analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="designing-for-floods-flood-hydrology.html"><a href="designing-for-floods-flood-hydrology.html#estimating-floods-from-precipitation"><i class="fa fa-check"></i><b>10.3</b> Estimating floods from precipitation</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html"><i class="fa fa-check"></i><b>11</b> Sustainability in design: planning for change</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#perturbing-a-system"><i class="fa fa-check"></i><b>11.1</b> Perturbing a system</a></li>
+<li class="chapter" data-level="11.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-hydrologic-data"><i class="fa fa-check"></i><b>11.2</b> Detecting changes in hydrologic data</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-step-change"><i class="fa fa-check"></i><b>11.2.1</b> Detecting a step change</a></li>
+<li class="chapter" data-level="11.2.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-a-monotonic-trend"><i class="fa fa-check"></i><b>11.2.2</b> Detecting a monotonic trend</a></li>
+<li class="chapter" data-level="11.2.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#choosing-whether-to-use-parametric-or-non-parametric-tests"><i class="fa fa-check"></i><b>11.2.3</b> Choosing whether to use parametric or non-parametric tests</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#detecting-changes-in-extreme-events"><i class="fa fa-check"></i><b>11.3</b> Detecting changes in extreme events</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#obtaining-and-preparing-sea-level-data"><i class="fa fa-check"></i><b>11.3.1</b> Obtaining and preparing sea-level data</a></li>
+<li class="chapter" data-level="11.3.2" data-path="sustainability-in-design-planning-for-change.html"><a href="sustainability-in-design-planning-for-change.html#conducting-the-extreme-event-analysis"><i class="fa fa-check"></i><b>11.3.2</b> Conducting the extreme event analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html"><i class="fa fa-check"></i><b>12</b> Management of water resources systems</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#a-simple-linear-system-with-two-decision-variables"><i class="fa fa-check"></i><b>12.1</b> A simple linear system with two decision variables</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#overview-of-problem-formulation"><i class="fa fa-check"></i><b>12.1.1</b> Overview of problem formulation</a></li>
+<li class="chapter" data-level="12.1.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-an-example"><i class="fa fa-check"></i><b>12.1.2</b> Setting up an example</a></li>
+<li class="chapter" data-level="12.1.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#graphing-the-solution-space"><i class="fa fa-check"></i><b>12.1.3</b> Graphing the solution space</a></li>
+<li class="chapter" data-level="12.1.4" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r"><i class="fa fa-check"></i><b>12.1.4</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.1.5" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#interpreting-the-optimal-results"><i class="fa fa-check"></i><b>12.1.5</b> Interpreting the optimal results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-complex-linear-programming-reservoir-operation"><i class="fa fa-check"></i><b>12.2</b> More complex linear programming: reservoir operation</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#problem-summary"><i class="fa fa-check"></i><b>12.2.1</b> Problem summary</a></li>
+<li class="chapter" data-level="12.2.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#setting-up-the-problem-in-r-1"><i class="fa fa-check"></i><b>12.2.2</b> Setting up the problem in R</a></li>
+<li class="chapter" data-level="12.2.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#building-the-linear-model"><i class="fa fa-check"></i><b>12.2.3</b> Building the linear model</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#more-realistic-reservoir-operation-non-linear-programming"><i class="fa fa-check"></i><b>12.3</b> More Realistic Reservoir Operation: non-linear programming</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#reservoir-operation"><i class="fa fa-check"></i><b>12.3.1</b> Reservoir operation</a></li>
+<li class="chapter" data-level="12.3.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#performing-stochastic-dynamic-programming"><i class="fa fa-check"></i><b>12.3.2</b> Performing stochastic dynamic programming</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="groundwater.html"><a href="groundwater.html"><i class="fa fa-check"></i><b>13</b> Groundwater</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hydraulics and Water Resources: Examples Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="fate-of-precipitation" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> Fate of precipitation<a href="fate-of-precipitation.html#fate-of-precipitation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>As precipitation falls and can be caught on vegetation (interception), percolate into the ground (infiltration), return to the atmosphere (evaporation), or become available as runoff (if accumulating as rain or snow).
+The landscape (land cover and topography) and the time scale of study determine what processes are important. For example, for estimating runoff from an individual storm, interception is likely to be small, as is evaporation. On an annual average over large areas, evaporation will often be the largest component.</p>
+<p>Comprehensive hydrology models will estimate abstractions due to infiltration and interception, either by simulating the physics of the phenomenon or by using a lumped parameter that accounts for the effects of abstractions on runoff.</p>
+<p>The <em>hydromisc</em> package will need to be installed to access some of the code and data used below. If it is not installed, do so following the instructions on <a href="https://github.com/EdM44/hydromisc">the github site for the package</a>.</p>
+<div id="interception" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Interception<a href="fate-of-precipitation.html#interception" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:int-1"></span>
+<img src="images/leaf_interception.jpg" alt="Rain interception by John Robert McPherson, CC BY-SA 4, via Wikimedia Commons" width="60%" />
+<p class="caption">
+Figure 9.1: Rain interception by John Robert McPherson, <a href="https://commons.wikimedia.org/wiki/Category:CC-BY-SA-4.0">CC BY-SA 4</a>, via Wikimedia Commons
+</p>
+</div>
+<p>Interception of rainfall is generally small during individual storms (0.5-2 mm), so it is often ignored, or lumped in with other abstractions, for analyses of flood hydrology. For areas characterized by low intensity rainfall and heavy vegetation, interception can account for a larger portion of the rainfall (for example, up to 25% of annual rainfall in the Pacific Northwest) <span class="citation">(<a href="references.html#ref-mccuen_hydrologic_2016" role="doc-biblioref">McCuen 2016</a>)</span>.</p>
+</div>
+<div id="infiltration" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Infiltration<a href="fate-of-precipitation.html#infiltration" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>An early empirical equation describing infiltration rate into soils was developed by Horton in 1939, which takes the form of Equation <a href="fate-of-precipitation.html#eq:horton">(9.1)</a>.
+<span class="math display" id="eq:horton">\[\begin{equation}
+  f_p~=~ f_c + \left(f_0 - f_c\right)e^{-kt}
+    \tag{9.1}
+\end{equation}\]</span>
+This describes a potential infiltration rate, <span class="math inline">\(f_p\)</span>, beginning at a maximum <span class="math inline">\(f_0\)</span> and decreasing with time toward a minimum value <span class="math inline">\(f_c\)</span> at a rate described by the decay constant <span class="math inline">\(k\)</span>. <span class="math inline">\(f_c\)</span> is also equal to the saturated hydraulic conductivity, <span class="math inline">\(K_s\)</span>, of the soil. If rainfall rate exceeds <span class="math inline">\(f_c\)</span> then this equation describes the actual infiltration rate with time. If periods of time have rainfall less intense than <span class="math inline">\(f_c\)</span> it is convenient to integrate this to relate the total cumulative depth of water infiltrated, <span class="math inline">\(F\)</span>, and the actual infiltration rate, <span class="math inline">\(f_p\)</span>, as in Equation <a href="fate-of-precipitation.html#eq:horton2">(9.2)</a>.
+<span class="math display" id="eq:horton2">\[\begin{equation}
+  F~=~\left[\frac{f_c}{k}ln\left(f_0-f_c\right)+\frac{f_0}{k}\right]-\frac{f_c}{k}ln\left(f_p-f_c\right)-\frac{f_p}{k}
+    \tag{9.2}
+\end{equation}\]</span></p>
+<p>A more physically based relationship to describe infiltration rate is the Green-Ampt model. It is based on the physical laws describing the propogation of a wetting front downward through a soil column under a ponded water surface. The Green-Ampt relationship is in Equation <a href="fate-of-precipitation.html#eq:GA1">(9.3)</a>.
+<span class="math display" id="eq:GA1">\[\begin{equation}
+  K_st~=~F-\left(n-\theta_i\right)\Phi_f~ln\left[1+\frac{F}{\left(n-\theta_i\right)\Phi_f}\right]
+    \tag{9.3}
+\end{equation}\]</span>
+Equation <a href="fate-of-precipitation.html#eq:GA1">(9.3)</a> assumes ponding begins at t=0, meaning rainfall rate exceeds <span class="math inline">\(K_s\)</span>. When rainfall rates are less than that, adjustments to the method are used. Parameters are shown in the table below.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:infilt-1"></span>
+<img src="images/soil_parameters.png" alt="Green-Ampt Parameter Estimates and Ranges based on Soil Texture USACE" width="80%" />
+<p class="caption">
+Figure 9.2: Green-Ampt Parameter Estimates and Ranges based on Soil Texture <a href="https://www.hec.usace.army.mil/confluence/rasdocs/ras1dtechref/6.1/overview-of-optional-capabilities/modeling-precipitation-and-infiltration/green-ampt">USACE</a>
+</p>
+</div>
+<p>While not demonstrated here, parameters for the Horton and Green-Ampt methods can be derived from observed infiltration data using the R package <a href="https://github.com/gowusu/vadose">vadose</a>.</p>
+<p>The most widely used method for estimating infiltration is the NRCS method, described in detail in the NRCS document <a href="https://directives.sc.egov.usda.gov/46253.wba">Estimating Runoff Volume and Peak Discharge</a>.This method describes the direct runoff (as a depth), <span class="math inline">\(Q\)</span>, resulting from a precipitation event, <span class="math inline">\(P\)</span>, as in Equation <a href="fate-of-precipitation.html#eq:NRCS1">(9.4)</a>.
+<span class="math display" id="eq:NRCS1">\[\begin{equation}
+  Q~=~\frac{\left(P-I_a\right)^2}{\left(P-I_a\right)+S}
+    \tag{9.4}
+\end{equation}\]</span>
+<span class="math inline">\(S\)</span> is the maximum retention of water by the soil column and <span class="math inline">\(I_a\)</span> is the initial abstraction, commonly estimated as <span class="math inline">\(I_a=0.2S\)</span>. Substituting this into Equation <a href="fate-of-precipitation.html#eq:NRCS1">(9.4)</a> produces Equation <a href="fate-of-precipitation.html#eq:NRCS2">(9.5)</a>.
+<span class="math display" id="eq:NRCS2">\[\begin{equation}
+  Q~=~\frac{\left(P-0.2~S\right)^2}{\left(P+0.8~S\right)}
+    \tag{9.5}
+\end{equation}\]</span>
+This relationship applies as long as <span class="math inline">\(P&gt;0.2~S\)</span>; Q=0 otherwise. Values for S are derived from a Curve Number (CN), which summarizes the land cover, soil type and condition: <span class="math display">\[CN=\frac{1000}{10+S}\]</span>, where <span class="math inline">\(S\)</span>, and subsequently <span class="math inline">\(Q\)</span>, are in inches. Equation <a href="fate-of-precipitation.html#eq:NRCS2">(9.5)</a> can be rearranged to a form similar to those for the Horton and Green-Ampt equations for cumulative infiltration, <span class="math inline">\(F\)</span>. <span class="math display">\[F~=~\frac{\left(P-0.2~S\right)S}{P+0.8~S}\]</span>.</p>
+</div>
+<div id="evaporation" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Evaporation<a href="fate-of-precipitation.html#evaporation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Evaporation is simply the change of water from liquid to vapor state. Because it is difficult to separate evaporation from the soil from transpiration from vegetation, it is usually combined into Evapotranspiration, or ET; see Figure <a href="fate-of-precipitation.html#fig:et-1">9.3</a>.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:et-1"></span>
+<img src="images/eto_overview.gif" alt="Schematic of ET, from CIMIS" width="35%" />
+<p class="caption">
+Figure 9.3: Schematic of ET, from <a href="https://cimis.water.ca.gov">CIMIS</a>
+</p>
+</div>
+<p>ET can be estimated in a variety of ways, but it is important first to define three types of ET:
+- Potential ET, <span class="math inline">\(ET_p\)</span> or <span class="math inline">\(PET\)</span>: essentially the same as the rate that water would evaporate from a free water surface.
+- Reference crop ET, <span class="math inline">\(ET_{ref}\)</span> or <span class="math inline">\(ET_0\)</span>: the rate water evaporates from a well-watered reference crop, usually grass of a standard height.
+- Actual ET, <span class="math inline">\(ET\)</span>: this is the water used by a crop or other vegetation, usually calculated by adjusting the <span class="math inline">\(ET_0\)</span> term by a crop coefficient that accounts for factors such as the plant height, growth stage, and soil exposure.</p>
+<p>Estimating <span class="math inline">\(ET_0\)</span> can be as uncomplicated as using the Thornthwaite equation, which depends only on mean monthly temperatures, to the Penman-Monteith equation, which includes solar and longwave radiation, wind and humidity effects, and reference crop (grass) characteristics. Inclusion of more complexity, especially where observations can supply the needed input, produces more reliable estimates of <span class="math inline">\(ET_0\)</span>.One of the most common implementations of the Penman-Monteith equation is the version of the FAO (<a href="https://www.fao.org/3/X0490E/x0490e00.htm">FAO Irrigation and drainage paper 56</a>, or FAO56) <span class="citation">(<a href="references.html#ref-allen_crop_1998" role="doc-biblioref">Allen and United Nations 1998</a>)</span>. Refer to FAO56 for step-by-step instructions on determining each term in the Penman-Monteith equation, Equation <a href="fate-of-precipitation.html#eq:pm1">(9.6)</a>.
+<span class="math display" id="eq:pm1">\[\begin{equation}
+  \lambda~ET~=~\frac{\Delta\left(R_n-G\right)+\rho_ac_p\frac{\left(e_s-e_a\right)}{r_a}}{\Delta+\gamma\left(1+\frac{r_s}{r_a}\right)}
+    \tag{9.6}
+\end{equation}\]</span></p>
+<p>Open water evaporation can be calculated using the original Penman equation (1948):
+<span class="math display">\[\lambda~E_p~=~\frac{\Delta~R_n+\gamma~E_a}{\Delta~+~\gamma}\]</span>
+where <span class="math inline">\(R_n\)</span> is the net radiation available to evaporate water and <span class="math inline">\(E_a\)</span> is a mass transfer function usually including humidity (or vapor pressure deficit) and wind speed. <span class="math inline">\(\lambda\)</span> is the latent heat of vaporization of water. A common implementation of the Penman equation is
+<span class="math display" id="eq:pm2">\[\begin{equation}
+  \lambda~E_p~=~\frac{\Delta~R_n+\gamma~6.43\left(1+0.536~U_2\right)\left(e_s-e\right)}{\Delta~+~\gamma}
+    \tag{9.7}
+\end{equation}\]</span>
+Here <span class="math inline">\(E_p\)</span> is in mm/d, <span class="math inline">\(\Delta\)</span> and <span class="math inline">\(\gamma\)</span> are in <span class="math inline">\(kPa~K^{-1}\)</span>, <span class="math inline">\(R_n\)</span> is in <span class="math inline">\(MJ~m^{−2}~d^{−1}\)</span>, <span class="math inline">\(U_2\)</span> is in m/s, and <span class="math inline">\(e_s\)</span> and <span class="math inline">\(e\)</span> are in kPa. Variables are as defined in FAO56.</p>
+<p>Open water evaporation can also be calculated using a modified version of the Penman-Monteith equation <a href="fate-of-precipitation.html#eq:pm1">(9.6)</a>. In this latter case, vegetation coefficients are not needed, so Equation <a href="fate-of-precipitation.html#eq:pm1">(9.6)</a> can be used with <span class="math inline">\(r_s=0\)</span> and <span class="math inline">\(r_a=251/(1+0.536~u_2)\)</span>, following <a href="https://doi.org/10.1002/qj.49710343610">Thom &amp; Oliver, 1977</a>.</p>
+<p>The R package <a href="https://cran.r-project.org/package=Evapotranspiration">Evaporation</a> has functions to calculate <span class="math inline">\(ET_0\)</span> using this and many other functions. This is especially useful when calculating PET over many points or through a long time series.</p>
+</div>
+<div id="snow" class="section level2 hasAnchor" number="9.4">
+<h2><span class="header-section-number">9.4</span> Snow<a href="fate-of-precipitation.html#snow" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="observations" class="section level3 hasAnchor" number="9.4.1">
+<h3><span class="header-section-number">9.4.1</span> Observations<a href="fate-of-precipitation.html#observations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In mountainous areas a substantial portion of the precipitation may fall as snow, where it can be stored for months before melting and becoming runoff. Any hydrologic analysis in an area affected by snow must account for the dynamics of this natural reservoir and how it affects water supply. In the Western U.S., the most comprehensive observations of snow are part of the <a href="https://www.nrcs.usda.gov/wps/portal/wcc/home/">SNOTEL</a> (SNOw TELemetry) network.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:snow-1"></span>
+<img src="images/snotel_stations.png" alt="The SNOTEL network." width="50%" />
+<p class="caption">
+Figure 9.4: The SNOTEL network.
+</p>
+</div>
+</div>
+<div id="basic-snowmelt-theory-and-simple-models" class="section level3 hasAnchor" number="9.4.2">
+<h3><span class="header-section-number">9.4.2</span> Basic snowmelt theory and simple models<a href="fate-of-precipitation.html#basic-snowmelt-theory-and-simple-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For snow to melt, heat must be added to first bring the snowpack to the melting point; it takes about 2 kJ/kg to increase snowpack temperature 1<span class="math inline">\(^\circ\)</span>C. Additional heat is required for the phase change from ice to water (the latent heat of fusion), about 335 kJ/kg. Heat can be provided by absorbing solar radiation, longwave radiation, ground heat, warm air, warm rain falling on the snowpack or water vapor condensing on the snow. Once snow melts, it can percolate through the snowpack and be retained, similar to water retained by soil, and may re-freeze (releasing the latent heat of fusion, which can then cause more melt).</p>
+<p>As with any other hydrologic process, there are many ways it can be modeled, from simplified empirical relationships to complex physics-based representations. While accounting for all of the many processes involved would be a robust approach, often there are not adequate observations to support their use so simpler parameterization are used. Here only the simplest index-based snow model is discussed, as in Equation <a href="fate-of-precipitation.html#eq:snow1">(9.8)</a>.
+<span class="math display" id="eq:snow1">\[\begin{equation}
+  M~=~K_d\left(T_a~-~T_b\right)
+    \tag{9.8}
+\end{equation}\]</span>
+M is the melt rate in mm/d (or in/day), <span class="math inline">\(T_a\)</span> is air temperature (sometimes a daily mean, sometimes a daily maximum), <span class="math inline">\(T_b\)</span> is a base temperature, usually 0<span class="math inline">\(^\circ\)</span>C (or 32<span class="math inline">\(^\circ\)</span>F), and <span class="math inline">\(K_d\)</span> is a degree-day melt factor in mm/d/<span class="math inline">\(^\circ\)</span>C (or in/d/<span class="math inline">\(^\circ\)</span>F). The melt factor, <span class="math inline">\(K_d\)</span>, is highly dependent on local conditions and on the time of year (as an indicator of the snow pack condition); different <span class="math inline">\(K_d\)</span> factors can be used for different months for example.</p>
+<p>Refreezing of melted snow, when temperatures are below <span class="math inline">\(T_b\)</span>, can also be estimated using an index model, such as Equation <a href="fate-of-precipitation.html#eq:snow2">(9.9)</a>.
+<span class="math display" id="eq:snow2">\[\begin{equation}
+  Fr~=~K_f\left(T_b~-~T_a\right)
+    \tag{9.9}
+\end{equation}\]</span></p>
+<p>Importantly, temperature-index snowmelt relations have been developed primarily for describing snowmelt at the end of season, after the peak of snow accumulation (typically April-May in the mountainous western U.S.), and their use during the snow accumulation season may overestimate melt. Different degree-day factors are often used, with the factors increasing later in the melt season.</p>
+<p>From a hydrologic perspective, the most important snow quality is the snow water equivalent (SWE), which is the depth of water obtained by melting the snow. An example of using a snowmelt index model follows.</p>
+<div class="example">
+<p><span id="exm:ex-snow1" class="example"><strong>Example 9.1  </strong></span>Manually calibrate an index snowmelt model for a SNOTEL site using one year of data.</p>
+</div>
+<p>Visit the <a href="https://www.nrcs.usda.gov/wps/portal/wcc/home/">SNOTEL</a> to select a site. In this example site 1050, Horse Meadow, located in California, is used. Next download the data using the <a href="https://cran.r-project.org/package=snotelr">snotelr</a> package (install the package first, if needed).</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="fate-of-precipitation.html#cb70-1" aria-hidden="true" tabindex="-1"></a>sta <span class="ot">&lt;-</span> <span class="st">&quot;1050&quot;</span></span>
+<span id="cb70-2"><a href="fate-of-precipitation.html#cb70-2" aria-hidden="true" tabindex="-1"></a>snow_data <span class="ot">&lt;-</span> snotelr<span class="sc">::</span><span class="fu">snotel_download</span>(<span class="at">site_id =</span> sta, <span class="at">internal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Plot the data to assess the period available and how complete it is.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="fate-of-precipitation.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.Date</span>(snow_data<span class="sc">$</span>date), snow_data<span class="sc">$</span>snow_water_equivalent,</span>
+<span id="cb71-2"><a href="fate-of-precipitation.html#cb71-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Date&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;SWE (mm)&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sno-2"></span>
+<img src="hydr-watres_main_files/figure-html/sno-2-1.png" alt="Snow water equivalent at SNOTEL site 1050." width="80%" />
+<p class="caption">
+Figure 9.5: Snow water equivalent at SNOTEL site 1050.
+</p>
+</div>
+<p>Note the units are SI. If you download data directly from the SNOTEL web site the data would be in conventional US units. <a href="https://cran.r-project.org/package=snotelr">snotelr</a> converts the data to SI units as it imports. The package includes a function <em>snotel_metric</em> that could be used to convert raw data downloaded from the SNOTEL website to SI units.</p>
+<p>For this exercise, extract a single (water) year, meaning from 1-Oct to 30-Sep, so an entire winter is in one year. In addition, create a data frame that only includes columns that are needed.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="fate-of-precipitation.html#cb72-1" aria-hidden="true" tabindex="-1"></a>snow_data_subset <span class="ot">&lt;-</span> <span class="fu">subset</span>(snow_data, <span class="fu">as.Date</span>(date) <span class="sc">&gt;</span> <span class="fu">as.Date</span>(<span class="st">&quot;2008-10-01&quot;</span>) <span class="sc">&amp;</span></span>
+<span id="cb72-2"><a href="fate-of-precipitation.html#cb72-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">as.Date</span>(date) <span class="sc">&lt;</span> <span class="fu">as.Date</span>(<span class="st">&quot;2009-09-30&quot;</span>))</span>
+<span id="cb72-3"><a href="fate-of-precipitation.html#cb72-3" aria-hidden="true" tabindex="-1"></a>snow_data_sel <span class="ot">&lt;-</span> <span class="fu">subset</span>(snow_data_subset, <span class="at">select=</span><span class="fu">c</span>(<span class="st">&quot;date&quot;</span>, <span class="st">&quot;snow_water_equivalent&quot;</span>, <span class="st">&quot;precipitation&quot;</span>, <span class="st">&quot;temperature_mean&quot;</span>, <span class="st">&quot;temperature_min&quot;</span>, <span class="st">&quot;temperature_max&quot;</span>))</span>
+<span id="cb72-4"><a href="fate-of-precipitation.html#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.Date</span>(snow_data_sel<span class="sc">$</span>date),snow_data_sel<span class="sc">$</span>snow_water_equivalent,</span>
+<span id="cb72-5"><a href="fate-of-precipitation.html#cb72-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,<span class="at">xlab =</span> <span class="st">&quot;Date&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;SWE (mm)&quot;</span>)</span>
+<span id="cb72-6"><a href="fate-of-precipitation.html#cb72-6" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sno-3"></span>
+<img src="hydr-watres_main_files/figure-html/sno-3-1.png" alt="Snow water equivalent at SNOTEL site 1050 for water year 2009." width="60%" />
+<p class="caption">
+Figure 9.6: Snow water equivalent at SNOTEL site 1050 for water year 2009.
+</p>
+</div>
+<p>Now use a snow index model to simulate the SWE based on temperature and precipitation. The model used here is a modified version of that used in the <a href="http://hydromad.catchment.org/">hydromad</a> package. The <em>snow.sim</em> command is used to run a snow index model; type <em>?hydromisc::snow.sim</em> for details on its use. As a summary, the four main parameters you can adjust in the calibration of the model are:</p>
+<ul>
+<li>The maximum air temperature for snow, <em>Tmax</em>. Snow can fall at air temperatures above as high as about 3<span class="math inline">\(^\circ\)</span>C, but <em>Tmax</em> is usually lower.</li>
+<li>The minimum air temperature for rain, <em>Tmin</em>. Rain can fall when near surface air temperatures are below freezing. This may be as low as -1<span class="math inline">\(^\circ\)</span>C or maybe just a little lower, and as high as 1<span class="math inline">\(^\circ\)</span>C.</li>
+<li>Base temperature, <em>Tmelt</em>, the temperature at which melt begins. Usually the default of 0<span class="math inline">\(^\circ\)</span>C is used, but some adjustment (generally between -2 and 2<span class="math inline">\(^\circ\)</span>C) can be applied to improve model calibration.</li>
+<li>Snow Melt (Degree-Day) Factor, <em>kd</em>, which describes the melting of the snow when temperatures are above freezing. Be careful using values from different references as these are dependent on units. Typical values are between 1 and 5 mm/d/<span class="math inline">\(^\circ\)</span>C.</li>
+</ul>
+<p>Two additional parameters are optional; their effects are typically small.</p>
+<ul>
+<li>Degree-Day Factor for freezing, <em>kf</em>, of liquid water in the snow pack when temperatures are below freezing. By default it is set to 1<span class="math inline">\(^\circ\)</span>C/mm/day, and may vary from 0 to 2 <span class="math inline">\(^\circ\)</span>C/mm/day.</li>
+<li>Snow water retention factor, <em>rcap</em>. When snow melts some of it can be retained via capillarity in the snow pack. It can re-freeze or drain out. This is expressed as a fraction of the snow pack that is frozen. The default is 2.5% (rcap = 0.025).</li>
+</ul>
+<p>Start with some assumed values and run the snow model.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="fate-of-precipitation.html#cb73-1" aria-hidden="true" tabindex="-1"></a>Tmax_snow <span class="ot">&lt;-</span> <span class="dv">3</span>  </span>
+<span id="cb73-2"><a href="fate-of-precipitation.html#cb73-2" aria-hidden="true" tabindex="-1"></a>Tmin_rain <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb73-3"><a href="fate-of-precipitation.html#cb73-3" aria-hidden="true" tabindex="-1"></a>kd <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb73-4"><a href="fate-of-precipitation.html#cb73-4" aria-hidden="true" tabindex="-1"></a>snow_estim <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">snow.sim</span>(<span class="at">DATA=</span>snow_data_sel, </span>
+<span id="cb73-5"><a href="fate-of-precipitation.html#cb73-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">Tmax=</span>Tmax_snow, </span>
+<span id="cb73-6"><a href="fate-of-precipitation.html#cb73-6" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">Tmin=</span>Tmin_rain,</span>
+<span id="cb73-7"><a href="fate-of-precipitation.html#cb73-7" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">kd=</span>kd)</span></code></pre></div>
+<p>Now the simulated values can be compared to the observations. If not installed already, install the <a href="https://cran.r-project.org/package=hydroGOF">hydroGOF</a> package, which has some useful functions for evaluating how well modeled output fits observations. In the plot that follows we specify three measures of goodness-of-fit:</p>
+<ul>
+<li>Mean Absolute Error (MAE)</li>
+<li>Percent Bias (PBIAS)</li>
+<li>Root Mean Square Error divided by the Standard Deviation (RSR)
+These are discussed in detail in other references, but the aim is to calibrate (change the input parameters) until these values are low.</li>
+</ul>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="fate-of-precipitation.html#cb74-1" aria-hidden="true" tabindex="-1"></a>obs <span class="ot">&lt;-</span> snow_data_sel<span class="sc">$</span>snow_water_equivalent</span>
+<span id="cb74-2"><a href="fate-of-precipitation.html#cb74-2" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> snow_estim<span class="sc">$</span>swe_simulated</span>
+<span id="cb74-3"><a href="fate-of-precipitation.html#cb74-3" aria-hidden="true" tabindex="-1"></a>hydroGOF<span class="sc">::</span><span class="fu">ggof</span>(sim, obs, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">dates=</span>snow_data_sel<span class="sc">$</span>date,</span>
+<span id="cb74-4"><a href="fate-of-precipitation.html#cb74-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">gofs=</span><span class="fu">c</span>(<span class="st">&quot;MAE&quot;</span>, <span class="st">&quot;RMSE&quot;</span>, <span class="st">&quot;PBIAS&quot;</span>),</span>
+<span id="cb74-5"><a href="fate-of-precipitation.html#cb74-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;SWE, mm&quot;</span>, </span>
+<span id="cb74-6"><a href="fate-of-precipitation.html#cb74-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">tick.tstep=</span><span class="st">&quot;months&quot;</span>, <span class="at">cex=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),<span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sno-5"></span>
+<img src="hydr-watres_main_files/figure-html/sno-5-1.png" alt="Simulated and Observed SWE at SNOTEL site 1050 for water year 2009." width="60%" />
+<p class="caption">
+Figure 9.7: Simulated and Observed SWE at SNOTEL site 1050 for water year 2009.
+</p>
+</div>
+<p>Melt is overestimated in the early part of the year and underestimated during the melt season, showing why a single index is not a very robust model. Applying two <em>kd</em> values, one for early to mid snow season and another for later snowmelt could improve the model, but it would make it less useful for using the model in other situations such as increased temperatures.</p>
+</div>
+<div id="snow-model-calibration" class="section level3 hasAnchor" number="9.4.3">
+<h3><span class="header-section-number">9.4.3</span> Snow model calibration<a href="fate-of-precipitation.html#snow-model-calibration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>While manual model calibration can improve the fit, a more complete calibration involves optimization methods that search the parameter space for the optimal combination of parameter values. A useful tool for doing that is the <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/optim.html">optim</a> function, part of the <em>stats</em> package installed with base R.</p>
+<p>Using the optimization package requires establishing a function that should be minimized, where the parameters to be included in the optimization are the first argument. The <em>optim</em> function requires you to explicitly give ranges over which parameters can be varied, via the upper and lower arguments. An example of this follows, where the four main model parameters noted above are used, and the MAE is minimized.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="fate-of-precipitation.html#cb75-1" aria-hidden="true" tabindex="-1"></a>fcn_to_minimize <span class="ot">&lt;-</span> <span class="cf">function</span>(par,datain, obs){</span>
+<span id="cb75-2"><a href="fate-of-precipitation.html#cb75-2" aria-hidden="true" tabindex="-1"></a>  snow_estim <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">snow.sim</span>(<span class="at">DATA=</span>datain, <span class="at">Tmax=</span>par[<span class="dv">1</span>], <span class="at">Tmin=</span>par[<span class="dv">2</span>], <span class="at">kd=</span>par[<span class="dv">3</span>], <span class="at">Tmelt=</span>par[<span class="dv">4</span>])</span>
+<span id="cb75-3"><a href="fate-of-precipitation.html#cb75-3" aria-hidden="true" tabindex="-1"></a>  calib.stats <span class="ot">&lt;-</span> hydroGOF<span class="sc">::</span><span class="fu">gof</span>(snow_estim<span class="sc">$</span>swe_simulated,obs,<span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb75-4"><a href="fate-of-precipitation.html#cb75-4" aria-hidden="true" tabindex="-1"></a>  objective_stat <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(calib.stats[<span class="st">&#39;MAE&#39;</span>,])</span>
+<span id="cb75-5"><a href="fate-of-precipitation.html#cb75-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(objective_stat)</span>
+<span id="cb75-6"><a href="fate-of-precipitation.html#cb75-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb75-7"><a href="fate-of-precipitation.html#cb75-7" aria-hidden="true" tabindex="-1"></a>opt_res <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par=</span><span class="fu">c</span>(<span class="fl">0.5</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),<span class="at">fn=</span>fcn_to_minimize,</span>
+<span id="cb75-8"><a href="fate-of-precipitation.html#cb75-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">lower=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="fl">0.5</span>,<span class="sc">-</span><span class="dv">2</span>),</span>
+<span id="cb75-9"><a href="fate-of-precipitation.html#cb75-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">upper=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">3</span>),</span>
+<span id="cb75-10"><a href="fate-of-precipitation.html#cb75-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method=</span><span class="st">&quot;L-BFGS-B&quot;</span>,</span>
+<span id="cb75-11"><a href="fate-of-precipitation.html#cb75-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">datain=</span>snow_data_sel,</span>
+<span id="cb75-12"><a href="fate-of-precipitation.html#cb75-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">obs=</span>obs)</span>
+<span id="cb75-13"><a href="fate-of-precipitation.html#cb75-13" aria-hidden="true" tabindex="-1"></a><span class="co">#print out optimal parameters - note Tmax and Tmin can be reversed during optimization</span></span>
+<span id="cb75-14"><a href="fate-of-precipitation.html#cb75-14" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Optimal parameters:</span><span class="sc">\n</span><span class="st">Tmax=%.1f</span><span class="sc">\n</span><span class="st">Tmin=%.1f</span><span class="sc">\n</span><span class="st">kd=%.2f</span><span class="sc">\n</span><span class="st">Tmelt=%.1f</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb75-15"><a href="fate-of-precipitation.html#cb75-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">max</span>(opt_res<span class="sc">$</span>par[<span class="dv">1</span>],opt_res<span class="sc">$</span>par[<span class="dv">2</span>]),<span class="fu">min</span>(opt_res<span class="sc">$</span>par[<span class="dv">1</span>],opt_res<span class="sc">$</span>par[<span class="dv">2</span>]),</span>
+<span id="cb75-16"><a href="fate-of-precipitation.html#cb75-16" aria-hidden="true" tabindex="-1"></a>            opt_res<span class="sc">$</span>par[<span class="dv">3</span>],opt_res<span class="sc">$</span>par[<span class="dv">4</span>]))</span>
+<span id="cb75-17"><a href="fate-of-precipitation.html#cb75-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Optimal parameters:</span></span>
+<span id="cb75-18"><a href="fate-of-precipitation.html#cb75-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Tmax=1.0</span></span>
+<span id="cb75-19"><a href="fate-of-precipitation.html#cb75-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Tmin=0.5</span></span>
+<span id="cb75-20"><a href="fate-of-precipitation.html#cb75-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; kd=1.05</span></span>
+<span id="cb75-21"><a href="fate-of-precipitation.html#cb75-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Tmelt=-0.0</span></span></code></pre></div>
+<p>The results using the optimal parameters can be plotted to visualize the simulation.</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="fate-of-precipitation.html#cb76-1" aria-hidden="true" tabindex="-1"></a>snow_estim_opt <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">snow.sim</span>(<span class="at">DATA=</span>snow_data_sel,</span>
+<span id="cb76-2"><a href="fate-of-precipitation.html#cb76-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Tmax=</span><span class="fu">max</span>(opt_res<span class="sc">$</span>par[<span class="dv">1</span>],opt_res<span class="sc">$</span>par[<span class="dv">2</span>]),</span>
+<span id="cb76-3"><a href="fate-of-precipitation.html#cb76-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Tmin=</span><span class="fu">min</span>(opt_res<span class="sc">$</span>par[<span class="dv">1</span>],opt_res<span class="sc">$</span>par[<span class="dv">2</span>]),</span>
+<span id="cb76-4"><a href="fate-of-precipitation.html#cb76-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">kd=</span>opt_res<span class="sc">$</span>par[<span class="dv">3</span>],</span>
+<span id="cb76-5"><a href="fate-of-precipitation.html#cb76-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Tmelt=</span>opt_res<span class="sc">$</span>par[<span class="dv">4</span>])</span>
+<span id="cb76-6"><a href="fate-of-precipitation.html#cb76-6" aria-hidden="true" tabindex="-1"></a>obs <span class="ot">&lt;-</span> snow_data_sel<span class="sc">$</span>snow_water_equivalent</span>
+<span id="cb76-7"><a href="fate-of-precipitation.html#cb76-7" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> snow_estim_opt<span class="sc">$</span>swe_simulated</span>
+<span id="cb76-8"><a href="fate-of-precipitation.html#cb76-8" aria-hidden="true" tabindex="-1"></a>hydroGOF<span class="sc">::</span><span class="fu">ggof</span>(sim, obs, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">dates=</span>snow_data_sel<span class="sc">$</span>date,</span>
+<span id="cb76-9"><a href="fate-of-precipitation.html#cb76-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">gofs=</span><span class="fu">c</span>(<span class="st">&quot;MAE&quot;</span>, <span class="st">&quot;RMSE&quot;</span>, <span class="st">&quot;PBIAS&quot;</span>),</span>
+<span id="cb76-10"><a href="fate-of-precipitation.html#cb76-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;SWE, mm&quot;</span>, </span>
+<span id="cb76-11"><a href="fate-of-precipitation.html#cb76-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">tick.tstep=</span><span class="st">&quot;months&quot;</span>, <span class="at">cex=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),<span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sno-7"></span>
+<img src="hydr-watres_main_files/figure-html/sno-7-1.png" alt="Optimal simulation of SWE at SNOTEL site 1050 for water year 2009." width="60%" />
+<p class="caption">
+Figure 9.8: Optimal simulation of SWE at SNOTEL site 1050 for water year 2009.
+</p>
+</div>
+<p>It is clear that a simple temperature index model cannot capture the snow dynamics at this location, especially during the winter when melt is significantly overestimated.</p>
+</div>
+<div id="estimating-climate-change-impacts-on-snow" class="section level3 hasAnchor" number="9.4.4">
+<h3><span class="header-section-number">9.4.4</span> Estimating climate change impacts on snow<a href="fate-of-precipitation.html#estimating-climate-change-impacts-on-snow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Once a reasonable calibration is obtained, the effect of increasing temperatures on SWE can be simulated by including the <em>deltaT</em> argument in the <em>hydromisc::snow.sim</em> command. Here a 3<span class="math inline">\(^\circ\)</span>C uniform temperature increase is imposed on the optimal parameterization above.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="fate-of-precipitation.html#cb77-1" aria-hidden="true" tabindex="-1"></a>dT <span class="ot">&lt;-</span> <span class="fl">3.0</span> </span>
+<span id="cb77-2"><a href="fate-of-precipitation.html#cb77-2" aria-hidden="true" tabindex="-1"></a>snow_plus3 <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">snow.sim</span>(<span class="at">DATA=</span>snow_data_sel,</span>
+<span id="cb77-3"><a href="fate-of-precipitation.html#cb77-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Tmax=</span><span class="fu">max</span>(opt_res<span class="sc">$</span>par[<span class="dv">1</span>],opt_res<span class="sc">$</span>par[<span class="dv">2</span>]),</span>
+<span id="cb77-4"><a href="fate-of-precipitation.html#cb77-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Tmin=</span><span class="fu">min</span>(opt_res<span class="sc">$</span>par[<span class="dv">1</span>],opt_res<span class="sc">$</span>par[<span class="dv">2</span>]),</span>
+<span id="cb77-5"><a href="fate-of-precipitation.html#cb77-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">kd=</span>opt_res<span class="sc">$</span>par[<span class="dv">3</span>],</span>
+<span id="cb77-6"><a href="fate-of-precipitation.html#cb77-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Tmelt=</span>opt_res<span class="sc">$</span>par[<span class="dv">4</span>],</span>
+<span id="cb77-7"><a href="fate-of-precipitation.html#cb77-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">deltaT =</span> dT)</span>
+<span id="cb77-8"><a href="fate-of-precipitation.html#cb77-8" aria-hidden="true" tabindex="-1"></a>simplusdT <span class="ot">&lt;-</span> snow_plus3<span class="sc">$</span>swe_simulated</span>
+<span id="cb77-9"><a href="fate-of-precipitation.html#cb77-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the results</span></span>
+<span id="cb77-10"><a href="fate-of-precipitation.html#cb77-10" aria-hidden="true" tabindex="-1"></a>dTlegend  <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Simulated&quot;</span><span class="sc">*+</span><span class="dv">3</span><span class="sc">~</span>degree<span class="sc">*</span>C)</span>
+<span id="cb77-11"><a href="fate-of-precipitation.html#cb77-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.Date</span>(snow_data_sel<span class="sc">$</span>date),obs,<span class="at">type =</span> <span class="st">&quot;l&quot;</span>,<span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;SWE (mm)&quot;</span>)</span>
+<span id="cb77-12"><a href="fate-of-precipitation.html#cb77-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">as.Date</span>(snow_estim<span class="sc">$</span>date),sim,<span class="at">lty=</span><span class="dv">2</span>,<span class="at">col=</span><span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb77-13"><a href="fate-of-precipitation.html#cb77-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">as.Date</span>(snow_estim<span class="sc">$</span>date),simplusdT,<span class="at">lty=</span><span class="dv">3</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb77-14"><a href="fate-of-precipitation.html#cb77-14" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Observed&quot;</span>, <span class="st">&quot;Simulated&quot;</span>,dTlegend),</span>
+<span id="cb77-15"><a href="fate-of-precipitation.html#cb77-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;black&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>))</span>
+<span id="cb77-16"><a href="fate-of-precipitation.html#cb77-16" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sno-8"></span>
+<img src="hydr-watres_main_files/figure-html/sno-8-1.png" alt="Observed SWE and simulated with observed meteorology and increased temperatures." width="60%" />
+<p class="caption">
+Figure 9.9: Observed SWE and simulated with observed meteorology and increased temperatures.
+</p>
+</div>
+</div>
+</div>
+<div id="watershed-analysis" class="section level2 hasAnchor" number="9.5">
+<h2><span class="header-section-number">9.5</span> Watershed analysis<a href="fate-of-precipitation.html#watershed-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Whether precipitation falls as rain or snow, how much is absorbed by plants, consumed by evapotranspiration, and what is left to become runoff, is all determined by watershed characteristics. This can include:</p>
+<ul>
+<li>Watershed area</li>
+<li>Slope of terrain</li>
+<li>Elevation variability (a hypsometric curve)</li>
+<li>Soil types</li>
+<li>Land cover</li>
+</ul>
+<p>Collecting this information begins with obtaining a digital elevation model for an area, identifying any key point or points on a stream (a watershed outlet), and then delineating the area that drains to that point. This process of watershed delineation is often done with GIS software like ArcGIS or QGIS. The R package <a href="https://www.whiteboxgeo.com/manual/wbt_book/r_interface.html">WhiteboxTools</a> provides capabilities for advanced terrain analysis in R.</p>
+<p>Demonstrations of the use of these tools for a watershed are in the online book <a href="https://vt-hydroinformatics.github.io/">Hydroinformatics at VT</a> by JP Gannon. In particular, the chapters on <a href="https://vt-hydroinformatics.github.io/rgeoraster.html">mapping a stream network</a> and <a href="https://vt-hydroinformatics.github.io/rgeowatersheds.html">delineating a watershed</a> are excellent resources for exploring these capabilities in R.</p>
+<p>For watersheds in the U.S., watersheds, stream networks, and attributes of both can be obtained and viewed using <a href="https://cran.r-project.org/package=nhdplusTools">nhdplusTools</a>. Land cover and soil information can be obtained using the <a href="https://cran.r-project.org/package=FedData">FedData package</a>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="the-hydrologic-cycle-and-precipitation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="designing-for-floods-flood-hydrology.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
