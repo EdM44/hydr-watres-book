@@ -72,6 +72,7 @@ eq:trapg3
 eq:man-2
 eq:man-3
 exm:oc-1
+fig:manningt-plot
 exm:oc-2
 eq:topt1
 eq:topt2
@@ -85,8 +86,11 @@ eq:man-c
 exm:circx1
 eq:spen1
 eq:spen2
+fig:manningt-4
+fig:manningt-5
 fig:gvfcurves
 fig:gvfcurves2
+fig:gvffig1
 eq:gvf1
 eq:man-gvf
 exm:gvfx1
@@ -106,6 +110,7 @@ fig:pipe-bend-1
 eq:newton-1
 eq:momentum-1
 fig:pipe-bend-2
+exm:momentum-1-1
 fig:pipe-bend-cv
 eq:momentum-ex1
 eq:momentum-ex2

@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-05-01" />
+<meta name="date" content="2023-05-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -577,7 +577,7 @@ Figure 8.7: Median concecutive dry days (cdd) and wet days (cwd) for each water 
 Figure 8.8: Intensity-duration-frequency (IDF) curves from the NOAA PFDS.
 </p>
 </div>
-<p>The calculations performed to produce the IDF curves use decades of daily data, because many years are needed to estimate the frequency with which an event might occur. As a demonstration, however, a single year can be used to illustrate the relationship between intensity and duration, which for durations longer than about 2 hours <span class="citation">(<a href="references.html#ref-mccuen_hydrologic_2016" role="doc-biblioref">McCuen 2016</a>)</span> can be expressed as in Equation <a href="the-hydrologic-cycle-and-precipitation.html#eq:d-f">(8.1)</a>.
+<p>The calculations performed to produce the IDF curves use decades of daily data, because many years are needed to estimate the frequency with which an event might occur. As a demonstration, however, a single year can be used to illustrate the relationship between intensity and duration, which for durations longer than about 2 hours <span class="citation">(<a href="references.html#ref-mccuen_hydrologic_2016" role="doc-biblioref">McCuen, 2016</a>)</span> can be expressed as in Equation <a href="the-hydrologic-cycle-and-precipitation.html#eq:d-f">(8.1)</a>.
 <span class="math display" id="eq:d-f">\[\begin{equation}
   i = aD^b
     \tag{8.1}
@@ -626,7 +626,7 @@ That would allow the creation of IDF curves for a point.</p>
 </div>
 <div id="precipitation-gauge-consistency-double-mass-curves" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> Precipitation gauge consistency – double mass curves<a href="the-hydrologic-cycle-and-precipitation.html#precipitation-gauge-consistency-double-mass-curves" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The method of using double mass curves to identify changes in an obervation method (such as new instrumentation or a change of location) can be applied to precipitation gauges or any other type of measurement. This method is demonstrated with an example from the U.S. Geological survey <span class="citation">(<a href="references.html#ref-searcy_double-mass_1960" role="doc-biblioref">Searcy and Hardison 1960</a>)</span>.</p>
+<p>The method of using double mass curves to identify changes in an obervation method (such as new instrumentation or a change of location) can be applied to precipitation gauges or any other type of measurement. This method is demonstrated with an example from the U.S. Geological survey <span class="citation">(<a href="references.html#ref-searcy_double-mass_1960" role="doc-biblioref">Searcy &amp; Hardison, 1960</a>)</span>.</p>
 <p>The first step is to compile data for a gauge (or better, a set of gauges) that are known to be unperturbed (Station A in the sample data set), and for a suspect gauge though to have experienced a change (Station X is this case).</p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb64-1" aria-hidden="true" tabindex="-1"></a>annual_data <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span>precip_double_mass</span>
 <span id="cb64-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb64-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(annual_data, <span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span> </span>
@@ -858,7 +858,7 @@ Figure 8.10: A double mass curve.
 </div>
 <p>The break in slope between 1930 and 1931 appears clear. This should checked with records for the station to verify whether changes did occur at that time. If the data from Station X are to be used to fill other records or estimate long-term averages, the inconsistency needs to be corrected.</p>
 <p>One method to highlight the year at which the break occurs is to plot the residuals from a best fit line to the cumulative data from the two stations, as illustrated by the Food and Agriculture Orgainization <a href="https://www.fao.org/3/x0490e/x0490e0l.htm">FAO</a>.
-<span class="citation">(<a href="references.html#ref-allen_crop_1998" role="doc-biblioref">Allen and United Nations 1998</a>)</span></p>
+<span class="citation">(<a href="references.html#ref-allen_crop_1998" role="doc-biblioref">Allen &amp; United Nations, 1998</a>)</span></p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb66-1" aria-hidden="true" tabindex="-1"></a>linfit <span class="ot">=</span> <span class="fu">lm</span>(sum_X <span class="sc">~</span> sum_A, <span class="at">data =</span> annual_sum)</span>
 <span id="cb66-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>annual_sum<span class="sc">$</span>year,linfit<span class="sc">$</span>residuals, <span class="at">xlab =</span> <span class="st">&quot;Year&quot;</span>,<span class="at">ylab =</span> <span class="st">&quot;Residual of regression&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-19"></span>
@@ -910,7 +910,7 @@ Figure 8.13: Some basic precipitation interpolation methods, from the U.S. Natio
 </p>
 </div>
 <p>With the advent of geographical information system (GIS) software, manual interpolation is not used. Rather, more advanced spatial analysis is performed to interpolate precipitation onto a continuous grid, where the uncertainty (or skill) of different methods can be assessed. Spatial analysis methods to do this are outlined in many other references, such as <a href="https://rspatial.org/analysis/4-interpolation.html">Spatial Data Science</a> and the related book <a href="https://r-spatial.org/book/">Spatial Data Science with applications in R</a>, or the reference <a href="https://r.geocompx.org/">Geocomputation with R</a>.
-<span class="citation">(<a href="references.html#ref-lovelace_geocomputation_2019" role="doc-biblioref">Lovelace, Nowosad, and Münchow 2019</a>; <a href="references.html#ref-pebesma_spatial_2023" role="doc-biblioref">Pebesma and Bivand 2023</a>)</span></p>
+<span class="citation">(<a href="references.html#ref-lovelace_geocomputation_2019" role="doc-biblioref">Lovelace et al., 2019</a>; <a href="references.html#ref-pebesma_spatial_2023" role="doc-biblioref">Pebesma &amp; Bivand, 2023</a>)</span></p>
 <p>There are also many sources of precipitation data already interpolated to a regular grid. the <a href="https://cran.r-project.org/package=geodata">geodata package</a> provides access to many data sets, including the <a href="https://worldclim.org">Worldclim</a> biophysical data. Another source of global precipitation data, available at daily to monthly scales, is the <a href="https://www.chc.ucsb.edu/data/chirps">CHIRPS</a> data set, which has been widely used in many studies. An example of obtaining and plotting average annual precipitation over Santa Clara County is illustrated below.</p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load precipitation in mm, already cropped to cover most of California</span></span>
 <span id="cb68-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb68-2" aria-hidden="true" tabindex="-1"></a>datafile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;prcp_cropped.tif&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>

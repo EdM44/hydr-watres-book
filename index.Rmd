@@ -6,9 +6,10 @@ author:
     Santa Clara University](https://www.scu.edu/engineering/academic-programs/engineering/ce/)"
     
 date: "`r Sys.Date()`"
-output: pdf_document
+output: html_document
 documentclass: book
 bibliography: "ed-bookdown.bib"
+csl: water-resources-research.csl
 description: "A compilation of fluid mechanics, hydraulics, and water resources \nengineering
   exercises using R.\n"
 link-citations: yes

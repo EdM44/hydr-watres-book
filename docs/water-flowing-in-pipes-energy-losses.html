@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-05-01" />
+<meta name="date" content="2023-05-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -450,12 +450,12 @@ This independence of <em>f</em> with varying <em>Re</em> values is visible in th
 </div>
 <div id="dwapprox" class="section level3 hasAnchor" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> Solving for headloss using an empirical approximation<a href="water-flowing-in-pipes-energy-losses.html#dwapprox" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>A shortcut that can be used to avoid iterating to find the friction factor is to use an approximation to the Colebrook equation that can be solved explicitly. One example is the Haaland equation <a href="water-flowing-in-pipes-energy-losses.html#eq:haal">(4.6)</a> <span class="citation">(<a href="references.html#ref-haaland_simple_1983" role="doc-biblioref">Haaland 1983</a>)</span>.
+<p>A shortcut that can be used to avoid iterating to find the friction factor is to use an approximation to the Colebrook equation that can be solved explicitly. One example is the Haaland equation <a href="water-flowing-in-pipes-energy-losses.html#eq:haal">(4.6)</a> <span class="citation">(<a href="references.html#ref-haaland_simple_1983" role="doc-biblioref">Haaland, 1983</a>)</span>.
 <span class="math display" id="eq:haal">\[\begin{equation}
   \frac{1}{\sqrt{f}} = -1.8\log\left(\left(\frac{\frac{k_s}{D}}{3.7}\right)^{1.11}+\frac{6.9}{Re}\right)
   \tag{4.6}
 \end{equation}\]</span></p>
-<p>For ordinary pipe flow conditions in water pipes, Equation <a href="water-flowing-in-pipes-energy-losses.html#eq:haal">(4.6)</a> is accurate to within 1.5% of the Colebrook equation. There are many other empirical equations, one common one being that of Swamee and Jain <span class="citation">(<a href="references.html#ref-swamee_explicit_1976" role="doc-biblioref">Swamee and Jain 1976</a>)</span>, shown in Equation <a href="water-flowing-in-pipes-energy-losses.html#eq:swam1">(4.7)</a>.
+<p>For ordinary pipe flow conditions in water pipes, Equation <a href="water-flowing-in-pipes-energy-losses.html#eq:haal">(4.6)</a> is accurate to within 1.5% of the Colebrook equation. There are many other empirical equations, one common one being that of Swamee and Jain <span class="citation">(<a href="references.html#ref-swamee_explicit_1976" role="doc-biblioref">Swamee &amp; Jain, 1976</a>)</span>, shown in Equation <a href="water-flowing-in-pipes-energy-losses.html#eq:swam1">(4.7)</a>.
 <span class="math display" id="eq:swam1">\[\begin{equation}
   \frac{1}{\sqrt{f}} = -2\log\left(\frac{\frac{k_s}{D}}{3.7}+\frac{5.74}{Re^{0.9}}\right)
   \tag{4.7}

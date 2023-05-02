@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-05-01" />
+<meta name="date" content="2023-05-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -349,7 +349,7 @@ Figure 11.1: Yearly surface temperature compared to the 20th-century average fro
 <p>The <em>hydromisc</em> package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on <a href="https://github.com/EdM44/hydromisc">the github site for the package</a>.</p>
 <div id="perturbing-a-system" class="section level2 hasAnchor" number="11.1">
 <h2><span class="header-section-number">11.1</span> Perturbing a system<a href="sustainability-in-design-planning-for-change.html#perturbing-a-system" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>when a system is perturbed it can respond in many ways. A useful classification of these was developed by <span class="citation">(<a href="references.html#ref-marshall_framing_2005" role="doc-biblioref">Marshall and Toffel 2005</a>)</span>. Figure <a href="sustainability-in-design-planning-for-change.html#fig:pert1">11.2</a> is an adaptation of Figure 2 from that paper.</p>
+<p>when a system is perturbed it can respond in many ways. A useful classification of these was developed by <span class="citation">(<a href="references.html#ref-marshall_framing_2005" role="doc-biblioref">Marshall &amp; Toffel, 2005</a>)</span>. Figure <a href="sustainability-in-design-planning-for-change.html#fig:pert1">11.2</a> is an adaptation of Figure 2 from that paper.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:pert1"></span>
 <img src="images/perturbed_system.png" alt="Pathways of recovery or degradation a system may take after initial perturbation." width="50%" />
 <p class="caption">
@@ -438,7 +438,7 @@ Figure 11.5: A shift in phosphorus concentrations (source: USGS Scientific Inves
 Figure 11.6: A trend in annual peak streamflow. (source: USGS Professional Paper 1869, <a href="https://doi.org/10.3133/pp1869" class="uri">https://doi.org/10.3133/pp1869</a>).
 </p>
 </div>
-Before performing calculations related to trend significance, refer to Chapter 4 of <a href="https://pubs.er.usgs.gov/publication/tm4A3">Statistical Methods in Water Resources</a> <span class="citation">(<a href="references.html#ref-helsel_dr_statistical_2020" role="doc-biblioref">Helsel, D.R. et al. 2020</a>)</span> to review the relationship between hypothesis testing and statistical significance. Figure <a href="sustainability-in-design-planning-for-change.html#fig:hypo1">11.7</a> from that reference illustrates this.
+Before performing calculations related to trend significance, refer to Chapter 4 of <a href="https://pubs.er.usgs.gov/publication/tm4A3">Statistical Methods in Water Resources</a> <span class="citation">(<a href="references.html#ref-helsel_dr_statistical_2020" role="doc-biblioref">Helsel, D.R. et al., 2020</a>)</span> to review the relationship between hypothesis testing and statistical significance. Figure <a href="sustainability-in-design-planning-for-change.html#fig:hypo1">11.7</a> from that reference illustrates this.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:hypo1"></span>
 <img src="images/hypothesis_tests.png" alt="Four possible results of hypothesis testing. (source: Helsel et al., 2020)." width="50%" />
 <p class="caption">
@@ -576,7 +576,7 @@ Figure 11.10: Trends of SWE at Four Trees station, CA.
   F\left(x;\mu,\sigma,\xi\right)=exp\left[-\left(1+\xi\left(\frac{x-\mu}{\sigma}\right)\right)^{-1/\xi}\right]
   \tag{11.4}
 \end{equation}\]</span>
-The three parameters <span class="math inline">\(\xi\)</span>, <span class="math inline">\(\mu\)</span>, and <span class="math inline">\(\sigma\)</span> represent a shape, location, and scale of the distribution function. These distribution parameter can be determined using observations of extremes over a long period or over different periods of record, much as the mean, standard, deviation, and skew are used in flood frequency calculations. The distribution can then be used to estimate the probability associated with a specific magnitude event, or conversely the event magnitude associated with a defined risk level. An excellent example of that is from <span class="citation">Tebaldi, Strauss, and Zervas (<a href="references.html#ref-tebaldi_modelling_2012" role="doc-biblioref">2012</a>)</span> who analyzed projected extreme sea level changes through the 21st century.</p>
+The three parameters <span class="math inline">\(\xi\)</span>, <span class="math inline">\(\mu\)</span>, and <span class="math inline">\(\sigma\)</span> represent a shape, location, and scale of the distribution function. These distribution parameter can be determined using observations of extremes over a long period or over different periods of record, much as the mean, standard, deviation, and skew are used in flood frequency calculations. The distribution can then be used to estimate the probability associated with a specific magnitude event, or conversely the event magnitude associated with a defined risk level. An excellent example of that is from <span class="citation">Tebaldi et al. (<a href="references.html#ref-tebaldi_modelling_2012" role="doc-biblioref">2012</a>)</span> who analyzed projected extreme sea level changes through the 21st century.</p>
 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:slrpk-1"></span>
 <img src="images/erl405394f4_online.jpg" alt="Projected return periods by 2050 for floods that are 100 yr events during 1959–2008, Tebaldi et al., 2012" width="60%" />
@@ -584,7 +584,7 @@ The three parameters <span class="math inline">\(\xi\)</span>, <span class="math
 Figure 11.11: Projected return periods by 2050 for floods that are 100 yr events during 1959–2008, <a href="https://iopscience.iop.org/article/10.1088/1748-9326/7/1/014032">Tebaldi et al., 2012</a>
 </p>
 </div>
-<p>An example using the GEV with sea level data is illustrated below. The <span class="citation">Tebaldi, Strauss, and Zervas (<a href="references.html#ref-tebaldi_modelling_2012" role="doc-biblioref">2012</a>)</span> paper uses the R package <a href="https://cran.r-project.org/package=extRemes">extRemes</a>, which we will use here. The same package has been used to study extreme wind, precipitation, temperature, streamflow, and other events, so it is a very versatile and widely-used package. Install the package if it is not already installed.</p>
+<p>An example using the GEV with sea level data is illustrated below. The <span class="citation">Tebaldi et al. (<a href="references.html#ref-tebaldi_modelling_2012" role="doc-biblioref">2012</a>)</span> paper uses the R package <a href="https://cran.r-project.org/package=extRemes">extRemes</a>, which we will use here. The same package has been used to study extreme wind, precipitation, temperature, streamflow, and other events, so it is a very versatile and widely-used package. Install the package if it is not already installed.</p>
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="sustainability-in-design-planning-for-change.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&#39;extRemes&#39;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&#39;extRemes&#39;</span>)</span>
 <span id="cb109-2"><a href="sustainability-in-design-planning-for-change.html#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;extRemes&#39; was built under R version 4.2.3</span></span>
 <span id="cb109-3"><a href="sustainability-in-design-planning-for-change.html#cb109-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;Lmoments&#39; was built under R version 4.2.2</span></span></code></pre></div>

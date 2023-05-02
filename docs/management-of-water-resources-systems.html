@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-05-01" />
+<meta name="date" content="2023-05-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -346,7 +346,7 @@ Figure 12.1: Lookout Point Dam on the Middle Fork Willamette River <a href="http
 </p>
 </div>
 <p>Water resources systems tend to provide a variety of benefits, such as flood control, hydroelectric power, recreation, navigation, and irrigation. Each of these provides a benefit that can quantified, and there are also associated costs that can be quantified. A challenge engineers face is how to manage a system to balance the different uses. Mathematical optimization, which can take many forms, is employed to do this.</p>
-<p>Introductions to linear programming and other forms of optimization are plentiful. for a background on the concepts and theories, refer to other references. An excellent, comprehensive reference is Water Resource Systems Planning and Management <span class="citation">(<a href="references.html#ref-loucks_water_2017" role="doc-biblioref">Loucks and Van Beek 2017</a>)</span>, <a href="https://link.springer.com/book/10.1007/978-3-319-44234-1">freely available online</a>.</p>
+<p>Introductions to linear programming and other forms of optimization are plentiful. for a background on the concepts and theories, refer to other references. An excellent, comprehensive reference is Water Resource Systems Planning and Management <span class="citation">(<a href="references.html#ref-loucks_water_2017" role="doc-biblioref">Loucks &amp; Van Beek, 2017</a>)</span>, <a href="https://link.springer.com/book/10.1007/978-3-319-44234-1">freely available online</a>.</p>
 <p>What follows is a demonstration of using some of these optimization methods, but no recap of the theory is provided here. What follows uses linear systems, where the objective function and constraints are all linear functions of the decision variables.</p>
 <p>The <em>hydromisc</em> package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on <a href="https://github.com/EdM44/hydromisc">the github site for the package</a>.</p>
 <div id="a-simple-linear-system-with-two-decision-variables" class="section level2 hasAnchor" number="12.1">
@@ -547,7 +547,7 @@ multiplier
 </div>
 <div id="more-complex-linear-programming-reservoir-operation" class="section level2 hasAnchor" number="12.2">
 <h2><span class="header-section-number">12.2</span> More complex linear programming: reservoir operation<a href="management-of-water-resources-systems.html#more-complex-linear-programming-reservoir-operation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Water resources systems are far too complicated to be summarized by two decision variables and only a few constraints, as above. Example <a href="management-of-water-resources-systems.html#exm:ex-lmr">12.2</a> demonstrate how the same procedure can be applied to a slightly more complex system. This is a reformulation of an example from the same text as referenced above <span class="citation">(<a href="references.html#ref-wurbs_water_2002" role="doc-biblioref">Wurbs and James 2002</a>)</span>.</p>
+<p>Water resources systems are far too complicated to be summarized by two decision variables and only a few constraints, as above. Example <a href="management-of-water-resources-systems.html#exm:ex-lmr">12.2</a> demonstrate how the same procedure can be applied to a slightly more complex system. This is a reformulation of an example from the same text as referenced above <span class="citation">(<a href="references.html#ref-wurbs_water_2002" role="doc-biblioref">Wurbs &amp; James, 2002</a>)</span>.</p>
 <div class="example">
 <p><span id="exm:ex-lmr" class="example"><strong>Example 12.2  </strong></span>A river flows into a storage reservoir where the operator must decide how much water to release each month. For simplicity, inflows will by described by a fixed sequence of 12 monthly flows. There are two downstream needs to satisfy: hydropower generation and irrigation diversions. Benefits are derived from these two uses: revenues are $ 800 per 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span> of water diverted for irrigation, and $ 350 per 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3\)</span> for hydropower generation. The objective is to determine the releases that will maximize the total revenue.</p>
 There are physical characteristics of the system that provide some constraints, and others are derived from basic physics, such as the conservation of mass. A schematic of the system is shown in Figure <a href="management-of-water-resources-systems.html#fig:lmr-f1">12.5</a>.

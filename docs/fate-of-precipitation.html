@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-05-01" />
+<meta name="date" content="2023-05-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -351,7 +351,7 @@ The landscape (land cover and topography) and the time scale of study determine 
 Figure 9.1: Rain interception by John Robert McPherson, <a href="https://commons.wikimedia.org/wiki/Category:CC-BY-SA-4.0">CC BY-SA 4</a>, via Wikimedia Commons
 </p>
 </div>
-<p>Interception of rainfall is generally small during individual storms (0.5-2 mm), so it is often ignored, or lumped in with other abstractions, for analyses of flood hydrology. For areas characterized by low intensity rainfall and heavy vegetation, interception can account for a larger portion of the rainfall (for example, up to 25% of annual rainfall in the Pacific Northwest) <span class="citation">(<a href="references.html#ref-mccuen_hydrologic_2016" role="doc-biblioref">McCuen 2016</a>)</span>.</p>
+<p>Interception of rainfall is generally small during individual storms (0.5-2 mm), so it is often ignored, or lumped in with other abstractions, for analyses of flood hydrology. For areas characterized by low intensity rainfall and heavy vegetation, interception can account for a larger portion of the rainfall (for example, up to 25% of annual rainfall in the Pacific Northwest) <span class="citation">(<a href="references.html#ref-mccuen_hydrologic_2016" role="doc-biblioref">McCuen, 2016</a>)</span>.</p>
 </div>
 <div id="infiltration" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Infiltration<a href="fate-of-precipitation.html#infiltration" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -405,7 +405,7 @@ Figure 9.3: Schematic of ET, from <a href="https://cimis.water.ca.gov">CIMIS</a>
 - Potential ET, <span class="math inline">\(ET_p\)</span> or <span class="math inline">\(PET\)</span>: essentially the same as the rate that water would evaporate from a free water surface.
 - Reference crop ET, <span class="math inline">\(ET_{ref}\)</span> or <span class="math inline">\(ET_0\)</span>: the rate water evaporates from a well-watered reference crop, usually grass of a standard height.
 - Actual ET, <span class="math inline">\(ET\)</span>: this is the water used by a crop or other vegetation, usually calculated by adjusting the <span class="math inline">\(ET_0\)</span> term by a crop coefficient that accounts for factors such as the plant height, growth stage, and soil exposure.</p>
-<p>Estimating <span class="math inline">\(ET_0\)</span> can be as uncomplicated as using the Thornthwaite equation, which depends only on mean monthly temperatures, to the Penman-Monteith equation, which includes solar and longwave radiation, wind and humidity effects, and reference crop (grass) characteristics. Inclusion of more complexity, especially where observations can supply the needed input, produces more reliable estimates of <span class="math inline">\(ET_0\)</span>.One of the most common implementations of the Penman-Monteith equation is the version of the FAO (<a href="https://www.fao.org/3/X0490E/x0490e00.htm">FAO Irrigation and drainage paper 56</a>, or FAO56) <span class="citation">(<a href="references.html#ref-allen_crop_1998" role="doc-biblioref">Allen and United Nations 1998</a>)</span>. Refer to FAO56 for step-by-step instructions on determining each term in the Penman-Monteith equation, Equation <a href="fate-of-precipitation.html#eq:pm1">(9.6)</a>.
+<p>Estimating <span class="math inline">\(ET_0\)</span> can be as uncomplicated as using the Thornthwaite equation, which depends only on mean monthly temperatures, to the Penman-Monteith equation, which includes solar and longwave radiation, wind and humidity effects, and reference crop (grass) characteristics. Inclusion of more complexity, especially where observations can supply the needed input, produces more reliable estimates of <span class="math inline">\(ET_0\)</span>.One of the most common implementations of the Penman-Monteith equation is the version of the FAO (<a href="https://www.fao.org/3/X0490E/x0490e00.htm">FAO Irrigation and drainage paper 56</a>, or FAO56) <span class="citation">(<a href="references.html#ref-allen_crop_1998" role="doc-biblioref">Allen &amp; United Nations, 1998</a>)</span>. Refer to FAO56 for step-by-step instructions on determining each term in the Penman-Monteith equation, Equation <a href="fate-of-precipitation.html#eq:pm1">(9.6)</a>.
 <span class="math display" id="eq:pm1">\[\begin{equation}
   \lambda~ET~=~\frac{\Delta\left(R_n-G\right)+\rho_ac_p\frac{\left(e_s-e_a\right)}{r_a}}{\Delta+\gamma\left(1+\frac{r_s}{r_a}\right)}
     \tag{9.6}

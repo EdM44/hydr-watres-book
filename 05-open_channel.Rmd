@@ -141,7 +141,10 @@ cat(sprintf("Normal Depth: %.3f ft\n", ans$root))
 ```
 
 Functions can usually be given multiple values as input, returning the corresponding values of output. this allows plots to be created to show, for example, how the left side of Equation \@ref(eq:man-3) varies with different values of depth, _y_.
-```{r manningt-plot, out.width="60%", fig.align="center"}
+
+(ref:figmant-3) Variation of the left side of Equation \@ref(eq:man-3) with _y_ for Example \@ref(exm:oc-1).
+
+```{r manningt-plot, out.width="60%", fig.align="center", fig.cap='(ref:figmant-3)'}
 ys <- seq(0.1, 5, 0.1)
 plot(ys,yfun(ys), type='l', xlab = "y, ft", ylab = "Function to solve for zero")
 abline(h=0)
@@ -304,8 +307,11 @@ For a **trapezoidal** channel, critical flow conditions occur as described by Eq
 \end{equation}
 where $y_c$ indicates critical flow depth.
 
-This is important for understanding what may happen to the water surface when flow encounters an obstacle or transition. For the channel of Example \@ref(exm:manningtopt), the diagram is 
-```{r manningt-4, fig.width = 4, fig.asp = 1.0}
+This is important for understanding what may happen to the water surface when flow encounters an obstacle or transition. For the channel of Example \@ref(exm:manningtopt), the diagram is shown in Figure \@ref(fig:manningt-4).
+
+(ref:figmant-4) A specific energy diagram for the conditions of Example \@ref(exm:manningtopt).
+
+```{r manningt-4, fig.width = 4, fig.asp = 1.0, fig.align="center", fig.cap='(ref:figmant-4)'}
 hydraulics::spec_energy_trap( Q = 360, b = 20, m = 1, scale = 4, units = "Eng" )
 ```
 
@@ -314,8 +320,11 @@ $$E=y+\frac{V^2}{2g}=3.0+\frac{5.22^2}{2*32.2}=3.42 ft$$
 
 If the channel bottom had an abrupt rise of $E-E_c=3.42-3.03=0.39 ft$ critical depth would occur over the hump. A rise of anything greater than that would cause damming to occur. Once flow over a hump is critical, downstream of the hump the flow will be in supercritical conditions, flowing at the _alternate depth_.
 
-The specific energy for a given depth _y_ and alternate depth can be added to the plot by including an argument for depth, y.
-```{r manningt-5, fig.width = 4, fig.asp = 1.0}
+The specific energy for a given depth _y_ and alternate depth can be added to the plot by including an argument for depth, _y_, as in Figure \@ref(fig:manningt-5).
+
+(ref:figmant-5) A specific energy diagram for the conditions of Example \@ref(exm:manningtopt) with an additional _y_ value added.
+
+```{r manningt-5, fig.width = 4, fig.asp = 1.0, fig.align="center", fig.cap='(ref:figmant-5)'}
 hydraulics::spec_energy_trap( Q = 360, b = 20, m = 1, scale = 4, y=3.0, units = "Eng" )
 ```
 
@@ -345,7 +354,7 @@ If the water surface passes through critical depth (from supercritical to subcri
 ### The direct step method
 
 The direct step method looks at two cross sections in a channel where depths, $y_1$ and $y_2$ are defined. 
-```{r gvffig1, out.width='60%', echo=FALSE, fig.align="center"}
+```{r gvffig1, out.width='60%', echo=FALSE, fig.align="center", fig.cap="A gradually varied flow example."}
   knitr::include_graphics("images/direct-step.png")
 ```
 
