@@ -8,9 +8,9 @@ knitr::include_graphics('images/Lookout_Point_Dam.jpg')
 
 Water resources systems tend to provide a variety of benefits, such as flood control, hydroelectric power, recreation, navigation, and irrigation. Each of these provides a benefit that can quantified, and there are also associated costs that can be quantified. A challenge engineers face is how to manage a system to balance the different uses. Mathematical optimization, which can take many forms, is employed to do this.
 
-Introductions to linear programming and other forms of optimization are plentiful. for a background on the concepts and theories, refer to other references. An excellent, comprehensive reference is Water Resource Systems Planning and Management [@loucks_water_2017], [freely available online](https://link.springer.com/book/10.1007/978-3-319-44234-1).
+Introductions to linear programming and other forms of optimization are plentiful. For a background on the concepts and theories, refer to other references. An excellent, comprehensive reference is Water Resource Systems Planning and Management [@loucks_water_2017], [freely available online](https://link.springer.com/book/10.1007/978-3-319-44234-1).
 
-What follows is a demonstration of using some of these optimization methods, but no recap of the theory is provided here. What follows uses linear systems, where the objective function and constraints are all linear functions of the decision variables.
+What follows is a demonstration of using some of these optimization methods, but no recap of the theory is provided. The examples here use linear systems, where the objective function and constraints are all linear functions of the decision variables.
 
 The _hydromisc_ package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on [the github site for the package](https://github.com/EdM44/hydromisc).
 
@@ -18,7 +18,7 @@ The _hydromisc_ package will need to be installed to access some of the data use
 
 ### Overview of problem formulation
 
-One of the simplest systems to optimize is a linear system of two variables, which means a graphical solution in 2-d is possible. This first demonstration is one example, a reworking of a textbook example [-@wurbs_water_2002].
+One of the simplest systems to optimize is a linear system of two variables, which means a graphical solution in 2-d is possible. This first demonstration is one example, a reworking of a textbook example [@wurbs_water_2002].
 
 To set up a solution, three things must be described:
 
@@ -29,12 +29,12 @@ To set up a solution, three things must be described:
 ### Setting up an example
 
 ::: {.example #ex-lm1}
-To supply water to a community, there are two sources of water available with different levels of total dissolved solids (TDS): groundwater (TDS=980 mg/l) and surface water from a reservoir (TDS=100 mg/l). The first two constraints are that a total demand of water of 7,500 $m^3$must be met, and the delivered water (mixed groundwater and reservoir supplies) can have a maximum TDS of 500 mg/l. This is illustrated in Figure \@ref(fig:ls-1).
+To supply water to a community, there are two sources of water available with different levels of total dissolved solids (TDS): groundwater (TDS=980 mg/l) and surface water from a reservoir (TDS=100 mg/l). The first two constraints are that a total demand of water of 7,500 m$^3$must be met, and the delivered water (mixed groundwater and reservoir supplies) can have a maximum TDS of 500 mg/l. This is illustrated in Figure \@ref(fig:ls-1).
 ```{r ls-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='A schematic of the system for this example.'}
 knitr::include_graphics('images/optim_2_variable.png')
 ```
 
-Two additional constraints are that groundwater withdrawal cannot exceed 4,000 $m^3$ and reservoir withdrawals cannot exceed 7,500 $m^3$. There are two decision variables: X1=groundwater and X2=reservoir supply. The objective is to minimize the reservoir withdrawal while meeting the constraints.
+Two additional constraints are that groundwater withdrawal cannot exceed 4,000 m$^3$ and reservoir withdrawals cannot exceed 7,500 m$^3$. There are two decision variables: X1=groundwater and X2=reservoir supply. The objective is to minimize the reservoir withdrawal while meeting the constraints.
 :::
 The TDS constraint is reorganized as:
 $$\frac{800~X1+100~X2}{X1+X2}\le 400~~~or~~~ 400~X1-300~X2\le 0$$
@@ -44,6 +44,8 @@ X1+X2 \ge 7500 \\
 X1 \le 4000 \\
 X2 \le 7500
 \end{align*}
+
+Notice that the contraints are all expressed as linear functions of the decision variables (left side of the equations) and a value on the right.
 
 ### Graphing the solution space
 
@@ -61,19 +63,19 @@ polygon(x = c(0,4000,4000,3214.3,3214.3,0),
 grid()
 ```
 
-In the feasible region, it is clear that the minimum reservoir supply, X2, would be a little larger than 4,000 $m^3$.
+In the feasible region, it is clear that the minimum reservoir supply, X2, would be a little larger than 4,000 m$^3$.
 
 ### Setting up the problem in R
 
-An _R_ package to use for solving linear programming problems is the [lpSolveAPI](https://cran.r-project.org/package=lpSolveAPI) package. Install that if necessary, and also install the [knitr](https://cran.r-project.org/package=knitr) and  [kableExtra](https://cran.r-project.org/package=kableExtra) packages, since it is very useful for printing the many tables that linear programming involves.
+An _R_ package useful for solving linear programming problems is the [lpSolveAPI](https://cran.r-project.org/package=lpSolveAPI) package. Install that if necessary, and also install the [knitr](https://cran.r-project.org/package=knitr) and  [kableExtra](https://cran.r-project.org/package=kableExtra) packages, since thet are very useful for printing the many tables that linear programming involves.
 
-Begin by creating an empty linear model. The (0,2) means zero constraints (they’ll be added later) and 2 decision variables. The next two lines just assign names to the decision variables. Because we will use many functions of the _lpSolveAPI_ package, load the library first. For convenience, _kableExtra_ package too.
+Begin by creating an empty linear model. The (0,2) means zero constraints (they’ll be added later) and 2 decision variables. The next two lines just assign names to the decision variables. Because we will use many functions of the _lpSolveAPI_ package, load the library first. Load the _kableExtra_ package too.
 ```{r lm-3, message=FALSE}
 library(lpSolveAPI)
 library(kableExtra)
-example.lp <- lpSolveAPI::make.lp(0,2)
-ColNames <- c("X1","X2")
-colnames(example.lp) <- ColNames
+example.lp <- lpSolveAPI::make.lp(0,2)     # 0 constraints and 2 decision variables
+ColNames <- c("X1","X2")                   
+colnames(example.lp) <- ColNames           # Set the names of the decision variables
 ```
 
 Now set up the objective function. Minimization is the default goal of this R function, but we'll set it anyway to be clear. The second argument is the vector of coefficients for the decision variables, meaning X2 is minimized.
@@ -90,7 +92,7 @@ knitr::include_graphics('images/constraint_equation.png')
 ```
 Type ?add.constraint in the console for additional details. 
 
-The four constrains for this example are added with:
+The four constraints for this example are added with:
 ```{r lm-5x, message=FALSE}
 add.constraint(example.lp, xt=c(400,-300), type="<=", rhs=0, indices=c(1,2))
 add.constraint(example.lp, xt=c(1,1), type=">=", rhs=7500)
@@ -151,7 +153,7 @@ There are physical characteristics of the system that provide some constraints, 
 knitr::include_graphics('images/reservoir_system.png')
 ```
 
-Diversions through the penstock to the hydropower facility are limited to its capacity of 160 10$^6$m$^3$/month. For reservoir releases less than that, all of the released water can generate hydropower; flows above that capacity will spill without generating hydropower benefits. The reservoir has a maximum volume of 550 10$^6$m$^3$, so anything above that will have to be released. Assume the reservoir is at half capacity initially. The irrigation demand varies by month, and diversions up to the demand will produce benefits. These are:
+Diversions through the penstock to the hydropower facility are limited to its capacity of 160 10$^6$m$^3$/month. For reservoir releases less than that, all of the released water can generate hydropower; flows above that capacity will spill without generating hydropower benefits. The reservoir has a volume of 550 10$^6$m$^3$, so anything above that will have to be released. Assume the reservoir is at half capacity initially. The irrigation demand varies by month, and diversions up to the demand will produce benefits. These are:
 ```{r lmr-1, message=FALSE, echo=FALSE}
 x <- data.frame(
   Month=paste0(month.abb[seq(1,12)]," (",seq(1,12),")"),
@@ -163,7 +165,7 @@ kbl(cbind(x[1:4,],x[5:8,],x[9:12,]), booktabs = TRUE) %>% kable_styling(full_wid
 
 ### Problem summary
 
-There are 48 decision variables in this problem, 12 monthly values for reservoir storage (s$_1$-s$_12$), release (r$_1$-r$_{12}$), hydropower generation (h$_1$-h$_{12}$), and agricultural diversion (d$_1$-d$_{12}$).
+There are 48 decision variables in this problem, 12 monthly values for reservoir storage (s$_1$-s$_{12}$), release (r$_1$-r$_{12}$), hydropower generation (h$_1$-h$_{12}$), and agricultural diversion (d$_1$-d$_{12}$).
 
 The objective function is to maximize the revenue, which is expressed by Equation \@ref(eq:lmr-eq1).
 \begin{equation}
@@ -224,10 +226,10 @@ set.objfn(reser.lp,c(rep(revenue_power,12),rep(revenue_water,12)),indices = c(25
 x <- lp.control(reser.lp, sense="max")
 ```
 
-With the LP setup, the constraints need to be applied. Negative releases, storage, or river flows don’t make sense, so they all need to be positive, so $st\ge0$, $rt\ge0$, $ht\ge0$ for all 12 months, but because the _lpSolveAPI_ package assumes all decision variables have a range of $0\le x\le \infty$ these do not need to be explicitly added as constraints. When using other software packages these may need to be included.
+With the LP setup, the constraints need to be applied. Negative releases, storage, or river flows don’t make sense, so they all need to be positive, so $s_t\ge0$, $r_t\ge0$, $h_t\ge0$ for all 12 months, but because the _lpSolveAPI_ package assumes all decision variables have a range of $0\le x\le \infty$ these do not need to be explicitly added as constraints. When using other software packages these may need to be included.
 
 #### Constraints 1-12: Maximum storage
-The maximum capacity of the reservoir cannot be exceeded in any month, or $st\le 600$ for all 12 months. This can be added in a simple loop:
+The maximum capacity of the reservoir cannot be exceeded in any month, or $s_t\le 600$ for all 12 months. This can be added in a simple loop:
 ```{r lmr-6, message=FALSE, echo=TRUE}
 for (i in seq(1,12)) {
   add.constraint(reser.lp, xt=c(1), type="<=", rhs=res_cap, indices=c(i))
@@ -244,7 +246,7 @@ for (i in seq(1,12)) {
 ```
 
 #### Constraints 25-36: Hydropower
-Hydropower release cannot exceed the penstock capacity in any month: $ht\le 180$ for all 12 months. This can be done following the example above for the maximum storage constraint
+Hydropower release cannot exceed the penstock capacity in any month: $h_t\le 180$ for all 12 months. This can be done following the example above for the maximum storage constraint
 ```{r lmr-8, message=FALSE, echo=TRUE}
 for (i in seq(1,12)) {
   add.constraint(reser.lp, xt=c(1), type="<=", rhs=penstock_cap, indices=c(i+24))
@@ -252,7 +254,7 @@ for (i in seq(1,12)) {
 ```
 
 #### Constraints 37-48: Reservoir release 
-Reservoir release must equal or exceed irrigation deliveries, which is another way of saying that the water remaining in the river after the diversion cannot be negative. In other words $r1-d1\ge 0$, $r2-d2\ge 0$, ... for all 12 months. For constraints involving more than one decision variable the constraint equations look a little different, and keeping track of the indices associated with each decision variable is essential.
+Reservoir release must equal or exceed irrigation deliveries, which is another way of saying that the water remaining in the river after the diversion cannot be negative. In other words $r_1-d_1\ge 0$, $r_2-d_2\ge 0$, ... for all 12 months. For constraints involving more than one decision variable the constraint equations look a little different, and keeping track of the indices associated with each decision variable is essential.
 ```{r lmr-9, message=FALSE, echo=TRUE}
 for (i in seq(1,12)) {
   add.constraint(reser.lp, xt=c(1,-1), type=">=", rhs=0, indices=c(i+12,i+36))
@@ -260,7 +262,7 @@ for (i in seq(1,12)) {
 ```
 
 #### Constraints 49-60: Hydropower
-Hydropower generation will be less than or equal to reservoir release in every month, or $r1-h1\ge 0$, $r2-h2\ge 0$, ... for all 12 months.
+Hydropower generation will be less than or equal to reservoir release in every month, or $r_1-h_1\ge 0$, $r_2-h_2\ge 0$, ... for all 12 months.
 ```{r lmr-10, message=FALSE, echo=TRUE}
 for (i in seq(1,12)) {
   add.constraint(reser.lp, xt=c(1,-1), type=">=", rhs=0, indices=c(i+12,i+24))
@@ -269,8 +271,8 @@ for (i in seq(1,12)) {
 
 #### Constraints 61-72: Conservation of mass
 Finally, considering the reservoir, the inflow minus the outflow in any month must equal the change in storage over that month. That can be expressed in an equation with decision variables on the left side as:
-$$s[t]-s[t-1]+r[t]=inflow[t]$$
-where $t$ is a month from 1-12 and $s[t]$ is the storage at the end of month $t$. We need to use the initial reservoir volume (assumed above) for the first month's mass balance, so the above would become $s[1]-s[initial]+r[1]=inflow[1]$, or $s[1]+r[1]=inflow[1]+s[initial]$. All subsequent months can be assigned in a loop,
+$$s_t-s_{t-1}+r_t=inflow_t$$
+where $t$ is a month from 1-12 and $s_t$ is the storage at the end of month $t$. We need to use the initial reservoir volume, $s_0$ (given above in the problem statement) for the first month's mass balance, so the above would become $s_1-s_0+r_1=inflow_1$, or $s_1+r_1=inflow_1+s_0$. All subsequent months can be assigned in a loop,
 ```{r lmr-11, message=FALSE, echo=TRUE}
 add.constraint(reser.lp, xt=c(1,1), type="=", rhs=inflows[1]+res_init_vol, indices=c(1,13))
 for (i in seq(2,12)) {
