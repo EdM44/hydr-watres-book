@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-05-02" />
+<meta name="date" content="2023-05-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -164,6 +164,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
 <ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#introduction-to-r-and-rstudio"><i class="fa fa-check"></i><b>0.1</b> Introduction to R and RStudio</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
@@ -423,7 +424,7 @@ Figure 10.3: Active and Inactive USGS sites recording peak flows.
 </div>
 <p>While the data could be downloaded and saved locally through that link, it is convenient here to use the dataRetrieval command.</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="designing-for-floods-flood-hydrology.html#cb83-1" aria-hidden="true" tabindex="-1"></a>Qpeak_download <span class="ot">&lt;-</span> dataRetrieval<span class="sc">::</span><span class="fu">readNWISpeak</span>(<span class="at">siteNumbers=</span><span class="st">&quot;11169000&quot;</span>)</span></code></pre></div>
-<p>The data used here are also available as part of the <em>hydromisc</em> package, and may be obtained by typing <em>hydromisc::Qpeak_download</em>.</p>
+<p>The data used here are also available as part of the <em>hydromisc</em> package, and may be obtained by typing <code>hydromisc::Qpeak_download</code>.</p>
 <p>It is always helpful to look at the downloaded data frame before doing anything with it. There are many columns that are not needed or that have repeated information. There are also some rows that have no data (‘NA’ values). It is also useful to change some column names to something more intuitive. We will need to define the water year (a water year begins October 1 and ends September 30).</p>
 <div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="designing-for-floods-flood-hydrology.html#cb84-1" aria-hidden="true" tabindex="-1"></a>Qpeak <span class="ot">&lt;-</span> Qpeak_download[<span class="sc">!</span><span class="fu">is.na</span>(Qpeak_download<span class="sc">$</span>peak_dt),<span class="fu">c</span>(<span class="st">&#39;peak_dt&#39;</span>,<span class="st">&#39;peak_va&#39;</span>)]</span>
 <span id="cb84-2"><a href="designing-for-floods-flood-hydrology.html#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(Qpeak)[<span class="fu">colnames</span>(Qpeak)<span class="sc">==</span><span class="st">&quot;peak_dt&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Date&quot;</span></span>

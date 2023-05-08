@@ -206,6 +206,7 @@ fig:lmr-f12
 fig:sdp-1
 fig:sdp-2
 fig:gw-1
+introduction-to-r-and-rstudio
 units-in-fluid-mechanics
 properties-of-water
 properties-important-for-water-standing-still

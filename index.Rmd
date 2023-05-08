@@ -36,7 +36,14 @@ Solving water problems is rarely done by hand calculations, though the importanc
 
 Scripting languages are powerful tools for performing calculations, providing a fully traceable and reproducible path from your input to a solution. Open source languages have the benefit of being free to use, and invite users to be part of a community helping improve the language and its capabilities. The language of choice for this book is R [@r_core_team_r_2022], chosen for its straightforward syntax, powerful graphical capabilities, wide use in engineering and in many other disciplines, and by using the RStudio interface, it can look and feel a lot like Matlab`r knitr::asis_output("\U00AE")` with which most engineering students have some experience.
 
-No introduction to R or RStudio is provided here. It is assumed that the reader has installed R (and RStudio), is comfortable installing and updating packages, and understands the basics of R scripting. A brief overview [is provided here](https://www.engr.scu.edu/~emaurer/shared/R-intro/), aimed at students at Santa Clara University. More comprehensive materials are readily available, including [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.html) by the R Core Team. An excellent set of materials for a course [Introduction to Programming with R](https://discdown.org/rprogramming/) by Stauffer et al. is also freely available and includes interactive exercises.
+## Introduction to R and RStudio
+
+No introduction to R or RStudio is provided here. It is assumed that the reader has installed R (and RStudio), is comfortable installing and updating packages, and understands the basics of R scripting. Some resources that can provide an introduction to R include:
+
+- [A brief overview](https://www.engr.scu.edu/~emaurer/shared/R-intro/), aimed at students at Santa Clara University. 
+- [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.html), a comprehensive reference by the R Core Team.
+- [Introduction to Programming with R](https://discdown.org/rprogramming/) by Stauffer et al., materials for a university course, including interactive exercises.
+- [R for Water Resources Data Science](https://www.r4wrds.com/), with both introductory and intermediate level courses online.
 
 As I developed these exercises and text, I learned R through the work of many others, and the excellent help offered by skilled people sharing their knowledge on [stackoverflow](https://stackoverflow.com/questions/tagged/r). The methods shown here are not the only ways to solve these problems, and users are invited to share alternative or better solutions.
 

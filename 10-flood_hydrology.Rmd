@@ -93,7 +93,7 @@ While the data could be downloaded and saved locally through that link, it is co
 Qpeak_download <- dataRetrieval::readNWISpeak(siteNumbers="11169000")
 ```
 
-The data used here are also available as part of the _hydromisc_ package, and may be obtained by typing _hydromisc::Qpeak_download_.
+The data used here are also available as part of the _hydromisc_ package, and may be obtained by typing `hydromisc::Qpeak_download`.
 ```{r pf-1x, message=FALSE, warning=FALSE, eval=TRUE, echo=FALSE}
 Qpeak_download <- hydromisc::Qpeak_download
 ```
