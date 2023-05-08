@@ -36,7 +36,7 @@ Solving water problems is rarely done by hand calculations, though the importanc
 
 Scripting languages are powerful tools for performing calculations, providing a fully traceable and reproducible path from your input to a solution. Open source languages have the benefit of being free to use, and invite users to be part of a community helping improve the language and its capabilities. The language of choice for this book is R [@r_core_team_r_2022], chosen for its straightforward syntax, powerful graphical capabilities, wide use in engineering and in many other disciplines, and by using the RStudio interface, it can look and feel a lot like Matlab`r knitr::asis_output("\U00AE")` with which most engineering students have some experience.
 
-## Introduction to R and RStudio
+## Introduction to R and RStudio {-}
 
 No introduction to R or RStudio is provided here. It is assumed that the reader has installed R (and RStudio), is comfortable installing and updating packages, and understands the basics of R scripting. Some resources that can provide an introduction to R include:
 
