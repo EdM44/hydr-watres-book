@@ -3,8 +3,11 @@
 All of the earlier chapters of this book dealt with the behavior of water in different hydraulic systems, such as canals or pipes. Now we consider the bigger picture of where the water originates, and ultimately how we can estimate how much water is available for different uses, and how much excess (flood) water systems will need to be designed and built to accommodate.
 
 A fundamental concept is the hydrologic cycle, depicted in Figure \@ref(fig:hydr-cycle).
-```{r hydr-cycle, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "70%", fig.cap = "The hydrologic cycle (source: John Evans and Howard Periman, USGS)."}
-knitr::include_graphics('images/Watercyclesummary.jpg')
+
+(ref:fighc1) The hydrologic cycle, from the  [USGS](https://labs.waterdata.usgs.gov/visualizations/water-cycle)
+
+```{r hydr-cycle, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "100%", fig.cap = '(ref:fighc1)'}
+knitr::include_graphics('images/USGS_WaterCycle_anthropogenic.png')
 ```
 
 The primary variable in the hydrologic cycle from an engineering perspective is precipitation, since that is the source of the water used and managed in engineered systems.
@@ -132,7 +135,7 @@ The calculations performed to produce the IDF curves use decades of daily data, 
   i = aD^b
     (\#eq:d-f)
 \end{equation}
-As a power curve, Equation \@ref(eq:d-f) should be a straight line on a log-linear plot. This is shown in Example \@ref(exm:ex-idf1).
+As a power curve, Equation \@ref(eq:d-f) should be a straight line on a log-log plot. This is shown in Example \@ref(exm:ex-idf1).
 
 ::: {.example #ex-idf1}
 Use the 2017 water year of rainfall data for the city of San Jose, to plot the relationship between intensity and duration for the 1, 3, 7, and 30-day events.
@@ -156,6 +159,7 @@ Fit the theoretical curve (Equation \@ref(eq:d-f)) using the nonlinear least squ
 ```{r d-f2, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Intensity-duration relationship for water year 2017. Calculated values are based on daily data; theoretical is the power curve fit."}
 #fit a power curve to the data
 fit <- stats::nls(intensity ~ a*duration^b, data=df.id, start=list(a=1,b=-0.5))
+print(signif(coef(fit),3))
 #find estimated y-values using the fit
 df.id$intensity_est <- predict(fit, list(x = df.id$duration))
 #duration-intensity plot with base graphics
