@@ -5,9 +5,9 @@ authors:
     given-names: Maurer
     orcid: "https://orcid.org/0000-0001-7134-487X"
 title: "Hydraulics and Water Resources: Examples Using R"
-version: v0.1.0
+version: v0.2.0
 identifiers:
-  - description: "This is the bookdown reference for water resources in R"
+  - description: "This is the reference for Hydraulics and Water Resources: Examples Using R"
     type: doi
-    value: 10.5281/zenodo.7576843
-date-released: "2023-01-27"
+    value: 10.5281/zenodo.8114534
+date-released: "2023-07-04"
