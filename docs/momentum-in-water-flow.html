@@ -7,7 +7,7 @@
   <title>Chapter 6 Momentum in water flow | Hydraulics and Water Resources: Examples Using R</title>
   <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
 engineering exercises using R.</p>" />
-  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Momentum in water flow | Hydraulics and Water Resources: Examples Using R" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-05-25" />
+<meta name="date" content="2023-12-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -123,6 +123,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -363,7 +367,7 @@ where <span class="math inline">\(\rho{Q}\)</span> is the mass flux through the 
 </div>
 <div id="the-momentum-equation-in-pipe-design" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> The momentum equation in pipe design<a href="momentum-in-water-flow.html#the-momentum-equation-in-pipe-design" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>One of the most common civil engineering applications of the momentum equation is providing the lateral restraint where a pipe bend occurs. One approach to provide the external force to keep the pipe in equilibrium is to use a thrust block, as illustrated in Figure <a href="momentum-in-water-flow.html#fig:pipe-bend-2">6.2</a> <span class="citation">(<a href="references.html#ref-ductile_iron_pipe_research_association_thrust_2016" role="doc-biblioref">Ductile Iron Pipe Research Association, 2016</a>)</span>.</p>
+<p>One of the most common civil engineering applications of the momentum equation is providing the lateral restraint where a pipe bend occurs. One approach to provide the external force to keep the pipe in equilibrium is to use a thrust block, as illustrated in Figure <a href="momentum-in-water-flow.html#fig:pipe-bend-2">6.2</a> <span class="citation">(<a href="references.html#ref-ductile_iron_pipe_research_association_thrust_2016">Ductile Iron Pipe Research Association, 2016</a>)</span>.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:pipe-bend-2"></span>
 <img src="images/thrust_block.PNG" alt="A sketch of a pipe bend with a thrust block." width="600" />
 <p class="caption">
@@ -394,24 +398,24 @@ Similarly in the y-direction Equation <a href="momentum-in-water-flow.html#eq:mo
   \tag{6.4}
 \end{equation}\]</span></p>
 <p>This can be set up in R in many ways, such as the following.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="momentum-in-water-flow.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Input Data -- ensure units are consistent in ft, lbf (pound force), sec</span></span>
-<span id="cb50-2"><a href="momentum-in-water-flow.html#cb50-2" aria-hidden="true" tabindex="-1"></a>D1 <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">18</span><span class="sc">/</span><span class="dv">12</span>, ft)</span>
-<span id="cb50-3"><a href="momentum-in-water-flow.html#cb50-3" aria-hidden="true" tabindex="-1"></a>D2 <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">18</span><span class="sc">/</span><span class="dv">12</span>, ft)</span>
-<span id="cb50-4"><a href="momentum-in-water-flow.html#cb50-4" aria-hidden="true" tabindex="-1"></a>P1 <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">60</span><span class="sc">*</span><span class="dv">144</span>, lbf<span class="sc">/</span>ft<span class="sc">^</span><span class="dv">2</span>) <span class="co">#convert psi to lbf/ft^2</span></span>
-<span id="cb50-5"><a href="momentum-in-water-flow.html#cb50-5" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">60</span><span class="sc">*</span><span class="dv">144</span>, lbf<span class="sc">/</span>ft<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb50-6"><a href="momentum-in-water-flow.html#cb50-6" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="dv">30</span><span class="sc">*</span>(pi<span class="sc">/</span><span class="dv">180</span>) <span class="co">#convert to radians for sin, cos functions</span></span>
-<span id="cb50-7"><a href="momentum-in-water-flow.html#cb50-7" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T=</span><span class="dv">68</span>, <span class="at">units=</span><span class="st">&quot;Eng&quot;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb50-8"><a href="momentum-in-water-flow.html#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-9"><a href="momentum-in-water-flow.html#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co"># calculations - vary flow from 0 to 20 ft^3/s</span></span>
-<span id="cb50-10"><a href="momentum-in-water-flow.html#cb50-10" aria-hidden="true" tabindex="-1"></a>Q <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">1</span>), ft<span class="sc">^</span><span class="dv">3</span><span class="sc">/</span>s)</span>
-<span id="cb50-11"><a href="momentum-in-water-flow.html#cb50-11" aria-hidden="true" tabindex="-1"></a>A1 <span class="ot">&lt;-</span> pi<span class="sc">/</span><span class="dv">4</span><span class="sc">*</span>D1<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb50-12"><a href="momentum-in-water-flow.html#cb50-12" aria-hidden="true" tabindex="-1"></a>A2 <span class="ot">&lt;-</span> pi<span class="sc">/</span><span class="dv">4</span><span class="sc">*</span>D2<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb50-13"><a href="momentum-in-water-flow.html#cb50-13" aria-hidden="true" tabindex="-1"></a>V1 <span class="ot">&lt;-</span> Q<span class="sc">/</span>A1</span>
-<span id="cb50-14"><a href="momentum-in-water-flow.html#cb50-14" aria-hidden="true" tabindex="-1"></a>V2 <span class="ot">&lt;-</span> Q<span class="sc">/</span>A2</span>
-<span id="cb50-15"><a href="momentum-in-water-flow.html#cb50-15" aria-hidden="true" tabindex="-1"></a>Rx <span class="ot">&lt;-</span> P1<span class="sc">*</span>A1<span class="sc">-</span>P2<span class="sc">*</span>A2<span class="sc">*</span><span class="fu">cos</span>(theta)<span class="sc">-</span>rho<span class="sc">*</span>Q<span class="sc">*</span>(V2<span class="sc">*</span><span class="fu">cos</span>(theta)<span class="sc">-</span>V1)</span>
-<span id="cb50-16"><a href="momentum-in-water-flow.html#cb50-16" aria-hidden="true" tabindex="-1"></a>Ry <span class="ot">&lt;-</span> P2<span class="sc">*</span>A2<span class="sc">*</span><span class="fu">sin</span>(theta)<span class="sc">-</span>rho<span class="sc">*</span>Q<span class="sc">*</span>(<span class="sc">-</span>V2<span class="sc">*</span><span class="fu">sin</span>(theta))</span>
-<span id="cb50-17"><a href="momentum-in-water-flow.html#cb50-17" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(Rx<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> Ry<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb50-18"><a href="momentum-in-water-flow.html#cb50-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Q,R)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="momentum-in-water-flow.html#cb50-1" tabindex="-1"></a><span class="co">#Input Data -- ensure units are consistent in ft, lbf (pound force), sec</span></span>
+<span id="cb50-2"><a href="momentum-in-water-flow.html#cb50-2" tabindex="-1"></a>D1 <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">18</span><span class="sc">/</span><span class="dv">12</span>, ft)</span>
+<span id="cb50-3"><a href="momentum-in-water-flow.html#cb50-3" tabindex="-1"></a>D2 <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">18</span><span class="sc">/</span><span class="dv">12</span>, ft)</span>
+<span id="cb50-4"><a href="momentum-in-water-flow.html#cb50-4" tabindex="-1"></a>P1 <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">60</span><span class="sc">*</span><span class="dv">144</span>, lbf<span class="sc">/</span>ft<span class="sc">^</span><span class="dv">2</span>) <span class="co">#convert psi to lbf/ft^2</span></span>
+<span id="cb50-5"><a href="momentum-in-water-flow.html#cb50-5" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">60</span><span class="sc">*</span><span class="dv">144</span>, lbf<span class="sc">/</span>ft<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb50-6"><a href="momentum-in-water-flow.html#cb50-6" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="dv">30</span><span class="sc">*</span>(pi<span class="sc">/</span><span class="dv">180</span>) <span class="co">#convert to radians for sin, cos functions</span></span>
+<span id="cb50-7"><a href="momentum-in-water-flow.html#cb50-7" tabindex="-1"></a>rho <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T=</span><span class="dv">68</span>, <span class="at">units=</span><span class="st">&quot;Eng&quot;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb50-8"><a href="momentum-in-water-flow.html#cb50-8" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="momentum-in-water-flow.html#cb50-9" tabindex="-1"></a><span class="co"># calculations - vary flow from 0 to 20 ft^3/s</span></span>
+<span id="cb50-10"><a href="momentum-in-water-flow.html#cb50-10" tabindex="-1"></a>Q <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">1</span>), ft<span class="sc">^</span><span class="dv">3</span><span class="sc">/</span>s)</span>
+<span id="cb50-11"><a href="momentum-in-water-flow.html#cb50-11" tabindex="-1"></a>A1 <span class="ot">&lt;-</span> pi<span class="sc">/</span><span class="dv">4</span><span class="sc">*</span>D1<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb50-12"><a href="momentum-in-water-flow.html#cb50-12" tabindex="-1"></a>A2 <span class="ot">&lt;-</span> pi<span class="sc">/</span><span class="dv">4</span><span class="sc">*</span>D2<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb50-13"><a href="momentum-in-water-flow.html#cb50-13" tabindex="-1"></a>V1 <span class="ot">&lt;-</span> Q<span class="sc">/</span>A1</span>
+<span id="cb50-14"><a href="momentum-in-water-flow.html#cb50-14" tabindex="-1"></a>V2 <span class="ot">&lt;-</span> Q<span class="sc">/</span>A2</span>
+<span id="cb50-15"><a href="momentum-in-water-flow.html#cb50-15" tabindex="-1"></a>Rx <span class="ot">&lt;-</span> P1<span class="sc">*</span>A1<span class="sc">-</span>P2<span class="sc">*</span>A2<span class="sc">*</span><span class="fu">cos</span>(theta)<span class="sc">-</span>rho<span class="sc">*</span>Q<span class="sc">*</span>(V2<span class="sc">*</span><span class="fu">cos</span>(theta)<span class="sc">-</span>V1)</span>
+<span id="cb50-16"><a href="momentum-in-water-flow.html#cb50-16" tabindex="-1"></a>Ry <span class="ot">&lt;-</span> P2<span class="sc">*</span>A2<span class="sc">*</span><span class="fu">sin</span>(theta)<span class="sc">-</span>rho<span class="sc">*</span>Q<span class="sc">*</span>(<span class="sc">-</span>V2<span class="sc">*</span><span class="fu">sin</span>(theta))</span>
+<span id="cb50-17"><a href="momentum-in-water-flow.html#cb50-17" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(Rx<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> Ry<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb50-18"><a href="momentum-in-water-flow.html#cb50-18" tabindex="-1"></a><span class="fu">plot</span>(Q,R)</span></code></pre></div>
 <p><img src="hydr-watres_main_files/figure-html/momentum-ex3-1.png" width="672" /></p>
 <p>When Q=0, only the pressure terms contribute to <em>R</em>. This plot shows that for typical water main conditions the change in direction of the velocity vectors adds a small amount (less than 3% in this example) to the calculated <em>R</em> value. This is why design guidelines for water mains often neglect the velocity term in Equation <a href="momentum-in-water-flow.html#eq:momentum-1">(6.2)</a>. In other industrial or laboratory conditions it may not be valid to neglect that term.</p>
 

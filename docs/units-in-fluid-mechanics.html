@@ -7,7 +7,7 @@
   <title>Chapter 1 Units in Fluid Mechanics | Hydraulics and Water Resources: Examples Using R</title>
   <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
 engineering exercises using R.</p>" />
-  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Units in Fluid Mechanics | Hydraulics and Water Resources: Examples Using R" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-05-25" />
+<meta name="date" content="2023-12-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -123,6 +123,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -483,47 +487,47 @@ div.csl-indent {
 <p>Another example converts between two quantities in the US system: 100 gallons per minute to cfs:
 <span class="math display">\[{100 ~gpm}*\frac{1 ~cfs}{448.8 ~gpm}=0.223 ~cfs\]</span>
 The <em>units</em> package in R can do these conversions and more, and also checks that conversions are permissible (producing an error if incompatible units are used).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="units-in-fluid-mechanics.html#cb1-1" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">units_options</span>(<span class="at">set_units_mode =</span> <span class="st">&quot;symbols&quot;</span>)</span>
-<span id="cb1-2"><a href="units-in-fluid-mechanics.html#cb1-2" aria-hidden="true" tabindex="-1"></a>Q_gpm <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">100</span>, gallon<span class="sc">/</span>min)</span>
-<span id="cb1-3"><a href="units-in-fluid-mechanics.html#cb1-3" aria-hidden="true" tabindex="-1"></a>Q_gpm</span>
-<span id="cb1-4"><a href="units-in-fluid-mechanics.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 100 [gallon/min]</span></span>
-<span id="cb1-5"><a href="units-in-fluid-mechanics.html#cb1-5" aria-hidden="true" tabindex="-1"></a>Q_cfs <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(Q_gpm, ft<span class="sc">^</span><span class="dv">3</span><span class="sc">/</span>s)</span>
-<span id="cb1-6"><a href="units-in-fluid-mechanics.html#cb1-6" aria-hidden="true" tabindex="-1"></a>Q_cfs</span>
-<span id="cb1-7"><a href="units-in-fluid-mechanics.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.2228009 [ft^3/s]</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="units-in-fluid-mechanics.html#cb1-1" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">units_options</span>(<span class="at">set_units_mode =</span> <span class="st">&quot;symbols&quot;</span>)</span>
+<span id="cb1-2"><a href="units-in-fluid-mechanics.html#cb1-2" tabindex="-1"></a>Q_gpm <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">100</span>, gallon<span class="sc">/</span>min)</span>
+<span id="cb1-3"><a href="units-in-fluid-mechanics.html#cb1-3" tabindex="-1"></a>Q_gpm</span>
+<span id="cb1-4"><a href="units-in-fluid-mechanics.html#cb1-4" tabindex="-1"></a><span class="co">#&gt; 100 [gallon/min]</span></span>
+<span id="cb1-5"><a href="units-in-fluid-mechanics.html#cb1-5" tabindex="-1"></a>Q_cfs <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(Q_gpm, ft<span class="sc">^</span><span class="dv">3</span><span class="sc">/</span>s)</span>
+<span id="cb1-6"><a href="units-in-fluid-mechanics.html#cb1-6" tabindex="-1"></a>Q_cfs</span>
+<span id="cb1-7"><a href="units-in-fluid-mechanics.html#cb1-7" tabindex="-1"></a><span class="co">#&gt; 0.2228009 [ft^3/s]</span></span></code></pre></div>
 <p>Repeating the unit conversion of viscosity using the <em>units</em> package:</p>
 <div class="example">
 <p><span id="exm:unlabeled-div-1" class="example"><strong>Example 1.1  </strong></span>Convert kinematic viscosity from SI to Eng units.</p>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="units-in-fluid-mechanics.html#cb2-1" aria-hidden="true" tabindex="-1"></a>nu <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">1e-6</span>, m<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
-<span id="cb2-2"><a href="units-in-fluid-mechanics.html#cb2-2" aria-hidden="true" tabindex="-1"></a>nu</span>
-<span id="cb2-3"><a href="units-in-fluid-mechanics.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1e-06 [m^2/s]</span></span>
-<span id="cb2-4"><a href="units-in-fluid-mechanics.html#cb2-4" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(nu, ft<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
-<span id="cb2-5"><a href="units-in-fluid-mechanics.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.076391e-05 [ft^2/s]</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="units-in-fluid-mechanics.html#cb2-1" tabindex="-1"></a>nu <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">1e-6</span>, m<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
+<span id="cb2-2"><a href="units-in-fluid-mechanics.html#cb2-2" tabindex="-1"></a>nu</span>
+<span id="cb2-3"><a href="units-in-fluid-mechanics.html#cb2-3" tabindex="-1"></a><span class="co">#&gt; 1e-06 [m^2/s]</span></span>
+<span id="cb2-4"><a href="units-in-fluid-mechanics.html#cb2-4" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(nu, ft<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
+<span id="cb2-5"><a href="units-in-fluid-mechanics.html#cb2-5" tabindex="-1"></a><span class="co">#&gt; 1.076391e-05 [ft^2/s]</span></span></code></pre></div>
 <p>The <em>units</em> package also produces correct units during operations. For example, multiplying mass by <em>g</em> should produce weight.</p>
 <div class="example">
 <p><span id="exm:unlabeled-div-2" class="example"><strong>Example 1.2  </strong></span>Using the <em>units</em> package to produce correct units during mathematical operations.</p>
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="units-in-fluid-mechanics.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#If you travel at 88 ft/sec for 1 hour, how many km would you travel?</span></span>
-<span id="cb3-2"><a href="units-in-fluid-mechanics.html#cb3-2" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">88</span>, ft<span class="sc">/</span>s)</span>
-<span id="cb3-3"><a href="units-in-fluid-mechanics.html#cb3-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">1</span>, hour)</span>
-<span id="cb3-4"><a href="units-in-fluid-mechanics.html#cb3-4" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> v<span class="sc">*</span>t</span>
-<span id="cb3-5"><a href="units-in-fluid-mechanics.html#cb3-5" aria-hidden="true" tabindex="-1"></a>d</span>
-<span id="cb3-6"><a href="units-in-fluid-mechanics.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 316800 [ft]</span></span>
-<span id="cb3-7"><a href="units-in-fluid-mechanics.html#cb3-7" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(d, km)</span>
-<span id="cb3-8"><a href="units-in-fluid-mechanics.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 96.56064 [km]</span></span>
-<span id="cb3-9"><a href="units-in-fluid-mechanics.html#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="units-in-fluid-mechanics.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#What is the weight of a 4 slug mass, in pounds and Newtons?</span></span>
-<span id="cb3-11"><a href="units-in-fluid-mechanics.html#cb3-11" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">4</span>, slug)</span>
-<span id="cb3-12"><a href="units-in-fluid-mechanics.html#cb3-12" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">32.2</span>, ft<span class="sc">/</span>s<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-13"><a href="units-in-fluid-mechanics.html#cb3-13" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> m<span class="sc">*</span>g</span>
-<span id="cb3-14"><a href="units-in-fluid-mechanics.html#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Notice the units are technically correct, but have not been simplified in this case</span></span>
-<span id="cb3-15"><a href="units-in-fluid-mechanics.html#cb3-15" aria-hidden="true" tabindex="-1"></a>w</span>
-<span id="cb3-16"><a href="units-in-fluid-mechanics.html#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 128.8 [ft*slug/s^2]</span></span>
-<span id="cb3-17"><a href="units-in-fluid-mechanics.html#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#These can be set manually to verify that lbf (pound-force) is a valid equivalent</span></span>
-<span id="cb3-18"><a href="units-in-fluid-mechanics.html#cb3-18" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, lbf)</span>
-<span id="cb3-19"><a href="units-in-fluid-mechanics.html#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 128.8 [lbf]</span></span>
-<span id="cb3-20"><a href="units-in-fluid-mechanics.html#cb3-20" aria-hidden="true" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, N)</span>
-<span id="cb3-21"><a href="units-in-fluid-mechanics.html#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 572.9308 [N]</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="units-in-fluid-mechanics.html#cb3-1" tabindex="-1"></a><span class="co">#If you travel at 88 ft/sec for 1 hour, how many km would you travel?</span></span>
+<span id="cb3-2"><a href="units-in-fluid-mechanics.html#cb3-2" tabindex="-1"></a>v <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">88</span>, ft<span class="sc">/</span>s)</span>
+<span id="cb3-3"><a href="units-in-fluid-mechanics.html#cb3-3" tabindex="-1"></a>t <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">1</span>, hour)</span>
+<span id="cb3-4"><a href="units-in-fluid-mechanics.html#cb3-4" tabindex="-1"></a>d <span class="ot">&lt;-</span> v<span class="sc">*</span>t</span>
+<span id="cb3-5"><a href="units-in-fluid-mechanics.html#cb3-5" tabindex="-1"></a>d</span>
+<span id="cb3-6"><a href="units-in-fluid-mechanics.html#cb3-6" tabindex="-1"></a><span class="co">#&gt; 316800 [ft]</span></span>
+<span id="cb3-7"><a href="units-in-fluid-mechanics.html#cb3-7" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(d, km)</span>
+<span id="cb3-8"><a href="units-in-fluid-mechanics.html#cb3-8" tabindex="-1"></a><span class="co">#&gt; 96.56064 [km]</span></span>
+<span id="cb3-9"><a href="units-in-fluid-mechanics.html#cb3-9" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="units-in-fluid-mechanics.html#cb3-10" tabindex="-1"></a><span class="co">#What is the weight of a 4 slug mass, in pounds and Newtons?</span></span>
+<span id="cb3-11"><a href="units-in-fluid-mechanics.html#cb3-11" tabindex="-1"></a>m <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">4</span>, slug)</span>
+<span id="cb3-12"><a href="units-in-fluid-mechanics.html#cb3-12" tabindex="-1"></a>g <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">32.2</span>, ft<span class="sc">/</span>s<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb3-13"><a href="units-in-fluid-mechanics.html#cb3-13" tabindex="-1"></a>w <span class="ot">&lt;-</span> m<span class="sc">*</span>g</span>
+<span id="cb3-14"><a href="units-in-fluid-mechanics.html#cb3-14" tabindex="-1"></a><span class="co">#Notice the units are technically correct, but have not been simplified in this case</span></span>
+<span id="cb3-15"><a href="units-in-fluid-mechanics.html#cb3-15" tabindex="-1"></a>w</span>
+<span id="cb3-16"><a href="units-in-fluid-mechanics.html#cb3-16" tabindex="-1"></a><span class="co">#&gt; 128.8 [ft*slug/s^2]</span></span>
+<span id="cb3-17"><a href="units-in-fluid-mechanics.html#cb3-17" tabindex="-1"></a><span class="co">#These can be set manually to verify that lbf (pound-force) is a valid equivalent</span></span>
+<span id="cb3-18"><a href="units-in-fluid-mechanics.html#cb3-18" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, lbf)</span>
+<span id="cb3-19"><a href="units-in-fluid-mechanics.html#cb3-19" tabindex="-1"></a><span class="co">#&gt; 128.8 [lbf]</span></span>
+<span id="cb3-20"><a href="units-in-fluid-mechanics.html#cb3-20" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, N)</span>
+<span id="cb3-21"><a href="units-in-fluid-mechanics.html#cb3-21" tabindex="-1"></a><span class="co">#&gt; 572.9308 [N]</span></span></code></pre></div>
 
 </div>
             </section>

@@ -9,5 +9,5 @@ version: v0.2.0
 identifiers:
   - description: "This is the reference for Hydraulics and Water Resources: Examples Using R"
     type: doi
-    value: 10.5281/zenodo.8114534
+    value: 10.5281/zenodo.7576843
 date-released: "2023-07-04"
