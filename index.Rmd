@@ -6,7 +6,10 @@ author:
     Santa Clara University](https://www.scu.edu/engineering/academic-programs/engineering/ce/)"
     
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document:
+    mathjax: local
+    self_contained: false
 documentclass: book
 bibliography: "ed-bookdown.bib"
 csl: water-resources-research.csl
@@ -46,6 +49,10 @@ No introduction to R or RStudio is provided here. It is assumed that the reader 
 - [R for Water Resources Data Science](https://www.r4wrds.com/), with both introductory and intermediate level courses online.
 
 As I developed these exercises and text, I learned R through the work of many others, and the excellent help offered by skilled people sharing their knowledge on [stackoverflow](https://stackoverflow.com/questions/tagged/r). The methods shown here are not the only ways to solve these problems, and users are invited to share alternative or better solutions.
+
+## Citing this reference {-}
+
+Maurer, Ed, 2023. Hydraulics and Water Resources: Examples Using R, doi:10.5281/zenodo.7576843 https://edm44.github.io/hydr-watres-book/.
 
 ## Copyight {-}
 
