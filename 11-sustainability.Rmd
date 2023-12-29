@@ -275,7 +275,7 @@ plot(peak_sl_ann$year,peak_sl_ann$peak_m,xlab="Year",ylab="Annual Peak Sea Level
 
 ### Conducting the extreme event analysis
 
-The question we will attempt to address is whether the 100-year peak tide level (the level exceeded with a 1 percent probability) has increased between the 1900-1930 and 1990-2020 periods. Extract a subset of the data for one periods and fit a GEV distribution to the values.
+The question we will attempt to address is whether the 100-year peak tide level (the level exceeded with a 1 percent probability) has increased between the 1900-1930 and 1990-2020 periods. Extract a subset of the data for one period and fit a GEV distribution to the values.
 ```{r slr-3, message=FALSE}
 peak_sl_sub1 <- subset(peak_sl_ann, year >= 1900 & year <= 1930)
 gevfit1 <- extRemes::fevd(peak_sl_sub1$peak_m)
@@ -309,7 +309,7 @@ gevfit2 <- extRemes::fevd(peak_sl_sub2$peak_m)
 extRemes::return.level(gevfit2, return.period = 100, do.ci = TRUE, verbose = TRUE)
 ```
 
-This returns a 100-year high tide of 2.6 m for 1990-2020, a 10.6 % increase over 1900-1930.Another way to look at this is to find out how the frequency of the past (in this case, the 1900-1930) 100-year event has changed with rising sea levels. Repeating the calculations from before to capture the GEV parameters for the later period, and then plugging in the 100-year high tide from the early period:
+This returns a 100-year high tide of 2.6 m for 1990-2020, a 10.6 % increase over 1900-1930. Another way to look at this is to find out how the frequency of the past (in this case, 1900-1930) 100-year event has changed with rising sea levels. Repeating the calculations from before to capture the GEV parameters for the later period, and then plugging in the 100-year high tide from the early period:
 ```{r slr-8, message=FALSE}
 loc2 <- gevfit2$results$par[["location"]]
 sca2 <- gevfit2$results$par[["scale"]]

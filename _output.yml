@@ -1,4 +1,6 @@
 bookdown::gitbook:
+  mathjax: local
+  self_contained: false
   css: style.css
   split_bib: no
   config:
@@ -19,3 +21,5 @@ bookdown::pdf_book:
   keep_tex: yes
 bookdown::html_book:
     css: toc.css
+    mathjax: local
+    self_contained: false

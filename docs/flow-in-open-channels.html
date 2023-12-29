@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-12-26" />
+<meta name="date" content="2023-12-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -170,7 +170,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#introduction-to-r-and-rstudio"><i class="fa fa-check"></i>Introduction to R and RStudio</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#citing-this-reference"><i class="fa fa-check"></i>Citing this reference</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyight"><i class="fa fa-check"></i>Copyight</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#copyright"><i class="fa fa-check"></i>Copyright</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="units-in-fluid-mechanics.html"><a href="units-in-fluid-mechanics.html"><i class="fa fa-check"></i><b>1</b> Units in Fluid Mechanics</a></li>
 <li class="chapter" data-level="2" data-path="properties-of-water.html"><a href="properties-of-water.html"><i class="fa fa-check"></i><b>2</b> Properties of water (and air)</a>
@@ -230,15 +230,16 @@ div.csl-indent {
 <li class="chapter" data-level="5.4.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#solving-the-manning-equation-for-a-circular-pipe-in-r"><i class="fa fa-check"></i><b>5.4.1</b> Solving the Manning equation for a circular pipe in R</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#crit-section"><i class="fa fa-check"></i><b>5.5</b> Critical flow</a></li>
-<li class="chapter" data-level="5.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>5.6</b> Gradually varied steady flow</a>
+<li class="chapter" data-level="5.6" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#flow-in-rectangular-channels"><i class="fa fa-check"></i><b>5.6</b> Flow in Rectangular Channels</a></li>
+<li class="chapter" data-level="5.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#gvf-section"><i class="fa fa-check"></i><b>5.7</b> Gradually varied steady flow</a>
 <ul>
-<li class="chapter" data-level="5.6.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>5.6.1</b> The direct step method</a></li>
-<li class="chapter" data-level="5.6.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>5.6.2</b> Standard step method</a></li>
+<li class="chapter" data-level="5.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#the-direct-step-method"><i class="fa fa-check"></i><b>5.7.1</b> The direct step method</a></li>
+<li class="chapter" data-level="5.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#standard-step-method"><i class="fa fa-check"></i><b>5.7.2</b> Standard step method</a></li>
 </ul></li>
-<li class="chapter" data-level="5.7" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>5.7</b> Rapidly varied flow (the hydraulic jump)</a>
+<li class="chapter" data-level="5.8" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#hj-section"><i class="fa fa-check"></i><b>5.8</b> Rapidly varied flow (the hydraulic jump)</a>
 <ul>
-<li class="chapter" data-level="5.7.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>5.7.1</b> Sequent (or conjugate) depths</a></li>
-<li class="chapter" data-level="5.7.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>5.7.2</b> Location of a hydraulic jump</a></li>
+<li class="chapter" data-level="5.8.1" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#sequent-or-conjugate-depths"><i class="fa fa-check"></i><b>5.8.1</b> Sequent (or conjugate) depths</a></li>
+<li class="chapter" data-level="5.8.2" data-path="flow-in-open-channels.html"><a href="flow-in-open-channels.html#location-of-a-hydraulic-jump"><i class="fa fa-check"></i><b>5.8.2</b> Location of a hydraulic jump</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="momentum-in-water-flow.html"><a href="momentum-in-water-flow.html"><i class="fa fa-check"></i><b>6</b> Momentum in water flow</a>
@@ -754,256 +755,319 @@ Figure 5.5: A specific energy diagram for the conditions of Example <a href="flo
 </p>
 </div>
 </div>
-<div id="gvf-section" class="section level2 hasAnchor" number="5.6">
-<h2><span class="header-section-number">5.6</span> Gradually varied steady flow<a href="flow-in-open-channels.html#gvf-section" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="flow-in-rectangular-channels" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Flow in Rectangular Channels<a href="flow-in-open-channels.html#flow-in-rectangular-channels" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When working with rectangular channels the open channel equations simplify, because flow, <span class="math inline">\(Q\)</span>, can be expressed as flow per unit width, <span class="math inline">\(q = Q/b\)</span>, where <span class="math inline">\(b\)</span> is the channel width. Since <span class="math inline">\(Q/A=V\)</span> and <span class="math inline">\(A=by\)</span>, Equation <a href="flow-in-open-channels.html#eq:spen1">(5.18)</a> can be written as Equation <a href="flow-in-open-channels.html#eq:open-rect1">(5.20)</a>:</p>
+<p><span class="math display" id="eq:open-rect1">\[\begin{equation}
+  E=y+\frac{Q^2}{2gA^2}=y+\frac{q^2}{2gy^2}
+  \tag{5.20}
+\end{equation}\]</span></p>
+<p>Equation <a href="flow-in-open-channels.html#eq:spen2">(5.19)</a> for critical depth, <span class="math inline">\(y_c\)</span>, also is simplified for rectangular channels to Equation <a href="flow-in-open-channels.html#eq:open-rect2">(5.21)</a>:</p>
+<p><span class="math display" id="eq:open-rect2">\[\begin{equation}
+  y_c = \left({\frac{q^2}{g}}\right)^{1/3}
+  \tag{5.21}
+\end{equation}\]</span></p>
+<p>Combining Equation <a href="flow-in-open-channels.html#eq:open-rect1">(5.20)</a> and Equation <a href="flow-in-open-channels.html#eq:open-rect2">(5.21)</a> shows that at critical conditions, the minimum specific energy is:</p>
+<p><span class="math display" id="eq:open-rect3">\[\begin{equation}
+  E_{min} = \frac{3}{2} y_c
+  \tag{5.22}
+\end{equation}\]</span></p>
+<p>Example <a href="flow-in-open-channels.html#exm:open-rectx">5.5</a>, based on an exercise from the open-channel flow text by Sturm <span class="citation">(<a href="references.html#ref-sturm_open_2021">Sturm, 2021</a>)</span>, demonstrates how to solve for the depth through a rectangular section when the bottom height changes.</p>
+<div class="example">
+<p><span id="exm:open-rectx" class="example"><strong>Example 5.5  </strong></span>A 0.5 m wide rectangular channel carries a flow of 2.2 m<span class="math inline">\(^3\)</span>/s at a depth of 2 m (<span class="math inline">\(y_1\)</span>=2m). If the channel bottom rises 0.25 m (<span class="math inline">\(\Delta z=0.25~ m\)</span>), and head loss, <span class="math inline">\(h_L\)</span> over the transition is negligible, what is the depth, <span class="math inline">\(y_2\)</span> after the rise in channel bottom?</p>
+</div>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rectchannelfig"></span>
+<img src="images/rectangular_channel.png" alt="The rectangular channel of Example 5.5 with an increase in channel bottom height downstream." width="70%" />
+<p class="caption">
+Figure 5.6: The rectangular channel of Example <a href="flow-in-open-channels.html#exm:open-rectx">5.5</a> with an increase in channel bottom height downstream.
+</p>
+</div>
+<p>A specific energy diagram is very helpful for establishing upstream conditions and estimating <span class="math inline">\(y_2\)</span>.</p>
+
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="flow-in-open-channels.html#cb41-1" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">spec_energy_trap</span>( <span class="at">Q =</span> <span class="fl">2.2</span>, <span class="at">b =</span> <span class="fl">0.5</span>, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">2</span>, <span class="at">scale =</span> <span class="fl">2.5</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span> )</span>
+<span id="cb41-2"><a href="flow-in-open-channels.html#cb41-2" tabindex="-1"></a>p1</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="hydr-watres_main_files/figure-html/sp_openrect-1.png" alt="A specific energy diagram for the conditions of Example 5.5." width="384" />
+<p class="caption">
+(#fig:sp_openrect)A specific energy diagram for the conditions of Example <a href="flow-in-open-channels.html#exm:open-rectx">5.5</a>.
+</p>
+</div>
+<p>The values of <span class="math inline">\(y_c\)</span> and <span class="math inline">\(E_{min}\)</span> shown in the plot can be verified using Equations <a href="flow-in-open-channels.html#eq:open-rect2">(5.21)</a> and <a href="flow-in-open-channels.html#eq:open-rect3">(5.22)</a>. This should always be checked to describe the incoming flow and what will happen as flow passes over a hump. Since <span class="math inline">\(y_1\)</span> &gt; <span class="math inline">\(y_c\)</span> the upstream flow is subcritical, and flow can be expected to drop as it passes over the hump. Upstream and downstream specific energy are related by Equation <a href="flow-in-open-channels.html#eq:open-rect-sp1">(5.23)</a>:</p>
+<p><span class="math display" id="eq:open-rect-sp1">\[\begin{equation}
+  E_1-E_2=\Delta z + h_L
+  \tag{5.23}
+\end{equation}\]</span>
+Since <span class="math inline">\(h_L\)</span> is negligible in this example, the downstream specific energy, <span class="math inline">\(E_2\)</span> is lower that the upper <span class="math inline">\(E_1\)</span> by an amount <span class="math inline">\(\Delta z\)</span>, or
+<span class="math display" id="eq:open-rect-sp2">\[\begin{equation}
+  E_2 = E_1 - \Delta z
+  \tag{5.24}
+\end{equation}\]</span></p>
+<p>For a 0.25 m rise, and using <span class="math inline">\(q = Q/b = 2.2/0.5 = 4.4\)</span>, combining Equation <a href="flow-in-open-channels.html#eq:open-rect-sp2">(5.24)</a> and Equation <a href="flow-in-open-channels.html#eq:open-rect1">(5.20)</a>:
+<span class="math display">\[E_2 = E_1 - 0.25 = 2 + \frac{4.4^2}{2(9.81)(2^2)} - 0.25 = 2.247 - 0.25 = 1.997 ~m\]</span>
+From the specific energy diagram, for <span class="math inline">\(E_2=1.997 ~ m\)</span> a depth of about <span class="math inline">\(y_2 \approx 1.6 ~ m\)</span> would be expected, and the flow would continue in subcritical conditions. The value of <span class="math inline">\(y_2\)</span> can be calculated using Equation <a href="flow-in-open-channels.html#eq:open-rect1">(5.20)</a>:
+<span class="math display">\[1.997 = y_2 + \frac{4.4^2}{2(9.81)(y_2^2)}\]</span> which can be rearranged to <span class="math display">\[0.9967 - 1.997 y_2^2 + y_2^3= 0\]</span>
+Solving a polynomial in R is straightforward using the <code>polyroot</code> function and using <code>Re</code> to extract the real portion of the solution.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="flow-in-open-channels.html#cb42-1" tabindex="-1"></a><span class="fu">Re</span>(<span class="fu">polyroot</span>(<span class="fu">c</span>(<span class="fl">0.9667</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="fl">1.997</span>, <span class="dv">1</span>)))</span>
+<span id="cb42-2"><a href="flow-in-open-channels.html#cb42-2" tabindex="-1"></a><span class="co">#&gt; [1]  0.9703764 -0.6090519  1.6356755</span></span></code></pre></div>
+<p>The negative root is meaningless, the lower positive root is the supercritical depth for <span class="math inline">\(E_2 = 1.997 ~ m\)</span>, and the larger positive root is the subcritical depth. Thus the correct solution is <span class="math inline">\(y_2 = 1.64 ~ m\)</span> when the channel bottom rises by 0.25 m.</p>
+<p>The specific energy diagram shows that if <span class="math inline">\(\Delta z &gt; E_1 - E_{min}\)</span>, the downstream specific energy, <span class="math inline">\(E_2\)</span> would be to the left of the curve, so no feasible solution would exist. At that point damming would occur, raising the upstream depth, <span class="math inline">\(y_1\)</span>, and thus increasing <span class="math inline">\(E_1\)</span> until <span class="math inline">\(E_2 = E_{min}\)</span>. The largest rise in channel bottom height that will not cause damming is called the critical hump height: <span class="math inline">\(\Delta z_{c} = E_1 - E_{min}\)</span>.</p>
+<p>A vertical can be added to the specific energy diagram to indicate <span class="math inline">\(E_2\)</span>:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="flow-in-open-channels.html#cb43-1" tabindex="-1"></a>p1 <span class="sc">+</span> </span>
+<span id="cb43-2"><a href="flow-in-open-channels.html#cb43-2" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">1.997</span>, <span class="at">linetype=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb43-3"><a href="flow-in-open-channels.html#cb43-3" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x=</span><span class="fl">1.9</span>, <span class="at">y=</span><span class="fl">2.5</span>, <span class="at">label=</span><span class="fu">expression</span>(E[<span class="dv">2</span>]), <span class="at">angle=</span><span class="dv">90</span>)</span></code></pre></div>
+<p><img src="hydr-watres_main_files/figure-html/spec_energy_diag_2-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div id="gvf-section" class="section level2 hasAnchor" number="5.7">
+<h2><span class="header-section-number">5.7</span> Gradually varied steady flow<a href="flow-in-open-channels.html#gvf-section" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>When water approaches an obstacle, it can back up, with its depth increasing. The effect can be observed well upstream. Similarly, as water approaches a drop, such as with a waterfall, the water level declines, and that effect can also be seen upstream. In general, any change in slope or roughness will produce changes in depth along a channel length.</p>
 <p>There are three depths that are important to define for a channel:
 <span class="math inline">\(y_c\)</span>, critical depth, found using Equation <a href="flow-in-open-channels.html#eq:crit-1">(5.4)</a>
 <span class="math inline">\(y_0\)</span>, normal depth, found using Equation <a href="flow-in-open-channels.html#eq:man-1">(5.2)</a>
 <span class="math inline">\(y\)</span>, flow depth, found using Equation <a href="flow-in-open-channels.html#eq:ocenergy-1">(5.5)</a></p>
-If <span class="math inline">\(y_n &lt; y_c\)</span> flow is supercritical (for example, flowing down a steep slope); if <span class="math inline">\(y_n &gt; y_c\)</span> flow is subcritical. Variations in the water surface are classified by profile types based on to whether the normal flow is subcritical (or mild sloped, M) or supercritical (steep, S), as in Figure <a href="flow-in-open-channels.html#fig:gvfcurves">5.6</a> <span class="citation">(<a href="references.html#ref-davidian_jacob_computation_1984">Davidian, Jacob, 1984</a>)</span>.
+If <span class="math inline">\(y_n &lt; y_c\)</span> flow is supercritical (for example, flowing down a steep slope); if <span class="math inline">\(y_n &gt; y_c\)</span> flow is subcritical. Variations in the water surface are classified by profile types based on to whether the normal flow is subcritical (or mild sloped, M) or supercritical (steep, S), as in Figure <a href="flow-in-open-channels.html#fig:gvfcurves">5.7</a> <span class="citation">(<a href="references.html#ref-davidian_jacob_computation_1984">Davidian, Jacob, 1984</a>)</span>.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:gvfcurves"></span>
 <img src="images/gvf-curves.PNG" alt="Types of flow profiles on mild and steep slopes" width="556" />
 <p class="caption">
-Figure 5.6: Types of flow profiles on mild and steep slopes
+Figure 5.7: Types of flow profiles on mild and steep slopes
 </p>
 </div>
-In addition to channel transitions, changes in channel slow of roughness (Manning <em>n</em>) will cause the flow surface to vary. Some of these conditions are illustrated in Figure <a href="flow-in-open-channels.html#fig:gvfcurves2">5.7</a> <span class="citation">(<a href="references.html#ref-davidian_jacob_computation_1984">Davidian, Jacob, 1984</a>)</span>.
+In addition to channel transitions, changes in channel slow of roughness (Manning <em>n</em>) will cause the flow surface to vary. Some of these conditions are illustrated in Figure <a href="flow-in-open-channels.html#fig:gvfcurves2">5.8</a> <span class="citation">(<a href="references.html#ref-davidian_jacob_computation_1984">Davidian, Jacob, 1984</a>)</span>.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:gvfcurves2"></span>
 <img src="images/gvf-n-S-transitions.PNG" alt="Types of flow profiles with changes in slope or roughness" width="397" />
 <p class="caption">
-Figure 5.7: Types of flow profiles with changes in slope or roughness
+Figure 5.8: Types of flow profiles with changes in slope or roughness
 </p>
 </div>
 <p>Typically, for supercritical flow the calculations start at an upstream cross section and move downstream. For subcritical flow calculations proceed upstream. However, for the direct step method, a negative result will indicate upstream, and a positive result indicates downstream.</p>
 <p>If the water surface passes through critical depth (from supercritical to subcritical or the reverse) it is no longer gradually varied flow and the methods in this section do not apply. This can happen at abrupt changes in channel slope or roughness, or channel transitions.</p>
-<div id="the-direct-step-method" class="section level3 hasAnchor" number="5.6.1">
-<h3><span class="header-section-number">5.6.1</span> The direct step method<a href="flow-in-open-channels.html#the-direct-step-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="the-direct-step-method" class="section level3 hasAnchor" number="5.7.1">
+<h3><span class="header-section-number">5.7.1</span> The direct step method<a href="flow-in-open-channels.html#the-direct-step-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 The direct step method looks at two cross sections in a channel where depths, <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span> are defined.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:gvffig1"></span>
 <img src="images/direct-step.png" alt="A gradually varied flow example." width="60%" />
 <p class="caption">
-Figure 5.8: A gradually varied flow example.
+Figure 5.9: A gradually varied flow example.
 </p>
 </div>
-<p>The distance between these two cross-sections, <span class="math inline">\({\Delta}X\)</span>, is calculated using Equation <a href="flow-in-open-channels.html#eq:gvf1">(5.20)</a>
+<p>The distance between these two cross-sections, <span class="math inline">\({\Delta}X\)</span>, is calculated using Equation <a href="flow-in-open-channels.html#eq:gvf1">(5.25)</a>
 <span class="math display" id="eq:gvf1">\[\begin{equation}
   {\Delta}X=\frac{E_1-E_2}{\overline{S}-S_0}
-  \tag{5.20}
+  \tag{5.25}
 \end{equation}\]</span>
-Where E is the specific energy from Equation <a href="flow-in-open-channels.html#eq:spen1">(5.18)</a>, <span class="math inline">\(S_0\)</span> is the slope of the channel bed, and <span class="math inline">\(S\)</span> is the slope of the energy grade line. <span class="math inline">\(\overline{S}\)</span> is the average of the S values at each cross section calculated using the Manning equation, Equation <a href="flow-in-open-channels.html#eq:man-1">(5.2)</a> solved for slope, as in Equation <a href="flow-in-open-channels.html#eq:man-gvf">(5.21)</a>.
+Where E is the specific energy from Equation <a href="flow-in-open-channels.html#eq:spen1">(5.18)</a>, <span class="math inline">\(S_0\)</span> is the slope of the channel bed, and <span class="math inline">\(S\)</span> is the slope of the energy grade line. <span class="math inline">\(\overline{S}\)</span> is the average of the S values at each cross section calculated using the Manning equation, Equation <a href="flow-in-open-channels.html#eq:man-1">(5.2)</a> solved for slope, as in Equation <a href="flow-in-open-channels.html#eq:man-gvf">(5.26)</a>.
 <span class="math display" id="eq:man-gvf">\[\begin{equation}
   S=\frac{n^2\,V^2}{C^2\,R^{\frac{4}{3}}}
-  \tag{5.21}
+  \tag{5.26}
 \end{equation}\]</span></p>
-<p>Example <a href="flow-in-open-channels.html#exm:gvfx1">5.5</a> demonstrates this.</p>
+<p>Example <a href="flow-in-open-channels.html#exm:gvfx1">5.6</a> demonstrates this.</p>
 <div class="example">
-<p><span id="exm:gvfx1" class="example"><strong>Example 5.5  </strong></span>Water flows at 10 m<sup>3</sup>/s in a trapezoidal channel with n=0.015, bottom width 3 m, side slope of 2:1 (H:V) and longitudinal slope 0.0009 (0.09%). At the location of a USGS stream gage the flow depth is 1.4 m. Use the direct step method to find the distance to the point where the depth is 1.2 m and determine whether it is upstream or downstream.</p>
+<p><span id="exm:gvfx1" class="example"><strong>Example 5.6  </strong></span>Water flows at 10 m<sup>3</sup>/s in a trapezoidal channel with n=0.015, bottom width 3 m, side slope of 2:1 (H:V) and longitudinal slope 0.0009 (0.09%). At the location of a USGS stream gage the flow depth is 1.4 m. Use the direct step method to find the distance to the point where the depth is 1.2 m and determine whether it is upstream or downstream.</p>
 </div>
 <p>Begin by setting up a function to calculate the Manning slope and setting up the input data.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="flow-in-open-channels.html#cb41-1" tabindex="-1"></a><span class="co">#function to calculate Manning slope</span></span>
-<span id="cb41-2"><a href="flow-in-open-channels.html#cb41-2" tabindex="-1"></a>slope_f <span class="ot">&lt;-</span> <span class="cf">function</span>(V,n,R,C) {</span>
-<span id="cb41-3"><a href="flow-in-open-channels.html#cb41-3" tabindex="-1"></a>  <span class="fu">return</span>(V<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>n<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(C<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>R<span class="sc">^</span>(<span class="fl">4.</span><span class="sc">/</span><span class="fl">3.</span>)))</span>
-<span id="cb41-4"><a href="flow-in-open-channels.html#cb41-4" tabindex="-1"></a>}</span>
-<span id="cb41-5"><a href="flow-in-open-channels.html#cb41-5" tabindex="-1"></a><span class="co">#Now set up input data ##################################</span></span>
-<span id="cb41-6"><a href="flow-in-open-channels.html#cb41-6" tabindex="-1"></a><span class="co">#input Flow</span></span>
-<span id="cb41-7"><a href="flow-in-open-channels.html#cb41-7" tabindex="-1"></a>Q<span class="ot">=</span><span class="fl">10.0</span></span>
-<span id="cb41-8"><a href="flow-in-open-channels.html#cb41-8" tabindex="-1"></a><span class="co">#input depths:</span></span>
-<span id="cb41-9"><a href="flow-in-open-channels.html#cb41-9" tabindex="-1"></a>y1 <span class="ot">&lt;-</span> <span class="fl">1.4</span> <span class="co">#starting depth</span></span>
-<span id="cb41-10"><a href="flow-in-open-channels.html#cb41-10" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> <span class="fl">1.2</span> <span class="co">#final depth</span></span>
-<span id="cb41-11"><a href="flow-in-open-channels.html#cb41-11" tabindex="-1"></a><span class="co">#Define the number of steps into which the difference in y will be broken</span></span>
-<span id="cb41-12"><a href="flow-in-open-channels.html#cb41-12" tabindex="-1"></a>nsteps <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb41-13"><a href="flow-in-open-channels.html#cb41-13" tabindex="-1"></a></span>
-<span id="cb41-14"><a href="flow-in-open-channels.html#cb41-14" tabindex="-1"></a><span class="co">#channel geometry:</span></span>
-<span id="cb41-15"><a href="flow-in-open-channels.html#cb41-15" tabindex="-1"></a>bottom_width <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb41-16"><a href="flow-in-open-channels.html#cb41-16" tabindex="-1"></a>side_slope <span class="ot">&lt;-</span> <span class="dv">2</span>         <span class="co">#side slope is H:V. Use zero for rectangular</span></span>
-<span id="cb41-17"><a href="flow-in-open-channels.html#cb41-17" tabindex="-1"></a>manning_n <span class="ot">&lt;-</span> <span class="fl">0.015</span></span>
-<span id="cb41-18"><a href="flow-in-open-channels.html#cb41-18" tabindex="-1"></a>long_slope <span class="ot">&lt;-</span> <span class="fl">0.0009</span></span>
-<span id="cb41-19"><a href="flow-in-open-channels.html#cb41-19" tabindex="-1"></a>units <span class="ot">&lt;-</span> <span class="st">&quot;SI&quot;</span>           <span class="co">#&quot;SI&quot; or &quot;Eng&quot;</span></span>
-<span id="cb41-20"><a href="flow-in-open-channels.html#cb41-20" tabindex="-1"></a><span class="cf">if</span> (units <span class="sc">==</span> <span class="st">&quot;SI&quot;</span>) {</span>
-<span id="cb41-21"><a href="flow-in-open-channels.html#cb41-21" tabindex="-1"></a>  C <span class="ot">&lt;-</span> <span class="dv">1</span>                <span class="co">#Manning constant: 1 for SI, 1.49 for US units</span></span>
-<span id="cb41-22"><a href="flow-in-open-channels.html#cb41-22" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fl">9.81</span>             </span>
-<span id="cb41-23"><a href="flow-in-open-channels.html#cb41-23" tabindex="-1"></a>} <span class="cf">else</span> {                <span class="co">#&quot;Eng&quot; means English, or US system</span></span>
-<span id="cb41-24"><a href="flow-in-open-channels.html#cb41-24" tabindex="-1"></a>  C <span class="ot">&lt;-</span> <span class="fl">1.49</span></span>
-<span id="cb41-25"><a href="flow-in-open-channels.html#cb41-25" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fl">32.2</span></span>
-<span id="cb41-26"><a href="flow-in-open-channels.html#cb41-26" tabindex="-1"></a>}</span>
-<span id="cb41-27"><a href="flow-in-open-channels.html#cb41-27" tabindex="-1"></a></span>
-<span id="cb41-28"><a href="flow-in-open-channels.html#cb41-28" tabindex="-1"></a><span class="co">#find depth increment for each step, depths at which to solve</span></span>
-<span id="cb41-29"><a href="flow-in-open-channels.html#cb41-29" tabindex="-1"></a>depth_incr <span class="ot">&lt;-</span> (y2 <span class="sc">-</span> y1) <span class="sc">/</span> nsteps</span>
-<span id="cb41-30"><a href="flow-in-open-channels.html#cb41-30" tabindex="-1"></a>depths <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span>y1, <span class="at">to=</span>y2, <span class="at">by=</span>depth_incr)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="flow-in-open-channels.html#cb44-1" tabindex="-1"></a><span class="co">#function to calculate Manning slope</span></span>
+<span id="cb44-2"><a href="flow-in-open-channels.html#cb44-2" tabindex="-1"></a>slope_f <span class="ot">&lt;-</span> <span class="cf">function</span>(V,n,R,C) {</span>
+<span id="cb44-3"><a href="flow-in-open-channels.html#cb44-3" tabindex="-1"></a>  <span class="fu">return</span>(V<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>n<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(C<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>R<span class="sc">^</span>(<span class="fl">4.</span><span class="sc">/</span><span class="fl">3.</span>)))</span>
+<span id="cb44-4"><a href="flow-in-open-channels.html#cb44-4" tabindex="-1"></a>}</span>
+<span id="cb44-5"><a href="flow-in-open-channels.html#cb44-5" tabindex="-1"></a><span class="co">#Now set up input data ##################################</span></span>
+<span id="cb44-6"><a href="flow-in-open-channels.html#cb44-6" tabindex="-1"></a><span class="co">#input Flow</span></span>
+<span id="cb44-7"><a href="flow-in-open-channels.html#cb44-7" tabindex="-1"></a>Q<span class="ot">=</span><span class="fl">10.0</span></span>
+<span id="cb44-8"><a href="flow-in-open-channels.html#cb44-8" tabindex="-1"></a><span class="co">#input depths:</span></span>
+<span id="cb44-9"><a href="flow-in-open-channels.html#cb44-9" tabindex="-1"></a>y1 <span class="ot">&lt;-</span> <span class="fl">1.4</span> <span class="co">#starting depth</span></span>
+<span id="cb44-10"><a href="flow-in-open-channels.html#cb44-10" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> <span class="fl">1.2</span> <span class="co">#final depth</span></span>
+<span id="cb44-11"><a href="flow-in-open-channels.html#cb44-11" tabindex="-1"></a><span class="co">#Define the number of steps into which the difference in y will be broken</span></span>
+<span id="cb44-12"><a href="flow-in-open-channels.html#cb44-12" tabindex="-1"></a>nsteps <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb44-13"><a href="flow-in-open-channels.html#cb44-13" tabindex="-1"></a></span>
+<span id="cb44-14"><a href="flow-in-open-channels.html#cb44-14" tabindex="-1"></a><span class="co">#channel geometry:</span></span>
+<span id="cb44-15"><a href="flow-in-open-channels.html#cb44-15" tabindex="-1"></a>bottom_width <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb44-16"><a href="flow-in-open-channels.html#cb44-16" tabindex="-1"></a>side_slope <span class="ot">&lt;-</span> <span class="dv">2</span>         <span class="co">#side slope is H:V. Use zero for rectangular</span></span>
+<span id="cb44-17"><a href="flow-in-open-channels.html#cb44-17" tabindex="-1"></a>manning_n <span class="ot">&lt;-</span> <span class="fl">0.015</span></span>
+<span id="cb44-18"><a href="flow-in-open-channels.html#cb44-18" tabindex="-1"></a>long_slope <span class="ot">&lt;-</span> <span class="fl">0.0009</span></span>
+<span id="cb44-19"><a href="flow-in-open-channels.html#cb44-19" tabindex="-1"></a>units <span class="ot">&lt;-</span> <span class="st">&quot;SI&quot;</span>           <span class="co">#&quot;SI&quot; or &quot;Eng&quot;</span></span>
+<span id="cb44-20"><a href="flow-in-open-channels.html#cb44-20" tabindex="-1"></a><span class="cf">if</span> (units <span class="sc">==</span> <span class="st">&quot;SI&quot;</span>) {</span>
+<span id="cb44-21"><a href="flow-in-open-channels.html#cb44-21" tabindex="-1"></a>  C <span class="ot">&lt;-</span> <span class="dv">1</span>                <span class="co">#Manning constant: 1 for SI, 1.49 for US units</span></span>
+<span id="cb44-22"><a href="flow-in-open-channels.html#cb44-22" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fl">9.81</span>             </span>
+<span id="cb44-23"><a href="flow-in-open-channels.html#cb44-23" tabindex="-1"></a>} <span class="cf">else</span> {                <span class="co">#&quot;Eng&quot; means English, or US system</span></span>
+<span id="cb44-24"><a href="flow-in-open-channels.html#cb44-24" tabindex="-1"></a>  C <span class="ot">&lt;-</span> <span class="fl">1.49</span></span>
+<span id="cb44-25"><a href="flow-in-open-channels.html#cb44-25" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fl">32.2</span></span>
+<span id="cb44-26"><a href="flow-in-open-channels.html#cb44-26" tabindex="-1"></a>}</span>
+<span id="cb44-27"><a href="flow-in-open-channels.html#cb44-27" tabindex="-1"></a></span>
+<span id="cb44-28"><a href="flow-in-open-channels.html#cb44-28" tabindex="-1"></a><span class="co">#find depth increment for each step, depths at which to solve</span></span>
+<span id="cb44-29"><a href="flow-in-open-channels.html#cb44-29" tabindex="-1"></a>depth_incr <span class="ot">&lt;-</span> (y2 <span class="sc">-</span> y1) <span class="sc">/</span> nsteps</span>
+<span id="cb44-30"><a href="flow-in-open-channels.html#cb44-30" tabindex="-1"></a>depths <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span>y1, <span class="at">to=</span>y2, <span class="at">by=</span>depth_incr)</span></code></pre></div>
 <p>First check to see if the flow is subcritical or supercritical and find the normal depth. Critical and normal depths can be calculated using the <em>manningt</em> function in the <em>hydraulics</em> package, as in Example <a href="flow-in-open-channels.html#exm:oc-2">5.2</a>. However, because other functionality of the <a href="https://cran.r-project.org/package=rivr">rivr</a> package is used, these will be calculated using functions from the <em>rivr</em> package.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="flow-in-open-channels.html#cb42-1" tabindex="-1"></a>rivr<span class="sc">::</span><span class="fu">critical_depth</span>(<span class="at">Q =</span> Q, <span class="at">yopt =</span> y1, <span class="at">g =</span> g, <span class="at">B =</span> bottom_width , <span class="at">SS =</span> side_slope)</span>
-<span id="cb42-2"><a href="flow-in-open-channels.html#cb42-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.8555011</span></span>
-<span id="cb42-3"><a href="flow-in-open-channels.html#cb42-3" tabindex="-1"></a><span class="co">#note using either depth for yopt produces the same answer</span></span>
-<span id="cb42-4"><a href="flow-in-open-channels.html#cb42-4" tabindex="-1"></a>rivr<span class="sc">::</span><span class="fu">normal_depth</span>(<span class="at">So =</span> long_slope, <span class="at">n =</span> manning_n, <span class="at">Q =</span> Q, <span class="at">yopt =</span> y1, <span class="at">Cm =</span> C, <span class="at">B =</span> bottom_width , <span class="at">SS =</span> side_slope)</span>
-<span id="cb42-5"><a href="flow-in-open-channels.html#cb42-5" tabindex="-1"></a><span class="co">#&gt; [1] 1.147137</span></span></code></pre></div>
-<p>The normal depth is greater than the critical depth, so the channel has a mild slope. The beginning and ending depths are above normal depth. This indicates the profile type, following Figure <a href="flow-in-open-channels.html#fig:gvfcurves">5.6</a>, is <strong>M-1</strong>, so the flow depth should decrease in depth going upstream. This also verifies that the flow depth between these two points does not pass through critical flow, so is a valid gradually varied flow problem.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="flow-in-open-channels.html#cb45-1" tabindex="-1"></a>rivr<span class="sc">::</span><span class="fu">critical_depth</span>(<span class="at">Q =</span> Q, <span class="at">yopt =</span> y1, <span class="at">g =</span> g, <span class="at">B =</span> bottom_width , <span class="at">SS =</span> side_slope)</span>
+<span id="cb45-2"><a href="flow-in-open-channels.html#cb45-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.8555011</span></span>
+<span id="cb45-3"><a href="flow-in-open-channels.html#cb45-3" tabindex="-1"></a><span class="co">#note using either depth for yopt produces the same answer</span></span>
+<span id="cb45-4"><a href="flow-in-open-channels.html#cb45-4" tabindex="-1"></a>rivr<span class="sc">::</span><span class="fu">normal_depth</span>(<span class="at">So =</span> long_slope, <span class="at">n =</span> manning_n, <span class="at">Q =</span> Q, <span class="at">yopt =</span> y1, <span class="at">Cm =</span> C, <span class="at">B =</span> bottom_width , <span class="at">SS =</span> side_slope)</span>
+<span id="cb45-5"><a href="flow-in-open-channels.html#cb45-5" tabindex="-1"></a><span class="co">#&gt; [1] 1.147137</span></span></code></pre></div>
+<p>The normal depth is greater than the critical depth, so the channel has a mild slope. The beginning and ending depths are above normal depth. This indicates the profile type, following Figure <a href="flow-in-open-channels.html#fig:gvfcurves">5.7</a>, is <strong>M-1</strong>, so the flow depth should decrease in depth going upstream. This also verifies that the flow depth between these two points does not pass through critical flow, so is a valid gradually varied flow problem.</p>
 <p>For each increment the <span class="math inline">\({\Delta}X\)</span> value needs to be calculated, and they need to be accumulated to find the total length, L, between the two defined depths.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="flow-in-open-channels.html#cb43-1" tabindex="-1"></a><span class="co">#loop through each channel segment (step), calculating the length for each segment. </span></span>
-<span id="cb43-2"><a href="flow-in-open-channels.html#cb43-2" tabindex="-1"></a><span class="co">#The channel_geom function from the rivr package is helpful</span></span>
-<span id="cb43-3"><a href="flow-in-open-channels.html#cb43-3" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb43-4"><a href="flow-in-open-channels.html#cb43-4" tabindex="-1"></a><span class="cf">for</span> ( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsteps ) {</span>
-<span id="cb43-5"><a href="flow-in-open-channels.html#cb43-5" tabindex="-1"></a>  <span class="co">#find hydraulic geometry, E and Sf at first depth</span></span>
-<span id="cb43-6"><a href="flow-in-open-channels.html#cb43-6" tabindex="-1"></a>  xc1 <span class="ot">&lt;-</span> rivr<span class="sc">::</span><span class="fu">channel_geom</span>(<span class="at">y=</span>depths[i], <span class="at">B=</span>bottom_width, <span class="at">SS=</span>side_slope)</span>
-<span id="cb43-7"><a href="flow-in-open-channels.html#cb43-7" tabindex="-1"></a>  V1 <span class="ot">&lt;-</span> Q<span class="sc">/</span>xc1[[<span class="st">&#39;A&#39;</span>]]</span>
-<span id="cb43-8"><a href="flow-in-open-channels.html#cb43-8" tabindex="-1"></a>  R1 <span class="ot">&lt;-</span> xc1[[<span class="st">&#39;R&#39;</span>]]</span>
-<span id="cb43-9"><a href="flow-in-open-channels.html#cb43-9" tabindex="-1"></a>  E1 <span class="ot">&lt;-</span> depths[i] <span class="sc">+</span> V1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>g)</span>
-<span id="cb43-10"><a href="flow-in-open-channels.html#cb43-10" tabindex="-1"></a>  Sf1 <span class="ot">&lt;-</span> <span class="fu">slope_f</span>(V1,manning_n,R1,C)</span>
-<span id="cb43-11"><a href="flow-in-open-channels.html#cb43-11" tabindex="-1"></a>  </span>
-<span id="cb43-12"><a href="flow-in-open-channels.html#cb43-12" tabindex="-1"></a>  <span class="co">#find hydraulic geometry, E and Sf at second depth</span></span>
-<span id="cb43-13"><a href="flow-in-open-channels.html#cb43-13" tabindex="-1"></a>  xc2 <span class="ot">&lt;-</span> rivr<span class="sc">::</span><span class="fu">channel_geom</span>(<span class="at">y=</span>depths[i<span class="sc">+</span><span class="dv">1</span>], <span class="at">B=</span>bottom_width, <span class="at">SS=</span>side_slope)</span>
-<span id="cb43-14"><a href="flow-in-open-channels.html#cb43-14" tabindex="-1"></a>  V2 <span class="ot">&lt;-</span> Q<span class="sc">/</span>xc2[[<span class="st">&#39;A&#39;</span>]]</span>
-<span id="cb43-15"><a href="flow-in-open-channels.html#cb43-15" tabindex="-1"></a>  R2 <span class="ot">&lt;-</span> xc2[[<span class="st">&#39;R&#39;</span>]]</span>
-<span id="cb43-16"><a href="flow-in-open-channels.html#cb43-16" tabindex="-1"></a>  E2 <span class="ot">&lt;-</span> depths[i<span class="sc">+</span><span class="dv">1</span>] <span class="sc">+</span> V2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>g)</span>
-<span id="cb43-17"><a href="flow-in-open-channels.html#cb43-17" tabindex="-1"></a>  Sf2 <span class="ot">&lt;-</span> <span class="fu">slope_f</span>(V2,manning_n,R2,C)</span>
-<span id="cb43-18"><a href="flow-in-open-channels.html#cb43-18" tabindex="-1"></a>  </span>
-<span id="cb43-19"><a href="flow-in-open-channels.html#cb43-19" tabindex="-1"></a>  Sf_avg <span class="ot">&lt;-</span> (Sf1 <span class="sc">+</span> Sf2) <span class="sc">/</span> <span class="fl">2.0</span></span>
-<span id="cb43-20"><a href="flow-in-open-channels.html#cb43-20" tabindex="-1"></a>  dX <span class="ot">&lt;-</span> (E1 <span class="sc">-</span> E2) <span class="sc">/</span> (Sf_avg <span class="sc">-</span> long_slope)</span>
-<span id="cb43-21"><a href="flow-in-open-channels.html#cb43-21" tabindex="-1"></a>  L <span class="ot">&lt;-</span> L <span class="sc">+</span> dX</span>
-<span id="cb43-22"><a href="flow-in-open-channels.html#cb43-22" tabindex="-1"></a>}</span>
-<span id="cb43-23"><a href="flow-in-open-channels.html#cb43-23" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Using %d steps, total distance from depth %.2f to %.2f = %.2f m</span><span class="sc">\n</span><span class="st">&quot;</span>, nsteps, y1, y2, L))</span>
-<span id="cb43-24"><a href="flow-in-open-channels.html#cb43-24" tabindex="-1"></a><span class="co">#&gt; Using 2 steps, total distance from depth 1.40 to 1.20 = -491.75 m</span></span></code></pre></div>
-The result is negative, verifying that the location of depth y2 is upstream of y1. Of course, the result will become more precise as more incremental steps are included, as shown in Figure <a href="flow-in-open-channels.html#fig:gvfmultiple">5.9</a>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="flow-in-open-channels.html#cb46-1" tabindex="-1"></a><span class="co">#loop through each channel segment (step), calculating the length for each segment. </span></span>
+<span id="cb46-2"><a href="flow-in-open-channels.html#cb46-2" tabindex="-1"></a><span class="co">#The channel_geom function from the rivr package is helpful</span></span>
+<span id="cb46-3"><a href="flow-in-open-channels.html#cb46-3" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb46-4"><a href="flow-in-open-channels.html#cb46-4" tabindex="-1"></a><span class="cf">for</span> ( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsteps ) {</span>
+<span id="cb46-5"><a href="flow-in-open-channels.html#cb46-5" tabindex="-1"></a>  <span class="co">#find hydraulic geometry, E and Sf at first depth</span></span>
+<span id="cb46-6"><a href="flow-in-open-channels.html#cb46-6" tabindex="-1"></a>  xc1 <span class="ot">&lt;-</span> rivr<span class="sc">::</span><span class="fu">channel_geom</span>(<span class="at">y=</span>depths[i], <span class="at">B=</span>bottom_width, <span class="at">SS=</span>side_slope)</span>
+<span id="cb46-7"><a href="flow-in-open-channels.html#cb46-7" tabindex="-1"></a>  V1 <span class="ot">&lt;-</span> Q<span class="sc">/</span>xc1[[<span class="st">&#39;A&#39;</span>]]</span>
+<span id="cb46-8"><a href="flow-in-open-channels.html#cb46-8" tabindex="-1"></a>  R1 <span class="ot">&lt;-</span> xc1[[<span class="st">&#39;R&#39;</span>]]</span>
+<span id="cb46-9"><a href="flow-in-open-channels.html#cb46-9" tabindex="-1"></a>  E1 <span class="ot">&lt;-</span> depths[i] <span class="sc">+</span> V1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>g)</span>
+<span id="cb46-10"><a href="flow-in-open-channels.html#cb46-10" tabindex="-1"></a>  Sf1 <span class="ot">&lt;-</span> <span class="fu">slope_f</span>(V1,manning_n,R1,C)</span>
+<span id="cb46-11"><a href="flow-in-open-channels.html#cb46-11" tabindex="-1"></a>  </span>
+<span id="cb46-12"><a href="flow-in-open-channels.html#cb46-12" tabindex="-1"></a>  <span class="co">#find hydraulic geometry, E and Sf at second depth</span></span>
+<span id="cb46-13"><a href="flow-in-open-channels.html#cb46-13" tabindex="-1"></a>  xc2 <span class="ot">&lt;-</span> rivr<span class="sc">::</span><span class="fu">channel_geom</span>(<span class="at">y=</span>depths[i<span class="sc">+</span><span class="dv">1</span>], <span class="at">B=</span>bottom_width, <span class="at">SS=</span>side_slope)</span>
+<span id="cb46-14"><a href="flow-in-open-channels.html#cb46-14" tabindex="-1"></a>  V2 <span class="ot">&lt;-</span> Q<span class="sc">/</span>xc2[[<span class="st">&#39;A&#39;</span>]]</span>
+<span id="cb46-15"><a href="flow-in-open-channels.html#cb46-15" tabindex="-1"></a>  R2 <span class="ot">&lt;-</span> xc2[[<span class="st">&#39;R&#39;</span>]]</span>
+<span id="cb46-16"><a href="flow-in-open-channels.html#cb46-16" tabindex="-1"></a>  E2 <span class="ot">&lt;-</span> depths[i<span class="sc">+</span><span class="dv">1</span>] <span class="sc">+</span> V2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>g)</span>
+<span id="cb46-17"><a href="flow-in-open-channels.html#cb46-17" tabindex="-1"></a>  Sf2 <span class="ot">&lt;-</span> <span class="fu">slope_f</span>(V2,manning_n,R2,C)</span>
+<span id="cb46-18"><a href="flow-in-open-channels.html#cb46-18" tabindex="-1"></a>  </span>
+<span id="cb46-19"><a href="flow-in-open-channels.html#cb46-19" tabindex="-1"></a>  Sf_avg <span class="ot">&lt;-</span> (Sf1 <span class="sc">+</span> Sf2) <span class="sc">/</span> <span class="fl">2.0</span></span>
+<span id="cb46-20"><a href="flow-in-open-channels.html#cb46-20" tabindex="-1"></a>  dX <span class="ot">&lt;-</span> (E1 <span class="sc">-</span> E2) <span class="sc">/</span> (Sf_avg <span class="sc">-</span> long_slope)</span>
+<span id="cb46-21"><a href="flow-in-open-channels.html#cb46-21" tabindex="-1"></a>  L <span class="ot">&lt;-</span> L <span class="sc">+</span> dX</span>
+<span id="cb46-22"><a href="flow-in-open-channels.html#cb46-22" tabindex="-1"></a>}</span>
+<span id="cb46-23"><a href="flow-in-open-channels.html#cb46-23" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Using %d steps, total distance from depth %.2f to %.2f = %.2f m</span><span class="sc">\n</span><span class="st">&quot;</span>, nsteps, y1, y2, L))</span>
+<span id="cb46-24"><a href="flow-in-open-channels.html#cb46-24" tabindex="-1"></a><span class="co">#&gt; Using 2 steps, total distance from depth 1.40 to 1.20 = -491.75 m</span></span></code></pre></div>
+The result is negative, verifying that the location of depth y2 is upstream of y1. Of course, the result will become more precise as more incremental steps are included, as shown in Figure <a href="flow-in-open-channels.html#fig:gvfmultiple">5.10</a>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:gvfmultiple"></span>
 <img src="images/gvf_multiplesteps.png" alt="Variation of number of calculation steps to final calculated distance." width="70%" />
 <p class="caption">
-Figure 5.9: Variation of number of calculation steps to final calculated distance.
+Figure 5.10: Variation of number of calculation steps to final calculated distance.
 </p>
 </div>
-<p>The direct step method is also implemented in the <em>hydraulics</em> package, and can be applied to the same problem as above, as illustrated in Example <a href="flow-in-open-channels.html#exm:gvfx1b">5.6</a>.</p>
+<p>The direct step method is also implemented in the <em>hydraulics</em> package, and can be applied to the same problem as above, as illustrated in Example <a href="flow-in-open-channels.html#exm:gvfx1b">5.7</a>.</p>
 <div class="example">
-<p><span id="exm:gvfx1b" class="example"><strong>Example 5.6  </strong></span>Water flows at 10 m<sup>3</sup>/s in a trapezoidal channel with n=0.015, bottom width 3 m, side slope of 2:1 (H:V) and longitudinal slope 0.0009 (0.09%). At the location of a USGS stream gage the flow depth is 1.4 m. Use the direct step method to find the distance to the point where the depth is 1.2 m and determine whether it is upstream or downstream.</p>
+<p><span id="exm:gvfx1b" class="example"><strong>Example 5.7  </strong></span>Water flows at 10 m<sup>3</sup>/s in a trapezoidal channel with n=0.015, bottom width 3 m, side slope of 2:1 (H:V) and longitudinal slope 0.0009 (0.09%). At the location of a USGS stream gage the flow depth is 1.4 m. Use the direct step method to find the distance to the point where the depth is 1.2 m and determine whether it is upstream or downstream.</p>
 </div>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="flow-in-open-channels.html#cb44-1" tabindex="-1"></a>hydraulics<span class="sc">::</span><span class="fu">direct_step</span>(<span class="at">So=</span><span class="fl">0.0009</span>, <span class="at">n=</span><span class="fl">0.015</span>, <span class="at">Q=</span><span class="dv">10</span>, <span class="at">y1=</span><span class="fl">1.4</span>, <span class="at">y2=</span><span class="fl">1.2</span>, <span class="at">b=</span><span class="dv">3</span>, <span class="at">m=</span><span class="dv">2</span>, <span class="at">nsteps=</span><span class="dv">2</span>, <span class="at">units=</span><span class="st">&quot;SI&quot;</span>)</span>
-<span id="cb44-2"><a href="flow-in-open-channels.html#cb44-2" tabindex="-1"></a><span class="co">#&gt; y1=1.400, y2=1.200, yn=1.147, yc=0.855585</span></span>
-<span id="cb44-3"><a href="flow-in-open-channels.html#cb44-3" tabindex="-1"></a><span class="co">#&gt; Profile type  = M1</span></span>
-<span id="cb44-4"><a href="flow-in-open-channels.html#cb44-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 7</span></span>
-<span id="cb44-5"><a href="flow-in-open-channels.html#cb44-5" tabindex="-1"></a><span class="co">#&gt;       x     z     y     A       Sf     E    Fr</span></span>
-<span id="cb44-6"><a href="flow-in-open-channels.html#cb44-6" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb44-7"><a href="flow-in-open-channels.html#cb44-7" tabindex="-1"></a><span class="co">#&gt; 1    0  0       1.4  8.12 0.000407  1.48 0.405</span></span>
-<span id="cb44-8"><a href="flow-in-open-channels.html#cb44-8" tabindex="-1"></a><span class="co">#&gt; 2 -192. 0.173   1.3  7.28 0.000548  1.40 0.466</span></span>
-<span id="cb44-9"><a href="flow-in-open-channels.html#cb44-9" tabindex="-1"></a><span class="co">#&gt; 3 -492. 0.443   1.2  6.48 0.000753  1.32 0.541</span></span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="flow-in-open-channels.html#cb47-1" tabindex="-1"></a>hydraulics<span class="sc">::</span><span class="fu">direct_step</span>(<span class="at">So=</span><span class="fl">0.0009</span>, <span class="at">n=</span><span class="fl">0.015</span>, <span class="at">Q=</span><span class="dv">10</span>, <span class="at">y1=</span><span class="fl">1.4</span>, <span class="at">y2=</span><span class="fl">1.2</span>, <span class="at">b=</span><span class="dv">3</span>, <span class="at">m=</span><span class="dv">2</span>, <span class="at">nsteps=</span><span class="dv">2</span>, <span class="at">units=</span><span class="st">&quot;SI&quot;</span>)</span>
+<span id="cb47-2"><a href="flow-in-open-channels.html#cb47-2" tabindex="-1"></a><span class="co">#&gt; y1=1.400, y2=1.200, yn=1.147, yc=0.855585</span></span>
+<span id="cb47-3"><a href="flow-in-open-channels.html#cb47-3" tabindex="-1"></a><span class="co">#&gt; Profile type  = M1</span></span>
+<span id="cb47-4"><a href="flow-in-open-channels.html#cb47-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 7</span></span>
+<span id="cb47-5"><a href="flow-in-open-channels.html#cb47-5" tabindex="-1"></a><span class="co">#&gt;       x     z     y     A       Sf     E    Fr</span></span>
+<span id="cb47-6"><a href="flow-in-open-channels.html#cb47-6" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb47-7"><a href="flow-in-open-channels.html#cb47-7" tabindex="-1"></a><span class="co">#&gt; 1    0  0       1.4  8.12 0.000407  1.48 0.405</span></span>
+<span id="cb47-8"><a href="flow-in-open-channels.html#cb47-8" tabindex="-1"></a><span class="co">#&gt; 2 -192. 0.173   1.3  7.28 0.000548  1.40 0.466</span></span>
+<span id="cb47-9"><a href="flow-in-open-channels.html#cb47-9" tabindex="-1"></a><span class="co">#&gt; 3 -492. 0.443   1.2  6.48 0.000753  1.32 0.541</span></span></code></pre></div>
 <p>This produces the same result, and verifies that the water surface profile is type M-1.</p>
 </div>
-<div id="standard-step-method" class="section level3 hasAnchor" number="5.6.2">
-<h3><span class="header-section-number">5.6.2</span> Standard step method<a href="flow-in-open-channels.html#standard-step-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="standard-step-method" class="section level3 hasAnchor" number="5.7.2">
+<h3><span class="header-section-number">5.7.2</span> Standard step method<a href="flow-in-open-channels.html#standard-step-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The standard step method works similarly to the direct step method, except from one known depth the second depth is determined at a known distance, <em>L</em>. This is a preferred method when the depth at a critical location, such as a bridge, is needed.</p>
-<p>The <a href="https://cran.r-project.org/package=rivr">rivr</a> package implements the standard step method in its <em>compute_profile</em> function. To compare it to the direct step method, check the depth at <span class="math inline">\(y_2\)</span> given the total distance from Example <a href="flow-in-open-channels.html#exm:gvfx1">5.5</a>.</p>
+<p>The <a href="https://cran.r-project.org/package=rivr">rivr</a> package implements the standard step method in its <em>compute_profile</em> function. To compare it to the direct step method, check the depth at <span class="math inline">\(y_2\)</span> given the total distance from Example <a href="flow-in-open-channels.html#exm:gvfx1">5.6</a>.</p>
 <div class="example">
-<p><span id="exm:gvfx2" class="example"><strong>Example 5.7  </strong></span>For the same channel and flow rate as Example <a href="flow-in-open-channels.html#exm:gvfx1">5.5</a>, determine the depth of water at the distance <em>L</em> determined above.</p>
+<p><span id="exm:gvfx2" class="example"><strong>Example 5.8  </strong></span>For the same channel and flow rate as Example <a href="flow-in-open-channels.html#exm:gvfx1">5.6</a>, determine the depth of water at the distance <em>L</em> determined above.</p>
 </div>
 <p>The function requires the distance to be positive, so apply the absolute value to the <em>L</em> value.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="flow-in-open-channels.html#cb45-1" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">abs</span>(L)</span>
-<span id="cb45-2"><a href="flow-in-open-channels.html#cb45-2" tabindex="-1"></a>ans <span class="ot">&lt;-</span> rivr<span class="sc">::</span><span class="fu">compute_profile</span>(<span class="at">So =</span> long_slope, <span class="at">n =</span> manning_n, <span class="at">Q =</span> Q, <span class="at">y0 =</span> y1, <span class="at">Cm =</span> C, <span class="at">g =</span> g, <span class="at">B =</span> bottom_width, <span class="at">SS =</span> side_slope, <span class="at">stepdist =</span> dist<span class="sc">/</span>nsteps, <span class="at">totaldist =</span> dist)</span>
-<span id="cb45-3"><a href="flow-in-open-channels.html#cb45-3" tabindex="-1"></a><span class="co">#Distances along the channel where depths were determined</span></span>
-<span id="cb45-4"><a href="flow-in-open-channels.html#cb45-4" tabindex="-1"></a>ans<span class="sc">$</span>x</span>
-<span id="cb45-5"><a href="flow-in-open-channels.html#cb45-5" tabindex="-1"></a><span class="co">#&gt; [1]    0.0000 -245.8742 -491.7483</span></span>
-<span id="cb45-6"><a href="flow-in-open-channels.html#cb45-6" tabindex="-1"></a><span class="co">#Depths at each distance</span></span>
-<span id="cb45-7"><a href="flow-in-open-channels.html#cb45-7" tabindex="-1"></a>ans<span class="sc">$</span>y</span>
-<span id="cb45-8"><a href="flow-in-open-channels.html#cb45-8" tabindex="-1"></a><span class="co">#&gt; [1] 1.400000 1.277009 1.200592</span></span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="flow-in-open-channels.html#cb48-1" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">abs</span>(L)</span>
+<span id="cb48-2"><a href="flow-in-open-channels.html#cb48-2" tabindex="-1"></a>ans <span class="ot">&lt;-</span> rivr<span class="sc">::</span><span class="fu">compute_profile</span>(<span class="at">So =</span> long_slope, <span class="at">n =</span> manning_n, <span class="at">Q =</span> Q, <span class="at">y0 =</span> y1, <span class="at">Cm =</span> C, <span class="at">g =</span> g, <span class="at">B =</span> bottom_width, <span class="at">SS =</span> side_slope, <span class="at">stepdist =</span> dist<span class="sc">/</span>nsteps, <span class="at">totaldist =</span> dist)</span>
+<span id="cb48-3"><a href="flow-in-open-channels.html#cb48-3" tabindex="-1"></a><span class="co">#Distances along the channel where depths were determined</span></span>
+<span id="cb48-4"><a href="flow-in-open-channels.html#cb48-4" tabindex="-1"></a>ans<span class="sc">$</span>x</span>
+<span id="cb48-5"><a href="flow-in-open-channels.html#cb48-5" tabindex="-1"></a><span class="co">#&gt; [1]    0.0000 -245.8742 -491.7483</span></span>
+<span id="cb48-6"><a href="flow-in-open-channels.html#cb48-6" tabindex="-1"></a><span class="co">#Depths at each distance</span></span>
+<span id="cb48-7"><a href="flow-in-open-channels.html#cb48-7" tabindex="-1"></a>ans<span class="sc">$</span>y</span>
+<span id="cb48-8"><a href="flow-in-open-channels.html#cb48-8" tabindex="-1"></a><span class="co">#&gt; [1] 1.400000 1.277009 1.200592</span></span></code></pre></div>
 <p>This shows the distances and depths at each of the steps defined. Consistent with the above, the distances are negative, showing that they are progressing upstream. The results are identical for <span class="math inline">\(y_2\)</span> using the direct step method.</p>
 </div>
 </div>
-<div id="hj-section" class="section level2 hasAnchor" number="5.7">
-<h2><span class="header-section-number">5.7</span> Rapidly varied flow (the hydraulic jump)<a href="flow-in-open-channels.html#hj-section" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="hj-section" class="section level2 hasAnchor" number="5.8">
+<h2><span class="header-section-number">5.8</span> Rapidly varied flow (the hydraulic jump)<a href="flow-in-open-channels.html#hj-section" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:hj-0"></span>
 <img src="images/StAnthonyFalls_apron.JPG" alt="A hydraulic jump at St. Anthony Falls, Minnesota." width="450" />
 <p class="caption">
-Figure 5.10: A hydraulic jump at St. Anthony Falls, Minnesota.
+Figure 5.11: A hydraulic jump at St. Anthony Falls, Minnesota.
 </p>
 </div>
-<p>In the discussion of critical flow in Section <a href="flow-in-open-channels.html#crit-section">5.5</a>, the concept of alternate depths was introduced, where a given flow rate in a channel with known geometry typically may assume two possible values, one subcritical and one supercritical. For the case of supercritical flow transitioning to subcritical flow, a smooth transition is impossible, so a hydraulic jump occurs. A hydraulic jump always dissipates some of the incoming energy. A hydraulic jump is depicted in Figure <a href="flow-in-open-channels.html#fig:hj-1">5.11</a> <span class="citation">(<a href="references.html#ref-peterka_alvin_j_hydraulic_1978">Peterka, Alvin J., 1978</a>)</span>.</p>
+<p>In the discussion of critical flow in Section <a href="flow-in-open-channels.html#crit-section">5.5</a>, the concept of alternate depths was introduced, where a given flow rate in a channel with known geometry typically may assume two possible values, one subcritical and one supercritical. For the case of supercritical flow transitioning to subcritical flow, a smooth transition is impossible, so a hydraulic jump occurs. A hydraulic jump always dissipates some of the incoming energy. A hydraulic jump is depicted in Figure <a href="flow-in-open-channels.html#fig:hj-1">5.12</a> <span class="citation">(<a href="references.html#ref-peterka_alvin_j_hydraulic_1978">Peterka, Alvin J., 1978</a>)</span>.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:hj-1"></span>
 <img src="images/hydr_jump_usbr.PNG" alt="A typical hydraulic jump." width="674" />
 <p class="caption">
-Figure 5.11: A typical hydraulic jump.
+Figure 5.12: A typical hydraulic jump.
 </p>
 </div>
-<div id="sequent-or-conjugate-depths" class="section level3 hasAnchor" number="5.7.1">
-<h3><span class="header-section-number">5.7.1</span> Sequent (or conjugate) depths<a href="flow-in-open-channels.html#sequent-or-conjugate-depths" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The two depths on either side of a hydraulic jump are called <strong>sequent depths</strong> or <strong>conjugate depths</strong>. The relationship between them can be established using the momentum equation to develop an general expression (for any open channel) for the <strong>momentum function, M</strong>, as in Equation <a href="flow-in-open-channels.html#eq:hj-eq1">(5.22)</a>.
+<div id="sequent-or-conjugate-depths" class="section level3 hasAnchor" number="5.8.1">
+<h3><span class="header-section-number">5.8.1</span> Sequent (or conjugate) depths<a href="flow-in-open-channels.html#sequent-or-conjugate-depths" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The two depths on either side of a hydraulic jump are called <strong>sequent depths</strong> or <strong>conjugate depths</strong>. The relationship between them can be established using the momentum equation to develop an general expression (for any open channel) for the <strong>momentum function, M</strong>, as in Equation <a href="flow-in-open-channels.html#eq:hj-eq1">(5.27)</a>.
 <span class="math display" id="eq:hj-eq1">\[\begin{equation}
   M=Ah_c+\frac{Q^2}{gA}
-  \tag{5.22}
+  \tag{5.27}
 \end{equation}\]</span>
-where <span class="math inline">\(h_c\)</span> is the distance from the water surface to the centroid of the channel cross-section. For a <strong>trapezoidal</strong> channel, the momentum equation becomes that described by Equation <a href="flow-in-open-channels.html#eq:hj-eq2">(5.23)</a>.
+where <span class="math inline">\(h_c\)</span> is the distance from the water surface to the centroid of the channel cross-section. For a <strong>trapezoidal</strong> channel, the momentum equation becomes that described by Equation <a href="flow-in-open-channels.html#eq:hj-eq2">(5.28)</a>.
 <span class="math display" id="eq:hj-eq2">\[\begin{equation}
   M=\frac{by^2}{2}+\frac{my^3}{3}+\frac{Q^2}{gy\left(b+my\right)}
-  \tag{5.23}
+  \tag{5.28}
 \end{equation}\]</span></p>
-<p>For the case of a <strong>rectangular</strong> channel, setting m=0 and setting the Momentum function for two sequent depths, y<sub>1</sub> ans y<sub>2</sub> equal, produces the relationship in Equation <a href="flow-in-open-channels.html#eq:hj-eq3">(5.24)</a>.
+<p>For the case of a <strong>rectangular</strong> channel, setting m=0 and setting the Momentum function for two sequent depths, y<sub>1</sub> ans y<sub>2</sub> equal, produces the relationship in Equation <a href="flow-in-open-channels.html#eq:hj-eq3">(5.29)</a>.
 <span class="math display" id="eq:hj-eq3">\[\begin{equation}
   \frac{y_2}{y_1}=\frac{1}{2}\left(-1+\sqrt{1+8Fr_1^2}\right)
   or
   \frac{y_1}{y_2}=\frac{1}{2}\left(-1+\sqrt{1+8Fr_2^2}\right)
-  \tag{5.24}
+  \tag{5.29}
 \end{equation}\]</span>
 where Fr<sub>n</sub> is the Froude Number [Equation <a href="flow-in-open-channels.html#eq:froude">(5.1)</a>] at section n.</p>
-<p>Again, for the case of a <strong>rectangular</strong> channel, the energy head loss through a hydraulic jump simplifies to Equation <a href="flow-in-open-channels.html#eq:hj-eq4">(5.25)</a>.
+<p>Again, for the case of a <strong>rectangular</strong> channel, the energy head loss through a hydraulic jump simplifies to Equation <a href="flow-in-open-channels.html#eq:hj-eq4">(5.30)</a>.
 <span class="math display" id="eq:hj-eq4">\[\begin{equation}
   h_l=\frac{\left(y_2-y_1\right)^3}{4y_1y_2}
-  \tag{5.25}
+  \tag{5.30}
 \end{equation}\]</span></p>
-<p>Given that the momentum function must be conserved on either side of a hydraulic jump, finding the sequent depth for any known depth becomes straightforward for trapezoidal shapes. Setting M<sub>1</sub> = M<sub>2</sub> in Equation <a href="flow-in-open-channels.html#eq:hj-eq2">(5.23)</a> allows the use of a solver, as in Example <a href="flow-in-open-channels.html#exm:seq-x1">5.8</a>.</p>
+<p>Given that the momentum function must be conserved on either side of a hydraulic jump, finding the sequent depth for any known depth becomes straightforward for trapezoidal shapes. Setting M<sub>1</sub> = M<sub>2</sub> in Equation <a href="flow-in-open-channels.html#eq:hj-eq2">(5.28)</a> allows the use of a solver, as in Example <a href="flow-in-open-channels.html#exm:seq-x1">5.9</a>.</p>
 <div class="example">
-<p><span id="exm:seq-x1" class="example"><strong>Example 5.8  </strong></span>A trapezoidal channel with a bottom width of 0.5 m and a side slope of 1:1 carries a flow of 0.2 m<sup>3</sup>/s. The depth on one side of a hydraulic jump is 0.1 m. Find the sequent depth, the energy head loss, and the power dissipation in Watts.</p>
+<p><span id="exm:seq-x1" class="example"><strong>Example 5.9  </strong></span>A trapezoidal channel with a bottom width of 0.5 m and a side slope of 1:1 carries a flow of 0.2 m<sup>3</sup>/s. The depth on one side of a hydraulic jump is 0.1 m. Find the sequent depth, the energy head loss, and the power dissipation in Watts.</p>
 </div>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="flow-in-open-channels.html#cb46-1" tabindex="-1"></a>flow <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
-<span id="cb46-2"><a href="flow-in-open-channels.html#cb46-2" tabindex="-1"></a>ans <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">sequent_depth</span>(<span class="at">Q=</span>flow,<span class="at">b=</span><span class="fl">0.5</span>,<span class="at">y=</span><span class="fl">0.1</span>,<span class="at">m=</span><span class="dv">1</span>,<span class="at">units =</span> <span class="st">&quot;SI&quot;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb46-3"><a href="flow-in-open-channels.html#cb46-3" tabindex="-1"></a><span class="co">#print output of function</span></span>
-<span id="cb46-4"><a href="flow-in-open-channels.html#cb46-4" tabindex="-1"></a><span class="fu">as.data.frame</span>(ans)</span>
-<span id="cb46-5"><a href="flow-in-open-channels.html#cb46-5" tabindex="-1"></a><span class="co">#&gt;                  ans</span></span>
-<span id="cb46-6"><a href="flow-in-open-channels.html#cb46-6" tabindex="-1"></a><span class="co">#&gt; y            0.1 [m]</span></span>
-<span id="cb46-7"><a href="flow-in-open-channels.html#cb46-7" tabindex="-1"></a><span class="co">#&gt; y_seq  0.3941009 [m]</span></span>
-<span id="cb46-8"><a href="flow-in-open-channels.html#cb46-8" tabindex="-1"></a><span class="co">#&gt; yc      0.217704 [m]</span></span>
-<span id="cb46-9"><a href="flow-in-open-channels.html#cb46-9" tabindex="-1"></a><span class="co">#&gt; Fr      3.635731 [1]</span></span>
-<span id="cb46-10"><a href="flow-in-open-channels.html#cb46-10" tabindex="-1"></a><span class="co">#&gt; Fr_seq 0.3465538 [1]</span></span>
-<span id="cb46-11"><a href="flow-in-open-channels.html#cb46-11" tabindex="-1"></a><span class="co">#&gt; E       0.666509 [m]</span></span>
-<span id="cb46-12"><a href="flow-in-open-channels.html#cb46-12" tabindex="-1"></a><span class="co">#&gt; E_seq  0.4105265 [m]</span></span>
-<span id="cb46-13"><a href="flow-in-open-channels.html#cb46-13" tabindex="-1"></a><span class="co">#Find energy head loss</span></span>
-<span id="cb46-14"><a href="flow-in-open-channels.html#cb46-14" tabindex="-1"></a>hl <span class="ot">&lt;-</span> <span class="fu">abs</span>(ans<span class="sc">$</span>E <span class="sc">-</span> ans<span class="sc">$</span>E_seq)</span>
-<span id="cb46-15"><a href="flow-in-open-channels.html#cb46-15" tabindex="-1"></a>hl</span>
-<span id="cb46-16"><a href="flow-in-open-channels.html#cb46-16" tabindex="-1"></a><span class="co">#&gt; 0.2559825 [m]</span></span>
-<span id="cb46-17"><a href="flow-in-open-channels.html#cb46-17" tabindex="-1"></a><span class="co">#Express this as a power loss</span></span>
-<span id="cb46-18"><a href="flow-in-open-channels.html#cb46-18" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">specwt</span>(<span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)</span>
-<span id="cb46-19"><a href="flow-in-open-channels.html#cb46-19" tabindex="-1"></a>P <span class="ot">&lt;-</span> gamma<span class="sc">*</span>flow<span class="sc">*</span>hl</span>
-<span id="cb46-20"><a href="flow-in-open-channels.html#cb46-20" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Power loss = %.1f Watts</span><span class="sc">\n</span><span class="st">&quot;</span>,P))</span>
-<span id="cb46-21"><a href="flow-in-open-channels.html#cb46-21" tabindex="-1"></a><span class="co">#&gt; Power loss = 501.4 Watts</span></span></code></pre></div>
-<p>The energy loss across hydraulic jumps varies with the Froude number of the incoming flow, as shown in depicted in Figure <a href="flow-in-open-channels.html#fig:hj-2">5.12</a> <span class="citation">(<a href="references.html#ref-peterka_alvin_j_hydraulic_1978">Peterka, Alvin J., 1978</a>)</span>.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="flow-in-open-channels.html#cb49-1" tabindex="-1"></a>flow <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb49-2"><a href="flow-in-open-channels.html#cb49-2" tabindex="-1"></a>ans <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">sequent_depth</span>(<span class="at">Q=</span>flow,<span class="at">b=</span><span class="fl">0.5</span>,<span class="at">y=</span><span class="fl">0.1</span>,<span class="at">m=</span><span class="dv">1</span>,<span class="at">units =</span> <span class="st">&quot;SI&quot;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb49-3"><a href="flow-in-open-channels.html#cb49-3" tabindex="-1"></a><span class="co">#print output of function</span></span>
+<span id="cb49-4"><a href="flow-in-open-channels.html#cb49-4" tabindex="-1"></a><span class="fu">as.data.frame</span>(ans)</span>
+<span id="cb49-5"><a href="flow-in-open-channels.html#cb49-5" tabindex="-1"></a><span class="co">#&gt;                  ans</span></span>
+<span id="cb49-6"><a href="flow-in-open-channels.html#cb49-6" tabindex="-1"></a><span class="co">#&gt; y            0.1 [m]</span></span>
+<span id="cb49-7"><a href="flow-in-open-channels.html#cb49-7" tabindex="-1"></a><span class="co">#&gt; y_seq  0.3941009 [m]</span></span>
+<span id="cb49-8"><a href="flow-in-open-channels.html#cb49-8" tabindex="-1"></a><span class="co">#&gt; yc      0.217704 [m]</span></span>
+<span id="cb49-9"><a href="flow-in-open-channels.html#cb49-9" tabindex="-1"></a><span class="co">#&gt; Fr      3.635731 [1]</span></span>
+<span id="cb49-10"><a href="flow-in-open-channels.html#cb49-10" tabindex="-1"></a><span class="co">#&gt; Fr_seq 0.3465538 [1]</span></span>
+<span id="cb49-11"><a href="flow-in-open-channels.html#cb49-11" tabindex="-1"></a><span class="co">#&gt; E       0.666509 [m]</span></span>
+<span id="cb49-12"><a href="flow-in-open-channels.html#cb49-12" tabindex="-1"></a><span class="co">#&gt; E_seq  0.4105265 [m]</span></span>
+<span id="cb49-13"><a href="flow-in-open-channels.html#cb49-13" tabindex="-1"></a><span class="co">#Find energy head loss</span></span>
+<span id="cb49-14"><a href="flow-in-open-channels.html#cb49-14" tabindex="-1"></a>hl <span class="ot">&lt;-</span> <span class="fu">abs</span>(ans<span class="sc">$</span>E <span class="sc">-</span> ans<span class="sc">$</span>E_seq)</span>
+<span id="cb49-15"><a href="flow-in-open-channels.html#cb49-15" tabindex="-1"></a>hl</span>
+<span id="cb49-16"><a href="flow-in-open-channels.html#cb49-16" tabindex="-1"></a><span class="co">#&gt; 0.2559825 [m]</span></span>
+<span id="cb49-17"><a href="flow-in-open-channels.html#cb49-17" tabindex="-1"></a><span class="co">#Express this as a power loss</span></span>
+<span id="cb49-18"><a href="flow-in-open-channels.html#cb49-18" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">specwt</span>(<span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)</span>
+<span id="cb49-19"><a href="flow-in-open-channels.html#cb49-19" tabindex="-1"></a>P <span class="ot">&lt;-</span> gamma<span class="sc">*</span>flow<span class="sc">*</span>hl</span>
+<span id="cb49-20"><a href="flow-in-open-channels.html#cb49-20" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Power loss = %.1f Watts</span><span class="sc">\n</span><span class="st">&quot;</span>,P))</span>
+<span id="cb49-21"><a href="flow-in-open-channels.html#cb49-21" tabindex="-1"></a><span class="co">#&gt; Power loss = 501.4 Watts</span></span></code></pre></div>
+<p>The energy loss across hydraulic jumps varies with the Froude number of the incoming flow, as shown in depicted in Figure <a href="flow-in-open-channels.html#fig:hj-2">5.13</a> <span class="citation">(<a href="references.html#ref-peterka_alvin_j_hydraulic_1978">Peterka, Alvin J., 1978</a>)</span>.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:hj-2"></span>
 <img src="images/hydr_jump_forms_usbr.PNG" alt="Types of hydraulic jumps." width="302" />
 <p class="caption">
-Figure 5.12: Types of hydraulic jumps.
+Figure 5.13: Types of hydraulic jumps.
 </p>
 </div>
 </div>
-<div id="location-of-a-hydraulic-jump" class="section level3 hasAnchor" number="5.7.2">
-<h3><span class="header-section-number">5.7.2</span> Location of a hydraulic jump<a href="flow-in-open-channels.html#location-of-a-hydraulic-jump" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>In hydraulic infrastructure where hydraulic jumps will occur there are usually engineered features, such as baffles or basins, to force a hydraulic jump to occur in specific locations, to protect downstream waterways from the turbulent effects of an uncontrolled hydraulic jump. In the absence of engineered features to cause a jump, the location of a hydraulic jump can be determined using the concepts of Sections <a href="flow-in-open-channels.html#gvf-section">5.6</a> and <a href="flow-in-open-channels.html#hj-section">5.7</a>.</p>
-<p>Example <a href="flow-in-open-channels.html#exm:hj-loc">5.9</a> demonstrates the determination of the location of a hydraulic jump when normal flow conditions exist at some distance upstream and downstream of the jump.</p>
+<div id="location-of-a-hydraulic-jump" class="section level3 hasAnchor" number="5.8.2">
+<h3><span class="header-section-number">5.8.2</span> Location of a hydraulic jump<a href="flow-in-open-channels.html#location-of-a-hydraulic-jump" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In hydraulic infrastructure where hydraulic jumps will occur there are usually engineered features, such as baffles or basins, to force a hydraulic jump to occur in specific locations, to protect downstream waterways from the turbulent effects of an uncontrolled hydraulic jump. In the absence of engineered features to cause a jump, the location of a hydraulic jump can be determined using the concepts of Sections <a href="flow-in-open-channels.html#gvf-section">5.7</a> and <a href="flow-in-open-channels.html#hj-section">5.8</a>.</p>
+<p>Example <a href="flow-in-open-channels.html#exm:hj-loc">5.10</a> demonstrates the determination of the location of a hydraulic jump when normal flow conditions exist at some distance upstream and downstream of the jump.</p>
 <div class="example">
-<p><span id="exm:hj-loc" class="example"><strong>Example 5.9  </strong></span>A rectangular (a trapezoid with side slope, m=0) concrete channel with a bottom width of 3 m carries a flow of 8 m<sup>3</sup>/s. The upstream channel slopes steeply at S<sub>o</sub>=0.018 and discharges onto a mild slope of S<sub>o</sub>=0.0015. Determine the height of the jump and its location.</p>
+<p><span id="exm:hj-loc" class="example"><strong>Example 5.10  </strong></span>A rectangular (a trapezoid with side slope, m=0) concrete channel with a bottom width of 3 m carries a flow of 8 m<sup>3</sup>/s. The upstream channel slopes steeply at S<sub>o</sub>=0.018 and discharges onto a mild slope of S<sub>o</sub>=0.0015. Determine the height of the jump and its location.</p>
 </div>
 <p>First find the normal depth on each slope, and the critical depth for the channel.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="flow-in-open-channels.html#cb47-1" tabindex="-1"></a>yn1 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">manningt</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">n =</span> <span class="fl">0.013</span>, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">Sf =</span> <span class="fl">0.018</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>y</span>
-<span id="cb47-2"><a href="flow-in-open-channels.html#cb47-2" tabindex="-1"></a>yn2 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">manningt</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">n =</span> <span class="fl">0.013</span>, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">Sf =</span> <span class="fl">0.0015</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>y</span>
-<span id="cb47-3"><a href="flow-in-open-channels.html#cb47-3" tabindex="-1"></a>yc <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">manningt</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">n =</span> <span class="fl">0.013</span>, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">Sf =</span> <span class="fl">0.0015</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>yc</span>
-<span id="cb47-4"><a href="flow-in-open-channels.html#cb47-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;yn1 = %.3f m, yn2 = %.3f m, yc = %.3f m</span><span class="sc">\n</span><span class="st">&quot;</span>, yn1, yn2, yc))</span>
-<span id="cb47-5"><a href="flow-in-open-channels.html#cb47-5" tabindex="-1"></a><span class="co">#&gt; yn1 = 0.498 m, yn2 = 1.180 m, yc = 0.898 m</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="flow-in-open-channels.html#cb50-1" tabindex="-1"></a>yn1 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">manningt</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">n =</span> <span class="fl">0.013</span>, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">Sf =</span> <span class="fl">0.018</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>y</span>
+<span id="cb50-2"><a href="flow-in-open-channels.html#cb50-2" tabindex="-1"></a>yn2 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">manningt</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">n =</span> <span class="fl">0.013</span>, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">Sf =</span> <span class="fl">0.0015</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>y</span>
+<span id="cb50-3"><a href="flow-in-open-channels.html#cb50-3" tabindex="-1"></a>yc <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">manningt</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">n =</span> <span class="fl">0.013</span>, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">Sf =</span> <span class="fl">0.0015</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>yc</span>
+<span id="cb50-4"><a href="flow-in-open-channels.html#cb50-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;yn1 = %.3f m, yn2 = %.3f m, yc = %.3f m</span><span class="sc">\n</span><span class="st">&quot;</span>, yn1, yn2, yc))</span>
+<span id="cb50-5"><a href="flow-in-open-channels.html#cb50-5" tabindex="-1"></a><span class="co">#&gt; yn1 = 0.498 m, yn2 = 1.180 m, yc = 0.898 m</span></span></code></pre></div>
 <p>Recall that the calculation of yc only depends on flow and channel geometry (Q, b, m), so the values of n and Sf can be arbitrary for that command. These results confirm that flow is supercritical upstream and subcritical downstream, so a hydraulic jump will occur.</p>
-<p>The hydraulic jump will either begin at <em>yn1</em> (and jump to the sequent depth for <em>yn1</em>) or end at <em>yn2</em> (beginning at the sequent depth for <em>yn2</em>). The possibilities are shown in Figure <a href="flow-in-open-channels.html#fig:gvfcurves">5.6</a> in the lower right panel. First check the two sequent depths.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="flow-in-open-channels.html#cb48-1" tabindex="-1"></a>yn1_seq <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">sequent_depth</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">y=</span>yn1, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>y_seq</span>
-<span id="cb48-2"><a href="flow-in-open-channels.html#cb48-2" tabindex="-1"></a>yn2_seq <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">sequent_depth</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">y=</span>yn2, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>y_seq</span>
-<span id="cb48-3"><a href="flow-in-open-channels.html#cb48-3" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;yn1_seq = %.3f m, yn2_seq = %.3f m</span><span class="sc">\n</span><span class="st">&quot;</span>, yn1_seq, yn2_seq))</span>
-<span id="cb48-4"><a href="flow-in-open-channels.html#cb48-4" tabindex="-1"></a><span class="co">#&gt; yn1_seq = 1.476 m, yn2_seq = 0.666 m</span></span></code></pre></div>
+<p>The hydraulic jump will either begin at <em>yn1</em> (and jump to the sequent depth for <em>yn1</em>) or end at <em>yn2</em> (beginning at the sequent depth for <em>yn2</em>). The possibilities are shown in Figure <a href="flow-in-open-channels.html#fig:gvfcurves">5.7</a> in the lower right panel. First check the two sequent depths.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="flow-in-open-channels.html#cb51-1" tabindex="-1"></a>yn1_seq <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">sequent_depth</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">y=</span>yn1, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>y_seq</span>
+<span id="cb51-2"><a href="flow-in-open-channels.html#cb51-2" tabindex="-1"></a>yn2_seq <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">sequent_depth</span>(<span class="at">Q =</span> <span class="dv">8</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">y=</span>yn2, <span class="at">m =</span> <span class="dv">0</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>)<span class="sc">$</span>y_seq</span>
+<span id="cb51-3"><a href="flow-in-open-channels.html#cb51-3" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;yn1_seq = %.3f m, yn2_seq = %.3f m</span><span class="sc">\n</span><span class="st">&quot;</span>, yn1_seq, yn2_seq))</span>
+<span id="cb51-4"><a href="flow-in-open-channels.html#cb51-4" tabindex="-1"></a><span class="co">#&gt; yn1_seq = 1.476 m, yn2_seq = 0.666 m</span></span></code></pre></div>
 <p>This confirms that if the jump began at <em>yn1</em> (on the steep slope) it would need to jump a level below <em>yn2</em>, with an <strong>S-1</strong> curve providing the gradual increase in depth to <em>yn2</em>. Since <em>yn1_seq</em> exceeds <em>yn2</em>, this is not possible. That can be verified using the <em>direct_step</em> function to show the distance from <em>yn1_seq</em> to <em>yn2</em> would need to be <em>upstream</em> (negative x values in the result), which cannot occur for this case. This means the alternate case must exist, with an M-3 profile raising yn1 to yn2_seq at which point the jump occurs. The direct step method can find this distance along the channel.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="flow-in-open-channels.html#cb49-1" tabindex="-1"></a>hydraulics<span class="sc">::</span><span class="fu">direct_step</span>(<span class="at">So=</span><span class="fl">0.0015</span>, <span class="at">n=</span><span class="fl">0.013</span>, <span class="at">Q=</span><span class="dv">8</span>, <span class="at">y1=</span>yn1, <span class="at">y2=</span>yn2_seq, <span class="at">b=</span><span class="dv">3</span>, <span class="at">m=</span><span class="dv">0</span>, <span class="at">nsteps=</span><span class="dv">2</span>, <span class="at">units=</span><span class="st">&quot;SI&quot;</span>)</span>
-<span id="cb49-2"><a href="flow-in-open-channels.html#cb49-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 7</span></span>
-<span id="cb49-3"><a href="flow-in-open-channels.html#cb49-3" tabindex="-1"></a><span class="co">#&gt;       x       z     y     A      Sf     E    Fr</span></span>
-<span id="cb49-4"><a href="flow-in-open-channels.html#cb49-4" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb49-5"><a href="flow-in-open-channels.html#cb49-5" tabindex="-1"></a><span class="co">#&gt; 1   0    0      0.498  1.49 0.0180   1.96  2.42</span></span>
-<span id="cb49-6"><a href="flow-in-open-channels.html#cb49-6" tabindex="-1"></a><span class="co">#&gt; 2  23.4 -0.0350 0.582  1.75 0.0113   1.65  1.92</span></span>
-<span id="cb49-7"><a href="flow-in-open-channels.html#cb49-7" tabindex="-1"></a><span class="co">#&gt; 3  44.6 -0.0669 0.666  2.00 0.00761  1.48  1.57</span></span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="flow-in-open-channels.html#cb52-1" tabindex="-1"></a>hydraulics<span class="sc">::</span><span class="fu">direct_step</span>(<span class="at">So=</span><span class="fl">0.0015</span>, <span class="at">n=</span><span class="fl">0.013</span>, <span class="at">Q=</span><span class="dv">8</span>, <span class="at">y1=</span>yn1, <span class="at">y2=</span>yn2_seq, <span class="at">b=</span><span class="dv">3</span>, <span class="at">m=</span><span class="dv">0</span>, <span class="at">nsteps=</span><span class="dv">2</span>, <span class="at">units=</span><span class="st">&quot;SI&quot;</span>)</span>
+<span id="cb52-2"><a href="flow-in-open-channels.html#cb52-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 7</span></span>
+<span id="cb52-3"><a href="flow-in-open-channels.html#cb52-3" tabindex="-1"></a><span class="co">#&gt;       x       z     y     A      Sf     E    Fr</span></span>
+<span id="cb52-4"><a href="flow-in-open-channels.html#cb52-4" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb52-5"><a href="flow-in-open-channels.html#cb52-5" tabindex="-1"></a><span class="co">#&gt; 1   0    0      0.498  1.49 0.0180   1.96  2.42</span></span>
+<span id="cb52-6"><a href="flow-in-open-channels.html#cb52-6" tabindex="-1"></a><span class="co">#&gt; 2  23.4 -0.0350 0.582  1.75 0.0113   1.65  1.92</span></span>
+<span id="cb52-7"><a href="flow-in-open-channels.html#cb52-7" tabindex="-1"></a><span class="co">#&gt; 3  44.6 -0.0669 0.666  2.00 0.00761  1.48  1.57</span></span></code></pre></div>
 <p>The number of calculation steps (nsteps) can be increased for greater precision, but 2 steps is adequate here.</p>
 
 </div>

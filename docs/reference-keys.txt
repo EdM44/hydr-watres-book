@@ -88,6 +88,13 @@ eq:spen1
 eq:spen2
 fig:manningt-4
 fig:manningt-5
+eq:open-rect1
+eq:open-rect2
+eq:open-rect3
+exm:open-rectx
+fig:rectchannelfig
+eq:open-rect-sp1
+eq:open-rect-sp2
 fig:gvfcurves
 fig:gvfcurves2
 fig:gvffig1
@@ -245,6 +252,7 @@ optimal-trapezoidal-geometry
 circ
 solving-the-manning-equation-for-a-circular-pipe-in-r
 crit-section
+flow-in-rectangular-channels
 gvf-section
 the-direct-step-method
 standard-step-method

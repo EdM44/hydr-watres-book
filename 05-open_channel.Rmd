@@ -328,6 +328,85 @@ The specific energy for a given depth _y_ and alternate depth can be added to th
 hydraulics::spec_energy_trap( Q = 360, b = 20, m = 1, scale = 4, y=3.0, units = "Eng" )
 ```
 
+## Flow in Rectangular Channels
+
+When working with rectangular channels the open channel equations simplify, because flow, $Q$, can be expressed as flow per unit width, $q = Q/b$, where $b$ is the channel width. Since $Q/A=V$ and $A=by$, Equation \@ref(eq:spen1) can be written as Equation \@ref(eq:open-rect1):
+
+\begin{equation}
+  E=y+\frac{Q^2}{2gA^2}=y+\frac{q^2}{2gy^2}
+  (\#eq:open-rect1)
+\end{equation}
+
+Equation \@ref(eq:spen2) for critical depth, $y_c$, also is simplified for rectangular channels to Equation \@ref(eq:open-rect2):
+
+\begin{equation}
+  y_c = \left({\frac{q^2}{g}}\right)^{1/3}
+  (\#eq:open-rect2)
+\end{equation}
+
+Combining Equation \@ref(eq:open-rect1) and Equation \@ref(eq:open-rect2) shows that at critical conditions, the minimum specific energy is:
+
+\begin{equation}
+  E_{min} = \frac{3}{2} y_c
+  (\#eq:open-rect3)
+\end{equation}
+
+Example \@ref(exm:open-rectx), based on an exercise from the open-channel flow text by Sturm [@sturm_open_2021], demonstrates how to solve for the depth through a rectangular section when the bottom height changes.
+
+::: {.example #open-rectx}
+A 0.5 m wide rectangular channel carries a flow of 2.2 m$^3$/s at a depth of 2 m ($y_1$=2m). If the channel bottom rises 0.25 m ($\Delta z=0.25~ m$), and head loss, $h_L$ over the transition is negligible, what is the depth, $y_2$ after the rise in channel bottom?
+:::
+
+(ref:figopenrect) The rectangular channel of Example \@ref(exm:open-rectx) with an increase in channel bottom height downstream.
+
+```{r rectchannelfig, echo=FALSE, fig.cap='(ref:figopenrect)', out.width = '70%', fig.align="center"}
+knitr::include_graphics("images/rectangular_channel.png")
+```
+
+A specific energy diagram is very helpful for establishing upstream conditions and estimating $y_2$.
+
+(ref:figopenrect-2) A specific energy diagram for the conditions of Example \@ref(exm:open-rectx).
+
+```{r sp_openrect, fig.width = 4, fig.asp = 1.0, fig.align="center", fig.cap='(ref:figopenrect-2)'}
+p1 <- hydraulics::spec_energy_trap( Q = 2.2, b = 0.5, m = 0, y = 2, scale = 2.5, units = "SI" )
+p1
+```
+
+The values of $y_c$ and $E_{min}$ shown in the plot can be verified using Equations \@ref(eq:open-rect2) and \@ref(eq:open-rect3). This should always be checked to describe the incoming flow and what will happen as flow passes over a hump.  Since $y_1$ > $y_c$ the upstream flow is subcritical, and flow can be expected to drop as it passes over the hump. Upstream and downstream specific energy are related by Equation \@ref(eq:open-rect-sp1):
+
+\begin{equation}
+  E_1-E_2=\Delta z + h_L
+  (\#eq:open-rect-sp1)
+\end{equation}
+Since $h_L$ is negligible in this example, the downstream specific energy, $E_2$ is lower that the upper $E_1$ by an amount $\Delta z$, or
+\begin{equation}
+  E_2 = E_1 - \Delta z
+  (\#eq:open-rect-sp2)
+\end{equation}
+
+For a 0.25 m rise, and using $q = Q/b = 2.2/0.5 = 4.4$, combining Equation \@ref(eq:open-rect-sp2) and Equation \@ref(eq:open-rect1):
+$$E_2 = E_1 - 0.25 = 2 + \frac{4.4^2}{2(9.81)(2^2)} - 0.25 = 2.247 - 0.25 = 1.997 ~m$$
+From the specific energy diagram, for $E_2=1.997 ~ m$ a depth of about $y_2 \approx 1.6 ~ m$ would be expected, and the flow would continue in subcritical conditions. The value of $y_2$ can be calculated using Equation \@ref(eq:open-rect1):
+$$1.997 = y_2 + \frac{4.4^2}{2(9.81)(y_2^2)}$$ which can be rearranged to $$0.9967 - 1.997 y_2^2 + y_2^3= 0$$
+Solving a polynomial in R is straightforward using the `polyroot` function and using `Re` to extract the real portion of the solution.
+
+```{r openrect-poly, message=FALSE, warning=FALSE}
+Re(polyroot(c(0.9667, 0, -1.997, 1)))
+```
+
+The negative root is meaningless, the lower positive root is the supercritical depth for $E_2 = 1.997 ~ m$, and the larger positive root is the subcritical depth. Thus the correct solution is $y_2 = 1.64 ~ m$ when the channel bottom rises by 0.25 m.
+
+The specific energy diagram shows that if $\Delta z > E_1 - E_{min}$, the downstream specific energy, $E_2$ would be to the left of the curve, so no feasible solution would exist. At that point damming would occur, raising the upstream depth, $y_1$, and thus increasing $E_1$ until $E_2 = E_{min}$. The largest rise in channel bottom height that will not cause damming is called the critical hump height: $\Delta z_{c} = E_1 - E_{min}$.
+
+A vertical can be added to the specific energy diagram to indicate $E_2$:
+
+```{r spec_energy_diag_2, fig.width = 4, fig.asp = 1.0, fig.align="center", message=FALSE, warning=FALSE}
+p1 + 
+  ggplot2::geom_vline(xintercept = 1.997, linetype=3) +
+  ggplot2::annotate("text", x=1.9, y=2.5, label=expression(E[2]), angle=90)
+```
+
+
 ## Gradually varied steady flow {#gvf-section}
 
 When water approaches an obstacle, it can back up, with its depth increasing. The effect can be observed well upstream. Similarly, as water approaches a drop, such as with a waterfall, the water level declines, and that effect can also be seen upstream. In general, any change in slope or roughness will produce changes in depth along a channel length. 
