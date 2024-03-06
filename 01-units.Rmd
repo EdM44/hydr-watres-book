@@ -59,7 +59,7 @@ $${1*10^{-6}~m^2/s}*\frac{1 ~ft^2/s}{0.0929~m^2/s}=1.076*10^{-5} ~ft^2/s$$
 
 Another example converts between two quantities in the US system: 100 gallons per minute to cfs:
 $${100 ~gpm}*\frac{1 ~cfs}{448.8 ~gpm}=0.223 ~cfs$$
-The _units_ package in R can do these conversions and more, and also checks that conversions are permissible (producing an error if incompatible units are used).
+The [units](https://cran.r-project.org/package=units) package in R can do these conversions and more, and also checks that conversions are permissible (producing an error if incompatible units are used).
 
 ```{r units-ex1, echo=TRUE, collapse=TRUE}
 units::units_options(set_units_mode = "symbols")

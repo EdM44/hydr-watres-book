@@ -93,8 +93,10 @@ eq:open-rect2
 eq:open-rect3
 exm:open-rectx
 fig:rectchannelfig
+fig:sp-openrect
 eq:open-rect-sp1
 eq:open-rect-sp2
+fig:sp-openrect2
 fig:gvfcurves
 fig:gvfcurves2
 fig:gvffig1
@@ -239,6 +241,7 @@ solving-for-q-using-an-r-package
 solving-for-pipe-diameter-d-type-3-problems
 solving-for-d-using-manual-iterations
 solving-for-d-using-an-equation-solver
+solving-for-d-using-an-r-package
 parallel-pipes-solving-a-system-of-equations
 simple-pipe-networks-the-hardy-cross-method
 flow-in-open-channels

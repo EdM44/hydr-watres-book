@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-12-28" />
+<meta name="date" content="2024-03-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -210,6 +210,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
 <li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+<li class="chapter" data-level="4.6.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-r-package"><i class="fa fa-check"></i><b>4.6.3</b> Solving for D using an R package</a></li>
 </ul></li>
 <li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
 <li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
@@ -488,7 +489,7 @@ div.csl-indent {
 <span class="math display">\[{1*10^{-6}~m^2/s}*\frac{1 ~ft^2/s}{0.0929~m^2/s}=1.076*10^{-5} ~ft^2/s\]</span></p>
 <p>Another example converts between two quantities in the US system: 100 gallons per minute to cfs:
 <span class="math display">\[{100 ~gpm}*\frac{1 ~cfs}{448.8 ~gpm}=0.223 ~cfs\]</span>
-The <em>units</em> package in R can do these conversions and more, and also checks that conversions are permissible (producing an error if incompatible units are used).</p>
+The <a href="https://cran.r-project.org/package=units">units</a> package in R can do these conversions and more, and also checks that conversions are permissible (producing an error if incompatible units are used).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="units-in-fluid-mechanics.html#cb1-1" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">units_options</span>(<span class="at">set_units_mode =</span> <span class="st">&quot;symbols&quot;</span>)</span>
 <span id="cb1-2"><a href="units-in-fluid-mechanics.html#cb1-2" tabindex="-1"></a>Q_gpm <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">100</span>, gallon<span class="sc">/</span>min)</span>
 <span id="cb1-3"><a href="units-in-fluid-mechanics.html#cb1-3" tabindex="-1"></a>Q_gpm</span>

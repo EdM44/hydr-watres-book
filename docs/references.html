@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-12-28" />
+<meta name="date" content="2024-03-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -210,6 +210,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
 <li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+<li class="chapter" data-level="4.6.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-r-package"><i class="fa fa-check"></i><b>4.6.3</b> Solving for D using an R package</a></li>
 </ul></li>
 <li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
 <li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
@@ -353,6 +354,9 @@ Allen, R. G., &amp; United Nations, F. and A. O. of the (Eds.). (1998). <em>Crop
 <div id="ref-astagneau_technical_2021" class="csl-entry">
 Astagneau, P. C., Thirel, G., Delaigue, O., Guillaume, J. H. A., Parajka, J., Brauer, C. C., et al. (2021). Technical note: <span>Hydrology</span> modelling <span>R</span> packages – a unified analysis of models and practicalities from a user perspective. <em>Hydrology and Earth System Sciences</em>, <em>25</em>(7), 3937–3973. <a href="https://doi.org/10.5194/hess-25-3937-2021">https://doi.org/10.5194/hess-25-3937-2021</a>
 </div>
+<div id="ref-camp_design_1946" class="csl-entry">
+Camp, T. R. (1946). <a href="https://www.ncbi.nlm.nih.gov/pubmed/21011592">Design of sewers to facilitate flow</a>. <em>Sewage Works Journal</em>, <em>18</em>, 3–16.
+</div>
 <div id="ref-davidian_jacob_computation_1984" class="csl-entry">
 Davidian, Jacob. (1984). <em>Computation of water-surface profiles in open channels</em> (No. Techniques of Water-Resources Investigations, Book 3, Chapter A15). <a href="https://doi.org/10.3133/twri03A15">https://doi.org/10.3133/twri03A15</a>
 </div>
@@ -362,8 +366,8 @@ Ductile Iron Pipe Research Association. (2016). Thrust <span>Restraint</span> <s
 <div id="ref-england_jf_guidelines_2019" class="csl-entry">
 England, J.F., Cohn, T.A., Faber, B.A., Stedinger, J.R., Thomas, W.O., Veilleux, A.G., et al. (2019). <em>Guidelines for <span>Determining</span> <span>Flood</span> <span>Flow</span> <span>Frequency</span> <span>Bulletin</span> <span>17C</span></em> (Techniques and {Methods}) (p. 148). Reston, Virginia: U.S. Department of the Interior, U.S. Geological Survey. Retrieved from <a href="https://doi.org/10.3133/tm4B5">https://doi.org/10.3133/tm4B5</a>
 </div>
-<div id="ref-finnemore_fluid_2023" class="csl-entry">
-Finnemore, E. J., &amp; Maurer, E. (Eds.). (2023). <em>Fluid mechanics with civil engineering applications</em> (11th ed.). New York: McGraw Hill.
+<div id="ref-finnemore_fluid_2024" class="csl-entry">
+Finnemore, E. J., &amp; Maurer, E. (2024). <em>Fluid mechanics with civil engineering applications</em> (Eleventh edition). New York: McGraw-Hill.
 </div>
 <div id="ref-fox-kemper_ocean_2021" class="csl-entry">
 Fox-Kemper, B., Hewitt, H., Xiao, C., Aðalgeirsdóttir, G., Drijfhout, S., Edwards, T., et al. (2021). Ocean, <span>Cryosphere</span> and <span>Sea</span> <span>Level</span> <span>Change</span>. In <span>Climate</span> <span>Change</span> 2021: <span>The</span> physical science basis. Contribution of working group <span>I</span> to the sixth assessment report of the intergovernmental panel on climate change. Masson-, V. Delmotte, P. Zhai, A. Pirani, SL Connors, C. Péan, S. Berger, et ….
@@ -411,7 +415,7 @@ Sturm, T. W. (2021). <em>Open <span>Channel</span> <span>Hydraulics</span></em> 
 Swamee, P. K., &amp; Jain, A. K. (1976). Explicit <span>Equations</span> for <span>Pipe</span>-<span>Flow</span> <span>Problems</span>. <em>Journal of the Hydraulics Division</em>, <em>102</em>(5), 657–664. <a href="https://doi.org/10.1061/JYCEAJ.0004542">https://doi.org/10.1061/JYCEAJ.0004542</a>
 </div>
 <div id="ref-tebaldi_modelling_2012" class="csl-entry">
-Tebaldi, C., Strauss, B. H., &amp; Zervas, C. E. (2012). Modelling sea level rise impacts on storm surges along <span>US</span> coasts. <em>Environmental Research Letters</em>, <em>7</em>(1), 014032.
+Tebaldi, C., Strauss, B. H., &amp; Zervas, C. E. (2012). Modelling sea level rise impacts on storm surges along <span>US</span> coasts. <em>Environmental Research Letters</em>, <em>7</em>(1), 014032. <a href="https://doi.org/10.1088/1748-9326/7/1/014032">https://doi.org/10.1088/1748-9326/7/1/014032</a>
 </div>
 <div id="ref-wurbs_water_2002" class="csl-entry">
 Wurbs, R. A., &amp; James, W. P. (2002). <em>Water resources engineering</em>. Upper Saddle River, NJ: Prentice Hall.

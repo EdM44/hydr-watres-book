@@ -269,19 +269,23 @@ where C=20.16 for SI units and C=13.53 for US Customary (English) units.
 
 ### Solving the Manning equation for a circular pipe in R
 
-As was demonstrated with pipe flow, a function could be written with Equation \@ref(eq:man-c) and a solver applied to find the value of $\theta$ for the given flow conditions with a known D, S, n and Q. The value for $\theta$ could then be used with Equations \@ref(eq:circg1), \@ref(eq:circg2) and \@ref(eq:circg3) to recover geometric values.
+As was demonstrated with pipe flow, a function could be written with Equation \@ref(eq:man-c) and a solver applied to find the value of $\theta$ for the given flow conditions with a known _D_, _S_, _n_ and _Q_. The value for $\theta$ could then be used with Equations \@ref(eq:circg1), \@ref(eq:circg2) and \@ref(eq:circg3) to recover geometric values.  
 
-The _R_ package _hydraulics_ has implemented those routines to enable these calculations. 
+Hydraulic analysis of circular pipes flowing partially full often account for the value of Manning's _n_ varying with depth [@camp_design_1946]; some standards recommend fixed _n_ values, and others require the use of a depth-varying _n_. The _R_ package _hydraulics_ has implemented those routines to enable these calculations, including using a fixed _n_ (the default) or a depth-varing _n_. 
+
 For an existing pipe, a common problem is the determination of the depth, _y_ that a given flow _Q_, will have given a pipe diameter _d_, slope _S_ and roughness _n_. Example \@ref(exm:circx1) demonstrates this.
 
 ::: {.example #circx1}
-Find the uniform (normal) flow depth, y, for a trapezoidal channel with Q=225 ft^3^/s, n=0.016, m=2, b=10 _ft_, S=0.0006.
+Find the uniform (normal) flow depth, y, for a trapezoidal channel with Q=225 ft^3^/s, n=0.016, m=2, b=10 _ft_, S=0.0006. Do this assuming both that Manning _n_ is constant with depth and that it varies with depth.
 :::
 The function _manningc_ from the _hydraulics_ package is used. Any one of the variables in the Manning equation, and related geometric variables, may be treated as an unknown. 
 
 ```{r manningc-1, message=FALSE, warning=FALSE}
 ans <- hydraulics::manningc(Q=0.01, n=0.013, Sf=0.001, d = 0.2, units="SI", ret_units = TRUE)
-knitr::kable(format(as.data.frame(ans), digits = 2), format = "pipe", padding=0)
+ans2 <- hydraulics::manningc(Q=0.01, n=0.013, Sf=0.001, d = 0.2, n_var = TRUE, units="SI", ret_units = TRUE)
+df <- data.frame(Constant_n = unlist(ans), Variable_n = unlist(ans2))
+knitr::kable(df, format = "html", digits=3, padding = 0, col.names = c("Constant n","Variable n")) |> 
+kableExtra::kable_styling(full_width = F)
 ```
 
 It is also sometimes convenient to see a cross-section diagram.
@@ -365,9 +369,9 @@ knitr::include_graphics("images/rectangular_channel.png")
 
 A specific energy diagram is very helpful for establishing upstream conditions and estimating $y_2$.
 
-(ref:figopenrect-2) A specific energy diagram for the conditions of Example \@ref(exm:open-rectx).
+(ref:figorect-2) A specific energy diagram for the conditions of Example \@ref(exm:open-rectx).
 
-```{r sp_openrect, fig.width = 4, fig.asp = 1.0, fig.align="center", fig.cap='(ref:figopenrect-2)'}
+```{r sp-openrect, fig.width = 4, fig.asp = 1.0, fig.align="center", fig.cap='(ref:figorect-2)'}
 p1 <- hydraulics::spec_energy_trap( Q = 2.2, b = 0.5, m = 0, y = 2, scale = 2.5, units = "SI" )
 p1
 ```
@@ -396,16 +400,16 @@ Re(polyroot(c(0.9667, 0, -1.997, 1)))
 
 The negative root is meaningless, the lower positive root is the supercritical depth for $E_2 = 1.997 ~ m$, and the larger positive root is the subcritical depth. Thus the correct solution is $y_2 = 1.64 ~ m$ when the channel bottom rises by 0.25 m.
 
-The specific energy diagram shows that if $\Delta z > E_1 - E_{min}$, the downstream specific energy, $E_2$ would be to the left of the curve, so no feasible solution would exist. At that point damming would occur, raising the upstream depth, $y_1$, and thus increasing $E_1$ until $E_2 = E_{min}$. The largest rise in channel bottom height that will not cause damming is called the critical hump height: $\Delta z_{c} = E_1 - E_{min}$.
+A vertical line or other annotation can be added to the specific energy diagram to indicate $E_2$  using _ggplot2_ with a command like `p1 + ggplot2::geom_vline(xintercept = 1.997, linetype=3)`. The _hydraulics_ R package can also add lines to a specific energy diagram for up to two depths:
 
-A vertical can be added to the specific energy diagram to indicate $E_2$:
+(ref:figorect-3) A specific energy diagram for the conditions of Example \@ref(exm:open-rectx) with added annotation for when the bottom elecation rises.
 
-```{r spec_energy_diag_2, fig.width = 4, fig.asp = 1.0, fig.align="center", message=FALSE, warning=FALSE}
-p1 + 
-  ggplot2::geom_vline(xintercept = 1.997, linetype=3) +
-  ggplot2::annotate("text", x=1.9, y=2.5, label=expression(E[2]), angle=90)
+```{r sp-openrect2, fig.width = 4, fig.asp = 1.0, fig.align="center", fig.cap='(ref:figorect-3)'}
+p2 <- hydraulics::spec_energy_trap(Q = 2.2, b = 0.5, m = 0, y = c(2, 1.64), scale = 2.5, units = "SI")
+p2
 ```
 
+The specific energy diagram shows that if $\Delta z > E_1 - E_{min}$, the downstream specific energy, $E_2$ would be to the left of the curve, so no feasible solution would exist. At that point damming would occur, raising the upstream depth, $y_1$, and thus increasing $E_1$ until $E_2 = E_{min}$. The largest rise in channel bottom height that will not cause damming is called the critical hump height: $\Delta z_{c} = E_1 - E_{min}$.
 
 ## Gradually varied steady flow {#gvf-section}
 

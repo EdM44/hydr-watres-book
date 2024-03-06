@@ -71,7 +71,7 @@ hydraulics::moody()
 Because of the form of the equations, they can sometimes be a challenge to solve, especially by hand. It can help to classify the types of problems based on what variable is unknown. These are summarized in Table \@ref(tab:prob-types).
 
 ```{r prob-types, echo=FALSE}
-knitr::kable(data.frame(Type=c("1","2","3"), Known=c("Q (or V), D, ks, L","hL, D, ks, L","hL, Q (or V), ks, L"), Unknown=c("hL","Q (or V)","D")), format="pipe", padding=0, escape = F,  booktabs = TRUE, caption = "Types of Energy Loss Problems in Pipe Flow")
+knitr::kable(data.frame(Type=c("1","2","3"), Known=c("Q (or V), D, ks, L","h~L~, D, k~s~, L","h~L~, Q (or V), ks, L"), Unknown=c("h~L~","Q (or V)","D")), format="pipe", padding=0, escape = F,  booktabs = TRUE, caption = "Types of Energy Loss Problems in Pipe Flow")
 ```
 
 When solving by hand the types in Table \@ref(tab:prob-types) become progressively more difficult, but when using solvers the difference in complexity is subtle.
@@ -260,15 +260,23 @@ The root is seen to lie very close to D=0.5 m. Repeated trials can home in on th
 ### Solving for D using an equation solver
 
 An equation solver automatically accomplishes the manual steps of the prior demonstration. The equation from 1.6 can be written as a function that can then be solved for the root, again using _R_ software for the demonstration: 
-```{r qfcn1, message=FALSE, warning=FALSE}
+```{r dfcn1, message=FALSE, warning=FALSE}
 q_fcn <- function(D, Q, hf, L, ks, nu, g) {
   -2.221 * D^2 * sqrt(( g * D * hf)/L) * log10((ks/D)/3.7 + (1.784 * nu/D) * sqrt(L/(g * D * hf))) - Q
 }
 ```
 The _uniroot_ function can solve the equation in R (or use a comparable approach in other software) for a reasonable range of D values
-```{r qfcn2, message=FALSE, warning=FALSE}
+```{r dfcn2, message=FALSE, warning=FALSE}
 ans <- uniroot(q_fcn, interval=c(0.01,4.0),Q=0.416, hf=0.6, L=100, ks=0.000046, nu=1.023053e-06, g=9.81)$root
 cat(sprintf("D = %.3f m\n", ans))
+```
+
+### Solving for D using an R package
+
+The _hydraulics_ R package implements an equation solving technique like that above to allow the direct solution of Type 3 problems. the prior example is solved using that package as shown beliow. 
+```{r dfcn3, message=FALSE, warning=FALSE}
+ans <- hydraulics::darcyweisbach(Q=0.416, hf=0.6, L=100, ks=0.000046, nu=1.023e-06, ret_units = TRUE, units = c('SI'))
+knitr::kable(format(as.data.frame(ans), digits = 3), format = "pipe")
 ```
 
 ## Parallel pipes: solving a system of equations

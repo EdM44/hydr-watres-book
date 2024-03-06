@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2023-12-28" />
+<meta name="date" content="2024-03-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -210,6 +210,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.6.1" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-manual-iterations"><i class="fa fa-check"></i><b>4.6.1</b> Solving for D using manual iterations</a></li>
 <li class="chapter" data-level="4.6.2" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-equation-solver"><i class="fa fa-check"></i><b>4.6.2</b> Solving for D using an equation solver</a></li>
+<li class="chapter" data-level="4.6.3" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#solving-for-d-using-an-r-package"><i class="fa fa-check"></i><b>4.6.3</b> Solving for D using an R package</a></li>
 </ul></li>
 <li class="chapter" data-level="4.7" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#parallel-pipes-solving-a-system-of-equations"><i class="fa fa-check"></i><b>4.7</b> Parallel pipes: solving a system of equations</a></li>
 <li class="chapter" data-level="4.8" data-path="water-flowing-in-pipes-energy-losses.html"><a href="water-flowing-in-pipes-energy-losses.html#simple-pipe-networks-the-hardy-cross-method"><i class="fa fa-check"></i><b>4.8</b> Simple pipe networks: the Hardy-Cross method</a></li>
@@ -349,12 +350,12 @@ div.csl-indent {
 <address class="author_afil">
 Professor, <a href="https://www.scu.edu/engineering/academic-programs/engineering/ce/">Civil, Environmental, and Sustainable Engineering Department, Santa Clara University</a><br>
 </address>
-<p class="date"><em>2023-12-28</em></p>
+<p class="date"><em>2024-03-06</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered hasAnchor">
 <h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This is a compilation of various R exercises and examples created over many years. They have been used mostly in undergraduate civil engineering classes including fluid mechanics, hydraulics, and water resources. This is a dynamic work, and will be regularly updated as errors are identified, improved presentation is developed, or new topics or examples are introduced. I welcome any suggestions or comments.</p>
-<p>In what follows, text will be intentionally brief. More extensive discussion and description can be found in any fluid mechanics, applied hydraulics, or water resources engineering text. Symbology for hydraulics in this reference generally follows that of Finnemore and Maurer <span class="citation">(<a href="references.html#ref-finnemore_fluid_2023">2023</a>)</span>. Fundamental equations will be introduced though the emphasis will be on applications to solve common problems. Also, since this is written by a civil engineer, the only fluids included are water and air, since that accounts for nearly all problems encountered in the field.</p>
+<p>In what follows, text will be intentionally brief. More extensive discussion and description can be found in any fluid mechanics, applied hydraulics, or water resources engineering text. Symbology for hydraulics in this reference generally follows that of Finnemore and Maurer <span class="citation">(<a href="references.html#ref-finnemore_fluid_2024">2024</a>)</span>. Fundamental equations will be introduced though the emphasis will be on applications to solve common problems. Also, since this is written by a civil engineer, the only fluids included are water and air, since that accounts for nearly all problems encountered in the field.</p>
 <p>Solving water problems is rarely done by hand calculations, though the importance of performing order of magnitude ‘back of the envelope’ calculations cannot be overstated. Whether using a hand calculator, spreadsheet, or a programming language to produce a solution, having a sense of when an answer is an outlier will help catch errors.</p>
 <p>Scripting languages are powerful tools for performing calculations, providing a fully traceable and reproducible path from your input to a solution. Open source languages have the benefit of being free to use, and invite users to be part of a community helping improve the language and its capabilities. The language of choice for this book is R <span class="citation">(<a href="references.html#ref-r_core_team_r_2022">R Core Team, 2022</a>)</span>, chosen for its straightforward syntax, powerful graphical capabilities, wide use in engineering and in many other disciplines, and by using the RStudio interface, it can look and feel a lot like Matlab® with which most engineering students have some experience.</p>
 <div id="introduction-to-r-and-rstudio" class="section level2 unnumbered hasAnchor">
