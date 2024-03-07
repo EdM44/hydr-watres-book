@@ -392,10 +392,11 @@ For a 0.25 m rise, and using $q = Q/b = 2.2/0.5 = 4.4$, combining Equation \@ref
 $$E_2 = E_1 - 0.25 = 2 + \frac{4.4^2}{2(9.81)(2^2)} - 0.25 = 2.247 - 0.25 = 1.997 ~m$$
 From the specific energy diagram, for $E_2=1.997 ~ m$ a depth of about $y_2 \approx 1.6 ~ m$ would be expected, and the flow would continue in subcritical conditions. The value of $y_2$ can be calculated using Equation \@ref(eq:open-rect1):
 $$1.997 = y_2 + \frac{4.4^2}{2(9.81)(y_2^2)}$$ which can be rearranged to $$0.9967 - 1.997 y_2^2 + y_2^3= 0$$
-Solving a polynomial in R is straightforward using the `polyroot` function and using `Re` to extract the real portion of the solution.
+Solving a polynomial in R is straightforward using the `polyroot` function and using `Re` to extract the real portion of the solution (after filtering for non-imaginary solutions).
 
 ```{r openrect-poly, message=FALSE, warning=FALSE}
-Re(polyroot(c(0.9667, 0, -1.997, 1)))
+all_roots <- polyroot(c(0.9667, 0, -1.997, 1))
+Re(all_roots)[abs(Im(all_roots)) < 1e-6]
 ```
 
 The negative root is meaningless, the lower positive root is the supercritical depth for $E_2 = 1.997 ~ m$, and the larger positive root is the subcritical depth. Thus the correct solution is $y_2 = 1.64 ~ m$ when the channel bottom rises by 0.25 m.
