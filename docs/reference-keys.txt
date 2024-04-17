@@ -158,6 +158,7 @@ eq:horton
 eq:horton2
 eq:GA1
 fig:infilt-1
+fig:horton-3
 eq:NRCS1
 eq:NRCS2
 fig:et-1

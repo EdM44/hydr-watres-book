@@ -19,7 +19,7 @@ Interception of rainfall is generally small during individual storms (0.5-2 mm),
 
 ## Infiltration
 
-An early empirical equation describing infiltration rate into soils was developed by Horton in 1939, which takes the form of Equation \@ref(eq:horton).
+An early empirical equation describing infiltration rate into soils was developed by Horton [@horton_re_analysis_1939], which takes the form of Equation \@ref(eq:horton).
 \begin{equation}
   f_p~=~ f_c + \left(f_0 - f_c\right)e^{-kt}
     (\#eq:horton)
@@ -39,11 +39,37 @@ Equation \@ref(eq:GA1) assumes ponding begins at t=0, meaning rainfall rate exce
 
 (ref:figint2) Green-Ampt Parameter Estimates and Ranges based on Soil Texture [USACE](https://www.hec.usace.army.mil/confluence/rasdocs/ras1dtechref/6.1/overview-of-optional-capabilities/modeling-precipitation-and-infiltration/green-ampt)
 
-```{r infilt-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "80%", fig.cap='(ref:figint2)'}
+```{r infilt-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap='(ref:figint2)'}
 knitr::include_graphics('images/soil_parameters.png')
 ```
 
-While not demonstrated here, parameters for the Horton and Green-Ampt methods can be derived from observed infiltration data using the R package [vadose](https://github.com/gowusu/vadose).
+Parameters for the Horton and Green-Ampt methods can be derived from observed infiltration data using the R package [HydroMe](https://CRAN.R-project.org/package=HydroMe). Fitting the Horton equation to observed data is demonstrated here using a small sample from the *infilt* data set included with the `HydroMe` package which is saved in a spreadsheet wrapped into the `hydromisc` package. While `HydroMe` includes a function to return parameters, this can also be done manually as shown here.
+
+First, read in the data sample.
+```{r horton-1, message=FALSE}
+# path to sample spreadsheet
+datafile <- system.file("extdata", "infilt_field_data.xlsx", package="hydromisc")
+infilt_data <- readxl::read_excel(datafile)
+```
+
+Set up a function for the Horton equation and use the built in `stats` package function nls to solve for the parameters.
+```{r horton-2, message=FALSE}
+horton <- function(time, fc, f0, k) {
+  fc + (f0 - fc) * exp(-k * time)
+}
+horton_fit <- stats::nls(Rate ~ horton(Time, fc, f0, k), data = infilt_data, 
+                  start = list(fc=0.2, f0=1, k=0.1))
+coef(horton_fit)
+```
+
+Plot the results of the fit with the observations.
+```{r horton-3, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap='A Horton infiltration curve fit to experimental observations.'}
+infilt_data$Rate_estim <- predict(horton_fit, list(x = infilt_data$Time))
+plot(infilt_data$Time,infilt_data$Rate, pch=1, 
+     xlab = "Time, min", ylab = "Infiltration rate, cm/hr")
+lines(infilt_data$Time, infilt_data$Rate_estim, lty = 1)
+legend("topright", legend = c("Obs.","Horton"), pch = c(1, NA), lty = c(NA, 1))
+```
 
 The most widely used method for estimating infiltration is the NRCS method, described in detail in the NRCS document [Estimating Runoff Volume and Peak Discharge](https://directives.sc.egov.usda.gov/46253.wba).This method describes the direct runoff (as a depth), $Q$, resulting from a precipitation event, $P$, as in Equation \@ref(eq:NRCS1).
 \begin{equation}
@@ -55,7 +81,8 @@ $S$ is the maximum retention of water by the soil column and $I_a$ is the initia
   Q~=~\frac{\left(P-0.2~S\right)^2}{\left(P+0.8~S\right)}
     (\#eq:NRCS2)
 \end{equation} 
-This relationship applies as long as $P>0.2~S$; Q=0 otherwise. Values for S are derived from a Curve Number (CN), which summarizes the land cover, soil type and condition: $$CN=\frac{1000}{10+S}$$, where $S$, and subsequently $Q$, are in inches. Equation \@ref(eq:NRCS2) can be rearranged to a form similar to those for the Horton and Green-Ampt equations for cumulative infiltration, $F$. $$F~=~\frac{\left(P-0.2~S\right)S}{P+0.8~S}$$.
+This relationship applies as long as $P>0.2~S$; Q=0 otherwise. Values for S are derived from a Curve Number (CN), which summarizes the land cover, soil type and condition: $$CN=\frac{1000}{10+S}$$ 
+where $S$, and subsequently $Q$, are in inches. Equation \@ref(eq:NRCS2) can be rearranged to a form similar to those for the Horton and Green-Ampt equations for cumulative infiltration, $F$. $$F~=~\frac{\left(P-0.2~S\right)S}{P+0.8~S}$$.
 
 ## Evaporation
 
@@ -140,16 +167,23 @@ plot(as.Date(snow_data$date), snow_data$snow_water_equivalent,
      type = "l", xlab = "Date", ylab = "SWE (mm)")
 ``` 
 
-Note the units are SI. If you download data directly from the SNOTEL web site the data would be in conventional US units. [snotelr](https://cran.r-project.org/package=snotelr) converts the data to SI units as it imports. The package includes a function _snotel_metric_ that could be used to convert raw data downloaded from the SNOTEL website to SI units.
+Note the units are SI. If you download data directly from the SNOTEL web site the data would be in conventional US units. [snotelr](https://cran.r-project.org/package=snotelr) converts the data to SI units as it imports. The package includes a function `snotel_metric` that could be used to convert raw data downloaded from the SNOTEL website to SI units.
 
-For this exercise, extract a single (water) year, meaning from 1-Oct to 30-Sep, so an entire winter is in one year. In addition, create a data frame that only includes columns that are needed.
-```{r sno-3, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Snow water equivalent at SNOTEL site 1050 for water year 2009."}
-snow_data_subset <- subset(snow_data, as.Date(date) > as.Date("2008-10-01") &
- as.Date(date) < as.Date("2009-09-30"))
+For this example, we will extract a single year, but set the dates to ensure the entire snow season is contained within a year. The `snotel_phelology` function makes this easy. By default it uses an offset of 180 days to accomplish this.
+```{r sno-2x, message=FALSE, warning=FALSE, eval=TRUE}
+phenology <- snotelr::snotel_phenology(snow_data) # Key dates from the observed snow data
+min(phenology$first_snow_acc)                     # Earliest snow accumulation in the record
+max(phenology$last_snow_melt)                     # Latest snow melt in the record
+mean(phenology$max_swe)                           # The mean of peak SWE for each year, mm
+```
+
+Based on this, for this site we'll subset the data using 1-Sep to 31-Aug to be sure an entire winter is in one year. In addition, create a data frame that only includes columns that are needed and only include a single year of data.
+```{r sno-3, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Snow water equivalent at SNOTEL site 1050 for Winter 2008-2009."}
+snow_data_subset <- subset(snow_data, as.Date(date) >= as.Date("2008-09-01") &
+ as.Date(date) <= as.Date("2009-08-31"))
 snow_data_sel <- subset(snow_data_subset, select=c("date", "snow_water_equivalent", "precipitation", "temperature_mean", "temperature_min", "temperature_max"))
 plot(as.Date(snow_data_sel$date),snow_data_sel$snow_water_equivalent,
      type = "l",xlab = "Date", ylab = "SWE (mm)")
-grid()
 ``` 
 
 Now use a snow index model to simulate the SWE based on temperature and precipitation.  The model used here is a modified version of that used in the [hydromad](http://hydromad.catchment.org/) package. The _snow.sim_ command is used to run a snow index model; type _?hydromisc::snow.sim_ for details on its use. As a summary, the four main parameters you can adjust in the calibration of the model are:
@@ -179,10 +213,11 @@ Now the simulated values can be compared to the observations. If not installed a
 
 *	Mean Absolute Error (MAE)
 *	Percent Bias (PBIAS)
-*	Root Mean Square Error divided by the Standard Deviation (RSR)
+*	Root Mean Square Error (RMSE) or RMSE divided by the Standard Deviation (RSR)
+
 These are discussed in detail in other references, but the aim is to calibrate (change the input parameters) until these values are low.
 
-```{r sno-5, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Simulated and Observed SWE at SNOTEL site 1050 for water year 2009."}
+```{r sno-5, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Simulated and Observed SWE at SNOTEL site 1050 for Winter 2008-2009."}
 obs <- snow_data_sel$snow_water_equivalent
 sim <- snow_estim$swe_simulated
 hydroGOF::ggof(sim, obs, na.rm = TRUE, dates=snow_data_sel$date,
@@ -217,7 +252,7 @@ cat(sprintf("Optimal parameters:\nTmax=%.1f\nTmin=%.1f\nkd=%.2f\nTmelt=%.1f\n",
 ``` 
 The results using the optimal parameters can be plotted to visualize the simulation.
 
-```{r sno-7, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Optimal simulation of SWE at SNOTEL site 1050 for water year 2009."}
+```{r sno-7, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap = "Optimal simulation of SWE at SNOTEL site 1050 for Winter 2008-2009."}
 snow_estim_opt <- hydromisc::snow.sim(DATA=snow_data_sel,
                       Tmax=max(opt_res$par[1],opt_res$par[2]),
                       Tmin=min(opt_res$par[1],opt_res$par[2]),
