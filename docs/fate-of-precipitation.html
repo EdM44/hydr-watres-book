@@ -499,7 +499,7 @@ Figure 9.6: Snow water equivalent at SNOTEL site 1050.
 </p>
 </div>
 <p>Note the units are SI. If you download data directly from the SNOTEL web site the data would be in conventional US units. <a href="https://cran.r-project.org/package=snotelr">snotelr</a> converts the data to SI units as it imports. The package includes a function <code>snotel_metric</code> that could be used to convert raw data downloaded from the SNOTEL website to SI units.</p>
-<p>For this example, we will extract a single year, but set the dates to ensure the entire snow season is contained within a year. The <code>snotel_phelology</code> function makes this easy. By default it uses an offset of 180 days to accomplish this.</p>
+<p>For this example, we will extract a single year, but set the dates to ensure the entire snow season is contained within a year. The <code>snotel_phenology</code> function makes this easy. By default it uses an offset of 180 days (so years begin 180 days before Jan 1) to accomplish this.</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="fate-of-precipitation.html#cb79-1" tabindex="-1"></a>phenology <span class="ot">&lt;-</span> snotelr<span class="sc">::</span><span class="fu">snotel_phenology</span>(snow_data) <span class="co"># Key dates from the observed snow data</span></span>
 <span id="cb79-2"><a href="fate-of-precipitation.html#cb79-2" tabindex="-1"></a><span class="fu">min</span>(phenology<span class="sc">$</span>first_snow_acc)                     <span class="co"># Earliest snow accumulation in the record</span></span>
 <span id="cb79-3"><a href="fate-of-precipitation.html#cb79-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2004-09-20&quot;</span></span>

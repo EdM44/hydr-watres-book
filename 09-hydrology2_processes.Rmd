@@ -169,7 +169,7 @@ plot(as.Date(snow_data$date), snow_data$snow_water_equivalent,
 
 Note the units are SI. If you download data directly from the SNOTEL web site the data would be in conventional US units. [snotelr](https://cran.r-project.org/package=snotelr) converts the data to SI units as it imports. The package includes a function `snotel_metric` that could be used to convert raw data downloaded from the SNOTEL website to SI units.
 
-For this example, we will extract a single year, but set the dates to ensure the entire snow season is contained within a year. The `snotel_phelology` function makes this easy. By default it uses an offset of 180 days to accomplish this.
+For this example, we will extract a single year, but set the dates to ensure the entire snow season is contained within a year. The `snotel_phenology` function makes this easy. By default it uses an offset of 180 days (so years begin 180 days before Jan 1) to accomplish this.
 ```{r sno-2x, message=FALSE, warning=FALSE, eval=TRUE}
 phenology <- snotelr::snotel_phenology(snow_data) # Key dates from the observed snow data
 min(phenology$first_snow_acc)                     # Earliest snow accumulation in the record
