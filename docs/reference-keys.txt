@@ -171,7 +171,8 @@ exm:ex-snow1
 fig:sno-2
 fig:sno-3
 fig:sno-5
-fig:sno-7
+fig:sno-opt3
+fig:sno-opt4
 fig:sno-8
 fig:flood
 exm:ex-flood1
