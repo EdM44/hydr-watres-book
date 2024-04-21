@@ -235,6 +235,7 @@ While manual model calibration can improve the fit, a more complete calibration 
 
 There are many R packages to perform different variations of Monte Carlo simulations, but a simple implementation can be done manually using the [foreach](https://cran.r-project.org/package=foreach) package. In this example the four main model parameters are each varied over 10 evenly spaced values, producing $10^4$ unique parameters sets that need to be run. For each run, the function will return a value for RMSE.
 ```{r sno-opt1, message=FALSE, warning=FALSE }
+# package needed for efficiently looping through all simulations
 library(foreach)
 
 # Create the sets of values of each parameter within a defined range
@@ -254,7 +255,7 @@ fcn <- function(datain, Tmax, Tmin, kd, Tmelt){
 }
 ```
 
-What is shown below is how to use [foreach](https://cran.r-project.org/package=foreach) in a brute force manner, running all simulations on a single CPU. 
+Now the function needs to be used to run the snow model for every parameters combination. What is shown below is how to do this using the [foreach](https://cran.r-project.org/package=foreach) package in a brute force manner, running all simulations on a single CPU. This takes a while.
 
 ```{r sno-opt2, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
 out <- foreach(i = 1:nrow(p_all), .combine='c') %do% {
@@ -262,7 +263,7 @@ out <- foreach(i = 1:nrow(p_all), .combine='c') %do% {
 }
 ``` 
 
-Because the number of simulations quickly becomes very large, this command could be adapted to run the simulations in parallel using multiple cores by using the built-in R package [doParallel](https://cran.r-project.org/package=doParallel). By running the _foreach_ simulations with multiple processes, the run time using 7 of 8 available cores dropped from 5.9 to 1.1 minutes. Aside from setting up the cluster before the command and stopping it after (essential for freeing up resources), the only change is the use of _%dopar%_ instead of _%do%_.
+Because the number of simulations can become very large, this command could be adapted to run the simulations in parallel using multiple cores by using the built-in R package [doParallel](https://cran.r-project.org/package=doParallel). By running the _foreach_ simulations with multiple processes, the run time using 7 of 8 available cores dropped from 5.9 minutes for a single CPU to 1.1 minutes. Aside from setting up the cluster before the command and stopping it after (essential for freeing up resources), the only change is the use of _%dopar%_ instead of _%do%_.
 ```{r sno-opt2b, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
 library(doParallel)  
 no_cores <- detectCores() - 1  
