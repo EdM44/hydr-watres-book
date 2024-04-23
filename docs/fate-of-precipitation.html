@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2024-04-21" />
+<meta name="date" content="2024-04-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -588,11 +588,11 @@ Figure 9.8: Simulated and Observed SWE at SNOTEL site 1050 for Winter 2008-2009.
 <div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="fate-of-precipitation.html#cb84-1" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(p_all), <span class="at">.combine=</span><span class="st">&#39;c&#39;</span>) <span class="sc">%do%</span> {</span>
 <span id="cb84-2"><a href="fate-of-precipitation.html#cb84-2" tabindex="-1"></a>  <span class="fu">fcn</span>(snow_data_sel, p_all[i, <span class="st">&quot;Tmax&quot;</span>], p_all[i, <span class="st">&quot;Tmin&quot;</span>], p_all[i, <span class="st">&quot;kd&quot;</span>], p_all[i, <span class="st">&quot;Tmelt&quot;</span>])</span>
 <span id="cb84-3"><a href="fate-of-precipitation.html#cb84-3" tabindex="-1"></a>}</span></code></pre></div>
-<p>Because the number of simulations can become very large, this command could be adapted to run the simulations in parallel using multiple cores by using the built-in R package <a href="https://cran.r-project.org/package=doParallel">doParallel</a>. By running the <em>foreach</em> simulations with multiple processes, the run time using 7 of 8 available cores dropped from 5.9 minutes for a single CPU to 1.1 minutes. Aside from setting up the cluster before the command and stopping it after (essential for freeing up resources), the only change is the use of <em>%dopar%</em> instead of <em>%do%</em>.</p>
+<p>Because the number of simulations can become very large, this command could be adapted to run the simulations in parallel using multiple cores by using the R package <a href="https://cran.r-project.org/package=doParallel">doParallel</a>, which loads the <code>parallel</code> package (part of the base R installation). By running the <em>foreach</em> simulations with multiple processes, the run time using 7 of 8 available cores dropped from 5.9 minutes for a single CPU to 1.1 minutes. Aside from setting up the cluster before the command and stopping it after (essential for freeing up resources), the only change is the use of <em>%dopar%</em> instead of <em>%do%</em>.</p>
 <div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="fate-of-precipitation.html#cb85-1" tabindex="-1"></a><span class="fu">library</span>(doParallel)  </span>
 <span id="cb85-2"><a href="fate-of-precipitation.html#cb85-2" tabindex="-1"></a>no_cores <span class="ot">&lt;-</span> <span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span>  </span>
 <span id="cb85-3"><a href="fate-of-precipitation.html#cb85-3" tabindex="-1"></a><span class="fu">registerDoParallel</span>(<span class="at">cores=</span>no_cores)  </span>
-<span id="cb85-4"><a href="fate-of-precipitation.html#cb85-4" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(no_cores, <span class="at">type=</span><span class="st">&quot;FORK&quot;</span>)  </span>
+<span id="cb85-4"><a href="fate-of-precipitation.html#cb85-4" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(no_cores, <span class="at">type=</span><span class="st">&quot;PSOCK&quot;</span>)  <span class="co"># On mac or linux you can change type to &quot;FORK&quot;</span></span>
 <span id="cb85-5"><a href="fate-of-precipitation.html#cb85-5" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(p_all), <span class="at">.combine=</span><span class="st">&#39;c&#39;</span>) <span class="sc">%dopar%</span> {</span>
 <span id="cb85-6"><a href="fate-of-precipitation.html#cb85-6" tabindex="-1"></a>  <span class="fu">fcn</span>(snow_data_sel, p_all[i, <span class="st">&quot;Tmax&quot;</span>], p_all[i, <span class="st">&quot;Tmin&quot;</span>], p_all[i, <span class="st">&quot;kd&quot;</span>], p_all[i, <span class="st">&quot;Tmelt&quot;</span>])</span>
 <span id="cb85-7"><a href="fate-of-precipitation.html#cb85-7" tabindex="-1"></a>}</span>

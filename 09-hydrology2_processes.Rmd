@@ -263,12 +263,12 @@ out <- foreach(i = 1:nrow(p_all), .combine='c') %do% {
 }
 ``` 
 
-Because the number of simulations can become very large, this command could be adapted to run the simulations in parallel using multiple cores by using the built-in R package [doParallel](https://cran.r-project.org/package=doParallel). By running the _foreach_ simulations with multiple processes, the run time using 7 of 8 available cores dropped from 5.9 minutes for a single CPU to 1.1 minutes. Aside from setting up the cluster before the command and stopping it after (essential for freeing up resources), the only change is the use of _%dopar%_ instead of _%do%_.
+Because the number of simulations can become very large, this command could be adapted to run the simulations in parallel using multiple cores by using the R package [doParallel](https://cran.r-project.org/package=doParallel), which loads the `parallel` package (part of the base R installation). By running the _foreach_ simulations with multiple processes, the run time using 7 of 8 available cores dropped from 5.9 minutes for a single CPU to 1.1 minutes. Aside from setting up the cluster before the command and stopping it after (essential for freeing up resources), the only change is the use of _%dopar%_ instead of _%do%_.
 ```{r sno-opt2b, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
 library(doParallel)  
 no_cores <- detectCores() - 1  
 registerDoParallel(cores=no_cores)  
-cl <- makeCluster(no_cores, type="FORK")  
+cl <- makeCluster(no_cores, type="PSOCK")  # On mac or linux you can change type to "FORK"
 out <- foreach(i = 1:nrow(p_all), .combine='c') %dopar% {
   fcn(snow_data_sel, p_all[i, "Tmax"], p_all[i, "Tmin"], p_all[i, "kd"], p_all[i, "Tmelt"])
 }
