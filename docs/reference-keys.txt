@@ -154,11 +154,14 @@ fig:dm4
 fig:precip-interp
 fig:chirps1
 fig:int-1
+eq:darcy-a
 eq:horton
 eq:horton2
-eq:GA1
-fig:infilt-1
+exm:ex-infilt1
 fig:horton-3
+eq:GA1
+eq:GA2
+fig:infilt-1
 eq:NRCS1
 eq:NRCS2
 fig:et-1
@@ -279,6 +282,9 @@ precipitation-interpolation-and-areal-averaging
 fate-of-precipitation
 interception
 infiltration
+horton-infiltration-equation
+green-ampt-infiltration-model
+the-nrcs-method
 evaporation
 snow
 observations

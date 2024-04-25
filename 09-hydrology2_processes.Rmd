@@ -19,6 +19,16 @@ Interception of rainfall is generally small during individual storms (0.5-2 mm),
 
 ## Infiltration
 
+The movement of water through a saturated soil column is governed by Darcy's law.
+\@ref(eq:darcy-a).
+\begin{equation}
+  q~=~ -K\frac{\partial H}{\partial s}
+    (\#eq:darcy-a)
+\end{equation}
+where _q_ is the flow of water per unit area (L/T), _K_ is the hydraulic conductivity (L/T), _H_ is the hydraulic head (L) and _s_ is the distance along a flow path. Because infiltration into soils often begins with unsaturated conditions, _K_ becomes a function of water content and hydraulic head. The solution becomes complicated, and empirical formulations are used.
+
+### Horton infiltration equation
+
 An early empirical equation describing infiltration rate into soils was developed by Horton [@horton_re_analysis_1939], which takes the form of Equation \@ref(eq:horton).
 \begin{equation}
   f_p~=~ f_c + \left(f_0 - f_c\right)e^{-kt}
@@ -30,21 +40,12 @@ This describes a potential infiltration rate, $f_p$, beginning at a maximum $f_0
     (\#eq:horton2)
 \end{equation} 
 
-A more physically based relationship to describe infiltration rate is the Green-Ampt model. It is based on the physical laws describing the propogation of a wetting front downward through a soil column under a ponded water surface. The Green-Ampt relationship is in Equation \@ref(eq:GA1).
-\begin{equation}
-  K_st~=~F-\left(n-\theta_i\right)\Phi_f~ln\left[1+\frac{F}{\left(n-\theta_i\right)\Phi_f}\right]
-    (\#eq:GA1)
-\end{equation} 
-Equation \@ref(eq:GA1) assumes ponding begins at t=0, meaning rainfall rate exceeds $K_s$. When rainfall rates are less than that, adjustments to the method are used. Parameters are shown in the table below.
 
-(ref:figint2) Green-Ampt Parameter Estimates and Ranges based on Soil Texture [USACE](https://www.hec.usace.army.mil/confluence/rasdocs/ras1dtechref/6.1/overview-of-optional-capabilities/modeling-precipitation-and-infiltration/green-ampt)
+Parameters for the Horton, Green-Ampt, and other infiltration models can be derived from observed infiltration data using the R package [HydroMe](https://CRAN.R-project.org/package=HydroMe). Fitting the Horton equation to observed data is demonstrated here using a small sample from the *infilt* data set included with the `HydroMe` package which is saved in a spreadsheet wrapped into the `hydromisc` package. While `HydroMe` includes a function to return parameters, this can also be done manually as shown here.
 
-```{r infilt-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap='(ref:figint2)'}
-knitr::include_graphics('images/soil_parameters.png')
-```
-
-Parameters for the Horton and Green-Ampt methods can be derived from observed infiltration data using the R package [HydroMe](https://CRAN.R-project.org/package=HydroMe). Fitting the Horton equation to observed data is demonstrated here using a small sample from the *infilt* data set included with the `HydroMe` package which is saved in a spreadsheet wrapped into the `hydromisc` package. While `HydroMe` includes a function to return parameters, this can also be done manually as shown here.
-
+::: {.example #ex-infilt1}
+Fit a Horton infiltration model to measured infiltration data.
+:::
 First, read in the data sample.
 ```{r horton-1, message=FALSE}
 # path to sample spreadsheet
@@ -70,6 +71,28 @@ plot(infilt_data$Time,infilt_data$Rate, pch=1,
 lines(infilt_data$Time, infilt_data$Rate_estim, lty = 1)
 legend("topright", legend = c("Obs.","Horton"), pch = c(1, NA), lty = c(NA, 1))
 ```
+
+### Green-Ampt infiltration model
+
+A more physically based relationship to describe infiltration rate is the Green-Ampt model [@green_h_studies_1911]. It is based on the physical laws describing the propogation of a wetting front downward through a soil column under a ponded water surface. The Green-Ampt relationship is expressed either in terms of infiltration rate, $f_p$ or cumulative infiltration, _F_, as in Equations \@ref(eq:GA1) and \@ref(eq:GA2).
+\begin{equation}
+  f_p~=~K_s\left[1~+~\frac{\Delta\theta~\Psi_f}{F}\right]
+    (\#eq:GA1)
+\end{equation} 
+$\Delta\theta$ is the difference between effective porosity and initial water content and $\Psi$ is the capillary potential or wetting front suction head (L).
+\begin{equation}
+  K_st~=~F-\left(n-\theta_i\right)\Psi_f~ln\left[1+\frac{F}{\left(n-\theta_i\right)\Psi_f}\right] ~=~ F-N_s~ln\left[1+\frac{F}{N_s}\right]
+    (\#eq:GA2)
+\end{equation} 
+The parameter $N_s=\left(n-\theta_i\right)\Psi_f$ is referred to as the matric potential. Different references use different symbols for these terms. These equations assume ponding begins at t=0, meaning rainfall rate exceeds $K_s$. When rainfall rates are less than that, adjustments to the method are used. Typical parameter values are shown in the table below.
+
+(ref:figint2) Green-Ampt Parameter Estimates and Ranges based on Soil Texture [USACE](https://www.hec.usace.army.mil/confluence/rasdocs/ras1dtechref/6.1/overview-of-optional-capabilities/modeling-precipitation-and-infiltration/green-ampt)
+
+```{r infilt-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap='(ref:figint2)'}
+knitr::include_graphics('images/soil_parameters.png')
+```
+
+### The NRCS method
 
 The most widely used method for estimating infiltration is the NRCS method, described in detail in the NRCS document [Estimating Runoff Volume and Peak Discharge](https://directives.sc.egov.usda.gov/46253.wba).This method describes the direct runoff (as a depth), $Q$, resulting from a precipitation event, $P$, as in Equation \@ref(eq:NRCS1).
 \begin{equation}

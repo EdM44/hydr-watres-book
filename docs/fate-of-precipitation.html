@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2024-04-22" />
+<meta name="date" content="2024-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -264,7 +264,12 @@ div.csl-indent {
 <li class="chapter" data-level="9" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html"><i class="fa fa-check"></i><b>9</b> Fate of precipitation</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#interception"><i class="fa fa-check"></i><b>9.1</b> Interception</a></li>
-<li class="chapter" data-level="9.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#infiltration"><i class="fa fa-check"></i><b>9.2</b> Infiltration</a></li>
+<li class="chapter" data-level="9.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#infiltration"><i class="fa fa-check"></i><b>9.2</b> Infiltration</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#horton-infiltration-equation"><i class="fa fa-check"></i><b>9.2.1</b> Horton infiltration equation</a></li>
+<li class="chapter" data-level="9.2.2" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#green-ampt-infiltration-model"><i class="fa fa-check"></i><b>9.2.2</b> Green-Ampt infiltration model</a></li>
+<li class="chapter" data-level="9.2.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#the-nrcs-method"><i class="fa fa-check"></i><b>9.2.3</b> The NRCS method</a></li>
+</ul></li>
 <li class="chapter" data-level="9.3" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#evaporation"><i class="fa fa-check"></i><b>9.3</b> Evaporation</a></li>
 <li class="chapter" data-level="9.4" data-path="fate-of-precipitation.html"><a href="fate-of-precipitation.html#snow"><i class="fa fa-check"></i><b>9.4</b> Snow</a>
 <ul>
@@ -363,30 +368,29 @@ Figure 9.1: Rain interception by John Robert McPherson, <a href="https://commons
 </div>
 <div id="infiltration" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Infiltration<a href="fate-of-precipitation.html#infiltration" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>An early empirical equation describing infiltration rate into soils was developed by Horton <span class="citation">(<a href="references.html#ref-horton_re_analysis_1939">Horton, R.E., 1939</a>)</span>, which takes the form of Equation <a href="fate-of-precipitation.html#eq:horton">(9.1)</a>.
-<span class="math display" id="eq:horton">\[\begin{equation}
-  f_p~=~ f_c + \left(f_0 - f_c\right)e^{-kt}
+<p>The movement of water through a saturated soil column is governed by Darcy’s law.
+<a href="fate-of-precipitation.html#eq:darcy-a">(9.1)</a>.
+<span class="math display" id="eq:darcy-a">\[\begin{equation}
+  q~=~ -K\frac{\partial H}{\partial s}
     \tag{9.1}
 \end{equation}\]</span>
-This describes a potential infiltration rate, <span class="math inline">\(f_p\)</span>, beginning at a maximum <span class="math inline">\(f_0\)</span> and decreasing with time toward a minimum value <span class="math inline">\(f_c\)</span> at a rate described by the decay constant <span class="math inline">\(k\)</span>. <span class="math inline">\(f_c\)</span> is also equal to the saturated hydraulic conductivity, <span class="math inline">\(K_s\)</span>, of the soil. If rainfall rate exceeds <span class="math inline">\(f_c\)</span> then this equation describes the actual infiltration rate with time. If periods of time have rainfall less intense than <span class="math inline">\(f_c\)</span> it is convenient to integrate this to relate the total cumulative depth of water infiltrated, <span class="math inline">\(F\)</span>, and the actual infiltration rate, <span class="math inline">\(f_p\)</span>, as in Equation <a href="fate-of-precipitation.html#eq:horton2">(9.2)</a>.
+where <em>q</em> is the flow of water per unit area (L/T), <em>K</em> is the hydraulic conductivity (L/T), <em>H</em> is the hydraulic head (L) and <em>s</em> is the distance along a flow path. Because infiltration into soils often begins with unsaturated conditions, <em>K</em> becomes a function of water content and hydraulic head. The solution becomes complicated, and empirical formulations are used.</p>
+<div id="horton-infiltration-equation" class="section level3 hasAnchor" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> Horton infiltration equation<a href="fate-of-precipitation.html#horton-infiltration-equation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>An early empirical equation describing infiltration rate into soils was developed by Horton <span class="citation">(<a href="references.html#ref-horton_re_analysis_1939">Horton, R.E., 1939</a>)</span>, which takes the form of Equation <a href="fate-of-precipitation.html#eq:horton">(9.2)</a>.
+<span class="math display" id="eq:horton">\[\begin{equation}
+  f_p~=~ f_c + \left(f_0 - f_c\right)e^{-kt}
+    \tag{9.2}
+\end{equation}\]</span>
+This describes a potential infiltration rate, <span class="math inline">\(f_p\)</span>, beginning at a maximum <span class="math inline">\(f_0\)</span> and decreasing with time toward a minimum value <span class="math inline">\(f_c\)</span> at a rate described by the decay constant <span class="math inline">\(k\)</span>. <span class="math inline">\(f_c\)</span> is also equal to the saturated hydraulic conductivity, <span class="math inline">\(K_s\)</span>, of the soil. If rainfall rate exceeds <span class="math inline">\(f_c\)</span> then this equation describes the actual infiltration rate with time. If periods of time have rainfall less intense than <span class="math inline">\(f_c\)</span> it is convenient to integrate this to relate the total cumulative depth of water infiltrated, <span class="math inline">\(F\)</span>, and the actual infiltration rate, <span class="math inline">\(f_p\)</span>, as in Equation <a href="fate-of-precipitation.html#eq:horton2">(9.3)</a>.
 <span class="math display" id="eq:horton2">\[\begin{equation}
   F~=~\left[\frac{f_c}{k}ln\left(f_0-f_c\right)+\frac{f_0}{k}\right]-\frac{f_c}{k}ln\left(f_p-f_c\right)-\frac{f_p}{k}
-    \tag{9.2}
-\end{equation}\]</span></p>
-<p>A more physically based relationship to describe infiltration rate is the Green-Ampt model. It is based on the physical laws describing the propogation of a wetting front downward through a soil column under a ponded water surface. The Green-Ampt relationship is in Equation <a href="fate-of-precipitation.html#eq:GA1">(9.3)</a>.
-<span class="math display" id="eq:GA1">\[\begin{equation}
-  K_st~=~F-\left(n-\theta_i\right)\Phi_f~ln\left[1+\frac{F}{\left(n-\theta_i\right)\Phi_f}\right]
     \tag{9.3}
-\end{equation}\]</span>
-Equation <a href="fate-of-precipitation.html#eq:GA1">(9.3)</a> assumes ponding begins at t=0, meaning rainfall rate exceeds <span class="math inline">\(K_s\)</span>. When rainfall rates are less than that, adjustments to the method are used. Parameters are shown in the table below.</p>
-
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:infilt-1"></span>
-<img src="images/soil_parameters.png" alt="Green-Ampt Parameter Estimates and Ranges based on Soil Texture USACE" width="90%" />
-<p class="caption">
-Figure 9.2: Green-Ampt Parameter Estimates and Ranges based on Soil Texture <a href="https://www.hec.usace.army.mil/confluence/rasdocs/ras1dtechref/6.1/overview-of-optional-capabilities/modeling-precipitation-and-infiltration/green-ampt">USACE</a>
-</p>
+\end{equation}\]</span></p>
+<p>Parameters for the Horton, Green-Ampt, and other infiltration models can be derived from observed infiltration data using the R package <a href="https://CRAN.R-project.org/package=HydroMe">HydroMe</a>. Fitting the Horton equation to observed data is demonstrated here using a small sample from the <em>infilt</em> data set included with the <code>HydroMe</code> package which is saved in a spreadsheet wrapped into the <code>hydromisc</code> package. While <code>HydroMe</code> includes a function to return parameters, this can also be done manually as shown here.</p>
+<div class="example">
+<p><span id="exm:ex-infilt1" class="example"><strong>Example 9.1  </strong></span>Fit a Horton infiltration model to measured infiltration data.</p>
 </div>
-<p>Parameters for the Horton and Green-Ampt methods can be derived from observed infiltration data using the R package <a href="https://CRAN.R-project.org/package=HydroMe">HydroMe</a>. Fitting the Horton equation to observed data is demonstrated here using a small sample from the <em>infilt</em> data set included with the <code>HydroMe</code> package which is saved in a spreadsheet wrapped into the <code>hydromisc</code> package. While <code>HydroMe</code> includes a function to return parameters, this can also be done manually as shown here.</p>
 <p>First, read in the data sample.</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="fate-of-precipitation.html#cb74-1" tabindex="-1"></a><span class="co"># path to sample spreadsheet</span></span>
 <span id="cb74-2"><a href="fate-of-precipitation.html#cb74-2" tabindex="-1"></a>datafile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;infilt_field_data.xlsx&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
@@ -409,21 +413,46 @@ Figure 9.2: Green-Ampt Parameter Estimates and Ranges based on Soil Texture <a h
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:horton-3"></span>
 <img src="hydr-watres_main_files/figure-html/horton-3-1.png" alt="A Horton infiltration curve fit to experimental observations." width="60%" />
 <p class="caption">
-Figure 9.3: A Horton infiltration curve fit to experimental observations.
+Figure 9.2: A Horton infiltration curve fit to experimental observations.
 </p>
 </div>
-<p>The most widely used method for estimating infiltration is the NRCS method, described in detail in the NRCS document <a href="https://directives.sc.egov.usda.gov/46253.wba">Estimating Runoff Volume and Peak Discharge</a>.This method describes the direct runoff (as a depth), <span class="math inline">\(Q\)</span>, resulting from a precipitation event, <span class="math inline">\(P\)</span>, as in Equation <a href="fate-of-precipitation.html#eq:NRCS1">(9.4)</a>.
-<span class="math display" id="eq:NRCS1">\[\begin{equation}
-  Q~=~\frac{\left(P-I_a\right)^2}{\left(P-I_a\right)+S}
+</div>
+<div id="green-ampt-infiltration-model" class="section level3 hasAnchor" number="9.2.2">
+<h3><span class="header-section-number">9.2.2</span> Green-Ampt infiltration model<a href="fate-of-precipitation.html#green-ampt-infiltration-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A more physically based relationship to describe infiltration rate is the Green-Ampt model <span class="citation">(<a href="references.html#ref-green_h_studies_1911">Green &amp; Ampt, 1911</a>)</span>. It is based on the physical laws describing the propogation of a wetting front downward through a soil column under a ponded water surface. The Green-Ampt relationship is expressed either in terms of infiltration rate, <span class="math inline">\(f_p\)</span> or cumulative infiltration, <em>F</em>, as in Equations <a href="fate-of-precipitation.html#eq:GA1">(9.4)</a> and <a href="fate-of-precipitation.html#eq:GA2">(9.5)</a>.
+<span class="math display" id="eq:GA1">\[\begin{equation}
+  f_p~=~K_s\left[1~+~\frac{\Delta\theta~\Psi_f}{F}\right]
     \tag{9.4}
 \end{equation}\]</span>
-<span class="math inline">\(S\)</span> is the maximum retention of water by the soil column and <span class="math inline">\(I_a\)</span> is the initial abstraction, commonly estimated as <span class="math inline">\(I_a=0.2S\)</span>. Substituting this into Equation <a href="fate-of-precipitation.html#eq:NRCS1">(9.4)</a> produces Equation <a href="fate-of-precipitation.html#eq:NRCS2">(9.5)</a>.
-<span class="math display" id="eq:NRCS2">\[\begin{equation}
-  Q~=~\frac{\left(P-0.2~S\right)^2}{\left(P+0.8~S\right)}
+<span class="math inline">\(\Delta\theta\)</span> is the difference between effective porosity and initial water content and <span class="math inline">\(\Psi\)</span> is the capillary potential or wetting front suction head (L).
+<span class="math display" id="eq:GA2">\[\begin{equation}
+  K_st~=~F-\left(n-\theta_i\right)\Psi_f~ln\left[1+\frac{F}{\left(n-\theta_i\right)\Psi_f}\right] ~=~ F-N_s~ln\left[1+\frac{F}{N_s}\right]
     \tag{9.5}
 \end{equation}\]</span>
+The parameter <span class="math inline">\(N_s=\left(n-\theta_i\right)\Psi_f\)</span> is referred to as the matric potential. Different references use different symbols for these terms. These equations assume ponding begins at t=0, meaning rainfall rate exceeds <span class="math inline">\(K_s\)</span>. When rainfall rates are less than that, adjustments to the method are used. Typical parameter values are shown in the table below.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:infilt-1"></span>
+<img src="images/soil_parameters.png" alt="Green-Ampt Parameter Estimates and Ranges based on Soil Texture USACE" width="90%" />
+<p class="caption">
+Figure 9.3: Green-Ampt Parameter Estimates and Ranges based on Soil Texture <a href="https://www.hec.usace.army.mil/confluence/rasdocs/ras1dtechref/6.1/overview-of-optional-capabilities/modeling-precipitation-and-infiltration/green-ampt">USACE</a>
+</p>
+</div>
+</div>
+<div id="the-nrcs-method" class="section level3 hasAnchor" number="9.2.3">
+<h3><span class="header-section-number">9.2.3</span> The NRCS method<a href="fate-of-precipitation.html#the-nrcs-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The most widely used method for estimating infiltration is the NRCS method, described in detail in the NRCS document <a href="https://directives.sc.egov.usda.gov/46253.wba">Estimating Runoff Volume and Peak Discharge</a>.This method describes the direct runoff (as a depth), <span class="math inline">\(Q\)</span>, resulting from a precipitation event, <span class="math inline">\(P\)</span>, as in Equation <a href="fate-of-precipitation.html#eq:NRCS1">(9.6)</a>.
+<span class="math display" id="eq:NRCS1">\[\begin{equation}
+  Q~=~\frac{\left(P-I_a\right)^2}{\left(P-I_a\right)+S}
+    \tag{9.6}
+\end{equation}\]</span>
+<span class="math inline">\(S\)</span> is the maximum retention of water by the soil column and <span class="math inline">\(I_a\)</span> is the initial abstraction, commonly estimated as <span class="math inline">\(I_a=0.2S\)</span>. Substituting this into Equation <a href="fate-of-precipitation.html#eq:NRCS1">(9.6)</a> produces Equation <a href="fate-of-precipitation.html#eq:NRCS2">(9.7)</a>.
+<span class="math display" id="eq:NRCS2">\[\begin{equation}
+  Q~=~\frac{\left(P-0.2~S\right)^2}{\left(P+0.8~S\right)}
+    \tag{9.7}
+\end{equation}\]</span>
 This relationship applies as long as <span class="math inline">\(P&gt;0.2~S\)</span>; Q=0 otherwise. Values for S are derived from a Curve Number (CN), which summarizes the land cover, soil type and condition: <span class="math display">\[CN=\frac{1000}{10+S}\]</span>
-where <span class="math inline">\(S\)</span>, and subsequently <span class="math inline">\(Q\)</span>, are in inches. Equation <a href="fate-of-precipitation.html#eq:NRCS2">(9.5)</a> can be rearranged to a form similar to those for the Horton and Green-Ampt equations for cumulative infiltration, <span class="math inline">\(F\)</span>. <span class="math display">\[F~=~\frac{\left(P-0.2~S\right)S}{P+0.8~S}\]</span>.</p>
+where <span class="math inline">\(S\)</span>, and subsequently <span class="math inline">\(Q\)</span>, are in inches. Equation <a href="fate-of-precipitation.html#eq:NRCS2">(9.7)</a> can be rearranged to a form similar to those for the Horton and Green-Ampt equations for cumulative infiltration, <span class="math inline">\(F\)</span>. <span class="math display">\[F~=~\frac{\left(P-0.2~S\right)S}{P+0.8~S}\]</span>.</p>
+</div>
 </div>
 <div id="evaporation" class="section level2 hasAnchor" number="9.3">
 <h2><span class="header-section-number">9.3</span> Evaporation<a href="fate-of-precipitation.html#evaporation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -439,20 +468,20 @@ Figure 9.4: Schematic of ET, from <a href="https://cimis.water.ca.gov">CIMIS</a>
 - Potential ET, <span class="math inline">\(ET_p\)</span> or <span class="math inline">\(PET\)</span>: essentially the same as the rate that water would evaporate from a free water surface.
 - Reference crop ET, <span class="math inline">\(ET_{ref}\)</span> or <span class="math inline">\(ET_0\)</span>: the rate water evaporates from a well-watered reference crop, usually grass of a standard height.
 - Actual ET, <span class="math inline">\(ET\)</span>: this is the water used by a crop or other vegetation, usually calculated by adjusting the <span class="math inline">\(ET_0\)</span> term by a crop coefficient that accounts for factors such as the plant height, growth stage, and soil exposure.</p>
-<p>Estimating <span class="math inline">\(ET_0\)</span> can be as uncomplicated as using the Thornthwaite equation, which depends only on mean monthly temperatures, to the Penman-Monteith equation, which includes solar and longwave radiation, wind and humidity effects, and reference crop (grass) characteristics. Inclusion of more complexity, especially where observations can supply the needed input, produces more reliable estimates of <span class="math inline">\(ET_0\)</span>.One of the most common implementations of the Penman-Monteith equation is the version of the FAO (<a href="https://www.fao.org/3/X0490E/x0490e00.htm">FAO Irrigation and drainage paper 56</a>, or FAO56) <span class="citation">(<a href="references.html#ref-allen_crop_1998">Allen &amp; United Nations, 1998</a>)</span>. Refer to FAO56 for step-by-step instructions on determining each term in the Penman-Monteith equation, Equation <a href="fate-of-precipitation.html#eq:pm1">(9.6)</a>.
+<p>Estimating <span class="math inline">\(ET_0\)</span> can be as uncomplicated as using the Thornthwaite equation, which depends only on mean monthly temperatures, to the Penman-Monteith equation, which includes solar and longwave radiation, wind and humidity effects, and reference crop (grass) characteristics. Inclusion of more complexity, especially where observations can supply the needed input, produces more reliable estimates of <span class="math inline">\(ET_0\)</span>.One of the most common implementations of the Penman-Monteith equation is the version of the FAO (<a href="https://www.fao.org/3/X0490E/x0490e00.htm">FAO Irrigation and drainage paper 56</a>, or FAO56) <span class="citation">(<a href="references.html#ref-allen_crop_1998">Allen &amp; United Nations, 1998</a>)</span>. Refer to FAO56 for step-by-step instructions on determining each term in the Penman-Monteith equation, Equation <a href="fate-of-precipitation.html#eq:pm1">(9.8)</a>.
 <span class="math display" id="eq:pm1">\[\begin{equation}
   \lambda~ET~=~\frac{\Delta\left(R_n-G\right)+\rho_ac_p\frac{\left(e_s-e_a\right)}{r_a}}{\Delta+\gamma\left(1+\frac{r_s}{r_a}\right)}
-    \tag{9.6}
+    \tag{9.8}
 \end{equation}\]</span></p>
 <p>Open water evaporation can be calculated using the original Penman equation (1948):
 <span class="math display">\[\lambda~E_p~=~\frac{\Delta~R_n+\gamma~E_a}{\Delta~+~\gamma}\]</span>
 where <span class="math inline">\(R_n\)</span> is the net radiation available to evaporate water and <span class="math inline">\(E_a\)</span> is a mass transfer function usually including humidity (or vapor pressure deficit) and wind speed. <span class="math inline">\(\lambda\)</span> is the latent heat of vaporization of water. A common implementation of the Penman equation is
 <span class="math display" id="eq:pm2">\[\begin{equation}
   \lambda~E_p~=~\frac{\Delta~R_n+\gamma~6.43\left(1+0.536~U_2\right)\left(e_s-e\right)}{\Delta~+~\gamma}
-    \tag{9.7}
+    \tag{9.9}
 \end{equation}\]</span>
 Here <span class="math inline">\(E_p\)</span> is in mm/d, <span class="math inline">\(\Delta\)</span> and <span class="math inline">\(\gamma\)</span> are in <span class="math inline">\(kPa~K^{-1}\)</span>, <span class="math inline">\(R_n\)</span> is in <span class="math inline">\(MJ~m^{−2}~d^{−1}\)</span>, <span class="math inline">\(U_2\)</span> is in m/s, and <span class="math inline">\(e_s\)</span> and <span class="math inline">\(e\)</span> are in kPa. Variables are as defined in FAO56.</p>
-<p>Open water evaporation can also be calculated using a modified version of the Penman-Monteith equation <a href="fate-of-precipitation.html#eq:pm1">(9.6)</a>. In this latter case, vegetation coefficients are not needed, so Equation <a href="fate-of-precipitation.html#eq:pm1">(9.6)</a> can be used with <span class="math inline">\(r_s=0\)</span> and <span class="math inline">\(r_a=251/(1+0.536~u_2)\)</span>, following <a href="https://doi.org/10.1002/qj.49710343610">Thom &amp; Oliver, 1977</a>.</p>
+<p>Open water evaporation can also be calculated using a modified version of the Penman-Monteith equation <a href="fate-of-precipitation.html#eq:pm1">(9.8)</a>. In this latter case, vegetation coefficients are not needed, so Equation <a href="fate-of-precipitation.html#eq:pm1">(9.8)</a> can be used with <span class="math inline">\(r_s=0\)</span> and <span class="math inline">\(r_a=251/(1+0.536~u_2)\)</span>, following <a href="https://doi.org/10.1002/qj.49710343610">Thom &amp; Oliver, 1977</a>.</p>
 <p>The R package <a href="https://cran.r-project.org/package=Evapotranspiration">Evaporation</a> has functions to calculate <span class="math inline">\(ET_0\)</span> using this and many other functions. This is especially useful when calculating PET over many points or through a long time series.</p>
 </div>
 <div id="snow" class="section level2 hasAnchor" number="9.4">
@@ -470,21 +499,21 @@ Figure 9.5: The SNOTEL network.
 <div id="basic-snowmelt-theory-and-simple-models" class="section level3 hasAnchor" number="9.4.2">
 <h3><span class="header-section-number">9.4.2</span> Basic snowmelt theory and simple models<a href="fate-of-precipitation.html#basic-snowmelt-theory-and-simple-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For snow to melt, heat must be added to first bring the snowpack to the melting point; it takes about 2 kJ/kg to increase snowpack temperature 1<span class="math inline">\(^\circ\)</span>C. Additional heat is required for the phase change from ice to water (the latent heat of fusion), about 335 kJ/kg. Heat can be provided by absorbing solar radiation, longwave radiation, ground heat, warm air, warm rain falling on the snowpack or water vapor condensing on the snow. Once snow melts, it can percolate through the snowpack and be retained, similar to water retained by soil, and may re-freeze (releasing the latent heat of fusion, which can then cause more melt).</p>
-<p>As with any other hydrologic process, there are many ways it can be modeled, from simplified empirical relationships to complex physics-based representations. While accounting for all of the many processes involved would be a robust approach, often there are not adequate observations to support their use so simpler parameterization are used. Here only the simplest index-based snow model is discussed, as in Equation <a href="fate-of-precipitation.html#eq:snow1">(9.8)</a>.
+<p>As with any other hydrologic process, there are many ways it can be modeled, from simplified empirical relationships to complex physics-based representations. While accounting for all of the many processes involved would be a robust approach, often there are not adequate observations to support their use so simpler parameterization are used. Here only the simplest index-based snow model is discussed, as in Equation <a href="fate-of-precipitation.html#eq:snow1">(9.10)</a>.
 <span class="math display" id="eq:snow1">\[\begin{equation}
   M~=~K_d\left(T_a~-~T_b\right)
-    \tag{9.8}
+    \tag{9.10}
 \end{equation}\]</span>
 M is the melt rate in mm/d (or in/day), <span class="math inline">\(T_a\)</span> is air temperature (sometimes a daily mean, sometimes a daily maximum), <span class="math inline">\(T_b\)</span> is a base temperature, usually 0<span class="math inline">\(^\circ\)</span>C (or 32<span class="math inline">\(^\circ\)</span>F), and <span class="math inline">\(K_d\)</span> is a degree-day melt factor in mm/d/<span class="math inline">\(^\circ\)</span>C (or in/d/<span class="math inline">\(^\circ\)</span>F). The melt factor, <span class="math inline">\(K_d\)</span>, is highly dependent on local conditions and on the time of year (as an indicator of the snow pack condition); different <span class="math inline">\(K_d\)</span> factors can be used for different months for example.</p>
-<p>Refreezing of melted snow, when temperatures are below <span class="math inline">\(T_b\)</span>, can also be estimated using an index model, such as Equation <a href="fate-of-precipitation.html#eq:snow2">(9.9)</a>.
+<p>Refreezing of melted snow, when temperatures are below <span class="math inline">\(T_b\)</span>, can also be estimated using an index model, such as Equation <a href="fate-of-precipitation.html#eq:snow2">(9.11)</a>.
 <span class="math display" id="eq:snow2">\[\begin{equation}
   Fr~=~K_f\left(T_b~-~T_a\right)
-    \tag{9.9}
+    \tag{9.11}
 \end{equation}\]</span></p>
 <p>Importantly, temperature-index snowmelt relations have been developed primarily for describing snowmelt at the end of season, after the peak of snow accumulation (typically April-May in the mountainous western U.S.), and their use during the snow accumulation season may overestimate melt. Different degree-day factors are often used, with the factors increasing later in the melt season.</p>
 <p>From a hydrologic perspective, the most important snow quality is the snow water equivalent (SWE), which is the depth of water obtained by melting the snow. An example of using a snowmelt index model follows.</p>
 <div class="example">
-<p><span id="exm:ex-snow1" class="example"><strong>Example 9.1  </strong></span>Manually calibrate an index snowmelt model for a SNOTEL site using one year of data.</p>
+<p><span id="exm:ex-snow1" class="example"><strong>Example 9.2  </strong></span>Manually calibrate an index snowmelt model for a SNOTEL site using one year of data.</p>
 </div>
 <p>Visit the <a href="https://www.nrcs.usda.gov/wps/portal/wcc/home/">SNOTEL</a> to select a site. In this example site 1050, Horse Meadow, located in California, is used. Next download the data using the <a href="https://cran.r-project.org/package=snotelr">snotelr</a> package (install the package first, if needed).</p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="fate-of-precipitation.html#cb77-1" tabindex="-1"></a>sta <span class="ot">&lt;-</span> <span class="st">&quot;1050&quot;</span></span>
