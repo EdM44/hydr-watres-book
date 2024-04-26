@@ -44,7 +44,7 @@ This describes a potential infiltration rate, $f_p$, beginning at a maximum $f_0
 Parameters for the Horton, Green-Ampt, and other infiltration models can be derived from observed infiltration data using the R package [HydroMe](https://CRAN.R-project.org/package=HydroMe). Fitting the Horton equation to observed data is demonstrated here using a small sample from the *infilt* data set included with the `HydroMe` package which is saved in a spreadsheet wrapped into the `hydromisc` package. While `HydroMe` includes a function to return parameters, this can also be done manually as shown here.
 
 ::: {.example #ex-infilt1}
-Fit a Horton infiltration model to measured infiltration data.
+Fit a Horton infiltration model to measured infiltration data, then use the derived parameters to plot the infiltration rate over time.
 :::
 First, read in the data sample.
 ```{r horton-1, message=FALSE}
@@ -53,7 +53,7 @@ datafile <- system.file("extdata", "infilt_field_data.xlsx", package="hydromisc"
 infilt_data <- readxl::read_excel(datafile)
 ```
 
-Set up a function for the Horton equation and use the built in `stats` package function nls to solve for the parameters.
+Set up a function for the Horton equation and use the built in `stats` package function `nls` to solve for the parameters. This works with column names of 'Time' and 'Rate'.
 ```{r horton-2, message=FALSE}
 horton <- function(time, fc, f0, k) {
   fc + (f0 - fc) * exp(-k * time)
@@ -65,10 +65,10 @@ coef(horton_fit)
 
 Plot the results of the fit with the observations.
 ```{r horton-3, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap='A Horton infiltration curve fit to experimental observations.'}
-infilt_data$Rate_estim <- predict(horton_fit, list(x = infilt_data$Time))
+infilt_data$Rate_Horton <- predict(horton_fit, list(x = infilt_data$Time))
 plot(infilt_data$Time,infilt_data$Rate, pch=1, 
      xlab = "Time, min", ylab = "Infiltration rate, cm/hr")
-lines(infilt_data$Time, infilt_data$Rate_estim, lty = 1)
+lines(infilt_data$Time, infilt_data$Rate_Horton, lty = 1)
 legend("topright", legend = c("Obs.","Horton"), pch = c(1, NA), lty = c(NA, 1))
 ```
 
@@ -79,7 +79,7 @@ A more physically based relationship to describe infiltration rate is the Green-
   f_p~=~K_s\left[1~+~\frac{\Delta\theta~\Psi_f}{F}\right]
     (\#eq:GA1)
 \end{equation} 
-$\Delta\theta$ is the difference between effective porosity and initial water content and $\Psi$ is the capillary potential or wetting front suction head (L).
+$\Delta\theta=\left(n-\theta_i\right)$ where _n_ is effective porosity and $\theta$ is the initial water content. $\Psi$ is the capillary potential or wetting front suction head.
 \begin{equation}
   K_st~=~F-\left(n-\theta_i\right)\Psi_f~ln\left[1+\frac{F}{\left(n-\theta_i\right)\Psi_f}\right] ~=~ F-N_s~ln\left[1+\frac{F}{N_s}\right]
     (\#eq:GA2)
@@ -90,6 +90,63 @@ The parameter $N_s=\left(n-\theta_i\right)\Psi_f$ is referred to as the matric p
 
 ```{r infilt-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap='(ref:figint2)'}
 knitr::include_graphics('images/soil_parameters.png')
+```
+
+::: {.example #ex-infilt2}
+Fit a Green-Ampt infiltration model to measured infiltration data, then use the derived parameters to plot the infiltration rate over time.
+:::
+For convenience, this uses the same infiltration data as in the prior example. Because the Green-Ampt formulation needs cumulative infiltration depth, _F_, first create a column of this in the data frame.
+```{r GA-1, message=FALSE}
+# Add a column for incremental time
+infilt_data <- infilt_data |> dplyr::mutate(dt = Time - dplyr::lag(Time))
+# Add value to first row
+infilt_data$dt[1] <- infilt_data$Time[1]
+# Add a column for cumulative infiltration
+infilt_data$Cumul_Infilt <- cumsum(infilt_data$Rate * infilt_data$dt)
+```
+
+Because the Green-Ampt model comprises implicit, nonlinear equations they cannot be solved directly, as could be done with the Horton equation. Combining the base `uniroot` function for solving an implicit equation with the non-linear fitting capabilities of the Flexible Modelling Environment [FME](https://cran.r-project.org/package=FME) package makes this possible in _R_.
+
+First, define a function that finds cumulative infiltration, _Fp_, for a given time and the Green-Ampt parameters _K_ and _Ns_ in \@ref(eq:GA2) (rearranged to solve for zero).
+```{r GA-2, message=FALSE}
+GA_infilt <- function(time, parms) {
+    with(as.list(parms), {
+      # function to solve for zero
+      uniroot(function(Fp) Fp - K*time - Ns * log(1 + Fp/Ns), 
+              interval = c(0, 1e3),
+              tol = 1.e-6)$root
+    })
+  }
+```
+
+Now set up the function to optimize the parameters for all times, with the goal to minimize the square root of the squared differences. Any other function could be used to minimize the difference by changing the last line of the function. Then use the `FME` `modFit` function to find the optimal parameters.
+```{r GA-3, message=FALSE}
+GA_min <- function(ps) {
+  K <- ps[1]
+  Ns <- ps[2]
+  GA_fit <- sapply(infilt_data$Time, GA_infilt, parms = c(K = K, Ns = Ns))
+  sqrt((GA_fit - infilt_data$Cumul_Infilt)^2)
+}
+
+#Set initial parameter values and run minimization function for the best parameter set
+parms_start <- c(1, 0.5)
+GA_out <- FME::modFit(f = GA_min, p = parms_start, lower = c(0, 0), 
+                  upper = c(Inf, Inf))
+fitted_parms <- setNames(GA_out$par, c("K","Ns"))
+fitted_parms
+```
+
+Finally, use the best fit parameters to generate a sequence of cumulative infiltration values using \@ref(eq:GA2) and infiltration rate using \@ref(eq:GA1), plotting the results along with the constant rate (average) infiltration for the observation period.
+
+```{r GA-4, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap='A Green-Ampt curve fit, with the average constant rate.'}
+fitted_F <- sapply(infilt_data$Time, GA_infilt, parms = fitted_parms)
+infilt_data$Rate_GA <- fitted_parms[['K']] * (1 + fitted_parms[['Ns']]/fitted_F)
+
+# Make a plot
+plot(infilt_data$Time,infilt_data$Rate, pch=1, xlab = "Time, min", ylab = "Infiltration rate, cm/hr")
+lines(infilt_data$Time, infilt_data$Rate_GA, lty = 2)
+abline(h = tail(infilt_data$Cumul_Infilt, 1)/tail(infilt_data$Time, 1))
+legend("topright", legend = c("Obs.","Green-Ampt","Constant"), pch = c(1, NA, NA), lty = c(NA, 2, 1))
 ```
 
 ### The NRCS method

@@ -162,6 +162,8 @@ fig:horton-3
 eq:GA1
 eq:GA2
 fig:infilt-1
+exm:ex-infilt2
+fig:GA-4
 eq:NRCS1
 eq:NRCS2
 fig:et-1
