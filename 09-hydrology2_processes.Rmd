@@ -46,14 +46,14 @@ Parameters for the Horton, Green-Ampt, and other infiltration models can be deri
 ::: {.example #ex-infilt1}
 Fit a Horton infiltration model to measured infiltration data, then use the derived parameters to plot the infiltration rate over time.
 :::
-First, read in the data sample.
+First, for this example, read in the data sample included with the `hydromisc` package.
 ```{r horton-1, message=FALSE}
 # path to sample spreadsheet
 datafile <- system.file("extdata", "infilt_field_data.xlsx", package="hydromisc")
 infilt_data <- readxl::read_excel(datafile)
 ```
 
-Set up a function for the Horton equation and use the built in `stats` package function `nls` to solve for the parameters. This works with column names of 'Time' and 'Rate'.
+Set up a function for the Horton equation and use the built in `stats` package function `nls` to solve for the parameters. This works with column names of 'Time' and 'Rate' (case sensitive).
 ```{r horton-2, message=FALSE}
 horton <- function(time, fc, f0, k) {
   fc + (f0 - fc) * exp(-k * time)
@@ -63,6 +63,8 @@ horton_fit <- stats::nls(Rate ~ horton(Time, fc, f0, k), data = infilt_data,
 coef(horton_fit)
 ```
 
+Using poor guesses as starting values can result in error messages like 'singular gradient' indicating the `nls` function could not find a solution. Trying better guesses for starting parameter values can help: $f_c$ should be close to the final infiltration rate observed, and $f_0$ near the initial rate. Another approach is illustrated below.
+
 Plot the results of the fit with the observations.
 ```{r horton-3, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap='A Horton infiltration curve fit to experimental observations.'}
 infilt_data$Rate_Horton <- predict(horton_fit, list(x = infilt_data$Time))
@@ -70,6 +72,15 @@ plot(infilt_data$Time,infilt_data$Rate, pch=1,
      xlab = "Time, min", ylab = "Infiltration rate, cm/hr")
 lines(infilt_data$Time, infilt_data$Rate_Horton, lty = 1)
 legend("topright", legend = c("Obs.","Horton"), pch = c(1, NA), lty = c(NA, 1))
+```
+
+Using the [nlsr](https://cran.r-project.org/package=nlsr) package provides a similar function to `nls` that can accommodate much worse starting parameter values. Using the starting values below in the `nls` command above fails. The use of `nlsr` functions is slightly different from `nls`, as shown below. 
+```{r horton-4, message=FALSE}
+horton_form <- Rate ~ fc + (f0 - fc) * exp(-k * Time)
+horton_fit2 <- nlsr::nlxb(formula = horton_form, data = infilt_data, 
+                  start = list(fc=1, f0=1, k=0.5))
+predicted_values <- as.numeric(predict(horton_fit2, list(Time = infilt_data$Time)))
+horton_fit2$coefficients
 ```
 
 ### Green-Ampt infiltration model
@@ -390,6 +401,8 @@ hydroGOF::ggof(sim_opt, obs, na.rm = TRUE, dates=snow_data_sel$date,
 ```
 
 It is clear that a simple temperature index model cannot capture the snow dynamics at this location, especially during the winter when melt is significantly overestimated.
+
+The [FME](https://cran.r-project.org/package=FME) package, used to solve the Green-Ampt equation above, has a function for Markov Chain Monte Carlo (MCMC) simulation `modMCMC` that automates the Monte Carlo process using more rigorous sampling, rather than just sampling the entire solution space evenly as illustrated above.
 
 ### Estimating climate change impacts on snow
 
