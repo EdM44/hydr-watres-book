@@ -6,7 +6,7 @@ knitr::include_graphics('images/Fort_Kent_Maine_Bridge_during_flood_2008.jpg')
 
 Flood hydrology is generally the description of how frequently a flood of a certain level will be exceeded in a specified period. This was discussed briefly in the section on precipitation frequency, Section \@ref(precip-freq).
 
-The _hydromisc_ package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on [the github site for the package](https://github.com/EdM44/hydromisc).
+The [hydromisc](https://github.com/EdM44/hydromisc) package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on [the github site for the package](https://github.com/EdM44/hydromisc).
 
 ## Engineering design requires probability and statistics
 
@@ -69,11 +69,7 @@ The USGS has developed many _R_ packages, including one for retrieval of data, [
 if (!requireNamespace("dataRetrieval", quietly = TRUE)) install.packages("dataRetrieval")
 ``` 
 
-Other USGS packages that are very helpful for peak flow analysis are not on CRAN, but rather housed in a [USGS repository](https://code.usgs.gov/water). The easiest way to install packages from that archive is using the [install.load](https://cran.r-project.org/package=install.load) package. Then the _install_load_ command will first search the standard CRAN archive for the package, and if it is not found there the USGS archive is searched. Packages are also loaded (equivalent to using the _library_ command).  _install_load_ also installs dependencies of packages, so here installing _smwrGraphs_ also installs _smwrBase_. The prefix _smwr_ refers to their use in support of the excellent reference [Statistical Methods in Water Resources](https://pubs.er.usgs.gov/publication/tm4A3). 
-```{r usgs-2, message=FALSE, echo=TRUE, eval = FALSE}
-if (!requireNamespace("install.load", quietly = TRUE)) install.packages("install.load")
-install.load::install_load("smwrGraphs")  #this command also installs smwrBase
-```
+Other USGS packages that are very helpful for peak flow analysis are not on CRAN, but rather housed in a [USGS repository](https://code.usgs.gov/water). The easiest way to install packages from that archive is to follow the installation instructions at that repository. For the exercises below, install [smwrGraphs](https://code.usgs.gov/water/analysis-tools/smwrGraphs) and [smwrBase](https://code.usgs.gov/water/analysis-tools/smwrBase) following the instructions at those sites. The prefix _smwr_ refers to their use in support of the excellent reference [Statistical Methods in Water Resources](https://pubs.er.usgs.gov/publication/tm4A3). 
 
 Lastly, the [lmomco](https://cran.r-project.org/package=lmomco) package has extensive capabilities to work with many forms of probability distributions, and has functions for calculating distribution parameters (like skew) that we will use.
 ```{r usgs-3, message=FALSE, echo=TRUE, eval = FALSE}
@@ -132,7 +128,7 @@ std <- sd(log10(Qpeak$Peak))
 g <- lmomco::pmoms(log10(Qpeak$Peak))$skew
 ```
 
-With those calculated, a defined return period can be chosen and the flood frequency factors, from Equation \@ref(eq:ff-1), calculated for that return period (the example here is for a 50-year return period). The _qnorm_ function from base R and the _qpearsonIII_ function from the _smwrBase_ package make this straightforward, and _K_ values for Equation \@ref(eq:ff-1) are obtained for a lognormal, _Knorm_, and LP-III, _Klp3_.
+With those calculated, a defined return period can be chosen and the flood frequency factors, from Equation \@ref(eq:ff-1), calculated for that return period (the example here is for a 50-year return period). The _qnorm_ function from base R and the _qpearsonIII_ function from the [smwrBase](https://code.usgs.gov/water/analysis-tools/smwrBase) package make this straightforward, and _K_ values for Equation \@ref(eq:ff-1) are obtained for a lognormal, _Knorm_, and LP-III, _Klp3_.
 
 ```{r ff-3, message=FALSE, echo=TRUE, eval = TRUE}
 RP <- 50 
@@ -179,14 +175,14 @@ df_pp$LN_peak <- mapply(function(x) {10^(mn+std*qnorm(x))}, df_pp$ne_prob)
 df_pp$LP3_peak <- mapply(function(x) {10^(mn+std*smwrBase::qpearsonIII(x, skew=g))},df_pp$ne_prob)
 ```
 
-There are many packages that create probability plots (see, for example, the versatile [scales](https://cran.r-project.org/package=scales) package for ggplot2). For this example the USGS _smwrGraphs_ package is used. First, for aesthetics, create x- and y- axis labels.
+There are many packages that create probability plots (see, for example, the versatile [scales](https://cran.r-project.org/package=scales) package for ggplot2). For this example the USGS [smwrGraphs](https://code.usgs.gov/water/analysis-tools/smwrGraphs) package is used. First, for aesthetics, create x- and y- axis labels.
 
 ```{r ff-9, message=FALSE, echo=TRUE, eval = TRUE}
 ylbl <- expression("Peak Flow, " ~ ft^{3}/s)
 xlbl <- "Non-exceedence Probability"
 ```
 
-The _smwrGraphs_ package works most easily if it writes output directly to a file, a PNG file in this case, using the _setPNG_ command; the file name and its dimensions in inches are given as arguments, and the PNG device is opened for writing. This is followed by commands to plot the data on a graph. Technically, the data are plotted to an object here is called _prob.pl_. The _probPlot_ command plots the observed peaks as points, where the _alpha_ argument is the _a_ in Equation \@ref(eq:pp-1). Additional points or lines are added with the addXY command, used here to add the LN and LP3 data as lines (one solid, one dashed). Finally, a legend is added (the USGS refers to that as an “Explanation”), and the output PNG file is closed with the _dev.off()_ command.
+The [smwrGraphs](https://code.usgs.gov/water/analysis-tools/smwrGraphs) package works most easily if it writes output directly to a file, a PNG file in this case, using the _setPNG_ command; the file name and its dimensions in inches are given as arguments, and the PNG device is opened for writing. This is followed by commands to plot the data on a graph. Technically, the data are plotted to an object here is called _prob.pl_. The _probPlot_ command plots the observed peaks as points, where the _alpha_ argument is the _a_ in Equation \@ref(eq:pp-1). Additional points or lines are added with the addXY command, used here to add the LN and LP3 data as lines (one solid, one dashed). Finally, a legend is added (the USGS refers to that as an “Explanation”), and the output PNG file is closed with the _dev.off()_ command.
 
 ```{r ff-10, message=FALSE, echo=TRUE, eval = TRUE}
 smwrGraphs::setPNG("probplot_smwr.png",6.5, 3.5)

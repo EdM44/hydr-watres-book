@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
 
 Fundamental properties of water allow the description of the forces it exerts and how it behaves while in motion. A table of these properties can be generated with the [hydraulics](https://cran.r-project.org/package=hydraulics) package using a command like `water_table(units = "SI")`. 
 
-A summary of basic water properties, which vary with temperature, is shown in Table \@ref(tab:water-props-SI) for SI units and Table \@ref(tab:water-props-Eng) for US (or Eng) units.
+A summary of basic water properties, which vary with temperature, is shown in Table \@ref(tab:water-props-SI) for SI units and Table \@ref(tab:water-props-Eng) for US (or Eng) units. The table of water properties is reformatted using convenient functions in the [formatdown](https://cran.r-project.org/package=formatdown) package.
 
 ```{r water-props-SI, echo=FALSE, message=FALSE, warnings=FALSE}
 suppressWarnings(suppressMessages(library(dplyr)))
@@ -19,21 +19,21 @@ colnames <- names(tbl)
 tbl <- units::drop_units(tbl)
 # Format as integer
 cols_we_want = c("Temp")
-tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_decimal(x, digits = 0)}
+tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_numbers(x, digits = 2, format = "dcml")}
 )
 # Format with one decimal
 cols_we_want = c("Density")
-tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_decimal(x, digits = 1)}
+tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_numbers(x, digits = 4, format = "dcml")}
 )
 # Format to 4 digits, omit power of ten notation
 #tbl$Density <- formatdown::format_power(tbl$Density, digits = 4, omit_power = c(0, 3))
 # Format using power-of-ten notation to 4 significant digits
 cols_we_want = c("Spec_Weight", "Viscosity", "Kinem_Visc", "Sat_VP")
-tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_power(x, digits = 4, format = "sci", omit_power = c(-1, 4))}
+tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_numbers(x, digits = 4, format = "sci", omit_power = c(-1, 4))}
 )
 # Format using power-of-ten notation to 3 significant digits
 cols_we_want = c("Surf_Tens", "Bulk_Mod")
-tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_power(x, digits = 3, format = "sci", omit_power = c(-1, 4))}
+tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_numbers(x, digits = 3, format = "sci", omit_power = c(-1, 4))}
 )
 knitr::kable(tbl, col.names = unitlist, align = "c", format = "html", 
              booktabs = TRUE, caption = "Water properties in SI units") %>%
@@ -48,19 +48,19 @@ colnames <- names(tbl)
 tbl <- units::drop_units(tbl)
 # Format as integer
 cols_we_want = c("Temp")
-tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_decimal(x, digits = 0)}
+tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_numbers(x, digits = 3, format = "dcml")}
 )
 # Format with one decimal
 cols_we_want = c("Density")
-tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_decimal(x, digits = 1)}
+tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_numbers(x, digits = 4, format = "dcml")}
 )
 # Format using power-of-ten notation to 4 significant digits
 cols_we_want = c("Spec_Weight", "Viscosity", "Kinem_Visc", "Sat_VP")
-tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_power(x, digits = 4, format = "sci", omit_power = c(-1, 4))}
+tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_numbers(x, digits = 4, format = "sci", omit_power = c(-1, 4))}
 )
 # Format using power-of-ten notation to 3 significant digits
 cols_we_want = c("Surf_Tens", "Bulk_Mod")
-tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_power(x, digits = 3, format = "sci", omit_power = c(-1, 4))}
+tbl[, cols_we_want] <- lapply(tbl[, cols_we_want], function (x) {formatdown::format_numbers(x, digits = 3, format = "sci", omit_power = c(-1, 4))}
 )
 knitr::kable(tbl, col.names = unitlist, align = "c", format = "html", 
              booktabs = TRUE, caption = "Water properties in US units") %>%

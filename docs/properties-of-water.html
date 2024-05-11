@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2024-05-06" />
+<meta name="date" content="2024-05-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -352,7 +352,7 @@ div.csl-indent {
 <div id="properties-of-water" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Properties of water (and air)<a href="properties-of-water.html#properties-of-water" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Fundamental properties of water allow the description of the forces it exerts and how it behaves while in motion. A table of these properties can be generated with the <a href="https://cran.r-project.org/package=hydraulics">hydraulics</a> package using a command like <code>water_table(units = "SI")</code>.</p>
-<p>A summary of basic water properties, which vary with temperature, is shown in Table <a href="properties-of-water.html#tab:water-props-SI">2.1</a> for SI units and Table <a href="properties-of-water.html#tab:water-props-Eng">2.2</a> for US (or Eng) units.</p>
+<p>A summary of basic water properties, which vary with temperature, is shown in Table <a href="properties-of-water.html#tab:water-props-SI">2.1</a> for SI units and Table <a href="properties-of-water.html#tab:water-props-Eng">2.2</a> for US (or Eng) units. The table of water properties is reformatted using convenient functions in the <a href="https://cran.r-project.org/package=formatdown">formatdown</a> package.</p>
 <table class="table table-striped" style="font-size: 10px; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
 <span id="tab:water-props-SI">Table 2.1: </span>Water properties in SI units
@@ -456,10 +456,10 @@ Pa
 </tr>
 <tr>
 <td style="text-align:center;">
-<span class="math inline">\(5\)</span>
+<span class="math inline">\(5.0\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1000.0\)</span>
+<span class="math inline">\(1000\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(9810\)</span>
@@ -685,7 +685,7 @@ Pa
 <span class="math inline">\(6.88 \times 10^{-2}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(2.29 \times 10^{9}\)</span>
+<span class="math inline">\(2.28 \times 10^{9}\)</span>
 </td>
 </tr>
 <tr>
@@ -705,7 +705,7 @@ Pa
 <span class="math inline">\(5.672 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.235 \times 10^{4}\)</span>
+<span class="math inline">\(12350\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(6.79 \times 10^{-2}\)</span>
@@ -731,13 +731,13 @@ Pa
 <span class="math inline">\(5.237 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.576 \times 10^{4}\)</span>
+<span class="math inline">\(15760\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(6.71 \times 10^{-2}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(2.29 \times 10^{9}\)</span>
+<span class="math inline">\(2.28 \times 10^{9}\)</span>
 </td>
 </tr>
 <tr>
@@ -757,7 +757,7 @@ Pa
 <span class="math inline">\(4.857 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.995 \times 10^{4}\)</span>
+<span class="math inline">\(19950\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(6.62 \times 10^{-2}\)</span>
@@ -783,7 +783,7 @@ Pa
 <span class="math inline">\(4.523 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(2.504 \times 10^{4}\)</span>
+<span class="math inline">\(25040\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(6.54 \times 10^{-2}\)</span>
@@ -809,7 +809,7 @@ Pa
 <span class="math inline">\(4.229 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(3.120 \times 10^{4}\)</span>
+<span class="math inline">\(31200\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(6.45 \times 10^{-2}\)</span>
@@ -835,13 +835,13 @@ Pa
 <span class="math inline">\(3.969 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(3.860 \times 10^{4}\)</span>
+<span class="math inline">\(38600\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(6.36 \times 10^{-2}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(2.23 \times 10^{9}\)</span>
+<span class="math inline">\(2.22 \times 10^{9}\)</span>
 </td>
 </tr>
 <tr>
@@ -861,7 +861,7 @@ Pa
 <span class="math inline">\(3.737 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(4.742 \times 10^{4}\)</span>
+<span class="math inline">\(47420\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(6.27 \times 10^{-2}\)</span>
@@ -887,7 +887,7 @@ Pa
 <span class="math inline">\(3.530 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(5.787 \times 10^{4}\)</span>
+<span class="math inline">\(57870\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(6.18 \times 10^{-2}\)</span>
@@ -913,7 +913,7 @@ Pa
 <span class="math inline">\(3.345 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(7.018 \times 10^{4}\)</span>
+<span class="math inline">\(70180\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(6.08 \times 10^{-2}\)</span>
@@ -939,7 +939,7 @@ Pa
 <span class="math inline">\(3.179 \times 10^{-7}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(8.461 \times 10^{4}\)</span>
+<span class="math inline">\(84610\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(5.99 \times 10^{-2}\)</span>
@@ -1053,10 +1053,10 @@ lbf ft-2
 <tbody>
 <tr>
 <td style="text-align:center;">
-<span class="math inline">\(32\)</span>
+<span class="math inline">\(32.0\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.938\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(62.42\)</span>
@@ -1079,10 +1079,10 @@ lbf ft-2
 </tr>
 <tr>
 <td style="text-align:center;">
-<span class="math inline">\(42\)</span>
+<span class="math inline">\(42.0\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.939\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(62.43\)</span>
@@ -1105,10 +1105,10 @@ lbf ft-2
 </tr>
 <tr>
 <td style="text-align:center;">
-<span class="math inline">\(52\)</span>
+<span class="math inline">\(52.0\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.938\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(62.40\)</span>
@@ -1131,10 +1131,10 @@ lbf ft-2
 </tr>
 <tr>
 <td style="text-align:center;">
-<span class="math inline">\(62\)</span>
+<span class="math inline">\(62.0\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.937\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(62.36\)</span>
@@ -1157,10 +1157,10 @@ lbf ft-2
 </tr>
 <tr>
 <td style="text-align:center;">
-<span class="math inline">\(72\)</span>
+<span class="math inline">\(72.0\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.934\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(62.29\)</span>
@@ -1183,10 +1183,10 @@ lbf ft-2
 </tr>
 <tr>
 <td style="text-align:center;">
-<span class="math inline">\(82\)</span>
+<span class="math inline">\(82.0\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.932\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(62.20\)</span>
@@ -1209,10 +1209,10 @@ lbf ft-2
 </tr>
 <tr>
 <td style="text-align:center;">
-<span class="math inline">\(92\)</span>
+<span class="math inline">\(92.0\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.928\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(62.09\)</span>
@@ -1238,7 +1238,7 @@ lbf ft-2
 <span class="math inline">\(102\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.925\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(61.97\)</span>
@@ -1264,7 +1264,7 @@ lbf ft-2
 <span class="math inline">\(112\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.920\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(61.83\)</span>
@@ -1290,7 +1290,7 @@ lbf ft-2
 <span class="math inline">\(122\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.916\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(61.68\)</span>
@@ -1302,7 +1302,7 @@ lbf ft-2
 <span class="math inline">\(6.126 \times 10^{-6}\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(258\)</span>
+<span class="math inline">\(258.0\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(4.66 \times 10^{-3}\)</span>
@@ -1316,7 +1316,7 @@ lbf ft-2
 <span class="math inline">\(132\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.911\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(61.52\)</span>
@@ -1342,7 +1342,7 @@ lbf ft-2
 <span class="math inline">\(142\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.905\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(61.34\)</span>
@@ -1368,7 +1368,7 @@ lbf ft-2
 <span class="math inline">\(152\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.899\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(61.16\)</span>
@@ -1394,7 +1394,7 @@ lbf ft-2
 <span class="math inline">\(162\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.893\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(60.96\)</span>
@@ -1420,7 +1420,7 @@ lbf ft-2
 <span class="math inline">\(172\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.887\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(60.75\)</span>
@@ -1446,7 +1446,7 @@ lbf ft-2
 <span class="math inline">\(182\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.880\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(60.53\)</span>
@@ -1472,7 +1472,7 @@ lbf ft-2
 <span class="math inline">\(192\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.873\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(60.30\)</span>
@@ -1498,7 +1498,7 @@ lbf ft-2
 <span class="math inline">\(202\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.865\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(60.06\)</span>
@@ -1524,7 +1524,7 @@ lbf ft-2
 <span class="math inline">\(212\)</span>
 </td>
 <td style="text-align:center;">
-<span class="math inline">\(1.9\)</span>
+<span class="math inline">\(1.858\)</span>
 </td>
 <td style="text-align:center;">
 <span class="math inline">\(59.81\)</span>
