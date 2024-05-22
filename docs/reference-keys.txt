@@ -135,6 +135,11 @@ fig:pump-7
 exm:ex-pumpsolve
 fig:pump-oppt
 fig:hydr-cycle
+eq:hc-1
+eq:hc-2
+exm:ex-hcx1
+fig:wbfig
+fig:wbprism
 fig:srg
 fig:radar
 exm:ex-prcp1
@@ -148,7 +153,7 @@ exm:ex-idf1
 fig:d-f2
 eq:d-f2
 fig:dm2
-fig:unnamed-chunk-19
+fig:unnamed-chunk-26
 eq:dm3
 fig:dm4
 fig:precip-interp
@@ -277,6 +282,7 @@ defining-the-system-curve
 defining-the-pump-characteristic-curve
 finding-the-operating-point
 the-hydrologic-cycle-and-precipitation
+the-hydrologic-cycle
 precipitation-observations
 precip-freq
 precipitation-gauge-consistency-double-mass-curves

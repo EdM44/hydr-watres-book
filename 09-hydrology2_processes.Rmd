@@ -207,7 +207,7 @@ Here $E_p$ is in mm/d, $\Delta$ and $\gamma$ are in $kPa~K^{-1}$, $R_n$ is in $M
 
 Open water evaporation can also be calculated using a modified version of the Penman-Monteith equation \@ref(eq:pm1). In this latter case, vegetation coefficients are not needed, so Equation \@ref(eq:pm1) can be used with $r_s=0$ and $r_a=251/(1+0.536~u_2)$, following [Thom & Oliver, 1977](https://doi.org/10.1002/qj.49710343610).
 
-The R package [Evaporation](https://cran.r-project.org/package=Evapotranspiration) has functions to calculate $ET_0$ using this and many other functions. This is especially useful when calculating PET over many points or through a long time series.
+The R package [Evaporation](https://cran.r-project.org/package=Evapotranspiration) has functions to calculate $ET_0$ using this and many other functions. This is especially useful when calculating PET over many points or through a long time series. Satellite-observed ET has been estimated globally as part of the [OpenET project](https://etdata.org/); the data may be accessed using the [openet R package](https://github.com/codeswitching/openet).
 
 ## Snow
 

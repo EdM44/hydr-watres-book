@@ -2,6 +2,10 @@
 
 All of the earlier chapters of this book dealt with the behavior of water in different hydraulic systems, such as canals or pipes. Now we consider the bigger picture of where the water originates, and ultimately how we can estimate how much water is available for different uses, and how much excess (flood) water systems will need to be designed and built to accommodate.
 
+The _hydromisc_ package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on [the github site for the package](https://github.com/EdM44/hydromisc).
+
+## The hydrologic cycle
+
 A fundamental concept is the hydrologic cycle, depicted in Figure \@ref(fig:hydr-cycle).
 
 (ref:fighc1) The hydrologic cycle, from the  [USGS](https://labs.waterdata.usgs.gov/visualizations/water-cycle)
@@ -10,9 +14,131 @@ A fundamental concept is the hydrologic cycle, depicted in Figure \@ref(fig:hydr
 knitr::include_graphics('images/USGS_WaterCycle_anthropogenic.png')
 ```
 
-The primary variable in the hydrologic cycle from an engineering perspective is precipitation, since that is the source of the water used and managed in engineered systems.
+The primary variable in the hydrologic cycle from an engineering perspective is precipitation, since that is the source of the water used and managed in engineered systems. When precipitation hits the land surface it can take many paths: principally it may infiltrate into the soil or form runoff. Water collected in ponds or depressions may evaporate, and additional water may evaporate from the soil surface or be drawn from the soil by vegetation to be transpired. In a simplified way, the water budget may be expressed as Equation \@ref(eq:hc-1).
+\begin{equation}
+  Q = P - E + \Delta S
+    (\#eq:hc-1)
+\end{equation}
+where _Q_ is outflow (as in streamflow volume), _P_ is precipitation, _E_ is evapotranspiration, and _ΔS_ is the change in storage (in snowpack, the soil or groundwater). Over long time periods, _ΔS_ becomes very small compared to the other terms, so for what is called ‘climatological’ periods (often 30-year averages) the water budget can simplified to Equation \@ref(eq:hc-2)
+\begin{equation}
+  Q = P - E
+    (\#eq:hc-2)
+\end{equation}
+All variables must have the same units, so typically _Q_ is expressed as a depth of water (or runoff) over the contributing drainage area. Example \@ref(exm:ex-hcx1) shows a demonstration of a simple water budget over a basin.
 
-The _hydromisc_ package will need to be installed to access some of the data used below. If it is not installed, do so following the instructions on [the github site for the package](https://github.com/EdM44/hydromisc).
+::: {.example #ex-hcx1}
+Using only the generally available data P, T (air temperature), and Q, assess the water budget for the watershed contributing flow to the USGS stream gauge 11169500, Saratoga Creek, CA.
+:::
+First considering Q, streamflow for USGS stream gauges can be directly downloaded from the USGS either from [their website](https://dashboard.waterdata.usgs.gov/app/nwd/en/) or using the R package [dataRetrieval](https://cran.r-project.org/package=dataRetrieval). However, for many sites those streamflow observations will include effects of upstream impoundments (dams) or diversions, so will not represent the response of the watershed to precipitation. Another option is to use estimates of "naturalized" streamflows, which have been calculated by the USGS as part of its [National Hydrographic Dataset (NHD)](https://www.usgs.gov/national-hydrography/about-national-hydrography-products) products. The R package [nhdplusTools](https://cran.r-project.org/package=nhdplusTools) provides one way to access this. The packages [sf](https://cran.r-project.org/package=sf) and [terra](https://cran.r-project.org/package=terra) will be useful for manipulating some spatial objects created along the way.
+
+First the gauge and contributing basin are downloaded using [nhdplusTools](https://cran.r-project.org/package=nhdplusTools), and the river reach flowlines are identified.
+```{r message=FALSE}
+library(nhdplusTools)
+
+nwissite <- list(featureSource = "nwissite", featureID = "USGS-11169500")
+
+# Retrieve gauge location and basin boundary objects
+gauge <- get_nldi_feature(nwissite)
+basin <- get_nldi_basin(nwissite)
+nldi_feature <- list(featureSource = "comid", featureID = as.integer(gauge$comid)[1])
+flowline_nldi <- navigate_nldi(nldi_feature, 
+                               mode = "upstreamTributaries", 
+                               distance_km = 1000)
+```
+
+With the basin and reaches defined, the nhdplus data for the basin contributing to the outlet gauge can be downloaded as a geopackage (.gpkg file). Here the current working directory is set as where the file will be written.
+```{r message=FALSE, eval=FALSE}
+# Download the geopackage to the working directory
+output_file_download <- file.path(getwd(), "subset_download.gpkg")
+
+nhd_subset <-subset_nhdplus(comids = as.integer(flowline_nldi$UT$nhdplus_comid),
+                             output_file = output_file_download,
+                             flowline_only = FALSE,
+                             nhdplus_data = "download", 
+                             return_data = TRUE, overwrite = TRUE)
+flowline <- nhd_subset$NHDFlowline_Network
+```
+
+```{r message=FALSE, echo=FALSE}
+ndhsubsetfile <- system.file("extdata", "subset_download.gpkg", package="hydromisc")
+flowline <- sf::st_read(ndhsubsetfile, "NHDFlowline_Network", quiet = TRUE)
+```
+
+In the example above, _nhd_subset_ has four layers of _sf_ objects, one of which is the _NHDFlowline_ layer that is used in what follows. What is displayed in Figure \@ref(fig:wbfig) is a static image produced using the [mapview](https://cran.r-project.org/package=mapview) function _mapshot_.
+```{r, message=FALSE, eval=FALSE}
+mapview::mapview(basin, legend=FALSE) +
+  mapview::mapview(flowline, color = "cyan", col.regions = "white", lwd = 3, legend=FALSE) +
+  mapview::mapview(gauge, color = "red", col.regions = "white", cex = 3, legend=FALSE)
+```
+
+```{r wbfig, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "70%", fig.cap = "Watershed boundary and nhdplus stream network for USGS gauge 11169500."}
+knitr::include_graphics('images/nhdplus_basin.png')
+``` 
+
+In this example the flows with the prefix *qc* (representing the QCMA flows described in the [NHDPlus User's Guide](https://pubs.usgs.gov/publication/ofr20191096)) are extracted to represent naturalized flows. These are also converted to _mm_ using the total basin drainage area and the number of days per month.
+```{r message=FALSE}
+# Extract the data for only the outlet reach
+outlet <- subset(flowline, flowline$comid == gauge$comid)
+drainage_area_km2 <- outlet$totdasqkm
+# 12 monthly flows for outlet - QC is natural flows adjusted using unimpaired gauges
+df.flows <- dplyr::select(sf::st_drop_geometry(outlet), starts_with("qc_"), -qc_ma)
+
+df.flows <- df.flows |> tidyr::pivot_longer(cols = 1:12, names_to = "Month", values_to = "flow_cfs") |>
+  dplyr::mutate(Month = month.abb)
+# Add a column that converts monthly flow in cfs into a depth in mm over the watershed
+dpm <- lubridate::days_in_month(1:12)
+df.flows$runoff <- df.flows$flow_cfs * 86400 * dpm * 304.8^3 / (drainage_area_km2 * 10^12)
+```
+
+To obtain P and T there are many options. A simple one is to use an online tool such as [Model My Watershed](https://modelmywatershed.org/) and read in the csv file of P and T. This example will obtain 30-year normals for P and T using the [prism R package](https://cran.r-project.org/package=prism). This is extracted from the [PRISM](https://prism.oregonstate.edu/normals/) archive, a widely used product for P and T in the U.S. The [terra](https://cran.r-project.org/package=terra) package is used to extract the portion of the layer within the basin and find the mean.
+```{r message=FALSE, eval=FALSE}
+library(prism)
+
+prism_set_dl_dir(tempdir())
+# Download the monthly 30-year averages at 4km resolution
+get_prism_normals(type="tmean", resolution = "4km", mon = 1:12, keepZip = FALSE)
+flist <- prism_archive_subset("tmean", "monthly normals", mon = 1:12, resolution = "4km")
+flist_full <- pd_to_file(flist)
+rtmp <- terra::rast(flist_full)
+df.t_prism <- terra::extract(rtmp, basin, fun = mean) |> 
+  tidyr::pivot_longer(cols = c(-ID), names_to = "Month", values_to = "tavg_C") |>
+  dplyr::mutate(Month = month.abb)  |> dplyr::select(-c("ID"))
+
+get_prism_normals(type="ppt", resolution = "4km", mon = 1:12, keepZip = FALSE)
+flist <- prism_archive_subset("ppt", "monthly normals", mon = 1:12, resolution = "4km")
+flist_full <- pd_to_file(flist)
+rppt <- terra::rast(flist_full)
+df.p_prism <- terra::extract(rppt, basin, fun = mean) |> 
+  tidyr::pivot_longer(cols = c(-ID), names_to = "Month", values_to = "precip") |>
+  dplyr::mutate(Month = month.abb)  |> dplyr::select(-c("ID"))
+```
+
+```{r message=FALSE, echo=FALSE}
+df.t_prism <- hydromisc::df.t_prism
+df.p_prism <- hydromisc::df.p_prism
+```
+
+Finally, combine the runoff, P and T into a single data frame and plot them. The potential evapotranspiration (PET) is added using a function that only requires temperature and latitude (for day length) from the [SPEI](https://cran.r-project.org/package=SPEI) package.
+```{r wbprism, message=FALSE, fig.align = 'center', out.width = "70%", fig.cap = "Partial water budget for the basin contributing to USGS gauge 11169500."}
+df.wb <- list(df.flows, df.t_prism, df.p_prism) |> purrr::reduce(dplyr::left_join, by = "Month")
+# Find basin centroid
+pt1 <- sf::st_coordinates(sf::st_centroid(basin))
+df.wb$PET <- SPEI::thornthwaite(df.wb$tavg_C, lat = pt1[2], verbose=FALSE)
+
+df.plot <- df.wb |> dplyr::select(Month, runoff, PET, precip) |>
+  tidyr::pivot_longer(cols = c(runoff, PET), names_to = "Component", values_to = "Flux")
+
+# Convert months to integers for plotting
+suppressPackageStartupMessages(library(ggplot2))
+ggplot(data = df.plot, aes(x = match(Month,month.abb))) +
+  geom_col(aes(y = Flux, fill = Component)) +
+  geom_line(aes(y = precip, lty = "precip"), linewidth = 1.25) +
+  scale_x_discrete(limits = month.abb) +
+  labs(x="",y="Precip, Runoff or PET, mm", linetype = NULL) +
+  theme_bw()
+```
+
+While incomplete, this water budget illustrates months in which the basin is water limited (runoff + PET > precipitation) or energy limited (runoff + PET < precipitation). Water is more available to recharge the soil moisture and groundwater during energy limited periods since actual evaporation, which cannot exceed PET, will leave excess water, following Equation \@ref(eq:hc-1). As another alternative, a simple water budget can be estimated from P and T and an estimate of the soil moisture holding capacity using the [bioclim](https://cran.r-project.org/package=bioclim) R package.
 
 ## Precipitation observations
 
@@ -93,7 +219,6 @@ knitr::kable(monavg, digits = 2) |>
 
 The winter of 2016-2017 (water year 2017) was a record wet year for much of California. Figure \@ref(fig:prcp-2) shows a **hyetograph** the daily values for that year.
 ```{r prcp-2, message=FALSE, warning = FALSE, fig.align = 'center', out.width = "75%", fig.cap="Daily Precipitation for San Jose, CA for water year 2017"}
-library(ggplot2)
 ghcn_prcp2 <- data.frame(date = ghcn_data$DATE, wy = ghcn_data$wy, prcp = ghcn_data$PRCP )
 ggplot(subset(ghcn_prcp2, wy==2017), aes(x=date, y=prcp)) + 
   geom_bar(stat="identity",color="red") +
@@ -111,7 +236,7 @@ avgrainrate <- ghcn_prcp2[ghcn_prcp2$prcp > 0.01,] |> group_by(wy) |>
 nraindays <- ghcn_prcp2[ghcn_prcp2$prcp > 0.01,] |> group_by(wy) |>
   summarise(nraindays = length(prcp))
 #Find length of consecutive dry and wet spells for the record
-days.dry.wet <- seas::interarrival(ghcn_prcp, var = "prcp", p.cut = 0.01, inv = FALSE)
+days.dry.wet <- seas::interarrival(ghcn_prcp2, var = "prcp", p.cut = 0.01, inv = FALSE)
 #add a water year column to the result
 days.dry.wet$wy <- sapply(days.dry.wet$date, wateryr)
 res <- days.dry.wet |> group_by(wy) |> summarise(cdd = median(dry, na.rm=TRUE), cwd = median(wet, na.rm=TRUE))
@@ -199,7 +324,6 @@ annual_sum <- data.frame(year = annual_data$Year,
                          sum_X = cumsum(annual_data$Station_X))
 
 #create scatterplot with a label on every point
-library(ggplot2)
 library(ggrepel)
 ggplot(annual_sum, aes(sum_X,sum_A, label = year)) +
   geom_point() +
