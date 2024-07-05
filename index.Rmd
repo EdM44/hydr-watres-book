@@ -52,7 +52,7 @@ As I developed these exercises and text, I learned R through the work of many ot
 
 ## Citing this reference {-}
 
-Maurer, Ed, 2023. Hydraulics and Water Resources: Examples Using R, doi:10.5281/zenodo.7576843 https://edm44.github.io/hydr-watres-book/.
+Maurer, Ed, 2024. Hydraulics and Water Resources: Examples Using R, doi:10.5281/zenodo.7576843 https://edm44.github.io/hydr-watres-book/.
 
 ## Copyright {-}
 
