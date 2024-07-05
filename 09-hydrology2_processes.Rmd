@@ -17,7 +17,7 @@ knitr::include_graphics('images/leaf_interception.jpg')
 
 Interception of rainfall is generally small during individual storms (0.5-2 mm), so it is often ignored, or lumped in with other abstractions, for analyses of flood hydrology. For areas characterized by low intensity rainfall and heavy vegetation, interception can account for a larger portion of the rainfall (for example, up to 25% of annual rainfall in the Pacific Northwest) [@mccuen_hydrologic_2016].
 
-## Infiltration
+## Infiltration {#infiltration}
 
 The movement of water through a saturated soil column is governed by Darcy's law.
 \@ref(eq:darcy-a).
@@ -39,7 +39,6 @@ This describes a potential infiltration rate, $f_p$, beginning at a maximum $f_0
   F~=~\left[\frac{f_c}{k}ln\left(f_0-f_c\right)+\frac{f_0}{k}\right]-\frac{f_c}{k}ln\left(f_p-f_c\right)-\frac{f_p}{k}
     (\#eq:horton2)
 \end{equation} 
-
 
 Parameters for the Horton, Green-Ampt, and other infiltration models can be derived from observed infiltration data using the R package [HydroMe](https://CRAN.R-project.org/package=HydroMe). Fitting the Horton equation to observed data is demonstrated here using a small sample from the *infilt* data set included with the `HydroMe` package which is saved in a spreadsheet wrapped into the `hydromisc` package. While `HydroMe` includes a function to return parameters, this can also be done manually as shown here.
 

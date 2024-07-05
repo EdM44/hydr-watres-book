@@ -6,4 +6,409 @@
 knitr::include_graphics('images/usgs-groundwater1.png')
 ```
 
-Groundwater content is forthcoming...
+Groundwater constitutes about 30% of the global freshwater reserves and is also under threat of depletion in many areas due to excessive extraction, mainly for irrigation [@gleeson_global_2020]. While in-depth methods for groundwater analysis will not be covered here, a few examples of using R in groundwater work are included here.
+
+An excellent resource for introductory groundwater hydrology is USGS Water Supply Paper 2220 [@heath_basic_2004], which is freely available from the [USGS](https://pubs.usgs.gov/publication/wsp2220).
+
+The _hydromisc_ package will need to be installed to access some of the code and data used below. If it is not installed, do so following the instructions on [the github site for the package](https://github.com/EdM44/hydromisc). In particular, portions of R packages [rhytool](https://github.com/FrancoisBertone/rhytool) and the defunct [geotech](https://CRAN.R-project.org/package=geotech) have been wrapped into _hydromisc_.
+
+## Soil characteristics
+
+Aquifers are deposits of soil or rock that are capable of allowing groundwater to flow. characterizing the soils, usually via soil texture, is one way to estimate important properties of aquifer material, like porosity (important for estimating the capacity to store water) and saturated hydraulic conductivity (how readily groundwater can move in an aquifer). This was discussed in the [section on infiltration](#infiltration), which included the fundamental equation of Darcy's law that governs the flow of fluid through a porous medium Equation \@ref(eq:darcy-a).
+
+One way to characterize aquifer material is using a sieve analysis. This allows the separation of soil into gravel, sand, silt, and clay, which can then be mapped onto a soil texture triangle to determine the soil texture using the USDA soil texture triangle, Figure \@ref(fig:usda-st)
+
+```{r usda-st, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Soil texture triangle (USDA)'}
+knitr::include_graphics('images/usda_soil_texture_triangle.png')
+```
+
+The soil texture is then used with something like Figure \@ref(fig:infilt-1) to estimate soil hydraulic characteristics.
+
+Other useful characterizations are the *effective size* of a given sample, D10, (D10 is the particle size where 10% of the particles are finer). The Coefficient of uniformity, Cu, is defined as $$Cu = D60/D10$$ where D60 is the diameter for which 60 percent of the sample is finer.
+
+Gravel (coarser than 4.75 mm, or a  No.4 sieve), sand (4.75 mm > diameter > 0.075 mm or a No.200 sieve), silt (0.075 mm > diameter > 0.005 mm) and clay (finer than 0.005 mm) are defined under the USCS standard (ASTM 422-63 and ASTM D2487-92). The portions of a sample that are gravel, sand, and fines (silt and clay) are useful to quantify. If gravel is excluded, the components of sand, silt, and clay allow direct use of the soil texture triangle.
+
+::: {.example #ex-soiltext1}
+A sieve analysis of a soil sample has a grain size distribution Table \@ref(tab:soiltext-1). Calculate the coefficient of uniformity for the portion finer than gravel, and the percent sand, silt, and clay (excluding gravel). Finally, determine the soil texture.
+
+```{r soiltext-1, echo=FALSE}
+knitr::kable(data.frame(Pct_finer=c(100, 95, 90, 84, 75, 64, 42, 20, 7, 2),                        Diameter_mm=c(50,19,9.5, 4.75, 2.0, 0.42, 0.075, 0.02, 0.005, 0.002)),
+             col.names = c("% Finer","Diam, mm"), align = "c", 
+             format = "html", caption = "Sample sieve analysis data.",
+             booktabs = TRUE) |>
+  kableExtra::kable_styling(bootstrap_options = "striped", font_size = 12, full_width = F)
+```
+:::
+
+First input the data and create a grain size distribution plot to visualize the data.
+```{r soiltext-ex1, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap='A grainsize distribution plot for the sample data.'}
+df <- data.frame(
+  sizes = c(50, 19, 9.5, 4.75, 2, .42, .075, 0.02, .005, .002),
+  pct.finer = c(100,95,90,84,75,64,42,20,7,2))
+hydromisc::grainSize.plot(size = df$sizes, percent = df$pct.finer)
+```
+
+Create a new data frame that only includes the portion finer than gravel.
+```{r soiltext-ex2, message=FALSE}
+df.ssc <- dplyr::filter(df, sizes <= 4.75) |>
+  dplyr::mutate(pct.finer_ssc = 100*pct.finer/pct.finer[1])
+```
+
+To interpolate in a semi-log space to find D10 and D60 using the approx function, take the log of the sizes first, interpolate the value, then take the anti-log.
+```{r soiltext-ex3, message=FALSE}
+D10 <- 10^approx(x = df.ssc$pct.finer_ssc, y = log10(df.ssc$sizes), xout = 10)$y
+D60 <- 10^approx(x = df.ssc$pct.finer_ssc, y = log10(df.ssc$sizes), xout = 60)$y
+Cu <- D60/D10
+```
+
+These functions are also included in the hydromisc package.
+```{r soiltext-ex4, message=FALSE}
+as.data.frame(hydromisc::grainSize.coefs(size = df.ssc$sizes, percent = df.ssc$pct.finer_ssc))
+```
+
+To interpolate in a semi-log space to find the percent finer associated with a given diameter, a similar approximation function is applied as for D10 and D60, but with x and y reversed.For example, to find the percent finer than D = 0.05 mm:
+```{r soiltext-ex5, message=FALSE, eval = FALSE}
+approx(x=log10(df.ssc$sizes), y=df.ssc$pct.finer_ssc, xout=log10(0.05))$y
+```
+This could be adapted to find the percent finer than the diameters of sand, silt, and clay. There is a built-in function for that.
+```{r soiltext-ex6, message=FALSE}
+pct_ssc <- hydromisc::percentSSC(size = df.ssc$sizes, percent = df.ssc$pct.finer_ssc)
+as.data.frame(pct_ssc)
+```
+
+A soil texture triangle can be plotted using the [soiltexture](https://cran.r-project.org/package=soiltexture) package.
+```{r soiltext-ex7, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap='Soil texture triangle with example data plotted as a circle.'}
+df.soiltextplot <- data.frame(SAND=pct_ssc$psand, SILT=pct_ssc$psilt, CLAY=pct_ssc$pclay)
+soiltexture::TT.plot(class.sys="USDA.TT", 
+                     class.p.bg.col = T, 
+                     tri.data = df.soiltextplot, 
+                     cex.axis = 0.8, cex.lab = 0.9, main = "")
+```
+
+The soil texture for this example, a loam (near the sandy loam boundary), can be used with Figure \@ref(fig:infilt-1) to estimate saturated hydraulic conductivity of the soil as approximately 1.3 cm/hr. Values determined in this way are subject to large uncertainty but can be a reasonable order of magnitude estimate.
+
+Saturated hydraulic conductivity can also be measured through laboratory permeability tests or pumping tests in the field.
+
+## Hydraulic gradient and flow direction
+
+To recap what was presented in the section on [infiltration](#infiltration), the fundamental equation governing groundwater flow rate is Darcy's law, Equation \@ref(eq:darcy-gw). Here the variables used are changed to be more consistent with the USGS. 
+\begin{equation}
+  q~=~ -K\frac{\partial h}{\partial L}
+    (\#eq:darcy-gw)
+\end{equation}
+where _q_ is the flow of water per unit area (L/T), _K_ is the hydraulic conductivity (L/T), _H_ is the hydraulic head (L) and _L_ is the distance along a flow path. Figure \@ref(fig:gwgradient-1) shows the hydraulic gradient for a confined aquifer.
+
+(ref:figgw2) Hydraulic gradient in a confined aquifer [@heath_basic_2004]. Note the dh term is measured in the direction of flow.
+
+```{r gwgradient-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='(ref:figgw2)'}
+knitr::include_graphics('images/gw_gradient.png')
+```
+
+While in 1-D idealization like Figure \@ref(fig:gwgradient-1) flow direction is clear, in the field the flow direction varies spatially and requires many observations and/or modeling to estimate. The USGS reference [@heath_basic_2004] illustrates a simple way to manually determine groundwater flow direction given water table elevations at three points. While a useful demonstration of interpolation methods, in practice many observations or estimations of groundwater levels are needed to describe the flow directions of groundwater in an aquifer. That is illustrated in Example \@ref(exm:ex-gradient1). This standard method involves interpolating observations onto a regular grid and then creating contours based on the interpolated groundwater elevations.
+
+Groundwater observations can be obtained from many sources. National scale data for the U.S. is available from the [USGS](https://waterdata.usgs.gov/nwis/gw), State of California data from the [DWR](https://water.ca.gov/Programs/Groundwater-Management/Groundwater-Elevation-Monitoring--CASGEM) (through its CASGEM program), and regional data are summarized by many local agencies.
+
+The following demonstration uses a sample data set of groundwater elevations, all recorded in June 2020 in Santa Clara County, CA, included in the `hydromisc` package to produce contours of groundwater elevation and to infer flow directions.
+
+### Importing and transforming point data
+
+Import the data from the hydromisc package. This was obtained from [Valley Water](https://gis.valleywater.org/Wells.html), the agency serves as the regional Groundwater Sustainability Agency for California Sustainable Groundwater Management Act (SGMA). As part of its responsibilities under SGMA it manages and distributes data to promote local, sustainable groundwater management. The data have been extracted for a subset of wells and dates and reformatted into a spreadsheet for this example.
+```{r gradient-1, message=FALSE}
+# path to sample data
+datafile <- system.file("extdata", "scc_well_obs_202006.xlsx", package="hydromisc")
+df <- readxl::read_excel(datafile)
+head(df)
+```
+
+It is helpful to view the data spatially, A couple of convenient R packages to use for working with this data are the [sf](https://cran.r-project.org/package=sf) (Simple Features, for spatial analysis) and [mapview](https://cran.r-project.org/package=mapview) for easy interactive viewing of spatial data. First, make a spatial object out of the data frame, identifying latitude and longitude columns and then view it. The latitudes and longitudes are in the WGS84 coordinate system, designated as crs 4326.
+```{r gradient-2, message=FALSE}
+gw_sf <- sf::st_as_sf(df, coords = c("Lon", "Lat"), crs = 4326)
+mapview::mapview(gw_sf["Water_Lev_Elev_feet"],at=seq(20,80,10),layer.name="WS Elev, ft")
+```
+
+Before doing interpolation, note that the distance between the wells will be an important variable. Since right now the wells are defined by latitude and longitude, the distances would be in degrees, which is not useful for calculations, and is variable in space. The data must be projected to a Cartesian coordinate system (x, y); a common one for California is UTM Zone 10N. Finding the crs (or epsg) code for any projection can be done using [spatialreference.org](https://spatialreference.org/ref/?search=utm+zone+10N). Here the WGS84/UTM Zone 10N is 32610. Transform the data to that with one command.
+```{r gradient-3, message=FALSE}
+gw_sf_t <- sf::st_transform(gw_sf, crs = 32610)
+```
+
+You can repeat the mapview command from above to verify that the locations haven’t changed, but now the dataframe has a geometry attribute with x and y coordinates (in meters).
+
+### Interpolating points to a regular grid (using kriging)
+
+Kriging requires a mathematical representation of how the variability at one locations depends on other stations nearby. This is called a variogram (technically it is a semivariogram). This is calculated based on observations and the distances between the wells. Given n wells, there are (n*(n-1)/2) pairs of wells. That means the 15 observations in this example has 105 pairs of points that can be used to fit a variogram model. More points is better.
+
+A theoretical model (curve) is fit to the data, the shape of which is described by the sill, nugget, range, and model type (such as spherical). These terms are illustrated in Figure \@ref(fig:variogram-1). Low values on the y-axis mean high correlation, so this diagram indicates close wells influence the value estimated at any unknown location, which intuitively makes sense.
+
+(ref:figvg1) A sample variogram [U.S. Dept of Energy, PNNL](https://vsp.pnnl.gov/help/Vsample/Kriging_Variogram_Model.htm)
+
+```{r variogram-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "40%", fig.cap='(ref:figvg1)'}
+knitr::include_graphics('images/variogram.gif')
+```
+
+Now create a variogram from the observations and fit a theoretical model to that. The variogram function requires a formula. A formula object is created using the ~ operator, which separates names of dependent variables (to the left of the ~ symbol) and independent variables (to the right of the ~ symbol). Writing 1 to the right of the ~ symbol, as in ~ 1, means that there are no independent variables. This approach uses two packages: [gstat](https://cran.r-project.org/package=gstat) to define the variogram, and [automap](https://cran.r-project.org/package=automap) to automate the optimal fit to the data. `gstat` can also fit variograms, but requires more input based on the user's knowledge of kriging.
+```{r variogram-2, message=FALSE}
+f.1 = as.formula("Water_Lev_Elev_feet ~ 1")
+v = gstat::variogram(f.1, data = gw_sf_t )
+vario.fit = automap::autofitVariogram(f.1, as(gw_sf_t,"Spatial") )
+vario.fit$var_model
+```
+
+The plot of the semivariogram illustrates the model fit to the observations.
+```{r variogram-3, message=FALSE, fig.align = 'center', out.width = "60%", fig.cap='A variogram plotted for the sample data used in this example.'}
+plot(v, model = vario.fit$var_model)
+```
+
+A plot can reveal issues with variogram models. For example, Figure \@ref(fig:variogram-4) illustrates the variogram generated by using only the first 11 locations in the sample dataset.
+```{r variogram-4, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='A variogram fit to the first 11 observation in the sample data'}
+knitr::include_graphics('images/variogram_bad.png')
+```
+A horizontal variogram model is called a “pure nugget” indicating the data show no relation between the variable (groundwater elevation) and distance. This often happens if the distance between observations is small relative to the scale of spatial variability. Kriging is not helpful when this occurs; interpolation would just produce the mean value everywhere.
+
+To begin interpolation, you first need to define the points to which you want interpolation done. The [sf](https://cran.r-project.org/package=sf) package has a function that makes this easy: generate a bounding box for the area of the original data, make a grid (here equally spaced at 500 m intervals).
+```{r variogram-5, message=FALSE}
+outer_bound <- sf::st_make_grid(sf::st_bbox(gw_sf_t), n=1)
+pts <- sf::st_make_grid(outer_bound, cellsize = 500, what = "centers", square = TRUE)
+```
+
+Applying the kriging model to interpolate to these grid points can be done in several ways. Here the [automap](https://cran.r-project.org/package=automap) `autoKrige` function is used to fit the models to the data and generate new interpolated values onto the grid of defined points.
+
+```{r variogram-6, message=FALSE, warning=FALSE, echo=FALSE, include=FALSE}
+gw_interpolated <- suppressWarnings(suppressMessages(automap::autoKrige(gw_sf_t, formula=f.1, new_data = pts)))
+```
+
+```{r variogram-6a, message=FALSE, warning=FALSE, eval=FALSE}
+gw_interpolated <- automap::autoKrige(gw_sf_t, formula=f.1, new_data = pts)
+```
+
+The `gw_interpolated` object contains a lot of information on the fitted model, the spatial variance, and the values predicted by kriging. For plotting interpolated values, it is convenient to create an `sf` object with that information, which can then be plotted. 
+```{r variogram-7, message=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Interpolated groundwater elevations at the centers of grid boxes spaced at 500 m.'}
+gw_interp_sf <- sf::st_as_sf(gw_interpolated$krige_output)
+mapview::mapview(gw_interp_sf, zcol = 'var1.pred', layer.name = "WS Elev, ft")
+```
+
+The last step is to turn the interpolated points into a raster so they can be plotted with contour lines. This example uses some basic functions of the [terra](https://cran.r-project.org/package=terra) package. First a spatial vector is defined from the pts layer, a raster is defined based on that (again with a spatial resolution of 500 m), and a new spatial raster is created. Checking the minimum and maximum values inthe raster allows refined control of the colorbar when plotting.
+```{r variogram-8, message=FALSE}
+v <- terra::vect(pts)
+r <- terra::rast(v, res = 500)
+gw_rast <- terra::rasterize(gw_interp_sf, r, 'var1.pred', fun = mean, na.rm=TRUE)
+terra::minmax(gw_rast)
+```
+
+Using the values from the raster as a guide, a plot can be created using `terra`.
+```{r variogram-9, message=FALSE, fig.align = 'center', out.width = "70%", fig.cap='Contours of groundwater elevations in ft.'}
+brks <- seq(20, 75, 5)  
+cols <- terrain.colors(length(brks)-1)
+terra::plot(gw_rast, , type="continuous", breaks=brks, col=cols, reset = TRUE, axes = F)
+terra::contour(gw_rast, add = TRUE)
+```
+
+Many other mapping options are available, such as using `sf` to create a layer with the contours and then `mapview` to plot it. Sample code is shown here but output is not.
+```{r variogram-10, message=FALSE, eval = FALSE}
+gw_contour = sf::st_contour(gs1_rast, breaks = b,contour_lines = TRUE)
+m1 <- mapview::mapview(gs1_rast,at=b,col.regions=terrain.colors(length(b)-1),layer.name="WS Elev, ft")
+m2 <- mapview::mapview(sf::st_geometry(gw_contour))
+m1 + m2
+```
+
+Vector plots can also be created using the [metr](https://eliocamp.github.io/metR/articles/Visualization-tools.html) and `ggplot2` packages.
+
+## Groundwater flow in aquifers
+
+This section introduces the basic equations for groundwater flow and shows how they can be applied for confined and unconfined aquifers. The effect of pumping will be in the next section.
+
+### Fundamental equations
+
+By combining equations for mass balance, Darcy's law (Equation \@ref(eq:darcy-gw)), and relationships describing aquifer porosity and water and aquifer compressibility, a theoretical equation can be derived for the two idealized aquifer types: confined and unconfined. For groundwater flow in a 2-D, isotropic and homogeneous (so _K_ is the same everywhere and in every direction) system these appear as Equations \@ref(eq:gwflow-conf) and \@ref(eq:gwflow-unconf).
+\begin{equation}
+  Confined: \frac{\partial^2 h}{\partial x^2}+\frac{\partial^2 h}{\partial y^2}=\frac{S}{T}\frac{\partial h}{\partial t}
+    (\#eq:gwflow-conf)
+\end{equation}
+\begin{equation}
+  Unconfined: \frac{\partial^2 h^2}{\partial x^2}+\frac{\partial^2 h^2}{\partial y^2}=\frac{2S_y}{K}\frac{\partial h}{\partial t}-\frac{2w}{K}
+    (\#eq:gwflow-unconf)
+\end{equation}
+where _h_ is the hydraulic head at a point (equal to the piezometric surface height for a confined aquifer or the water table elevation for an unconfined one), _S_ is the storativity, _S~y~_ is the specific yield and _T_ is the transmissivity. These are illustrated in Figure \@ref(fig:gweqns-1).
+
+(ref:figeq1) Transmissivity, storativity, and specific yield, adapted from [@heath_basic_2004].
+
+```{r gweqns-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "80%", fig.cap='(ref:figeq1)'}
+knitr::include_graphics('images/gw_t_s_definitions.png')
+```
+
+A common simplification is applied to Equation \@ref(eq:gwflow-unconf) when the hydraulic gradient or drawdown is small relative to aquifer thickness ($\partial h \ll h$ and $h \approx b$) so it becomes linearized like the confined solution in Equation \@ref(eq:gwflow-conf).
+\begin{equation}
+  Unconfined \left(\partial h \ll h\right): \frac{\partial^2 h}{\partial x^2}+\frac{\partial^2 h}{\partial y^2}=\frac{2S_y}{Kb}\frac{\partial h}{\partial t}-\frac{2w}{Kb}
+    (\#eq:gwflow-unconf)
+\end{equation}
+
+### Groundwater flow under steady state conditions
+
+For a 1-D, homogeneous, isotropic aquifer, Equations \@ref(eq:gwflow-conf) and \@ref(eq:gwflow-unconf) can be solved explicitly for steady state conditions. When combined with Darcy's law (Equation \@ref(eq:darcy-gw)) relationships can be derived to solve for piezometric head (or water table height) for a given flow, _Q_ (or flow per unit width, _q'_), or to solve for the flow given head values. This is illustrated in Figure \@ref(fig:gweqns-2).
+
+(ref:figeq2) Steady-state solutions for flow in an isotropic, homogeneous aquifer. Figures adapted from [@fetter_applied_2001].
+
+```{r gweqns-2, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "70%", fig.cap='(ref:figeq2)'}
+knitr::include_graphics('images/gw_steady-state.png')
+```
+
+## Drawdown due to pumping
+
+When a well pumps water from an aquifer, the piezometric surface drops (for a confined aquifer) or the water table declines (for unconfined). This is illustrated in Figure \@ref(fig:gwdd-1).
+
+(ref:figdd1) Drawdown in a pumping well in a confined aquifer [@heath_basic_2004].
+
+```{r gwdd-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "40%", fig.cap='(ref:figdd1)'}
+knitr::include_graphics('images/gw_pumpingwell-1.png')
+```
+
+The definitions illustrated in Figure \@ref(fig:gwdd-1) show the relationship between head, _h_, and drawdown, _s_, and how that varies with radial distance from a pumping well, _r_.
+
+### Drawdowns due to well pumping under steady state conditions
+
+As with flow in an aquifer under steady state conditions, analytical solutions make solving the groundwater flow equations straightforward. These equations can be solved for aquifer properties given pumping rate (_Q_) and observations of drawdown (or head), or the reverse. These are shown in Equations \@ref(eq:gwdd-ss1) and \@ref(eq:gwdd-ss2).
+\begin{equation}
+  Confined: T=Kb=\frac{Q}{2\pi \left(h_2-h_1\right)}\ln\left(\frac{r_2}{r_1}\right)=\frac{Q}{2\pi \left(s_1-s_2\right)}\ln\left(\frac{r_2}{r_1}\right)
+    (\#eq:gwdd-ss1)
+\end{equation}
+\begin{equation}
+  Unconfined: K=\frac{Q}{\pi \left({h_2}^2-{h_1}^2\right)}\ln \left(\frac{r_2}{r_1}\right)
+    (\#eq:gwdd-ss2)
+\end{equation}
+
+Equations \@ref(eq:gwdd-ss1) and \@ref(eq:gwdd-ss2) can be rearranged to solve for flow given aquifer parameters.
+\begin{equation}
+  Confined: Q=2\pi T\frac{h_2-h_1}{\ln \left(\frac{r_2}{r_1}\right)}
+    (\#eq:gwdd-ss3)
+\end{equation}
+\begin{equation}
+  Unconfined: Q=\pi K\frac{{h_2}^2-{h_1}^2}{\ln \left(\frac{r_2}{r_1}\right)}
+    (\#eq:gwdd-ss4)
+\end{equation}
+
+### Drawdown due to well pumping: time varying
+
+The much more common situation is for wells to be operated for discrete times, so the steady state solutions will not apply. The fundamental equation used to describe this is Equation \@ref(eq:gwdd-t1) [@theis_cv_relation_1935].
+\begin{equation}
+  s=h_0-h=\frac{Q}{4\pi T}W(u)
+    (\#eq:gwdd-t1)
+\end{equation}
+where W(u) is the well function (or exponential integral) of the Boltzman variable in Equation \@ref(eq:gwdd-t2).
+\begin{equation}
+  u=\frac{r^2S}{4Tt}
+    (\#eq:gwdd-t2)
+\end{equation}
+
+Methods to estimate drawdown at a given time are straightforward, while doing the reverse -- estimating aquifer parameters given drawdown, are more complicated. Methods to do this manually are demonstrated in any groundwater hydrology text, such as [@heath_basic_2004]. Some functions for this are included in the `hydromisc` package, which are shown in the examples below.
+
+#### Finding drawdown given aquifer characteristics {#theis1}
+
+Read in some sample data from the hydromisc package. Use the list of times (recorded in minutes) in that file.
+```{r gwdd-2, message=FALSE}
+datafile <- system.file("extdata", "drawdowns.xlsx", package="hydromisc")
+df_dd <- readxl::read_excel(datafile)
+times <- df_dd$t_min
+```
+
+Supply the aquifer parameters (properties), which are known in this case. Convert the times from minutes to days. Using consistent units this these functions is essential!
+```{r gwdd-2a, message=FALSE}
+Tr <- 1.1e+03     #units are m^2/d
+St <- 1.8e-04
+t <- times/1440   #convert time to days
+```
+
+To calculate the drawdown at each time for a single distance, 60 m from the pumping well in this case, for a pumping rate of 2500 m$^3$/d (about 460 gpm), the drawdown can be calculated as shown below. This approach uses the expint_E1 function of the [expint](https://cran.r-project.org/package=expint) package to calculate the _W(u)_ in Equation \@ref(eq:gwdd-t1) for all _u_ values.
+
+```{r gwdd-3, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Drawdown at 60 m from pumping well.'}
+rs <- 60                          # distance in m
+Q <- 2500                         # pumping rate in m^3/d
+us <- (rs)^2*St/(4*Tr*t)          # Calculate all u values -- units must be consistent
+Wus <- expint::expint_E1(us)      # find the W(u) for each u value
+dds <- Q/(4*pi*Tr)*Wus            # calculate the drawdowns
+plot(t, dds, log="xy", xlab="time, d", ylab="drawdown, m", type="l")
+grid()
+```
+
+Of course, a simple function could clean up R code when calculations are done many times. Because the drawdown data begin with zero values the `expint` function produces a warning about underflow, which is suppressed here.
+```{r gwdd-4, message=FALSE}
+drawdown <- function(t, Q, r, Tr, St) {
+  if(length(t) > 1 && length(r) > 1) {
+    stop("Either t or r must be of length 1.")
+  }
+  us <- (r)^2*St/(4*Tr*t)
+  Wus <- suppressWarnings(expint::expint_E1(us))
+  dds <- Q/(4*pi*Tr)*Wus
+  return(dds)
+}
+```
+
+Similarly, drawdowns can be calculated at many distances for a given time. The following example uses the function created above.
+```{r gwdd-5, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Drawdown at time=0.05 day (72 minutes) after pumping begins.'}
+rs <- seq(from=1, to=100, by=5)
+t1 <- 0.05
+dds <- drawdown(t=t1, Q=Q, r=rs, Tr=Tr, St=St)
+plot(rs, dds, xlab="distance from pumping well, m", ylab="drawdown, m", type="l")
+grid()
+```
+
+Drawdown due to multiple wells are additive, and can be positive (due to a pumping well) or negative (for a recharge well). For a well that is operated for a fixed time, a recharge well can be added at the same point but with a negative pumping rate that begins when the pump is turned off. That is demonstrated in the following example.
+
+::: {.example #ex-dd1}
+Find the drawdown 200 ft from a pumping well that is operated for 6 hours at Q = 60 gpm (481.3 ft$^3$/h) and then turned off. Aquifer characteristics are St = 0.001 and Tr = 16.67 ft$^2$/h (based on K=5 ft/d and b = 80 ft).
+:::
+Assign variables to aquifer parameters, pumping rate, distance, and a variety of times. Use the function above to calculate the drawdowns at all times and create a data frame of the results.
+```{r gwdd-6, message=FALSE}
+St <- 0.001
+Tr <- 16.67
+Q1 <- 481.3
+r <- 200 #ft
+times <- seq(from=0, to=16, by=0.25)   #times in hours
+ddpump <- drawdown(t=times, Q=Q1, r=r, Tr=Tr, St=St)
+df.ddpump <- data.frame(t=times, s=ddpump)
+```
+
+Now calculate the same drawdowns but for a recharge pump injecting water at the same rate as the initial one pumped, create another data frame and adjust the times to start 6 hours later.
+```{r gwdd-7, message=FALSE}
+ddrech <- drawdown(t=times, Q = -Q1, r=r, Tr=Tr, St=St)
+df.ddrech <- data.frame(t=times+6, s=ddrech)
+```
+
+Now join the two data frames, aligning them by the time field. Since drawdown columns have the same name ('s') they are renamed in the combined data frame to 's.x' and 's.y'. Times for the first 6 hours will have `NA` values after the join, and those are replaced by zeros, and a new column with total drawdown is added. A plot helps see the recovery of the well drawdown after the well is turned off.
+```{r gwdd-8, message=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Drawdown for a well with pumping turned off at t=6 hours.'}
+total <- dplyr::left_join (df.ddpump, df.ddrech, by='t') |> 
+  tidyr::replace_na(list(s.y = 0)) |>
+  dplyr::mutate(drawdown = s.x + s.y) 
+plot(total$t, total$drawdown, xlab="time, hr", ylab="drawdown, ft", 
+     xlim=range(times), type="l")
+grid()
+```
+### Determining aquifer characteristics from drawdown observations
+
+If there is a complete set of drawdown observations at a set distance from a pumping well, values for storativity and transimissivity can be obtained using any equation solving technique. 
+
+::: {.example #ex-dd2}
+Use the drawdown data imported [above](#theis1), measured 60 m from the pumping well, and use the same pumping rate of 2500 m$^3$/d. Estimate the storativity and transmissivity of the aquifer material.
+:::
+
+For convenience, set up the known data into variables, again being careful to use consistent units (m, d).
+```{r gwdd-9, message=FALSE}
+Q <- 2500
+t <- df_dd$t_min/1440
+s <- df_dd$s_m
+r <- 60
+```
+
+Use a _hydromisc_ function `theis_params` (adapted from the [rhytool](https://github.com/FrancoisBertone/rhytool) package) to use the Theis method to estimate the aquifer parameters.
+```{r gwdd-10, message=FALSE}
+theis_params <- hydromisc::theis_params(Q=Q, r=r, s=s, t=t)
+as.data.frame(theis_params)
+```
+Use the `drawdown` function created earlier to plot the theoretical fit of the drawdowns predicted using these parameters against the observations.
+
+```{r gwdd-11, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Comparison of observed drawdown to those predicted with estimated aquifer characteristics.'}
+plot(t, s, xlab="time, day", ylab="drawdown, m", log = "y", pch = 1)
+lines(t, drawdown(t=t, Q=Q, r=r, Tr=theis_params$Tr, St=theis_params$St))
+legend("bottomright", legend = c("Obs.","Estimated"), pch = c(1, NA), lty = c(NA, 1))
+grid()
+```
+
+The fit is very good in this case, and it should be noted that there are substantial bounds of uncertainty in aquifer parameter estimates.

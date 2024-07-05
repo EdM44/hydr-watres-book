@@ -7,7 +7,7 @@
   <title>Chapter 2 Properties of water (and air) | Hydraulics and Water Resources: Examples Using R</title>
   <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
 engineering exercises using R.</p>" />
-  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Properties of water (and air) | Hydraulics and Water Resources: Examples Using R" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2024-05-21" />
+<meta name="date" content="2024-07-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -56,11 +56,28 @@ engineering exercises using R.</p>" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -132,6 +149,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -331,7 +349,26 @@ div.csl-indent {
 <li class="chapter" data-level="12.3.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#performing-stochastic-dynamic-programming"><i class="fa fa-check"></i><b>12.3.2</b> Performing stochastic dynamic programming</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="groundwater.html"><a href="groundwater.html"><i class="fa fa-check"></i><b>13</b> Groundwater</a></li>
+<li class="chapter" data-level="13" data-path="groundwater.html"><a href="groundwater.html"><i class="fa fa-check"></i><b>13</b> Groundwater</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="groundwater.html"><a href="groundwater.html#soil-characteristics"><i class="fa fa-check"></i><b>13.1</b> Soil characteristics</a></li>
+<li class="chapter" data-level="13.2" data-path="groundwater.html"><a href="groundwater.html#hydraulic-gradient-and-flow-direction"><i class="fa fa-check"></i><b>13.2</b> Hydraulic gradient and flow direction</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="groundwater.html"><a href="groundwater.html#importing-and-transforming-point-data"><i class="fa fa-check"></i><b>13.2.1</b> Importing and transforming point data</a></li>
+<li class="chapter" data-level="13.2.2" data-path="groundwater.html"><a href="groundwater.html#interpolating-points-to-a-regular-grid-using-kriging"><i class="fa fa-check"></i><b>13.2.2</b> Interpolating points to a regular grid (using kriging)</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="groundwater.html"><a href="groundwater.html#groundwater-flow-in-aquifers"><i class="fa fa-check"></i><b>13.3</b> Groundwater flow in aquifers</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="groundwater.html"><a href="groundwater.html#fundamental-equations"><i class="fa fa-check"></i><b>13.3.1</b> Fundamental equations</a></li>
+<li class="chapter" data-level="13.3.2" data-path="groundwater.html"><a href="groundwater.html#groundwater-flow-under-steady-state-conditions"><i class="fa fa-check"></i><b>13.3.2</b> Groundwater flow under steady state conditions</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="groundwater.html"><a href="groundwater.html#drawdown-due-to-pumping"><i class="fa fa-check"></i><b>13.4</b> Drawdown due to pumping</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="groundwater.html"><a href="groundwater.html#drawdowns-due-to-well-pumping-under-steady-state-conditions"><i class="fa fa-check"></i><b>13.4.1</b> Drawdowns due to well pumping under steady state conditions</a></li>
+<li class="chapter" data-level="13.4.2" data-path="groundwater.html"><a href="groundwater.html#drawdown-due-to-well-pumping-time-varying"><i class="fa fa-check"></i><b>13.4.2</b> Drawdown due to well pumping: time varying</a></li>
+<li class="chapter" data-level="13.4.3" data-path="groundwater.html"><a href="groundwater.html#determining-aquifer-characteristics-from-drawdown-observations"><i class="fa fa-check"></i><b>13.4.3</b> Determining aquifer characteristics from drawdown observations</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
@@ -1556,25 +1593,25 @@ lbf ft-2
 <p><span id="exm:ex-bucket" class="example"><strong>Example 2.1  </strong></span>Determine the tension in the 8 mm diameter rope holding a bucket containing 12 liters of water. Ignore the weight of the bucket. Assume a water temperature of 20 <span class="math inline">\(^\circ\)</span>C.</p>
 </div>
 <p><img src="images/wishing-well-small.png" width="30%" style="float:right; padding:10px" /></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="properties-of-water.html#cb4-1" tabindex="-1"></a>rho <span class="ot">=</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">20</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-2"><a href="properties-of-water.html#cb4-2" tabindex="-1"></a><span class="co">#Water density:</span></span>
-<span id="cb4-3"><a href="properties-of-water.html#cb4-3" tabindex="-1"></a>rho</span>
-<span id="cb4-4"><a href="properties-of-water.html#cb4-4" tabindex="-1"></a><span class="co">#&gt; 998.2336 [kg/m^3]</span></span>
-<span id="cb4-5"><a href="properties-of-water.html#cb4-5" tabindex="-1"></a><span class="co">#Find mass by multiplying by volume</span></span>
-<span id="cb4-6"><a href="properties-of-water.html#cb4-6" tabindex="-1"></a>vol <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">12</span>, liter)</span>
-<span id="cb4-7"><a href="properties-of-water.html#cb4-7" tabindex="-1"></a>m <span class="ot">&lt;-</span> rho <span class="sc">*</span> vol</span>
-<span id="cb4-8"><a href="properties-of-water.html#cb4-8" tabindex="-1"></a><span class="co">#Convert mass to weight in Newtons</span></span>
-<span id="cb4-9"><a href="properties-of-water.html#cb4-9" tabindex="-1"></a>g <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">9.81</span>, m<span class="sc">/</span>s<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb4-10"><a href="properties-of-water.html#cb4-10" tabindex="-1"></a>w <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(m<span class="sc">*</span>g, <span class="st">&quot;N&quot;</span>)</span>
-<span id="cb4-11"><a href="properties-of-water.html#cb4-11" tabindex="-1"></a><span class="co">#Divide by cross-sectional area of the rope to obtain tension</span></span>
-<span id="cb4-12"><a href="properties-of-water.html#cb4-12" tabindex="-1"></a>area <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(pi<span class="sc">/</span><span class="dv">4</span> <span class="sc">*</span> <span class="dv">8</span><span class="sc">^</span><span class="dv">2</span>, mm<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb4-13"><a href="properties-of-water.html#cb4-13" tabindex="-1"></a>tension <span class="ot">&lt;-</span> w<span class="sc">/</span>area</span>
-<span id="cb4-14"><a href="properties-of-water.html#cb4-14" tabindex="-1"></a><span class="co">#Express the result in Pascals</span></span>
-<span id="cb4-15"><a href="properties-of-water.html#cb4-15" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tension, Pa)</span>
-<span id="cb4-16"><a href="properties-of-water.html#cb4-16" tabindex="-1"></a><span class="co">#&gt; 2337828 [Pa]</span></span>
-<span id="cb4-17"><a href="properties-of-water.html#cb4-17" tabindex="-1"></a><span class="co">#For demonstration, convert to psi</span></span>
-<span id="cb4-18"><a href="properties-of-water.html#cb4-18" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tension, psi)</span>
-<span id="cb4-19"><a href="properties-of-water.html#cb4-19" tabindex="-1"></a><span class="co">#&gt; 339.0733 [psi]</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="properties-of-water.html#cb10-1" tabindex="-1"></a>rho <span class="ot">=</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">20</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-2"><a href="properties-of-water.html#cb10-2" tabindex="-1"></a><span class="co">#Water density:</span></span>
+<span id="cb10-3"><a href="properties-of-water.html#cb10-3" tabindex="-1"></a>rho</span>
+<span id="cb10-4"><a href="properties-of-water.html#cb10-4" tabindex="-1"></a><span class="co">#&gt; 998.2336 [kg/m^3]</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="properties-of-water.html#cb11-1" tabindex="-1"></a><span class="co">#Find mass by multiplying by volume</span></span>
+<span id="cb11-2"><a href="properties-of-water.html#cb11-2" tabindex="-1"></a>vol <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">12</span>, liter)</span>
+<span id="cb11-3"><a href="properties-of-water.html#cb11-3" tabindex="-1"></a>m <span class="ot">&lt;-</span> rho <span class="sc">*</span> vol</span>
+<span id="cb11-4"><a href="properties-of-water.html#cb11-4" tabindex="-1"></a><span class="co">#Convert mass to weight in Newtons</span></span>
+<span id="cb11-5"><a href="properties-of-water.html#cb11-5" tabindex="-1"></a>g <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">9.81</span>, m<span class="sc">/</span>s<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb11-6"><a href="properties-of-water.html#cb11-6" tabindex="-1"></a>w <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(m<span class="sc">*</span>g, <span class="st">&quot;N&quot;</span>)</span>
+<span id="cb11-7"><a href="properties-of-water.html#cb11-7" tabindex="-1"></a><span class="co">#Divide by cross-sectional area of the rope to obtain tension</span></span>
+<span id="cb11-8"><a href="properties-of-water.html#cb11-8" tabindex="-1"></a>area <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(pi<span class="sc">/</span><span class="dv">4</span> <span class="sc">*</span> <span class="dv">8</span><span class="sc">^</span><span class="dv">2</span>, mm<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb11-9"><a href="properties-of-water.html#cb11-9" tabindex="-1"></a>tension <span class="ot">&lt;-</span> w<span class="sc">/</span>area</span>
+<span id="cb11-10"><a href="properties-of-water.html#cb11-10" tabindex="-1"></a><span class="co">#Express the result in Pascals</span></span>
+<span id="cb11-11"><a href="properties-of-water.html#cb11-11" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tension, Pa)</span>
+<span id="cb11-12"><a href="properties-of-water.html#cb11-12" tabindex="-1"></a><span class="co">#&gt; 2337828 [Pa]</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="properties-of-water.html#cb12-1" tabindex="-1"></a><span class="co">#For demonstration, convert to psi</span></span>
+<span id="cb12-2"><a href="properties-of-water.html#cb12-2" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tension, psi)</span>
+<span id="cb12-3"><a href="properties-of-water.html#cb12-3" tabindex="-1"></a><span class="co">#&gt; 339.0733 [psi]</span></span></code></pre></div>
 <p>For example <a href="properties-of-water.html#exm:ex-bucket">2.1</a> units could have been tracked manually throughout, as if done by hand. The convenience of using the <em>units</em> package allows conversions that can be used to check hand calculations.</p>
 <p>Water expands as it is heated, which is part of what is driving sea-level rise globally. Approximately 90% of excess energy caused by global warming pollution is absorbed by oceans, with most of that occurring in the upper ocean: 0-700 m of depth <span class="citation">(<a href="references.html#ref-fox-kemper_ocean_2021">Fox-Kemper et al., 2021</a>)</span>. Example <a href="properties-of-water.html#exm:ex-slr">2.2</a> uses water mass and weight in a calculation.</p>
 <div class="example">
@@ -1582,11 +1619,11 @@ lbf ft-2
 </div>
 <p><img src="images/slr_column.PNG" width="20%" style="float:right; padding:10px" />
 It may help to consider a single 1m x 1m column of water with h=700 m high under original conditions. Since mass is conserved, and mass = volume x density, this is simple: <span class="math display">\[LWh_1\cdot\rho_1=LWh_2\cdot\rho_2\]</span> or <span class="math display">\[h_2=h_1\frac{\rho_1}{\rho_2}\]</span></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="properties-of-water.html#cb5-1" tabindex="-1"></a>rho1 <span class="ot">=</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">15</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
-<span id="cb5-2"><a href="properties-of-water.html#cb5-2" tabindex="-1"></a>rho2 <span class="ot">=</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">17</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
-<span id="cb5-3"><a href="properties-of-water.html#cb5-3" tabindex="-1"></a>h2 <span class="ot">=</span> <span class="dv">700</span> <span class="sc">*</span> (rho1<span class="sc">/</span>rho2)</span>
-<span id="cb5-4"><a href="properties-of-water.html#cb5-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Change in sea level = %.3f m</span><span class="sc">\n</span><span class="st">&quot;</span>, h2<span class="dv">-700</span>))</span>
-<span id="cb5-5"><a href="properties-of-water.html#cb5-5" tabindex="-1"></a><span class="co">#&gt; Change in sea level = 0.227 m</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="properties-of-water.html#cb13-1" tabindex="-1"></a>rho1 <span class="ot">=</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">15</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb13-2"><a href="properties-of-water.html#cb13-2" tabindex="-1"></a>rho2 <span class="ot">=</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">17</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb13-3"><a href="properties-of-water.html#cb13-3" tabindex="-1"></a>h2 <span class="ot">=</span> <span class="dv">700</span> <span class="sc">*</span> (rho1<span class="sc">/</span>rho2)</span>
+<span id="cb13-4"><a href="properties-of-water.html#cb13-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Change in sea level = %.3f m</span><span class="sc">\n</span><span class="st">&quot;</span>, h2<span class="dv">-700</span>))</span>
+<span id="cb13-5"><a href="properties-of-water.html#cb13-5" tabindex="-1"></a><span class="co">#&gt; Change in sea level = 0.227 m</span></span></code></pre></div>
 <p>The bulk modulus, E<sub>v</sub>, relates the change in specific volume to the change in pressure, and defined as in Equation <a href="properties-of-water.html#eq:bm-1">(2.1)</a>.
 <span class="math display" id="eq:bm-1">\[\begin{equation}
   E_v=-v\frac{dp}{dv}
@@ -1604,14 +1641,14 @@ where <span class="math inline">\(v\)</span> is the specific volume (<span class
 </div>
 <p><img src="images/barrel-36724.png" width="20%" style="float:right; padding:10px" />
 Here essentially the larger specific volume (at a higher temperature) is then compressed by <span class="math inline">\({\Delta}P\)</span> to return the volume to its original value. Thus, subscript 1 indicates the warmer condition, and subscript 2 the original at 15 <span class="math inline">\(^\circ\)</span>C.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="properties-of-water.html#cb6-1" tabindex="-1"></a>dp <span class="ot">&lt;-</span> <span class="cf">function</span>(tmp) {</span>
-<span id="cb6-2"><a href="properties-of-water.html#cb6-2" tabindex="-1"></a>  rho2 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">15</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
-<span id="cb6-3"><a href="properties-of-water.html#cb6-3" tabindex="-1"></a>  rho1 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> tmp, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
-<span id="cb6-4"><a href="properties-of-water.html#cb6-4" tabindex="-1"></a>  Ev <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">Ev</span>(<span class="at">T =</span> tmp, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
-<span id="cb6-5"><a href="properties-of-water.html#cb6-5" tabindex="-1"></a>  <span class="fu">return</span>((<span class="sc">-</span>((<span class="dv">1</span><span class="sc">/</span>rho2) <span class="sc">-</span> (<span class="dv">1</span><span class="sc">/</span>rho1))<span class="sc">/</span>(<span class="dv">1</span><span class="sc">/</span>rho1))<span class="sc">*</span>Ev)</span>
-<span id="cb6-6"><a href="properties-of-water.html#cb6-6" tabindex="-1"></a>}</span>
-<span id="cb6-7"><a href="properties-of-water.html#cb6-7" tabindex="-1"></a>temps <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">15</span>, <span class="at">to=</span><span class="dv">20</span>, <span class="at">by=</span><span class="dv">1</span>)</span>
-<span id="cb6-8"><a href="properties-of-water.html#cb6-8" tabindex="-1"></a><span class="fu">plot</span>(temps,<span class="fu">dp</span>(temps), <span class="at">xlab=</span><span class="st">&quot;Temperature, C&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Pressure increase, Pa&quot;</span>, <span class="at">type=</span><span class="st">&quot;b&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="properties-of-water.html#cb14-1" tabindex="-1"></a>dp <span class="ot">&lt;-</span> <span class="cf">function</span>(tmp) {</span>
+<span id="cb14-2"><a href="properties-of-water.html#cb14-2" tabindex="-1"></a>  rho2 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">15</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb14-3"><a href="properties-of-water.html#cb14-3" tabindex="-1"></a>  rho1 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> tmp, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb14-4"><a href="properties-of-water.html#cb14-4" tabindex="-1"></a>  Ev <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">Ev</span>(<span class="at">T =</span> tmp, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb14-5"><a href="properties-of-water.html#cb14-5" tabindex="-1"></a>  <span class="fu">return</span>((<span class="sc">-</span>((<span class="dv">1</span><span class="sc">/</span>rho2) <span class="sc">-</span> (<span class="dv">1</span><span class="sc">/</span>rho1))<span class="sc">/</span>(<span class="dv">1</span><span class="sc">/</span>rho1))<span class="sc">*</span>Ev)</span>
+<span id="cb14-6"><a href="properties-of-water.html#cb14-6" tabindex="-1"></a>}</span>
+<span id="cb14-7"><a href="properties-of-water.html#cb14-7" tabindex="-1"></a>temps <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">15</span>, <span class="at">to=</span><span class="dv">20</span>, <span class="at">by=</span><span class="dv">1</span>)</span>
+<span id="cb14-8"><a href="properties-of-water.html#cb14-8" tabindex="-1"></a><span class="fu">plot</span>(temps,<span class="fu">dp</span>(temps), <span class="at">xlab=</span><span class="st">&quot;Temperature, C&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Pressure increase, Pa&quot;</span>, <span class="at">type=</span><span class="st">&quot;b&quot;</span>)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:waterprops-ex1-bm"></span>
 <img src="hydr-watres_main_files/figure-html/waterprops-ex1-bm-1.png" alt="Approximate change in pressure as water temperature increases." width="60%" />
 <p class="caption">
@@ -1643,27 +1680,27 @@ where y is the distance between the crackers and A is the cross-sectional area o
 <div class="example">
 <p><span id="exm:ex-marsh" class="example"><strong>Example 2.4  </strong></span>Determine force required to slide the top cracker at 1 cm/s with a thickness of marshmallow of 0.5 cm. The cross-sectional area of the crackers is 10 cm<span class="math inline">\(^2\)</span>. The viscosity (dynamic viscosity, as can be discerned by the units) of marshmallow is about 0.1 Pa<span class="math inline">\(\cdot\)</span>s.</p>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="properties-of-water.html#cb7-1" tabindex="-1"></a><span class="co">#Assign variables</span></span>
-<span id="cb7-2"><a href="properties-of-water.html#cb7-2" tabindex="-1"></a>A <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">10</span>, cm<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb7-3"><a href="properties-of-water.html#cb7-3" tabindex="-1"></a>U <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">1</span>, cm<span class="sc">/</span>s)</span>
-<span id="cb7-4"><a href="properties-of-water.html#cb7-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">0.5</span>, cm)</span>
-<span id="cb7-5"><a href="properties-of-water.html#cb7-5" tabindex="-1"></a>mu <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">0.1</span>, Pa<span class="sc">*</span>s)</span>
-<span id="cb7-6"><a href="properties-of-water.html#cb7-6" tabindex="-1"></a><span class="co">#Find shear stress</span></span>
-<span id="cb7-7"><a href="properties-of-water.html#cb7-7" tabindex="-1"></a>tau <span class="ot">&lt;-</span> mu <span class="sc">*</span> U <span class="sc">/</span> y</span>
-<span id="cb7-8"><a href="properties-of-water.html#cb7-8" tabindex="-1"></a>tau</span>
-<span id="cb7-9"><a href="properties-of-water.html#cb7-9" tabindex="-1"></a><span class="co">#&gt; 0.2 [Pa]</span></span>
-<span id="cb7-10"><a href="properties-of-water.html#cb7-10" tabindex="-1"></a><span class="co">#Since stress is F/A, multiply tau by A to find F, convert to Newtons and pounds</span></span>
-<span id="cb7-11"><a href="properties-of-water.html#cb7-11" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tau<span class="sc">*</span>A, N)</span>
-<span id="cb7-12"><a href="properties-of-water.html#cb7-12" tabindex="-1"></a><span class="co">#&gt; 2e-04 [N]</span></span>
-<span id="cb7-13"><a href="properties-of-water.html#cb7-13" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tau<span class="sc">*</span>A, lbf)</span>
-<span id="cb7-14"><a href="properties-of-water.html#cb7-14" tabindex="-1"></a><span class="co">#&gt; 4.496179e-05 [lbf]</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="properties-of-water.html#cb15-1" tabindex="-1"></a><span class="co">#Assign variables</span></span>
+<span id="cb15-2"><a href="properties-of-water.html#cb15-2" tabindex="-1"></a>A <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">10</span>, cm<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb15-3"><a href="properties-of-water.html#cb15-3" tabindex="-1"></a>U <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">1</span>, cm<span class="sc">/</span>s)</span>
+<span id="cb15-4"><a href="properties-of-water.html#cb15-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">0.5</span>, cm)</span>
+<span id="cb15-5"><a href="properties-of-water.html#cb15-5" tabindex="-1"></a>mu <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">0.1</span>, Pa<span class="sc">*</span>s)</span>
+<span id="cb15-6"><a href="properties-of-water.html#cb15-6" tabindex="-1"></a><span class="co">#Find shear stress</span></span>
+<span id="cb15-7"><a href="properties-of-water.html#cb15-7" tabindex="-1"></a>tau <span class="ot">&lt;-</span> mu <span class="sc">*</span> U <span class="sc">/</span> y</span>
+<span id="cb15-8"><a href="properties-of-water.html#cb15-8" tabindex="-1"></a>tau</span>
+<span id="cb15-9"><a href="properties-of-water.html#cb15-9" tabindex="-1"></a><span class="co">#&gt; 0.2 [Pa]</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="properties-of-water.html#cb16-1" tabindex="-1"></a><span class="co">#Since stress is F/A, multiply tau by A to find F, convert to Newtons and pounds</span></span>
+<span id="cb16-2"><a href="properties-of-water.html#cb16-2" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tau<span class="sc">*</span>A, N)</span>
+<span id="cb16-3"><a href="properties-of-water.html#cb16-3" tabindex="-1"></a><span class="co">#&gt; 2e-04 [N]</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="properties-of-water.html#cb17-1" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(tau<span class="sc">*</span>A, lbf)</span>
+<span id="cb17-2"><a href="properties-of-water.html#cb17-2" tabindex="-1"></a><span class="co">#&gt; 4.496179e-05 [lbf]</span></span></code></pre></div>
 <p>Water is less viscous than marshmallow, so viscosity for water has much lower values than in the example. Values for water can be obtained using the <em>hydraulics</em> R package for calculations, using the <em>dens</em>, <em>dvisc</em>, and <em>kvisc</em>. All of the water property functions can accept a list of input temperature values, enabling visualization of a property with varying water temperature, as shown in Figure <a href="properties-of-water.html#fig:waterprops-3b">2.2</a>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="properties-of-water.html#cb8-1" tabindex="-1"></a>Ts <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>)</span>
-<span id="cb8-2"><a href="properties-of-water.html#cb8-2" tabindex="-1"></a>nus <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">kvisc</span>(<span class="at">T =</span> Ts, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
-<span id="cb8-3"><a href="properties-of-water.html#cb8-3" tabindex="-1"></a>xlbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Temperature, &quot;</span> (degree<span class="sc">*</span>C))</span>
-<span id="cb8-4"><a href="properties-of-water.html#cb8-4" tabindex="-1"></a>ylbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Kinematic viscosity,&quot;</span> <span class="sc">~</span>nu<span class="sc">~</span> (m<span class="sc">^</span>{<span class="dv">2</span>}<span class="sc">/</span>s))</span>
-<span id="cb8-5"><a href="properties-of-water.html#cb8-5" tabindex="-1"></a><span class="fu">par</span>(<span class="at">cex=</span><span class="fl">0.8</span>, <span class="at">mgp =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="fl">0.7</span>,<span class="dv">0</span>))</span>
-<span id="cb8-6"><a href="properties-of-water.html#cb8-6" tabindex="-1"></a><span class="fu">plot</span>(Ts, nus, <span class="at">xlab =</span> xlbl, <span class="at">ylab =</span> ylbl, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="properties-of-water.html#cb18-1" tabindex="-1"></a>Ts <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>)</span>
+<span id="cb18-2"><a href="properties-of-water.html#cb18-2" tabindex="-1"></a>nus <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">kvisc</span>(<span class="at">T =</span> Ts, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
+<span id="cb18-3"><a href="properties-of-water.html#cb18-3" tabindex="-1"></a>xlbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Temperature, &quot;</span> (degree<span class="sc">*</span>C))</span>
+<span id="cb18-4"><a href="properties-of-water.html#cb18-4" tabindex="-1"></a>ylbl <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="st">&quot;Kinematic viscosity,&quot;</span> <span class="sc">~</span>nu<span class="sc">~</span> (m<span class="sc">^</span>{<span class="dv">2</span>}<span class="sc">/</span>s))</span>
+<span id="cb18-5"><a href="properties-of-water.html#cb18-5" tabindex="-1"></a><span class="fu">par</span>(<span class="at">cex=</span><span class="fl">0.8</span>, <span class="at">mgp =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="fl">0.7</span>,<span class="dv">0</span>))</span>
+<span id="cb18-6"><a href="properties-of-water.html#cb18-6" tabindex="-1"></a><span class="fu">plot</span>(Ts, nus, <span class="at">xlab =</span> xlbl, <span class="at">ylab =</span> ylbl, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:waterprops-3b"></span>
 <img src="hydr-watres_main_files/figure-html/waterprops-3b-1.png" alt="Variation of kinematic viscosity with temperature." width="60%" />
 <p class="caption">
@@ -2143,8 +2180,8 @@ slug ft-3
 </tbody>
 </table>
 <p>As with water property functions, the data in the table can be extracted using individual commands for use in calculations. All atmospheric functions have input arguments of altitude (<em>ft</em> or <em>m</em>), unit system (<em>SI</em> or <em>Eng</em>), and whether or not units should be returned.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="properties-of-water.html#cb9-1" tabindex="-1"></a>hydraulics<span class="sc">::</span><span class="fu">atmpres</span>(<span class="at">alt =</span> <span class="dv">3000</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-2"><a href="properties-of-water.html#cb9-2" tabindex="-1"></a><span class="co">#&gt; 70121.14 [Pa]</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="properties-of-water.html#cb19-1" tabindex="-1"></a>hydraulics<span class="sc">::</span><span class="fu">atmpres</span>(<span class="at">alt =</span> <span class="dv">3000</span>, <span class="at">units =</span> <span class="st">&quot;SI&quot;</span>, <span class="at">ret_units =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-2"><a href="properties-of-water.html#cb19-2" tabindex="-1"></a><span class="co">#&gt; 70121.14 [Pa]</span></span></code></pre></div>
 <div id="ideal-gas-law" class="section level3 hasAnchor" number="2.3.1">
 <h3><span class="header-section-number">2.3.1</span> Ideal gas law<a href="properties-of-water.html#ideal-gas-law" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Because air is compressible, its density changes with pressure, and the temperature responds to compression. These are related through the ideal gas law, Equation <a href="properties-of-water.html#eq:igl1">(2.6)</a></p>
@@ -2177,7 +2214,7 @@ where <span class="math inline">\(p\)</span> is <strong>absolute</strong> pressu
 <p>Properties of air used in these formulations of the ideal gas law are shown in Table <a href="properties-of-water.html#tab:ideal-gas">2.5</a>.</p>
 <table class="table table-striped" style="font-size: 10px; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
-<span id="tab:ideal-gas">Table 2.5: </span>Air properties at standard sea-level atmospheric pressure
+<span id="tab:ideal-gas">Table 2.5: </span><span id="tab:ideal-gas">Table 2.6: </span>Air properties at standard sea-level atmospheric pressure
 </caption>
 <thead>
 <tr>

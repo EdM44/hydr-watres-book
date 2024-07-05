@@ -7,7 +7,7 @@
   <title>Hydraulics and Water Resources: Examples Using R</title>
   <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
 engineering exercises using R.</p>" />
-  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Hydraulics and Water Resources: Examples Using R" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2024-05-21" />
+<meta name="date" content="2024-07-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -56,11 +56,28 @@ engineering exercises using R.</p>" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -132,6 +149,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -331,7 +349,26 @@ div.csl-indent {
 <li class="chapter" data-level="12.3.2" data-path="management-of-water-resources-systems.html"><a href="management-of-water-resources-systems.html#performing-stochastic-dynamic-programming"><i class="fa fa-check"></i><b>12.3.2</b> Performing stochastic dynamic programming</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="groundwater.html"><a href="groundwater.html"><i class="fa fa-check"></i><b>13</b> Groundwater</a></li>
+<li class="chapter" data-level="13" data-path="groundwater.html"><a href="groundwater.html"><i class="fa fa-check"></i><b>13</b> Groundwater</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="groundwater.html"><a href="groundwater.html#soil-characteristics"><i class="fa fa-check"></i><b>13.1</b> Soil characteristics</a></li>
+<li class="chapter" data-level="13.2" data-path="groundwater.html"><a href="groundwater.html#hydraulic-gradient-and-flow-direction"><i class="fa fa-check"></i><b>13.2</b> Hydraulic gradient and flow direction</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="groundwater.html"><a href="groundwater.html#importing-and-transforming-point-data"><i class="fa fa-check"></i><b>13.2.1</b> Importing and transforming point data</a></li>
+<li class="chapter" data-level="13.2.2" data-path="groundwater.html"><a href="groundwater.html#interpolating-points-to-a-regular-grid-using-kriging"><i class="fa fa-check"></i><b>13.2.2</b> Interpolating points to a regular grid (using kriging)</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="groundwater.html"><a href="groundwater.html#groundwater-flow-in-aquifers"><i class="fa fa-check"></i><b>13.3</b> Groundwater flow in aquifers</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="groundwater.html"><a href="groundwater.html#fundamental-equations"><i class="fa fa-check"></i><b>13.3.1</b> Fundamental equations</a></li>
+<li class="chapter" data-level="13.3.2" data-path="groundwater.html"><a href="groundwater.html#groundwater-flow-under-steady-state-conditions"><i class="fa fa-check"></i><b>13.3.2</b> Groundwater flow under steady state conditions</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="groundwater.html"><a href="groundwater.html#drawdown-due-to-pumping"><i class="fa fa-check"></i><b>13.4</b> Drawdown due to pumping</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="groundwater.html"><a href="groundwater.html#drawdowns-due-to-well-pumping-under-steady-state-conditions"><i class="fa fa-check"></i><b>13.4.1</b> Drawdowns due to well pumping under steady state conditions</a></li>
+<li class="chapter" data-level="13.4.2" data-path="groundwater.html"><a href="groundwater.html#drawdown-due-to-well-pumping-time-varying"><i class="fa fa-check"></i><b>13.4.2</b> Drawdown due to well pumping: time varying</a></li>
+<li class="chapter" data-level="13.4.3" data-path="groundwater.html"><a href="groundwater.html#determining-aquifer-characteristics-from-drawdown-observations"><i class="fa fa-check"></i><b>13.4.3</b> Determining aquifer characteristics from drawdown observations</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
@@ -356,7 +393,7 @@ div.csl-indent {
 <address class="author_afil">
 Professor, <a href="https://www.scu.edu/engineering/academic-programs/engineering/ce/">Civil, Environmental, and Sustainable Engineering Department, Santa Clara University</a><br>
 </address>
-<p class="date"><em>2024-05-21</em></p>
+<p class="date"><em>2024-07-05</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered hasAnchor">
 <h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
