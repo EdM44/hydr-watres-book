@@ -412,3 +412,105 @@ grid()
 ```
 
 The fit is very good in this case, and it should be noted that there are substantial bounds of uncertainty in aquifer parameter estimates.
+
+## Remote sensing of groundwater with GRACE
+
+The Gravity Recovery and Climate Experiment (GRACE) is an international effort (the US lead is [NASA](https://grace.jpl.nasa.gov/)) that began collecting data with the launch of a pair of satellites in March 2002. The satellites from GRACE were decomissioned in October 2017, with a follow-on mission ([GRACE-FO](https://gracefo.jpl.nasa.gov/)) launched on May 2018. By making detailed measurements of Earth's gravitational field, they have been able to estimate changes in water reservoirs over land, ice and oceans.
+
+Data from GRACE are available through each of the research groups involved, with variations in the processing algorithms used to filter, adjust, and correct biases in the measurements. In what follows, data produced by [NASA's Jet Propulsion Lab](https://grace.jpl.nasa.gov/data/get-data/jpl_global_mascons/), distributed by the [NASA Earthdata portal](https://www.earthdata.nasa.gov/). Many variables are distributed with the data, but for groundwater the one of interest is [equivalent water thickness](https://grace.jpl.nasa.gov/data/monthly-mass-grids/) (_lwe_thickness_) expressed in cm. These are referred to as mass concentration blocks, or mascons. After the corrections have been applied, differences in _lwe_thickness_ over time represent an estimate of the change in the mass of water and ice at any location. 
+
+The data are distributed by [NASA](https://www.earthdata.nasa.gov/) in a single file covering 2002-present for the globe (at a spatial resolution of 0.5 degrees, or about 400 km). For what follows, data distributed with the _hydromisc_ package will be used. What is included below is the preprocessing done to the raw data to reduce the size of the file. Here only the area covering the Western U.S. is included. The preprocessing only uses the [terra](https://cran.r-project.org/package=terra) and [geodata](https://cran.r-project.org/package=geodata) packages. These steps may be repeated is more updated data is used, or if another region is studied.
+```{r gwgrace-1, message=FALSE, warning=FALSE, eval=FALSE}
+# The name of the raw data file from NASA-JPL
+grace_file <- "GRCTellus.JPL.200204_202404.GLO.RL06.1M.MSCNv03CRI.nc"
+
+# Only extract lwe_thickness
+r <- terra::rast(file.path(grace_file), subds="lwe_thickness")
+# download US state boundaries
+us_states <- geodata::gadm(country="USA", level=1, path=tempdir())
+
+# Make a new vector layer of only western states
+wus_states <- c("Nebraska","Washington","New Mexico","South Dakota","Texas",
+                "California","Oregon","Kansas","Idaho","Nevada","Montana",
+                "North Dakota","Arizona","Colorado","Oklahoma","Utah","Wyoming")
+wus = us_states[match(toupper(wus_states),toupper(us_states$NAME_1)),]
+
+# Project it to ensure it has the same spatial reference as the data
+wus_t = terra::project(wus, terra::crs(r))
+
+# Crop out a the desired domain
+r_wus <- terra::crop(terra::rotate(r), wus_t, snap="out")
+
+terra::writeCDF(r_wus, "GRCTellus.JPL.200204_202404_wus.nc", varname = "lwe_thickness", 
+                longname = "Liquid_Water_Equivalent_Thickness", 
+                unit = "cm")
+```
+
+```{r gwgrace-2, message=FALSE, warning=FALSE, echo=FALSE}
+# execute but don't echo
+wus_file <- system.file("extdata", "wus_states.shp", package="hydromisc")
+wus_t <- terra::vect(wus_file)
+```
+
+::: {.example #ex-grace1}
+Calculate using GRACE satellite data how much water was replenished in the Central Valley between Sept 2014 and Sept 2015 to see if cutbacks resulted in any aquifer recovery. This will replicate some of an early study that used GRACE data to estimate aquifer sustainability. [@famiglietti_global_2014]. While that reference used (in their Figure 1) September-November averages, we’ll just use Sept values for simplicity.
+:::
+First, read in the preprocessed file from the hydromisc package. 
+```{r gwgrace-3, message=FALSE, warning=FALSE}
+grace_file <- system.file("extdata", "GRCTellus.JPL.200204_202404_wus.nc", package="hydromisc")
+r_wus <- terra::rast(grace_file)
+```
+
+While not shown here, you'll need the _wus_t_ layer created in the preprocessing step, so run those commands from the preprocessing step. Next, download the shapefile of the aquifer boundary. For California's central valley, it was obtained from the [USGS](https://www.usgs.gov/mission-areas/water-resources/maps), which some searching led to  [here](https://www.sciencebase.gov/catalog/item/6314056bd34e36012efa2bf4). There are many sources for aquifer boundaries, but in the US starting with the USGS is always productive.
+```{r gwgrace-4, message=FALSE, warning=FALSE}
+cv_file <- system.file("extdata", "CV_Alluvial_Bnd.shp", package="hydromisc")
+cv_bound <- terra::vect(cv_file)
+
+#Convert the spatial reference of the aquifer boundary to match the GRACE data
+cv_bound_t = terra::project(cv_bound, terra::crs(r_wus))
+```
+
+The measurement dates are contained in the netcdf file downloaded from NASA, and they are correctly interpreted by [terra](https://cran.r-project.org/package=terra). Identify the time steps associated with the dates of interest, make sure there is only one measurement for each date (multiple measurements could be averaged, but again for simplicity only one observation is used here). The difference between _lwe_thickness_ between the two dates can then be calculated.
+```{r gwgrace-5, message=FALSE, warning=FALSE}
+dates <- terra::time(r_wus)
+idx1 <- which(dates >= as.Date("2014-09-01") & dates <= as.Date("2014-09-30"))
+idx2 <- which(dates >= as.Date("2015-09-01") & dates <= as.Date("2015-09-30"))
+
+# Check to be sure there is exactly one for each
+if (length(idx1) != 1 | length(idx2) != 1) message("Must have exactly one index for each date")
+
+# Extract the data for the dates of interest
+r1 <- r_wus[[idx1]]
+r2 <- r_wus[[idx2]]
+
+# Calculate the liquid water equivalent change over the period
+rdelta <- r2 - r1
+```
+
+A preliminary plot can be helpful as a reality check.
+```{r gwgrace-6, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Change in water level between Sept 2014 and Sept 2015, cm.'}
+terra::plot(rdelta)
+terra::lines(wus_t)
+terra::lines(cv_bound_t, col="red", lwd=1.5)
+```
+
+Now crop out only the aquifer extent of interest and plot that.
+```{r gwgrace-7, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Change in water level for the California Central Valley aquifer between Sept 2014 and Sept 2015, cm.'}
+gw_cv <- terra::crop(rdelta, cv_bound_t, snap="out")
+terra::plot(gw_cv)
+terra::lines(wus_t)
+terra::lines(cv_bound_t, col="red", lwd=1.5)
+```
+
+Finally, find the mean change in water storage over this area, and multiply this by the aquifer area to estimate a volume of water.
+```{r gwgrace-8, message=FALSE, warning=FALSE}
+# Find the area of the CV aquifer
+cvaquifer_area <- terra::expanse(r_wus, unit="m", transform=TRUE)$area[1]
+meanchange <- as.numeric(terra::extract(rdelta, cv_bound_t, fun=mean, ID=FALSE))
+cat(sprintf("Aquifer area: %.3e m^2, LWE mean change: %.2f cm\n", cvaquifer_area, meanchange))
+volchange <- cvaquifer_area * meanchange/100 # convert to cubic meters
+cat(sprintf("Volume change: %.3e m^3\n", volchange))
+```
+
+Based on this data the aquifer replenishment effort was not successful during this period.
+

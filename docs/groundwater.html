@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2024-07-05" />
+<meta name="date" content="2024-07-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -368,6 +368,7 @@ div.csl-indent {
 <li class="chapter" data-level="13.4.2" data-path="groundwater.html"><a href="groundwater.html#drawdown-due-to-well-pumping-time-varying"><i class="fa fa-check"></i><b>13.4.2</b> Drawdown due to well pumping: time varying</a></li>
 <li class="chapter" data-level="13.4.3" data-path="groundwater.html"><a href="groundwater.html#determining-aquifer-characteristics-from-drawdown-observations"><i class="fa fa-check"></i><b>13.4.3</b> Determining aquifer characteristics from drawdown observations</a></li>
 </ul></li>
+<li class="chapter" data-level="13.5" data-path="groundwater.html"><a href="groundwater.html#remote-sensing-of-groundwater-with-grace"><i class="fa fa-check"></i><b>13.5</b> Remote sensing of groundwater with GRACE</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
@@ -860,8 +861,94 @@ Figure 13.16: Comparison of observed drawdown to those predicted with estimated 
 </p>
 </div>
 <p>The fit is very good in this case, and it should be noted that there are substantial bounds of uncertainty in aquifer parameter estimates.</p>
-
 </div>
+</div>
+<div id="remote-sensing-of-groundwater-with-grace" class="section level2 hasAnchor" number="13.5">
+<h2><span class="header-section-number">13.5</span> Remote sensing of groundwater with GRACE<a href="groundwater.html#remote-sensing-of-groundwater-with-grace" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The Gravity Recovery and Climate Experiment (GRACE) is an international effort (the US lead is <a href="https://grace.jpl.nasa.gov/">NASA</a>) that began collecting data with the launch of a pair of satellites in March 2002. The satellites from GRACE were decomissioned in October 2017, with a follow-on mission (<a href="https://gracefo.jpl.nasa.gov/">GRACE-FO</a>) launched on May 2018. By making detailed measurements of Earth’s gravitational field, they have been able to estimate changes in water reservoirs over land, ice and oceans.</p>
+<p>Data from GRACE are available through each of the research groups involved, with variations in the processing algorithms used to filter, adjust, and correct biases in the measurements. In what follows, data produced by <a href="https://grace.jpl.nasa.gov/data/get-data/jpl_global_mascons/">NASA’s Jet Propulsion Lab</a>, distributed by the <a href="https://www.earthdata.nasa.gov/">NASA Earthdata portal</a>. Many variables are distributed with the data, but for groundwater the one of interest is <a href="https://grace.jpl.nasa.gov/data/monthly-mass-grids/">equivalent water thickness</a> (<em>lwe_thickness</em>) expressed in cm. These are referred to as mass concentration blocks, or mascons. After the corrections have been applied, differences in <em>lwe_thickness</em> over time represent an estimate of the change in the mass of water and ice at any location.</p>
+<p>The data are distributed by <a href="https://www.earthdata.nasa.gov/">NASA</a> in a single file covering 2002-present for the globe (at a spatial resolution of 0.5 degrees, or about 400 km). For what follows, data distributed with the <em>hydromisc</em> package will be used. What is included below is the preprocessing done to the raw data to reduce the size of the file. Here only the area covering the Western U.S. is included. The preprocessing only uses the <a href="https://cran.r-project.org/package=terra">terra</a> and <a href="https://cran.r-project.org/package=geodata">geodata</a> packages. These steps may be repeated is more updated data is used, or if another region is studied.</p>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="groundwater.html#cb229-1" tabindex="-1"></a><span class="co"># The name of the raw data file from NASA-JPL</span></span>
+<span id="cb229-2"><a href="groundwater.html#cb229-2" tabindex="-1"></a>grace_file <span class="ot">&lt;-</span> <span class="st">&quot;GRCTellus.JPL.200204_202404.GLO.RL06.1M.MSCNv03CRI.nc&quot;</span></span>
+<span id="cb229-3"><a href="groundwater.html#cb229-3" tabindex="-1"></a></span>
+<span id="cb229-4"><a href="groundwater.html#cb229-4" tabindex="-1"></a><span class="co"># Only extract lwe_thickness</span></span>
+<span id="cb229-5"><a href="groundwater.html#cb229-5" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(grace_file), <span class="at">subds=</span><span class="st">&quot;lwe_thickness&quot;</span>)</span>
+<span id="cb229-6"><a href="groundwater.html#cb229-6" tabindex="-1"></a><span class="co"># download US state boundaries</span></span>
+<span id="cb229-7"><a href="groundwater.html#cb229-7" tabindex="-1"></a>us_states <span class="ot">&lt;-</span> geodata<span class="sc">::</span><span class="fu">gadm</span>(<span class="at">country=</span><span class="st">&quot;USA&quot;</span>, <span class="at">level=</span><span class="dv">1</span>, <span class="at">path=</span><span class="fu">tempdir</span>())</span>
+<span id="cb229-8"><a href="groundwater.html#cb229-8" tabindex="-1"></a></span>
+<span id="cb229-9"><a href="groundwater.html#cb229-9" tabindex="-1"></a><span class="co"># Make a new vector layer of only western states</span></span>
+<span id="cb229-10"><a href="groundwater.html#cb229-10" tabindex="-1"></a>wus_states <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Nebraska&quot;</span>,<span class="st">&quot;Washington&quot;</span>,<span class="st">&quot;New Mexico&quot;</span>,<span class="st">&quot;South Dakota&quot;</span>,<span class="st">&quot;Texas&quot;</span>,</span>
+<span id="cb229-11"><a href="groundwater.html#cb229-11" tabindex="-1"></a>                <span class="st">&quot;California&quot;</span>,<span class="st">&quot;Oregon&quot;</span>,<span class="st">&quot;Kansas&quot;</span>,<span class="st">&quot;Idaho&quot;</span>,<span class="st">&quot;Nevada&quot;</span>,<span class="st">&quot;Montana&quot;</span>,</span>
+<span id="cb229-12"><a href="groundwater.html#cb229-12" tabindex="-1"></a>                <span class="st">&quot;North Dakota&quot;</span>,<span class="st">&quot;Arizona&quot;</span>,<span class="st">&quot;Colorado&quot;</span>,<span class="st">&quot;Oklahoma&quot;</span>,<span class="st">&quot;Utah&quot;</span>,<span class="st">&quot;Wyoming&quot;</span>)</span>
+<span id="cb229-13"><a href="groundwater.html#cb229-13" tabindex="-1"></a>wus <span class="ot">=</span> us_states[<span class="fu">match</span>(<span class="fu">toupper</span>(wus_states),<span class="fu">toupper</span>(us_states<span class="sc">$</span>NAME_1)),]</span>
+<span id="cb229-14"><a href="groundwater.html#cb229-14" tabindex="-1"></a></span>
+<span id="cb229-15"><a href="groundwater.html#cb229-15" tabindex="-1"></a><span class="co"># Project it to ensure it has the same spatial reference as the data</span></span>
+<span id="cb229-16"><a href="groundwater.html#cb229-16" tabindex="-1"></a>wus_t <span class="ot">=</span> terra<span class="sc">::</span><span class="fu">project</span>(wus, terra<span class="sc">::</span><span class="fu">crs</span>(r))</span>
+<span id="cb229-17"><a href="groundwater.html#cb229-17" tabindex="-1"></a></span>
+<span id="cb229-18"><a href="groundwater.html#cb229-18" tabindex="-1"></a><span class="co"># Crop out a the desired domain</span></span>
+<span id="cb229-19"><a href="groundwater.html#cb229-19" tabindex="-1"></a>r_wus <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(terra<span class="sc">::</span><span class="fu">rotate</span>(r), wus_t, <span class="at">snap=</span><span class="st">&quot;out&quot;</span>)</span>
+<span id="cb229-20"><a href="groundwater.html#cb229-20" tabindex="-1"></a></span>
+<span id="cb229-21"><a href="groundwater.html#cb229-21" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeCDF</span>(r_wus, <span class="st">&quot;GRCTellus.JPL.200204_202404_wus.nc&quot;</span>, <span class="at">varname =</span> <span class="st">&quot;lwe_thickness&quot;</span>, </span>
+<span id="cb229-22"><a href="groundwater.html#cb229-22" tabindex="-1"></a>                <span class="at">longname =</span> <span class="st">&quot;Liquid_Water_Equivalent_Thickness&quot;</span>, </span>
+<span id="cb229-23"><a href="groundwater.html#cb229-23" tabindex="-1"></a>                <span class="at">unit =</span> <span class="st">&quot;cm&quot;</span>)</span></code></pre></div>
+<div class="example">
+<p><span id="exm:ex-grace1" class="example"><strong>Example 13.4  </strong></span>Calculate using GRACE satellite data how much water was replenished in the Central Valley between Sept 2014 and Sept 2015 to see if cutbacks resulted in any aquifer recovery. This will replicate some of an early study that used GRACE data to estimate aquifer sustainability. <span class="citation">(<a href="references.html#ref-famiglietti_global_2014">Famiglietti, 2014</a>)</span>. While that reference used (in their Figure 1) September-November averages, we’ll just use Sept values for simplicity.</p>
+</div>
+<p>First, read in the preprocessed file from the hydromisc package.</p>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="groundwater.html#cb230-1" tabindex="-1"></a>grace_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;GRCTellus.JPL.200204_202404_wus.nc&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
+<span id="cb230-2"><a href="groundwater.html#cb230-2" tabindex="-1"></a>r_wus <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(grace_file)</span></code></pre></div>
+<p>While not shown here, you’ll need the <em>wus_t</em> layer created in the preprocessing step, so run those commands from the preprocessing step. Next, download the shapefile of the aquifer boundary. For California’s central valley, it was obtained from the <a href="https://www.usgs.gov/mission-areas/water-resources/maps">USGS</a>, which some searching led to <a href="https://www.sciencebase.gov/catalog/item/6314056bd34e36012efa2bf4">here</a>. There are many sources for aquifer boundaries, but in the US starting with the USGS is always productive.</p>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="groundwater.html#cb231-1" tabindex="-1"></a>cv_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;CV_Alluvial_Bnd.shp&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
+<span id="cb231-2"><a href="groundwater.html#cb231-2" tabindex="-1"></a>cv_bound <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(cv_file)</span>
+<span id="cb231-3"><a href="groundwater.html#cb231-3" tabindex="-1"></a></span>
+<span id="cb231-4"><a href="groundwater.html#cb231-4" tabindex="-1"></a><span class="co">#Convert the spatial reference of the aquifer boundary to match the GRACE data</span></span>
+<span id="cb231-5"><a href="groundwater.html#cb231-5" tabindex="-1"></a>cv_bound_t <span class="ot">=</span> terra<span class="sc">::</span><span class="fu">project</span>(cv_bound, terra<span class="sc">::</span><span class="fu">crs</span>(r_wus))</span></code></pre></div>
+<p>The measurement dates are contained in the netcdf file downloaded from NASA, and they are correctly interpreted by <a href="https://cran.r-project.org/package=terra">terra</a>. Identify the time steps associated with the dates of interest, make sure there is only one measurement for each date (multiple measurements could be averaged, but again for simplicity only one observation is used here). The difference between <em>lwe_thickness</em> between the two dates can then be calculated.</p>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="groundwater.html#cb232-1" tabindex="-1"></a>dates <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">time</span>(r_wus)</span>
+<span id="cb232-2"><a href="groundwater.html#cb232-2" tabindex="-1"></a>idx1 <span class="ot">&lt;-</span> <span class="fu">which</span>(dates <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2014-09-01&quot;</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2014-09-30&quot;</span>))</span>
+<span id="cb232-3"><a href="groundwater.html#cb232-3" tabindex="-1"></a>idx2 <span class="ot">&lt;-</span> <span class="fu">which</span>(dates <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2015-09-01&quot;</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2015-09-30&quot;</span>))</span>
+<span id="cb232-4"><a href="groundwater.html#cb232-4" tabindex="-1"></a></span>
+<span id="cb232-5"><a href="groundwater.html#cb232-5" tabindex="-1"></a><span class="co"># Check to be sure there is exactly one for each</span></span>
+<span id="cb232-6"><a href="groundwater.html#cb232-6" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(idx1) <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> <span class="fu">length</span>(idx2) <span class="sc">!=</span> <span class="dv">1</span>) <span class="fu">message</span>(<span class="st">&quot;Must have exactly one index for each date&quot;</span>)</span>
+<span id="cb232-7"><a href="groundwater.html#cb232-7" tabindex="-1"></a></span>
+<span id="cb232-8"><a href="groundwater.html#cb232-8" tabindex="-1"></a><span class="co"># Extract the data for the dates of interest</span></span>
+<span id="cb232-9"><a href="groundwater.html#cb232-9" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> r_wus[[idx1]]</span>
+<span id="cb232-10"><a href="groundwater.html#cb232-10" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> r_wus[[idx2]]</span>
+<span id="cb232-11"><a href="groundwater.html#cb232-11" tabindex="-1"></a></span>
+<span id="cb232-12"><a href="groundwater.html#cb232-12" tabindex="-1"></a><span class="co"># Calculate the liquid water equivalent change over the period</span></span>
+<span id="cb232-13"><a href="groundwater.html#cb232-13" tabindex="-1"></a>rdelta <span class="ot">&lt;-</span> r2 <span class="sc">-</span> r1</span></code></pre></div>
+<p>A preliminary plot can be helpful as a reality check.</p>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="groundwater.html#cb233-1" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(rdelta)</span>
+<span id="cb233-2"><a href="groundwater.html#cb233-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(wus_t)</span>
+<span id="cb233-3"><a href="groundwater.html#cb233-3" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(cv_bound_t, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gwgrace-6"></span>
+<img src="hydr-watres_main_files/figure-html/gwgrace-6-1.png" alt="Change in water level between Sept 2014 and Sept 2015, cm." width="50%" />
+<p class="caption">
+Figure 13.17: Change in water level between Sept 2014 and Sept 2015, cm.
+</p>
+</div>
+<p>Now crop out only the aquifer extent of interest and plot that.</p>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="groundwater.html#cb234-1" tabindex="-1"></a>gw_cv <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(rdelta, cv_bound_t, <span class="at">snap=</span><span class="st">&quot;out&quot;</span>)</span>
+<span id="cb234-2"><a href="groundwater.html#cb234-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(gw_cv)</span>
+<span id="cb234-3"><a href="groundwater.html#cb234-3" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(wus_t)</span>
+<span id="cb234-4"><a href="groundwater.html#cb234-4" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(cv_bound_t, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gwgrace-7"></span>
+<img src="hydr-watres_main_files/figure-html/gwgrace-7-1.png" alt="Change in water level for the California Central Valley aquifer between Sept 2014 and Sept 2015, cm." width="50%" />
+<p class="caption">
+Figure 13.18: Change in water level for the California Central Valley aquifer between Sept 2014 and Sept 2015, cm.
+</p>
+</div>
+<p>Finally, find the mean change in water storage over this area, and multiply this by the aquifer area to estimate a volume of water.</p>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="groundwater.html#cb235-1" tabindex="-1"></a><span class="co"># Find the area of the CV aquifer</span></span>
+<span id="cb235-2"><a href="groundwater.html#cb235-2" tabindex="-1"></a>cvaquifer_area <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">expanse</span>(r_wus, <span class="at">unit=</span><span class="st">&quot;m&quot;</span>, <span class="at">transform=</span><span class="cn">TRUE</span>)<span class="sc">$</span>area[<span class="dv">1</span>]</span>
+<span id="cb235-3"><a href="groundwater.html#cb235-3" tabindex="-1"></a>meanchange <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(terra<span class="sc">::</span><span class="fu">extract</span>(rdelta, cv_bound_t, <span class="at">fun=</span>mean, <span class="at">ID=</span><span class="cn">FALSE</span>))</span>
+<span id="cb235-4"><a href="groundwater.html#cb235-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Aquifer area: %.3e m^2, LWE mean change: %.2f cm</span><span class="sc">\n</span><span class="st">&quot;</span>, cvaquifer_area, meanchange))</span>
+<span id="cb235-5"><a href="groundwater.html#cb235-5" tabindex="-1"></a><span class="co">#&gt; Aquifer area: 7.365e+12 m^2, LWE mean change: -2.91 cm</span></span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="groundwater.html#cb236-1" tabindex="-1"></a>volchange <span class="ot">&lt;-</span> cvaquifer_area <span class="sc">*</span> meanchange<span class="sc">/</span><span class="dv">100</span> <span class="co"># convert to cubic meters</span></span>
+<span id="cb236-2"><a href="groundwater.html#cb236-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Volume change: %.3e m^3</span><span class="sc">\n</span><span class="st">&quot;</span>, volchange))</span>
+<span id="cb236-3"><a href="groundwater.html#cb236-3" tabindex="-1"></a><span class="co">#&gt; Volume change: -2.140e+11 m^3</span></span></code></pre></div>
+<p>Based on this data the aquifer replenishment effort was not successful during this period.</p>
+
 </div>
 </div>
             </section>

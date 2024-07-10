@@ -255,6 +255,9 @@ exm:ex-dd1
 fig:gwdd-8
 exm:ex-dd2
 fig:gwdd-11
+exm:ex-grace1
+fig:gwgrace-6
+fig:gwgrace-7
 units-in-fluid-mechanics
 properties-of-water
 properties-important-for-water-standing-still
@@ -384,3 +387,4 @@ drawdowns-due-to-well-pumping-under-steady-state-conditions
 drawdown-due-to-well-pumping-time-varying
 theis1
 determining-aquifer-characteristics-from-drawdown-observations
+remote-sensing-of-groundwater-with-grace
