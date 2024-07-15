@@ -428,7 +428,7 @@ knitr::include_graphics("images/gvf-curves.PNG")
 
 In addition to channel transitions, changes in channel slow of roughness (Manning _n_) will cause the flow surface to vary. Some of these conditions are illustrated in Figure \@ref(fig:gvfcurves2) [@davidian_jacob_computation_1984].
 ```{r gvfcurves2, echo=FALSE, fig.cap="Types of flow profiles with changes in slope or roughness", fig.align="center"}
-knitr::include_graphics("images/gvf-n-S-transitions.PNG")
+knitr::include_graphics("images/gvf-n-S-transitions.png")
 ```
 
 Typically, for supercritical flow the calculations start at an upstream cross section and move downstream. For subcritical flow calculations proceed upstream. However, for the direct step method, a negative result will indicate upstream, and a positive result indicates downstream.
