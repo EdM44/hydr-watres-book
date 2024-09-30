@@ -419,7 +419,7 @@ The Gravity Recovery and Climate Experiment (GRACE) is an international effort (
 
 Data from GRACE are available through each of the research groups involved, with variations in the processing algorithms used to filter, adjust, and correct biases in the measurements. In what follows, data produced by [NASA's Jet Propulsion Lab](https://grace.jpl.nasa.gov/data/get-data/jpl_global_mascons/), distributed by the [NASA Earthdata portal](https://www.earthdata.nasa.gov/). Many variables are distributed with the data, but for groundwater the one of interest is [equivalent water thickness](https://grace.jpl.nasa.gov/data/monthly-mass-grids/) (_lwe_thickness_) expressed in cm. These are referred to as mass concentration blocks, or mascons. After the corrections have been applied, differences in _lwe_thickness_ over time represent an estimate of the change in the mass of water and ice at any location. 
 
-The data are distributed by [NASA](https://www.earthdata.nasa.gov/) in a single file covering 2002-present for the globe (at a spatial resolution of 0.5 degrees, or about 400 km). For what follows, data distributed with the _hydromisc_ package will be used. What is included below is the preprocessing done to the raw data to reduce the size of the file. Here only the area covering the Western U.S. is included. The preprocessing only uses the [terra](https://cran.r-project.org/package=terra) and [geodata](https://cran.r-project.org/package=geodata) packages. These steps may be repeated if more updated data is used, or if another region is studied.
+The data are distributed by [NASA](https://www.earthdata.nasa.gov/) in a single file covering 2002-present for the globe (at a spatial resolution of 0.5 degrees, or about 400 km). For what follows, data distributed with the _hydromisc_ package will be used. What is included below is the preprocessing done to the raw data to reduce the size of the file. Here only the area covering the Western U.S. is included. The preprocessing only uses the [terra](https://cran.r-project.org/package=terra) and [geodata](https://cran.r-project.org/package=geodata) packages. These steps may be adapted if more updated data is used or if another region is studied.
 ```{r gwgrace-1, message=FALSE, warning=FALSE, eval=FALSE}
 # The name of the raw data file from NASA-JPL
 grace_file <- "GRCTellus.JPL.200204_202404.GLO.RL06.1M.MSCNv03CRI.nc"
@@ -505,7 +505,7 @@ terra::lines(cv_bound_t, col="red", lwd=1.5)
 Finally, find the mean change in water storage over this area, and multiply this by the aquifer area to estimate a volume of water.
 ```{r gwgrace-8, message=FALSE, warning=FALSE}
 # Find the area of the CV aquifer
-cvaquifer_area <- terra::expanse(r_wus, unit="m", transform=TRUE)$area[1]
+cvaquifer_area <- terra::expanse(cv_bound_t, unit="m")
 meanchange <- as.numeric(terra::extract(rdelta, cv_bound_t, fun=mean, ID=FALSE))
 cat(sprintf("Aquifer area: %.3e m^2, LWE mean change: %.2f cm\n", cvaquifer_area, meanchange))
 volchange <- cvaquifer_area * meanchange/100 # convert to cubic meters
