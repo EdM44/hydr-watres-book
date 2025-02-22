@@ -16,7 +16,7 @@ The _hydromisc_ package will need to be installed to access some of the code and
 
 Aquifers are deposits of soil or rock that are capable of allowing groundwater to flow. characterizing the soils, usually via soil texture, is one way to estimate important properties of aquifer material, like porosity (important for estimating the capacity to store water) and saturated hydraulic conductivity (how readily groundwater can move in an aquifer). This was discussed in the [section on infiltration](#infiltration), which included the fundamental equation of Darcy's law that governs the flow of fluid through a porous medium Equation \@ref(eq:darcy-a).
 
-One way to characterize aquifer material is using a sieve analysis. This allows the separation of soil into gravel, sand, silt, and clay, which can then be mapped onto a soil texture triangle to determine the soil texture using the USDA soil texture triangle, Figure \@ref(fig:usda-st)
+One way to characterize aquifer material is using a sieve analysis. This allows the separation of soil into gravel, sand, silt, and clay, which can then be mapped onto a soil texture triangle to determine the soil texture using the USDA soil texture triangle, Figure \@ref(fig:usda-st).
 
 ```{r usda-st, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Soil texture triangle (USDA)'}
 knitr::include_graphics('images/usda_soil_texture_triangle.png')
@@ -263,7 +263,7 @@ knitr::include_graphics('images/gw_pumpingwell-1.png')
 
 The definitions illustrated in Figure \@ref(fig:gwdd-1) show the relationship between head, _h_, and drawdown, _s_, and how that varies with radial distance from a pumping well, _r_.
 
-### Drawdowns due to well pumping under steady state conditions
+### Steady state well drawdowns
 
 As with flow in an aquifer under steady state conditions, analytical solutions make solving the groundwater flow equations straightforward. These equations can be solved for aquifer properties given pumping rate (_Q_) and observations of drawdown (or head), or the reverse. These are shown in Equations \@ref(eq:gwdd-ss1) and \@ref(eq:gwdd-ss2).
 \begin{equation}
@@ -285,7 +285,7 @@ Equations \@ref(eq:gwdd-ss1) and \@ref(eq:gwdd-ss2) can be rearranged to solve f
     (\#eq:gwdd-ss4)
 \end{equation}
 
-### Drawdown due to well pumping: time varying
+### Time-varying well drawdowns {#theis1}
 
 The much more common situation is for wells to be operated for discrete times, so the steady state solutions will not apply. The fundamental equation used to describe this is Equation \@ref(eq:gwdd-t1) [@theis_cv_relation_1935].
 \begin{equation}
@@ -297,12 +297,15 @@ where W(u) is the well function (or exponential integral) of the Boltzman variab
   u=\frac{r^2S}{4Tt}
     (\#eq:gwdd-t2)
 \end{equation}
+The W(u) function is often approximated by the (infinite) timeseries:
+\begin{equation}
+  W(u)=-0.5772 - ln(u) + u - \frac{u^2}{2 \cdot 2!} +  \frac{u^3}{3 \cdot 3!} -  \frac{u^4}{4 \cdot 4!} + ...
+    (\#eq:gwdd-t3)
+\end{equation}
 
-Methods to estimate drawdown at a given time are straightforward, while doing the reverse -- estimating aquifer parameters given drawdown, are more complicated. Methods to do this manually are demonstrated in any groundwater hydrology text, such as [@heath_basic_2004]. Some functions for this are included in the `hydromisc` package, which are shown in the examples below.
+Methods to estimate drawdown at a given time are straightforward, while doing the reverse -- estimating aquifer parameters given drawdown -- are more complicated. Methods to do this manually are demonstrated in any groundwater hydrology text, such as [@heath_basic_2004]. Some functions for this are included in the `hydromisc` package, which are shown in the examples below.
 
-#### Finding drawdown given aquifer characteristics {#theis1}
-
-Read in some sample data from the hydromisc package. Use the list of times (recorded in minutes) in that file.
+Read in some sample drawdown data from the _hydromisc_ package. Use the list of times (recorded in minutes) in that file.
 ```{r gwdd-2, message=FALSE}
 datafile <- system.file("extdata", "drawdowns.xlsx", package="hydromisc")
 df_dd <- readxl::read_excel(datafile)
@@ -381,12 +384,91 @@ plot(total$t, total$drawdown, xlab="time, hr", ylab="drawdown, ft",
      xlim=range(times), type="l")
 grid()
 ```
-### Determining aquifer characteristics from drawdown observations
 
-If there is a complete set of drawdown observations at a set distance from a pumping well, values for storativity and transimissivity can be obtained using any equation solving technique. 
+## Determining aquifer characteristics from drawdown observations
+
+If there is a complete set of drawdown observations at a set distance from a pumping well, values for storativity and transimissivity can be obtained using any equation solving technique. There are also graphical methods [@heath_basic_2004].
+
+### Cooper-Jacob approximation
+
+When enough time has passed, or when $u < 0.05$, the drawdown from a pumping well tends to plot linearly on a semi-logarithmic graph. When this is the case, the first two terms in Equation \@ref(eq:gwdd-t3) dominate, and terms to the right can be neglected, which will plot as a straight line with drawdown plotted against the logarithm of time. The graphical procedure consists of:
+* Plot drawdown, s, vs time on log-linear paper (time on the log scale).
+* Fit a straight line to the linear portion of the drawdown data.
+* Where the straight line intersects s=0, the corresponding time $t_0$ is recorded.
+* The difference in drawdowns, $\Delta s$ at two times separated by one log cycle is recorded.
+
+Transmissivity and Storativity are then calculated using Equations \@ref(eq:gwcj-t1) and \@ref(eq:gwcj-t2).
+\begin{equation}
+  T=\frac{2.3 Q}{4\pi \Delta s}
+    (\#eq:gwcj-t1)
+\end{equation}
+\begin{equation}
+  S=\frac{2.25 T t_0}{r^2}
+    (\#eq:gwcj-t2)
+\end{equation}
 
 ::: {.example #ex-dd2}
-Use the drawdown data imported [above](#theis1), measured 60 m from the pumping well, and use the same pumping rate of 2500 m$^3$/d. Estimate the storativity and transmissivity of the aquifer material.
+Use the drawdown data imported [above](#theis1), measured 60 m from the pumping well, and use the same pumping rate of 2500 m$^3$/d. Estimate the storativity and transmissivity of the aquifer material using the Cooper-Jacob approximation.
+:::
+
+Following the steps above, first plot the data to estimate the time after which the curve becomes linear.
+```{r cj-1, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap='Observed drawdown vs. time.'}
+plot(df_dd$t_min, df_dd$s_m, ylim = rev(range(df_dd$s_m)), xlim = c(0.1,300), 
+     xlab="time, min", ylab="drawdown, m", log = "x", pch = 1)
+grid()
+```
+
+From Figure \@ref(fig:cj-1) the relationship appears linear (in semi-log space) after time $\approx$ 4 min. The data will be subset to times later than that, and a straight line fit to that subset. Note that x is the base-10 logarithm of time.
+
+```{r cj-2, message=FALSE, warning=FALSE}
+df_dd_linear <- dplyr::filter(df_dd, t_min > 4)
+x <- log10(df_dd_linear$t_min)
+y <- df_dd_linear$s_m
+lf <- lm(y ~ x)
+```
+
+Now $t_0$ and $\Delta s$ can be estimated. Note that time is transformed back from base-10 logarithm.
+
+```{r cj-3}
+t0 <- 10^(-coef(lf)[[1]]/coef(lf)[[2]])
+s_logcycle <- predict(lf, data.frame(x=c(log10(10), log10(100))))
+delta_s <- s_logcycle[[2]] - s_logcycle[[1]]
+```
+
+Figure \@ref(fig:cj-4) is an annotated plot showing the work above.
+```{r cj-4, message=FALSE, warning=FALSE, echo=FALSE, fig.align = 'center', out.width = "60%", fig.cap='Observed drawdown vs. time illustrating the Cooper-Jacob calculations.'}
+t0lbl <- expression(t[0])
+dslbl <- expression(Delta*s)
+plot(df_dd$t_min, df_dd$s_m, ylim = rev(range(df_dd$s_m)), xlim = c(0.1,300), 
+     xlab="time, min", ylab="drawdown, m", log = "x", pch = 1)
+abline(lf)
+abline(v=t0, lty=3)
+points(x=t0, y=0, pch = 16, col=c("blue"))
+text(t0, 0, t0lbl, pos = 4, col=c("blue"))
+abline(h=s_logcycle[[1]])
+abline(h=s_logcycle[[2]])
+arrows(x0= 1, y0= s_logcycle[[1]], x1=1, y1=s_logcycle[[2]], col=c("blue"), lwd=2, code = 3)
+text(1, mean(c(s_logcycle[[1]], s_logcycle[[2]])), dslbl, pos = 4, col=c("blue"))
+grid()
+```
+
+Finally, the known information is used to calculate $T$ and $S$ using Equations \@ref(eq:gwcj-t1) and \@ref(eq:gwcj-t2).
+```{r cj-5}
+Q <- 2500  # m3/d
+r <- 60
+Tr <- 2.3*Q/(4*pi*delta_s)     #m^2/d
+St <- 2.25*Tr*(t0/1440)/(r^2)  # need to convert t0 to days so units cancel
+cat(sprintf("Cooper-Jacob estimates: T= %.2f m%s/day   S=%.5f", Tr, '\u00B2', St))
+```
+
+A final check of that $u<0.05$ will ensure the times used were appropriate for this method.
+
+### Solving the Theis equation for a more robust solution
+
+Direct fitting of the Theis equation \@ref(eq:gwdd-t1) is straightforward using any root seeking method. Many optimal solution methods require reasonable first guesses, and the Cooper-Jacob method serves well for that. A function to do exactly that is included in the _hydromisc_ package, specifically the function `theis_params` (which was adapted from the [rhytool](https://github.com/FrancoisBertone/rhytool) package).
+
+::: {.example #ex-dd3}
+Use the same drawdown data imported [above](#theis1), measured 60 m from the pumping well, and use the same pumping rate of 2500 m$^3$/d. Estimate the storativity and transmissivity of the aquifer material.
 :::
 
 For convenience, set up the known data into variables, again being careful to use consistent units (m, d).
@@ -397,15 +479,18 @@ s <- df_dd$s_m
 r <- 60
 ```
 
-Use a _hydromisc_ function `theis_params` (adapted from the [rhytool](https://github.com/FrancoisBertone/rhytool) package) to use the Theis method to estimate the aquifer parameters.
+Use the _theis_params_ function to solve for transmissivity and storativity.
 ```{r gwdd-10, message=FALSE}
 theis_params <- hydromisc::theis_params(Q=Q, r=r, s=s, t=t)
 as.data.frame(theis_params)
 ```
+
+These have refined the values estimated by the Cooper-Jacob method, though the Cooper-Jacob method produced very good approximations. 
+
 Use the `drawdown` function created earlier to plot the theoretical fit of the drawdowns predicted using these parameters against the observations.
 
-```{r gwdd-11, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Comparison of observed drawdown to those predicted with estimated aquifer characteristics.'}
-plot(t, s, xlab="time, day", ylab="drawdown, m", log = "y", pch = 1)
+```{r gwdd-11, message=FALSE, warning=FALSE, fig.align = 'center', out.width = "60%", fig.cap='Comparison of observed drawdown to those predicted with estimated aquifer characteristics.'}
+plot(t, s, xlab="time, day", ylab="drawdown, m", log = "x", pch = 1)
 lines(t, drawdown(t=t, Q=Q, r=r, Tr=theis_params$Tr, St=theis_params$St))
 legend("bottomright", legend = c("Obs.","Estimated"), pch = c(1, NA), lty = c(NA, 1))
 grid()

@@ -7,7 +7,7 @@
   <title>Chapter 1 Units in Fluid Mechanics | Hydraulics and Water Resources: Examples Using R</title>
   <meta name="description" content="<p>A compilation of fluid mechanics, hydraulics, and water resources
 engineering exercises using R.</p>" />
-  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Units in Fluid Mechanics | Hydraulics and Water Resources: Examples Using R" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2024-09-29" />
+<meta name="date" content="2025-02-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -364,11 +364,15 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="groundwater.html"><a href="groundwater.html#drawdown-due-to-pumping"><i class="fa fa-check"></i><b>13.4</b> Drawdown due to pumping</a>
 <ul>
-<li class="chapter" data-level="13.4.1" data-path="groundwater.html"><a href="groundwater.html#drawdowns-due-to-well-pumping-under-steady-state-conditions"><i class="fa fa-check"></i><b>13.4.1</b> Drawdowns due to well pumping under steady state conditions</a></li>
-<li class="chapter" data-level="13.4.2" data-path="groundwater.html"><a href="groundwater.html#drawdown-due-to-well-pumping-time-varying"><i class="fa fa-check"></i><b>13.4.2</b> Drawdown due to well pumping: time varying</a></li>
-<li class="chapter" data-level="13.4.3" data-path="groundwater.html"><a href="groundwater.html#determining-aquifer-characteristics-from-drawdown-observations"><i class="fa fa-check"></i><b>13.4.3</b> Determining aquifer characteristics from drawdown observations</a></li>
+<li class="chapter" data-level="13.4.1" data-path="groundwater.html"><a href="groundwater.html#steady-state-well-drawdowns"><i class="fa fa-check"></i><b>13.4.1</b> Steady state well drawdowns</a></li>
+<li class="chapter" data-level="13.4.2" data-path="groundwater.html"><a href="groundwater.html#theis1"><i class="fa fa-check"></i><b>13.4.2</b> Time-varying well drawdowns</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="groundwater.html"><a href="groundwater.html#remote-sensing-of-groundwater-with-grace"><i class="fa fa-check"></i><b>13.5</b> Remote sensing of groundwater with GRACE</a></li>
+<li class="chapter" data-level="13.5" data-path="groundwater.html"><a href="groundwater.html#determining-aquifer-characteristics-from-drawdown-observations"><i class="fa fa-check"></i><b>13.5</b> Determining aquifer characteristics from drawdown observations</a>
+<ul>
+<li class="chapter" data-level="13.5.1" data-path="groundwater.html"><a href="groundwater.html#cooper-jacob-approximation"><i class="fa fa-check"></i><b>13.5.1</b> Cooper-Jacob approximation</a></li>
+<li class="chapter" data-level="13.5.2" data-path="groundwater.html"><a href="groundwater.html#solving-the-theis-equation-for-a-more-robust-solution"><i class="fa fa-check"></i><b>13.5.2</b> Solving the Theis equation for a more robust solution</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="groundwater.html"><a href="groundwater.html#remote-sensing-of-groundwater-with-grace"><i class="fa fa-check"></i><b>13.6</b> Remote sensing of groundwater with GRACE</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
@@ -537,44 +541,44 @@ The <a href="https://cran.r-project.org/package=units">units</a> package in R ca
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="units-in-fluid-mechanics.html#cb1-1" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">units_options</span>(<span class="at">set_units_mode =</span> <span class="st">&quot;symbols&quot;</span>)</span>
 <span id="cb1-2"><a href="units-in-fluid-mechanics.html#cb1-2" tabindex="-1"></a>Q_gpm <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">100</span>, gallon<span class="sc">/</span>min)</span>
 <span id="cb1-3"><a href="units-in-fluid-mechanics.html#cb1-3" tabindex="-1"></a>Q_gpm</span>
-<span id="cb1-4"><a href="units-in-fluid-mechanics.html#cb1-4" tabindex="-1"></a><span class="co">#&gt; 100 [gallon/min]</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="units-in-fluid-mechanics.html#cb2-1" tabindex="-1"></a>Q_cfs <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(Q_gpm, ft<span class="sc">^</span><span class="dv">3</span><span class="sc">/</span>s)</span>
-<span id="cb2-2"><a href="units-in-fluid-mechanics.html#cb2-2" tabindex="-1"></a>Q_cfs</span>
-<span id="cb2-3"><a href="units-in-fluid-mechanics.html#cb2-3" tabindex="-1"></a><span class="co">#&gt; 0.2228009 [ft^3/s]</span></span></code></pre></div>
+<span id="cb1-4"><a href="units-in-fluid-mechanics.html#cb1-4" tabindex="-1"></a><span class="co">#&gt; 100 [gallon/min]</span></span>
+<span id="cb1-5"><a href="units-in-fluid-mechanics.html#cb1-5" tabindex="-1"></a>Q_cfs <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(Q_gpm, ft<span class="sc">^</span><span class="dv">3</span><span class="sc">/</span>s)</span>
+<span id="cb1-6"><a href="units-in-fluid-mechanics.html#cb1-6" tabindex="-1"></a>Q_cfs</span>
+<span id="cb1-7"><a href="units-in-fluid-mechanics.html#cb1-7" tabindex="-1"></a><span class="co">#&gt; 0.2228009 [ft^3/s]</span></span></code></pre></div>
 <p>Repeating the unit conversion of viscosity using the <em>units</em> package:</p>
 <div class="example">
 <p><span id="exm:unlabeled-div-1" class="example"><strong>Example 1.1  </strong></span>Convert kinematic viscosity from SI to Eng units.</p>
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="units-in-fluid-mechanics.html#cb3-1" tabindex="-1"></a>nu <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">1e-6</span>, m<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
-<span id="cb3-2"><a href="units-in-fluid-mechanics.html#cb3-2" tabindex="-1"></a>nu</span>
-<span id="cb3-3"><a href="units-in-fluid-mechanics.html#cb3-3" tabindex="-1"></a><span class="co">#&gt; 1e-06 [m^2/s]</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="units-in-fluid-mechanics.html#cb4-1" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(nu, ft<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
-<span id="cb4-2"><a href="units-in-fluid-mechanics.html#cb4-2" tabindex="-1"></a><span class="co">#&gt; 1.076391e-05 [ft^2/s]</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="units-in-fluid-mechanics.html#cb2-1" tabindex="-1"></a>nu <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">1e-6</span>, m<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
+<span id="cb2-2"><a href="units-in-fluid-mechanics.html#cb2-2" tabindex="-1"></a>nu</span>
+<span id="cb2-3"><a href="units-in-fluid-mechanics.html#cb2-3" tabindex="-1"></a><span class="co">#&gt; 1e-06 [m^2/s]</span></span>
+<span id="cb2-4"><a href="units-in-fluid-mechanics.html#cb2-4" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(nu, ft<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s)</span>
+<span id="cb2-5"><a href="units-in-fluid-mechanics.html#cb2-5" tabindex="-1"></a><span class="co">#&gt; 1.076391e-05 [ft^2/s]</span></span></code></pre></div>
 <p>The <em>units</em> package also produces correct units during operations. For example, multiplying mass by <em>g</em> should produce weight.</p>
 <div class="example">
 <p><span id="exm:unlabeled-div-2" class="example"><strong>Example 1.2  </strong></span>Using the <em>units</em> package to produce correct units during mathematical operations.</p>
 </div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="units-in-fluid-mechanics.html#cb5-1" tabindex="-1"></a><span class="co">#If you travel at 88 ft/sec for 1 hour, how many km would you travel?</span></span>
-<span id="cb5-2"><a href="units-in-fluid-mechanics.html#cb5-2" tabindex="-1"></a>v <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">88</span>, ft<span class="sc">/</span>s)</span>
-<span id="cb5-3"><a href="units-in-fluid-mechanics.html#cb5-3" tabindex="-1"></a>t <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">1</span>, hour)</span>
-<span id="cb5-4"><a href="units-in-fluid-mechanics.html#cb5-4" tabindex="-1"></a>d <span class="ot">&lt;-</span> v<span class="sc">*</span>t</span>
-<span id="cb5-5"><a href="units-in-fluid-mechanics.html#cb5-5" tabindex="-1"></a>d</span>
-<span id="cb5-6"><a href="units-in-fluid-mechanics.html#cb5-6" tabindex="-1"></a><span class="co">#&gt; 316800 [ft]</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="units-in-fluid-mechanics.html#cb6-1" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(d, km)</span>
-<span id="cb6-2"><a href="units-in-fluid-mechanics.html#cb6-2" tabindex="-1"></a><span class="co">#&gt; 96.56064 [km]</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="units-in-fluid-mechanics.html#cb7-1" tabindex="-1"></a></span>
-<span id="cb7-2"><a href="units-in-fluid-mechanics.html#cb7-2" tabindex="-1"></a><span class="co">#What is the weight of a 4 slug mass, in pounds and Newtons?</span></span>
-<span id="cb7-3"><a href="units-in-fluid-mechanics.html#cb7-3" tabindex="-1"></a>m <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">4</span>, slug)</span>
-<span id="cb7-4"><a href="units-in-fluid-mechanics.html#cb7-4" tabindex="-1"></a>g <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">32.2</span>, ft<span class="sc">/</span>s<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb7-5"><a href="units-in-fluid-mechanics.html#cb7-5" tabindex="-1"></a>w <span class="ot">&lt;-</span> m<span class="sc">*</span>g</span>
-<span id="cb7-6"><a href="units-in-fluid-mechanics.html#cb7-6" tabindex="-1"></a><span class="co">#Notice the units are technically correct, but have not been simplified in this case</span></span>
-<span id="cb7-7"><a href="units-in-fluid-mechanics.html#cb7-7" tabindex="-1"></a>w</span>
-<span id="cb7-8"><a href="units-in-fluid-mechanics.html#cb7-8" tabindex="-1"></a><span class="co">#&gt; 128.8 [ft*slug/s^2]</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="units-in-fluid-mechanics.html#cb8-1" tabindex="-1"></a><span class="co">#These can be set manually to verify that lbf (pound-force) is a valid equivalent</span></span>
-<span id="cb8-2"><a href="units-in-fluid-mechanics.html#cb8-2" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, lbf)</span>
-<span id="cb8-3"><a href="units-in-fluid-mechanics.html#cb8-3" tabindex="-1"></a><span class="co">#&gt; 128.8 [lbf]</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="units-in-fluid-mechanics.html#cb9-1" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, N)</span>
-<span id="cb9-2"><a href="units-in-fluid-mechanics.html#cb9-2" tabindex="-1"></a><span class="co">#&gt; 572.9308 [N]</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="units-in-fluid-mechanics.html#cb3-1" tabindex="-1"></a><span class="co">#If you travel at 88 ft/sec for 1 hour, how many km would you travel?</span></span>
+<span id="cb3-2"><a href="units-in-fluid-mechanics.html#cb3-2" tabindex="-1"></a>v <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">88</span>, ft<span class="sc">/</span>s)</span>
+<span id="cb3-3"><a href="units-in-fluid-mechanics.html#cb3-3" tabindex="-1"></a>t <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">1</span>, hour)</span>
+<span id="cb3-4"><a href="units-in-fluid-mechanics.html#cb3-4" tabindex="-1"></a>d <span class="ot">&lt;-</span> v<span class="sc">*</span>t</span>
+<span id="cb3-5"><a href="units-in-fluid-mechanics.html#cb3-5" tabindex="-1"></a>d</span>
+<span id="cb3-6"><a href="units-in-fluid-mechanics.html#cb3-6" tabindex="-1"></a><span class="co">#&gt; 316800 [ft]</span></span>
+<span id="cb3-7"><a href="units-in-fluid-mechanics.html#cb3-7" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(d, km)</span>
+<span id="cb3-8"><a href="units-in-fluid-mechanics.html#cb3-8" tabindex="-1"></a><span class="co">#&gt; 96.56064 [km]</span></span>
+<span id="cb3-9"><a href="units-in-fluid-mechanics.html#cb3-9" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="units-in-fluid-mechanics.html#cb3-10" tabindex="-1"></a><span class="co">#What is the weight of a 4 slug mass, in pounds and Newtons?</span></span>
+<span id="cb3-11"><a href="units-in-fluid-mechanics.html#cb3-11" tabindex="-1"></a>m <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="dv">4</span>, slug)</span>
+<span id="cb3-12"><a href="units-in-fluid-mechanics.html#cb3-12" tabindex="-1"></a>g <span class="ot">&lt;-</span> units<span class="sc">::</span><span class="fu">set_units</span>(<span class="fl">32.2</span>, ft<span class="sc">/</span>s<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb3-13"><a href="units-in-fluid-mechanics.html#cb3-13" tabindex="-1"></a>w <span class="ot">&lt;-</span> m<span class="sc">*</span>g</span>
+<span id="cb3-14"><a href="units-in-fluid-mechanics.html#cb3-14" tabindex="-1"></a><span class="co">#Notice the units are technically correct, but have not been simplified in this case</span></span>
+<span id="cb3-15"><a href="units-in-fluid-mechanics.html#cb3-15" tabindex="-1"></a>w</span>
+<span id="cb3-16"><a href="units-in-fluid-mechanics.html#cb3-16" tabindex="-1"></a><span class="co">#&gt; 128.8 [ft*slug/s^2]</span></span>
+<span id="cb3-17"><a href="units-in-fluid-mechanics.html#cb3-17" tabindex="-1"></a><span class="co">#These can be set manually to verify that lbf (pound-force) is a valid equivalent</span></span>
+<span id="cb3-18"><a href="units-in-fluid-mechanics.html#cb3-18" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, lbf)</span>
+<span id="cb3-19"><a href="units-in-fluid-mechanics.html#cb3-19" tabindex="-1"></a><span class="co">#&gt; 128.8 [lbf]</span></span>
+<span id="cb3-20"><a href="units-in-fluid-mechanics.html#cb3-20" tabindex="-1"></a>units<span class="sc">::</span><span class="fu">set_units</span>(w, N)</span>
+<span id="cb3-21"><a href="units-in-fluid-mechanics.html#cb3-21" tabindex="-1"></a><span class="co">#&gt; 572.9308 [N]</span></span></code></pre></div>
 
 </div>
             </section>
