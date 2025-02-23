@@ -254,6 +254,14 @@ fig:gwdd-3
 fig:gwdd-5
 exm:ex-dd1
 fig:gwdd-8
+fig:gw-bound1
+fig:gw-bound2
+fig:gw-cz1
+eq:gwcz-1
+eq:gwcz-2
+eq:gwcz-3
+exm:ex-cz1
+fig:gwcz-4
 eq:gwcj-t1
 eq:gwcj-t2
 exm:ex-dd2
@@ -391,6 +399,8 @@ groundwater-flow-under-steady-state-conditions
 drawdown-due-to-pumping
 steady-state-well-drawdowns
 theis1
+boundaries-near-pumping-wells
+capture-zones
 determining-aquifer-characteristics-from-drawdown-observations
 cooper-jacob-approximation
 solving-the-theis-equation-for-a-more-robust-solution

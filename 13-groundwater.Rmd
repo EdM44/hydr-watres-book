@@ -292,14 +292,14 @@ The much more common situation is for wells to be operated for discrete times, s
   s=h_0-h=\frac{Q}{4\pi T}W(u)
     (\#eq:gwdd-t1)
 \end{equation}
-where W(u) is the well function (or exponential integral) of the Boltzman variable in Equation \@ref(eq:gwdd-t2).
+where W(u) is the well function (or exponential integral) of the Boltzman variable, $u$, as in Equation \@ref(eq:gwdd-t2).
 \begin{equation}
   u=\frac{r^2S}{4Tt}
     (\#eq:gwdd-t2)
 \end{equation}
-The W(u) function is often approximated by the (infinite) timeseries:
+The $W(u)$ function is often approximated by the (infinite) timeseries:
 \begin{equation}
-  W(u)=-0.5772 - ln(u) + u - \frac{u^2}{2 \cdot 2!} +  \frac{u^3}{3 \cdot 3!} -  \frac{u^4}{4 \cdot 4!} + ...
+  W(u)=-0.5772 - \ln(u) + u - \frac{u^2}{2 \cdot 2!} +  \frac{u^3}{3 \cdot 3!} -  \frac{u^4}{4 \cdot 4!} + ...
     (\#eq:gwdd-t3)
 \end{equation}
 
@@ -385,6 +385,83 @@ plot(total$t, total$drawdown, xlab="time, hr", ylab="drawdown, ft",
 grid()
 ```
 
+### Boundaries near pumping wells
+
+The theoretical equations for calculating drawdown assume infinite horizontal extent. In reality the drawdown due to pumping a well can be influenced by boundaries such as nearby rivers. These can be accommodated by including _image_ wells, which are pumping (or recharge) wells that do not exist but can be used to simulate the effect of a river or impermeable boundary. Two common idealized boundaries are illustrated in Figure \@ref(fig:gw-bound1).
+
+(ref:figgwbound1) Two common types of boundaries and how they are represented in a groundwater flow analysis [@heath_basic_2004].
+
+```{r gw-bound1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "49%", fig.cap='(ref:figgwbound1)',fig.show='hold'}
+knitr::include_graphics(c('images/gw_boundary_river.png', 'images/gw_boundary_impermeable.png'))
+```
+
+Including the effect of a boundary only requires including (by adding) the drawdown or recharge from the image well. The presence of a river (or other constant head boundary like a lake) will tend to lessen the drawdown; an impermeable boundary increases the drawdown.
+
+When plotting drawdown data, the effect of these boundaries appears similar to Figure \@ref(fig:gw-bound2).
+
+(ref:figgwbound2) The effects of two common types of boundaries on time-drawdown plots. [@lohman_sw_ground-water_1972].
+
+```{r gw-bound2, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "49%", fig.cap='(ref:figgwbound2)',fig.show='hold'}
+knitr::include_graphics(c('images/gw_boundary_river_effect.png', 'images/gw_boundary_impermeable_effect.png'))
+```
+
+### Capture zones
+
+As opposed to the above drawdowns, which all assumed a static, horizontal water table or piezometric surface, if the water table has a slope the flow patterns are more complex. One effect is that of a _capture zone_, where flow within it eventually will be drawn in by the well, and flow outside the capture zone continues downgradient. the is depicted in Figure \@ref(fig:gw-cz1).
+
+(ref:figcapcz1) The capture zone is an aquifer with a gradient that slopes downward to the left. [@us_army_corps_of_engineers_engineering_1999].
+
+```{r gw-cz1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "49%", fig.cap='(ref:figcapcz1)'}
+knitr::include_graphics('images/gw_capture_zone.png')
+```
+
+The location of the capture zone (for a confined aquifer) is described by Equation \@ref(eq:gwcz-1).
+\begin{equation}
+  x = \frac{-y}{\tan(2 \pi K b i y/Q)}
+    (\#eq:gwcz-1)
+\end{equation}
+The maximum value for y, as x $\rightarrow$ $\infty$ is
+\begin{equation}
+  y_{max} = \frac{Q}{2Kbi}
+    (\#eq:gwcz-2)
+\end{equation}
+The location of the downgradient stagnation point is defined by
+\begin{equation}
+  x_o = \frac{-Q}{2 \pi Kbi}
+    (\#eq:gwcz-3)
+\end{equation}
+where _i_ is the regional piezometric gradient ($\Delta h/\Delta L$). 
+
+::: {.example #ex-cz1}
+A contamination source has been identified 90 ft from a pumping well, downgradient. With known aquifer properties K=1500 ft/d, i=0.3% and b=75ft, what pumping rate would be permissible (while keeping the contamination source outside the capture zone)?
+:::
+Rearrange Equation \@ref(eq:gwcz-3) to solve for Q using $x_o=-90$ ft.
+```{r gwcz-2, message=FALSE}
+K <- 1500   # ft/d
+i <- 0.003  # gradient, unitless
+b <- 75.    # ft
+x0 <- -90    # ft
+Q <- -2*pi*K*b*i*x0
+cat(sprintf("Flow = %.0f ft%s/d", Q, '\u00B3'))
+```
+
+The complete capture zone can be determined as well.
+```{r gwcz-3, message=FALSE}
+capzone <- function(y) {
+  -y/(tan(2*pi*K*b*i*y/Q))
+}
+ymax <- Q/(2*K*b*i)
+y <- seq(from=-ymax*0.9, to=ymax*.9, length.out = 100)
+x <- capzone(y)
+```
+Viewing the capture zone can be helpful.
+```{r gwcz-4, message=FALSE, warning=FALSE, echo=FALSE, fig.align = 'center', out.width = "60%", fig.cap='The capture zone for the example.'}
+plot(x, y, type = "l", xlab = "x, ft", ylab = "y, ft")
+grid()
+points(0,0)
+text(0, 0, "Pumping well", pos = 4, offset = 0.3)
+```
+
 ## Determining aquifer characteristics from drawdown observations
 
 If there is a complete set of drawdown observations at a set distance from a pumping well, values for storativity and transimissivity can be obtained using any equation solving technique. There are also graphical methods [@heath_basic_2004].
@@ -392,6 +469,7 @@ If there is a complete set of drawdown observations at a set distance from a pum
 ### Cooper-Jacob approximation
 
 When enough time has passed, or when $u < 0.05$, the drawdown from a pumping well tends to plot linearly on a semi-logarithmic graph. When this is the case, the first two terms in Equation \@ref(eq:gwdd-t3) dominate, and terms to the right can be neglected, which will plot as a straight line with drawdown plotted against the logarithm of time. The graphical procedure consists of:
+
 * Plot drawdown, s, vs time on log-linear paper (time on the log scale).
 * Fit a straight line to the linear portion of the drawdown data.
 * Where the straight line intersects s=0, the corresponding time $t_0$ is recorded.

@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2025-02-21" />
+<meta name="date" content="2025-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -366,6 +366,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="13.4.1" data-path="groundwater.html"><a href="groundwater.html#steady-state-well-drawdowns"><i class="fa fa-check"></i><b>13.4.1</b> Steady state well drawdowns</a></li>
 <li class="chapter" data-level="13.4.2" data-path="groundwater.html"><a href="groundwater.html#theis1"><i class="fa fa-check"></i><b>13.4.2</b> Time-varying well drawdowns</a></li>
+<li class="chapter" data-level="13.4.3" data-path="groundwater.html"><a href="groundwater.html#boundaries-near-pumping-wells"><i class="fa fa-check"></i><b>13.4.3</b> Boundaries near pumping wells</a></li>
+<li class="chapter" data-level="13.4.4" data-path="groundwater.html"><a href="groundwater.html#capture-zones"><i class="fa fa-check"></i><b>13.4.4</b> Capture zones</a></li>
 </ul></li>
 <li class="chapter" data-level="13.5" data-path="groundwater.html"><a href="groundwater.html#determining-aquifer-characteristics-from-drawdown-observations"><i class="fa fa-check"></i><b>13.5</b> Determining aquifer characteristics from drawdown observations</a>
 <ul>
@@ -755,14 +757,14 @@ Figure 13.12: Drawdown in a pumping well in a confined aquifer <span class="cita
   s=h_0-h=\frac{Q}{4\pi T}W(u)
     \tag{13.8}
 \end{equation}\]</span>
-where W(u) is the well function (or exponential integral) of the Boltzman variable in Equation <a href="groundwater.html#eq:gwdd-t2">(13.9)</a>.
+where W(u) is the well function (or exponential integral) of the Boltzman variable, <span class="math inline">\(u\)</span>, as in Equation <a href="groundwater.html#eq:gwdd-t2">(13.9)</a>.
 <span class="math display" id="eq:gwdd-t2">\[\begin{equation}
   u=\frac{r^2S}{4Tt}
     \tag{13.9}
 \end{equation}\]</span>
-The W(u) function is often approximated by the (infinite) timeseries:
+The <span class="math inline">\(W(u)\)</span> function is often approximated by the (infinite) timeseries:
 <span class="math display" id="eq:gwdd-t3">\[\begin{equation}
-  W(u)=-0.5772 - ln(u) + u - \frac{u^2}{2 \cdot 2!} +  \frac{u^3}{3 \cdot 3!} -  \frac{u^4}{4 \cdot 4!} + ...
+  W(u)=-0.5772 - \ln(u) + u - \frac{u^2}{2 \cdot 2!} +  \frac{u^3}{3 \cdot 3!} -  \frac{u^4}{4 \cdot 4!} + ...
     \tag{13.10}
 \end{equation}\]</span></p>
 <p>Methods to estimate drawdown at a given time are straightforward, while doing the reverse – estimating aquifer parameters given drawdown – are more complicated. Methods to do this manually are demonstrated in any groundwater hydrology text, such as <span class="citation">(<a href="references.html#ref-heath_basic_2004">Heath, 2004</a>)</span>. Some functions for this are included in the <code>hydromisc</code> package, which are shown in the examples below.</p>
@@ -839,90 +841,164 @@ Figure 13.15: Drawdown for a well with pumping turned off at t=6 hours.
 </p>
 </div>
 </div>
+<div id="boundaries-near-pumping-wells" class="section level3 hasAnchor" number="13.4.3">
+<h3><span class="header-section-number">13.4.3</span> Boundaries near pumping wells<a href="groundwater.html#boundaries-near-pumping-wells" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The theoretical equations for calculating drawdown assume infinite horizontal extent. In reality the drawdown due to pumping a well can be influenced by boundaries such as nearby rivers. These can be accommodated by including <em>image</em> wells, which are pumping (or recharge) wells that do not exist but can be used to simulate the effect of a river or impermeable boundary. Two common idealized boundaries are illustrated in Figure <a href="groundwater.html#fig:gw-bound1">13.16</a>.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gw-bound1"></span>
+<img src="images/gw_boundary_river.png" alt="Two common types of boundaries and how they are represented in a groundwater flow analysis (Heath, 2004)." width="49%" /><img src="images/gw_boundary_impermeable.png" alt="Two common types of boundaries and how they are represented in a groundwater flow analysis (Heath, 2004)." width="49%" />
+<p class="caption">
+Figure 13.16: Two common types of boundaries and how they are represented in a groundwater flow analysis <span class="citation">(<a href="references.html#ref-heath_basic_2004">Heath, 2004</a>)</span>.
+</p>
+</div>
+<p>Including the effect of a boundary only requires including (by adding) the drawdown or recharge from the image well. The presence of a river (or other constant head boundary like a lake) will tend to lessen the drawdown; an impermeable boundary increases the drawdown.</p>
+<p>When plotting drawdown data, the effect of these boundaries appears similar to Figure <a href="groundwater.html#fig:gw-bound2">13.17</a>.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gw-bound2"></span>
+<img src="images/gw_boundary_river_effect.png" alt="The effects of two common types of boundaries on time-drawdown plots. (Lohman, S.W., 1972)." width="49%" /><img src="images/gw_boundary_impermeable_effect.png" alt="The effects of two common types of boundaries on time-drawdown plots. (Lohman, S.W., 1972)." width="49%" />
+<p class="caption">
+Figure 13.17: The effects of two common types of boundaries on time-drawdown plots. <span class="citation">(<a href="references.html#ref-lohman_sw_ground-water_1972">Lohman, S.W., 1972</a>)</span>.
+</p>
+</div>
+</div>
+<div id="capture-zones" class="section level3 hasAnchor" number="13.4.4">
+<h3><span class="header-section-number">13.4.4</span> Capture zones<a href="groundwater.html#capture-zones" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As opposed to the above drawdowns, which all assumed a static, horizontal water table or piezometric surface, if the water table has a slope the flow patterns are more complex. One effect is that of a <em>capture zone</em>, where flow within it eventually will be drawn in by the well, and flow outside the capture zone continues downgradient. the is depicted in Figure <a href="groundwater.html#fig:gw-cz1">13.18</a>.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gw-cz1"></span>
+<img src="images/gw_capture_zone.png" alt="The capture zone is an aquifer with a gradient that slopes downward to the left. (U.S. Army Corps of Engineers, 1999)." width="49%" />
+<p class="caption">
+Figure 13.18: The capture zone is an aquifer with a gradient that slopes downward to the left. <span class="citation">(<a href="references.html#ref-us_army_corps_of_engineers_engineering_1999">U.S. Army Corps of Engineers, 1999</a>)</span>.
+</p>
+</div>
+<p>The location of the capture zone (for a confined aquifer) is described by Equation <a href="groundwater.html#eq:gwcz-1">(13.11)</a>.
+<span class="math display" id="eq:gwcz-1">\[\begin{equation}
+  x = \frac{-y}{\tan(2 \pi K b i y/Q)}
+    \tag{13.11}
+\end{equation}\]</span>
+The maximum value for y, as x <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(\infty\)</span> is
+<span class="math display" id="eq:gwcz-2">\[\begin{equation}
+  y_{max} = \frac{Q}{2Kbi}
+    \tag{13.12}
+\end{equation}\]</span>
+The location of the downgradient stagnation point is defined by
+<span class="math display" id="eq:gwcz-3">\[\begin{equation}
+  x_o = \frac{-Q}{2 \pi Kbi}
+    \tag{13.13}
+\end{equation}\]</span>
+where <em>i</em> is the regional piezometric gradient (<span class="math inline">\(\Delta h/\Delta L\)</span>).</p>
+<div class="example">
+<p><span id="exm:ex-cz1" class="example"><strong>Example 13.3  </strong></span>A contamination source has been identified 90 ft from a pumping well, downgradient. With known aquifer properties K=1500 ft/d, i=0.3% and b=75ft, what pumping rate would be permissible (while keeping the contamination source outside the capture zone)?</p>
+</div>
+<p>Rearrange Equation <a href="groundwater.html#eq:gwcz-3">(13.13)</a> to solve for Q using <span class="math inline">\(x_o=-90\)</span> ft.</p>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="groundwater.html#cb196-1" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">1500</span>   <span class="co"># ft/d</span></span>
+<span id="cb196-2"><a href="groundwater.html#cb196-2" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="fl">0.003</span>  <span class="co"># gradient, unitless</span></span>
+<span id="cb196-3"><a href="groundwater.html#cb196-3" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fl">75.</span>    <span class="co"># ft</span></span>
+<span id="cb196-4"><a href="groundwater.html#cb196-4" tabindex="-1"></a>x0 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">90</span>    <span class="co"># ft</span></span>
+<span id="cb196-5"><a href="groundwater.html#cb196-5" tabindex="-1"></a>Q <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>K<span class="sc">*</span>b<span class="sc">*</span>i<span class="sc">*</span>x0</span>
+<span id="cb196-6"><a href="groundwater.html#cb196-6" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Flow = %.0f ft%s/d&quot;</span>, Q, <span class="st">&#39;\u00B3&#39;</span>))</span>
+<span id="cb196-7"><a href="groundwater.html#cb196-7" tabindex="-1"></a><span class="co">#&gt; Flow = 190852 ft³/d</span></span></code></pre></div>
+<p>The complete capture zone can be determined as well.</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="groundwater.html#cb197-1" tabindex="-1"></a>capzone <span class="ot">&lt;-</span> <span class="cf">function</span>(y) {</span>
+<span id="cb197-2"><a href="groundwater.html#cb197-2" tabindex="-1"></a>  <span class="sc">-</span>y<span class="sc">/</span>(<span class="fu">tan</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>K<span class="sc">*</span>b<span class="sc">*</span>i<span class="sc">*</span>y<span class="sc">/</span>Q))</span>
+<span id="cb197-3"><a href="groundwater.html#cb197-3" tabindex="-1"></a>}</span>
+<span id="cb197-4"><a href="groundwater.html#cb197-4" tabindex="-1"></a>ymax <span class="ot">&lt;-</span> Q<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>K<span class="sc">*</span>b<span class="sc">*</span>i)</span>
+<span id="cb197-5"><a href="groundwater.html#cb197-5" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="sc">-</span>ymax<span class="sc">*</span><span class="fl">0.9</span>, <span class="at">to=</span>ymax<span class="sc">*</span>.<span class="dv">9</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb197-6"><a href="groundwater.html#cb197-6" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">capzone</span>(y)</span></code></pre></div>
+Viewing the capture zone can be helpful.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gwcz-4"></span>
+<img src="hydr-watres_main_files/figure-html/gwcz-4-1.png" alt="The capture zone for the example." width="60%" />
+<p class="caption">
+Figure 13.19: The capture zone for the example.
+</p>
+</div>
+</div>
 </div>
 <div id="determining-aquifer-characteristics-from-drawdown-observations" class="section level2 hasAnchor" number="13.5">
 <h2><span class="header-section-number">13.5</span> Determining aquifer characteristics from drawdown observations<a href="groundwater.html#determining-aquifer-characteristics-from-drawdown-observations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If there is a complete set of drawdown observations at a set distance from a pumping well, values for storativity and transimissivity can be obtained using any equation solving technique. There are also graphical methods <span class="citation">(<a href="references.html#ref-heath_basic_2004">Heath, 2004</a>)</span>.</p>
 <div id="cooper-jacob-approximation" class="section level3 hasAnchor" number="13.5.1">
 <h3><span class="header-section-number">13.5.1</span> Cooper-Jacob approximation<a href="groundwater.html#cooper-jacob-approximation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>When enough time has passed, or when <span class="math inline">\(u &lt; 0.05\)</span>, the drawdown from a pumping well tends to plot linearly on a semi-logarithmic graph. When this is the case, the first two terms in Equation <a href="groundwater.html#eq:gwdd-t3">(13.10)</a> dominate, and terms to the right can be neglected, which will plot as a straight line with drawdown plotted against the logarithm of time. The graphical procedure consists of:
-* Plot drawdown, s, vs time on log-linear paper (time on the log scale).
-* Fit a straight line to the linear portion of the drawdown data.
-* Where the straight line intersects s=0, the corresponding time <span class="math inline">\(t_0\)</span> is recorded.
-* The difference in drawdowns, <span class="math inline">\(\Delta s\)</span> at two times separated by one log cycle is recorded.</p>
-<p>Transmissivity and Storativity are then calculated using Equations <a href="groundwater.html#eq:gwcj-t1">(13.11)</a> and <a href="groundwater.html#eq:gwcj-t2">(13.12)</a>.
+<p>When enough time has passed, or when <span class="math inline">\(u &lt; 0.05\)</span>, the drawdown from a pumping well tends to plot linearly on a semi-logarithmic graph. When this is the case, the first two terms in Equation <a href="groundwater.html#eq:gwdd-t3">(13.10)</a> dominate, and terms to the right can be neglected, which will plot as a straight line with drawdown plotted against the logarithm of time. The graphical procedure consists of:</p>
+<ul>
+<li>Plot drawdown, s, vs time on log-linear paper (time on the log scale).</li>
+<li>Fit a straight line to the linear portion of the drawdown data.</li>
+<li>Where the straight line intersects s=0, the corresponding time <span class="math inline">\(t_0\)</span> is recorded.</li>
+<li>The difference in drawdowns, <span class="math inline">\(\Delta s\)</span> at two times separated by one log cycle is recorded.</li>
+</ul>
+<p>Transmissivity and Storativity are then calculated using Equations <a href="groundwater.html#eq:gwcj-t1">(13.14)</a> and <a href="groundwater.html#eq:gwcj-t2">(13.15)</a>.
 <span class="math display" id="eq:gwcj-t1">\[\begin{equation}
   T=\frac{2.3 Q}{4\pi \Delta s}
-    \tag{13.11}
+    \tag{13.14}
 \end{equation}\]</span>
 <span class="math display" id="eq:gwcj-t2">\[\begin{equation}
   S=\frac{2.25 T t_0}{r^2}
-    \tag{13.12}
+    \tag{13.15}
 \end{equation}\]</span></p>
 <div class="example">
-<p><span id="exm:ex-dd2" class="example"><strong>Example 13.3  </strong></span>Use the drawdown data imported <a href="groundwater.html#theis1">above</a>, measured 60 m from the pumping well, and use the same pumping rate of 2500 m<span class="math inline">\(^3\)</span>/d. Estimate the storativity and transmissivity of the aquifer material using the Cooper-Jacob approximation.</p>
+<p><span id="exm:ex-dd2" class="example"><strong>Example 13.4  </strong></span>Use the drawdown data imported <a href="groundwater.html#theis1">above</a>, measured 60 m from the pumping well, and use the same pumping rate of 2500 m<span class="math inline">\(^3\)</span>/d. Estimate the storativity and transmissivity of the aquifer material using the Cooper-Jacob approximation.</p>
 </div>
 <p>Following the steps above, first plot the data to estimate the time after which the curve becomes linear.</p>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="groundwater.html#cb196-1" tabindex="-1"></a><span class="fu">plot</span>(df_dd<span class="sc">$</span>t_min, df_dd<span class="sc">$</span>s_m, <span class="at">ylim =</span> <span class="fu">rev</span>(<span class="fu">range</span>(df_dd<span class="sc">$</span>s_m)), <span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="dv">300</span>), </span>
-<span id="cb196-2"><a href="groundwater.html#cb196-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;time, min&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;drawdown, m&quot;</span>, <span class="at">log =</span> <span class="st">&quot;x&quot;</span>, <span class="at">pch =</span> <span class="dv">1</span>)</span>
-<span id="cb196-3"><a href="groundwater.html#cb196-3" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="groundwater.html#cb198-1" tabindex="-1"></a><span class="fu">plot</span>(df_dd<span class="sc">$</span>t_min, df_dd<span class="sc">$</span>s_m, <span class="at">ylim =</span> <span class="fu">rev</span>(<span class="fu">range</span>(df_dd<span class="sc">$</span>s_m)), <span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="dv">300</span>), </span>
+<span id="cb198-2"><a href="groundwater.html#cb198-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;time, min&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;drawdown, m&quot;</span>, <span class="at">log =</span> <span class="st">&quot;x&quot;</span>, <span class="at">pch =</span> <span class="dv">1</span>)</span>
+<span id="cb198-3"><a href="groundwater.html#cb198-3" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:cj-1"></span>
 <img src="hydr-watres_main_files/figure-html/cj-1-1.png" alt="Observed drawdown vs. time." width="60%" />
 <p class="caption">
-Figure 13.16: Observed drawdown vs. time.
+Figure 13.20: Observed drawdown vs. time.
 </p>
 </div>
-<p>From Figure <a href="groundwater.html#fig:cj-1">13.16</a> the relationship appears linear (in semi-log space) after time <span class="math inline">\(\approx\)</span> 4 min. The data will be subset to times later than that, and a straight line fit to that subset. Note that x is the base-10 logarithm of time.</p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="groundwater.html#cb197-1" tabindex="-1"></a>df_dd_linear <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(df_dd, t_min <span class="sc">&gt;</span> <span class="dv">4</span>)</span>
-<span id="cb197-2"><a href="groundwater.html#cb197-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">log10</span>(df_dd_linear<span class="sc">$</span>t_min)</span>
-<span id="cb197-3"><a href="groundwater.html#cb197-3" tabindex="-1"></a>y <span class="ot">&lt;-</span> df_dd_linear<span class="sc">$</span>s_m</span>
-<span id="cb197-4"><a href="groundwater.html#cb197-4" tabindex="-1"></a>lf <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span></code></pre></div>
+<p>From Figure <a href="groundwater.html#fig:cj-1">13.20</a> the relationship appears linear (in semi-log space) after time <span class="math inline">\(\approx\)</span> 4 min. The data will be subset to times later than that, and a straight line fit to that subset. Note that x is the base-10 logarithm of time.</p>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="groundwater.html#cb199-1" tabindex="-1"></a>df_dd_linear <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(df_dd, t_min <span class="sc">&gt;</span> <span class="dv">4</span>)</span>
+<span id="cb199-2"><a href="groundwater.html#cb199-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">log10</span>(df_dd_linear<span class="sc">$</span>t_min)</span>
+<span id="cb199-3"><a href="groundwater.html#cb199-3" tabindex="-1"></a>y <span class="ot">&lt;-</span> df_dd_linear<span class="sc">$</span>s_m</span>
+<span id="cb199-4"><a href="groundwater.html#cb199-4" tabindex="-1"></a>lf <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span></code></pre></div>
 <p>Now <span class="math inline">\(t_0\)</span> and <span class="math inline">\(\Delta s\)</span> can be estimated. Note that time is transformed back from base-10 logarithm.</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="groundwater.html#cb198-1" tabindex="-1"></a>t0 <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="fu">coef</span>(lf)[[<span class="dv">1</span>]]<span class="sc">/</span><span class="fu">coef</span>(lf)[[<span class="dv">2</span>]])</span>
-<span id="cb198-2"><a href="groundwater.html#cb198-2" tabindex="-1"></a>s_logcycle <span class="ot">&lt;-</span> <span class="fu">predict</span>(lf, <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="fu">log10</span>(<span class="dv">10</span>), <span class="fu">log10</span>(<span class="dv">100</span>))))</span>
-<span id="cb198-3"><a href="groundwater.html#cb198-3" tabindex="-1"></a>delta_s <span class="ot">&lt;-</span> s_logcycle[[<span class="dv">2</span>]] <span class="sc">-</span> s_logcycle[[<span class="dv">1</span>]]</span></code></pre></div>
-Figure <a href="groundwater.html#fig:cj-4">13.17</a> is an annotated plot showing the work above.
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="groundwater.html#cb200-1" tabindex="-1"></a>t0 <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="fu">coef</span>(lf)[[<span class="dv">1</span>]]<span class="sc">/</span><span class="fu">coef</span>(lf)[[<span class="dv">2</span>]])</span>
+<span id="cb200-2"><a href="groundwater.html#cb200-2" tabindex="-1"></a>s_logcycle <span class="ot">&lt;-</span> <span class="fu">predict</span>(lf, <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="fu">log10</span>(<span class="dv">10</span>), <span class="fu">log10</span>(<span class="dv">100</span>))))</span>
+<span id="cb200-3"><a href="groundwater.html#cb200-3" tabindex="-1"></a>delta_s <span class="ot">&lt;-</span> s_logcycle[[<span class="dv">2</span>]] <span class="sc">-</span> s_logcycle[[<span class="dv">1</span>]]</span></code></pre></div>
+Figure <a href="groundwater.html#fig:cj-4">13.21</a> is an annotated plot showing the work above.
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:cj-4"></span>
 <img src="hydr-watres_main_files/figure-html/cj-4-1.png" alt="Observed drawdown vs. time illustrating the Cooper-Jacob calculations." width="60%" />
 <p class="caption">
-Figure 13.17: Observed drawdown vs. time illustrating the Cooper-Jacob calculations.
+Figure 13.21: Observed drawdown vs. time illustrating the Cooper-Jacob calculations.
 </p>
 </div>
-<p>Finally, the known information is used to calculate <span class="math inline">\(T\)</span> and <span class="math inline">\(S\)</span> using Equations <a href="groundwater.html#eq:gwcj-t1">(13.11)</a> and <a href="groundwater.html#eq:gwcj-t2">(13.12)</a>.</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="groundwater.html#cb199-1" tabindex="-1"></a>Q <span class="ot">&lt;-</span> <span class="dv">2500</span>  <span class="co"># m3/d</span></span>
-<span id="cb199-2"><a href="groundwater.html#cb199-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">60</span></span>
-<span id="cb199-3"><a href="groundwater.html#cb199-3" tabindex="-1"></a>Tr <span class="ot">&lt;-</span> <span class="fl">2.3</span><span class="sc">*</span>Q<span class="sc">/</span>(<span class="dv">4</span><span class="sc">*</span>pi<span class="sc">*</span>delta_s)     <span class="co">#m^2/d</span></span>
-<span id="cb199-4"><a href="groundwater.html#cb199-4" tabindex="-1"></a>St <span class="ot">&lt;-</span> <span class="fl">2.25</span><span class="sc">*</span>Tr<span class="sc">*</span>(t0<span class="sc">/</span><span class="dv">1440</span>)<span class="sc">/</span>(r<span class="sc">^</span><span class="dv">2</span>)  <span class="co"># need to convert t0 to days so units cancel</span></span>
-<span id="cb199-5"><a href="groundwater.html#cb199-5" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Cooper-Jacob estimates: T= %.2f m%s/day   S=%.5f&quot;</span>, Tr, <span class="st">&#39;\u00B2&#39;</span>, St))</span>
-<span id="cb199-6"><a href="groundwater.html#cb199-6" tabindex="-1"></a><span class="co">#&gt; Cooper-Jacob estimates: T= 1144.67 m²/day   S=0.00019</span></span></code></pre></div>
+<p>Finally, the known information is used to calculate <span class="math inline">\(T\)</span> and <span class="math inline">\(S\)</span> using Equations <a href="groundwater.html#eq:gwcj-t1">(13.14)</a> and <a href="groundwater.html#eq:gwcj-t2">(13.15)</a>.</p>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="groundwater.html#cb201-1" tabindex="-1"></a>Q <span class="ot">&lt;-</span> <span class="dv">2500</span>  <span class="co"># m3/d</span></span>
+<span id="cb201-2"><a href="groundwater.html#cb201-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">60</span></span>
+<span id="cb201-3"><a href="groundwater.html#cb201-3" tabindex="-1"></a>Tr <span class="ot">&lt;-</span> <span class="fl">2.3</span><span class="sc">*</span>Q<span class="sc">/</span>(<span class="dv">4</span><span class="sc">*</span>pi<span class="sc">*</span>delta_s)     <span class="co">#m^2/d</span></span>
+<span id="cb201-4"><a href="groundwater.html#cb201-4" tabindex="-1"></a>St <span class="ot">&lt;-</span> <span class="fl">2.25</span><span class="sc">*</span>Tr<span class="sc">*</span>(t0<span class="sc">/</span><span class="dv">1440</span>)<span class="sc">/</span>(r<span class="sc">^</span><span class="dv">2</span>)  <span class="co"># need to convert t0 to days so units cancel</span></span>
+<span id="cb201-5"><a href="groundwater.html#cb201-5" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Cooper-Jacob estimates: T= %.2f m%s/day   S=%.5f&quot;</span>, Tr, <span class="st">&#39;\u00B2&#39;</span>, St))</span>
+<span id="cb201-6"><a href="groundwater.html#cb201-6" tabindex="-1"></a><span class="co">#&gt; Cooper-Jacob estimates: T= 1144.67 m²/day   S=0.00019</span></span></code></pre></div>
 <p>A final check of that <span class="math inline">\(u&lt;0.05\)</span> will ensure the times used were appropriate for this method.</p>
 </div>
 <div id="solving-the-theis-equation-for-a-more-robust-solution" class="section level3 hasAnchor" number="13.5.2">
 <h3><span class="header-section-number">13.5.2</span> Solving the Theis equation for a more robust solution<a href="groundwater.html#solving-the-theis-equation-for-a-more-robust-solution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Direct fitting of the Theis equation <a href="groundwater.html#eq:gwdd-t1">(13.8)</a> is straightforward using any root seeking method. Many optimal solution methods require reasonable first guesses, and the Cooper-Jacob method serves well for that. A function to do exactly that is included in the <em>hydromisc</em> package, specifically the function <code>theis_params</code> (which was adapted from the <a href="https://github.com/FrancoisBertone/rhytool">rhytool</a> package).</p>
 <div class="example">
-<p><span id="exm:ex-dd3" class="example"><strong>Example 13.4  </strong></span>Use the same drawdown data imported <a href="groundwater.html#theis1">above</a>, measured 60 m from the pumping well, and use the same pumping rate of 2500 m<span class="math inline">\(^3\)</span>/d. Estimate the storativity and transmissivity of the aquifer material.</p>
+<p><span id="exm:ex-dd3" class="example"><strong>Example 13.5  </strong></span>Use the same drawdown data imported <a href="groundwater.html#theis1">above</a>, measured 60 m from the pumping well, and use the same pumping rate of 2500 m<span class="math inline">\(^3\)</span>/d. Estimate the storativity and transmissivity of the aquifer material.</p>
 </div>
 <p>For convenience, set up the known data into variables, again being careful to use consistent units (m, d).</p>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="groundwater.html#cb200-1" tabindex="-1"></a>Q <span class="ot">&lt;-</span> <span class="dv">2500</span></span>
-<span id="cb200-2"><a href="groundwater.html#cb200-2" tabindex="-1"></a>t <span class="ot">&lt;-</span> df_dd<span class="sc">$</span>t_min<span class="sc">/</span><span class="dv">1440</span></span>
-<span id="cb200-3"><a href="groundwater.html#cb200-3" tabindex="-1"></a>s <span class="ot">&lt;-</span> df_dd<span class="sc">$</span>s_m</span>
-<span id="cb200-4"><a href="groundwater.html#cb200-4" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">60</span></span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="groundwater.html#cb202-1" tabindex="-1"></a>Q <span class="ot">&lt;-</span> <span class="dv">2500</span></span>
+<span id="cb202-2"><a href="groundwater.html#cb202-2" tabindex="-1"></a>t <span class="ot">&lt;-</span> df_dd<span class="sc">$</span>t_min<span class="sc">/</span><span class="dv">1440</span></span>
+<span id="cb202-3"><a href="groundwater.html#cb202-3" tabindex="-1"></a>s <span class="ot">&lt;-</span> df_dd<span class="sc">$</span>s_m</span>
+<span id="cb202-4"><a href="groundwater.html#cb202-4" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">60</span></span></code></pre></div>
 <p>Use the <em>theis_params</em> function to solve for transmissivity and storativity.</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="groundwater.html#cb201-1" tabindex="-1"></a>theis_params <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">theis_params</span>(<span class="at">Q=</span>Q, <span class="at">r=</span>r, <span class="at">s=</span>s, <span class="at">t=</span>t)</span>
-<span id="cb201-2"><a href="groundwater.html#cb201-2" tabindex="-1"></a><span class="fu">as.data.frame</span>(theis_params)</span>
-<span id="cb201-3"><a href="groundwater.html#cb201-3" tabindex="-1"></a><span class="co">#&gt;        Tr           St</span></span>
-<span id="cb201-4"><a href="groundwater.html#cb201-4" tabindex="-1"></a><span class="co">#&gt; 1 1138.17 0.0001926423</span></span></code></pre></div>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="groundwater.html#cb203-1" tabindex="-1"></a>theis_params <span class="ot">&lt;-</span> hydromisc<span class="sc">::</span><span class="fu">theis_params</span>(<span class="at">Q=</span>Q, <span class="at">r=</span>r, <span class="at">s=</span>s, <span class="at">t=</span>t)</span>
+<span id="cb203-2"><a href="groundwater.html#cb203-2" tabindex="-1"></a><span class="fu">as.data.frame</span>(theis_params)</span>
+<span id="cb203-3"><a href="groundwater.html#cb203-3" tabindex="-1"></a><span class="co">#&gt;        Tr           St</span></span>
+<span id="cb203-4"><a href="groundwater.html#cb203-4" tabindex="-1"></a><span class="co">#&gt; 1 1138.17 0.0001926423</span></span></code></pre></div>
 <p>These have refined the values estimated by the Cooper-Jacob method, though the Cooper-Jacob method produced very good approximations.</p>
 <p>Use the <code>drawdown</code> function created earlier to plot the theoretical fit of the drawdowns predicted using these parameters against the observations.</p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="groundwater.html#cb202-1" tabindex="-1"></a><span class="fu">plot</span>(t, s, <span class="at">xlab=</span><span class="st">&quot;time, day&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;drawdown, m&quot;</span>, <span class="at">log =</span> <span class="st">&quot;x&quot;</span>, <span class="at">pch =</span> <span class="dv">1</span>)</span>
-<span id="cb202-2"><a href="groundwater.html#cb202-2" tabindex="-1"></a><span class="fu">lines</span>(t, <span class="fu">drawdown</span>(<span class="at">t=</span>t, <span class="at">Q=</span>Q, <span class="at">r=</span>r, <span class="at">Tr=</span>theis_params<span class="sc">$</span>Tr, <span class="at">St=</span>theis_params<span class="sc">$</span>St))</span>
-<span id="cb202-3"><a href="groundwater.html#cb202-3" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Obs.&quot;</span>,<span class="st">&quot;Estimated&quot;</span>), <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">NA</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">1</span>))</span>
-<span id="cb202-4"><a href="groundwater.html#cb202-4" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="groundwater.html#cb204-1" tabindex="-1"></a><span class="fu">plot</span>(t, s, <span class="at">xlab=</span><span class="st">&quot;time, day&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;drawdown, m&quot;</span>, <span class="at">log =</span> <span class="st">&quot;x&quot;</span>, <span class="at">pch =</span> <span class="dv">1</span>)</span>
+<span id="cb204-2"><a href="groundwater.html#cb204-2" tabindex="-1"></a><span class="fu">lines</span>(t, <span class="fu">drawdown</span>(<span class="at">t=</span>t, <span class="at">Q=</span>Q, <span class="at">r=</span>r, <span class="at">Tr=</span>theis_params<span class="sc">$</span>Tr, <span class="at">St=</span>theis_params<span class="sc">$</span>St))</span>
+<span id="cb204-3"><a href="groundwater.html#cb204-3" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Obs.&quot;</span>,<span class="st">&quot;Estimated&quot;</span>), <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">NA</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">1</span>))</span>
+<span id="cb204-4"><a href="groundwater.html#cb204-4" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:gwdd-11"></span>
 <img src="hydr-watres_main_files/figure-html/gwdd-11-1.png" alt="Comparison of observed drawdown to those predicted with estimated aquifer characteristics." width="60%" />
 <p class="caption">
-Figure 13.18: Comparison of observed drawdown to those predicted with estimated aquifer characteristics.
+Figure 13.22: Comparison of observed drawdown to those predicted with estimated aquifer characteristics.
 </p>
 </div>
 <p>The fit is very good in this case, and it should be noted that there are substantial bounds of uncertainty in aquifer parameter estimates.</p>
@@ -933,85 +1009,85 @@ Figure 13.18: Comparison of observed drawdown to those predicted with estimated 
 <p>The Gravity Recovery and Climate Experiment (GRACE) is an international effort (the US lead is <a href="https://grace.jpl.nasa.gov/">NASA</a>) that began collecting data with the launch of a pair of satellites in March 2002. The satellites from GRACE were decomissioned in October 2017, with a follow-on mission (<a href="https://gracefo.jpl.nasa.gov/">GRACE-FO</a>) launched on May 2018. By making detailed measurements of Earth’s gravitational field, they have been able to estimate changes in water reservoirs over land, ice and oceans.</p>
 <p>Data from GRACE are available through each of the research groups involved, with variations in the processing algorithms used to filter, adjust, and correct biases in the measurements. In what follows, data produced by <a href="https://grace.jpl.nasa.gov/data/get-data/jpl_global_mascons/">NASA’s Jet Propulsion Lab</a>, distributed by the <a href="https://www.earthdata.nasa.gov/">NASA Earthdata portal</a>. Many variables are distributed with the data, but for groundwater the one of interest is <a href="https://grace.jpl.nasa.gov/data/monthly-mass-grids/">equivalent water thickness</a> (<em>lwe_thickness</em>) expressed in cm. These are referred to as mass concentration blocks, or mascons. After the corrections have been applied, differences in <em>lwe_thickness</em> over time represent an estimate of the change in the mass of water and ice at any location.</p>
 <p>The data are distributed by <a href="https://www.earthdata.nasa.gov/">NASA</a> in a single file covering 2002-present for the globe (at a spatial resolution of 0.5 degrees, or about 400 km). For what follows, data distributed with the <em>hydromisc</em> package will be used. What is included below is the preprocessing done to the raw data to reduce the size of the file. Here only the area covering the Western U.S. is included. The preprocessing only uses the <a href="https://cran.r-project.org/package=terra">terra</a> and <a href="https://cran.r-project.org/package=geodata">geodata</a> packages. These steps may be adapted if more updated data is used or if another region is studied.</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="groundwater.html#cb203-1" tabindex="-1"></a><span class="co"># The name of the raw data file from NASA-JPL</span></span>
-<span id="cb203-2"><a href="groundwater.html#cb203-2" tabindex="-1"></a>grace_file <span class="ot">&lt;-</span> <span class="st">&quot;GRCTellus.JPL.200204_202404.GLO.RL06.1M.MSCNv03CRI.nc&quot;</span></span>
-<span id="cb203-3"><a href="groundwater.html#cb203-3" tabindex="-1"></a></span>
-<span id="cb203-4"><a href="groundwater.html#cb203-4" tabindex="-1"></a><span class="co"># Only extract lwe_thickness</span></span>
-<span id="cb203-5"><a href="groundwater.html#cb203-5" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(grace_file), <span class="at">subds=</span><span class="st">&quot;lwe_thickness&quot;</span>)</span>
-<span id="cb203-6"><a href="groundwater.html#cb203-6" tabindex="-1"></a><span class="co"># download US state boundaries</span></span>
-<span id="cb203-7"><a href="groundwater.html#cb203-7" tabindex="-1"></a>us_states <span class="ot">&lt;-</span> geodata<span class="sc">::</span><span class="fu">gadm</span>(<span class="at">country=</span><span class="st">&quot;USA&quot;</span>, <span class="at">level=</span><span class="dv">1</span>, <span class="at">path=</span><span class="fu">tempdir</span>())</span>
-<span id="cb203-8"><a href="groundwater.html#cb203-8" tabindex="-1"></a></span>
-<span id="cb203-9"><a href="groundwater.html#cb203-9" tabindex="-1"></a><span class="co"># Make a new vector layer of only western states</span></span>
-<span id="cb203-10"><a href="groundwater.html#cb203-10" tabindex="-1"></a>wus_states <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Nebraska&quot;</span>,<span class="st">&quot;Washington&quot;</span>,<span class="st">&quot;New Mexico&quot;</span>,<span class="st">&quot;South Dakota&quot;</span>,<span class="st">&quot;Texas&quot;</span>,</span>
-<span id="cb203-11"><a href="groundwater.html#cb203-11" tabindex="-1"></a>                <span class="st">&quot;California&quot;</span>,<span class="st">&quot;Oregon&quot;</span>,<span class="st">&quot;Kansas&quot;</span>,<span class="st">&quot;Idaho&quot;</span>,<span class="st">&quot;Nevada&quot;</span>,<span class="st">&quot;Montana&quot;</span>,</span>
-<span id="cb203-12"><a href="groundwater.html#cb203-12" tabindex="-1"></a>                <span class="st">&quot;North Dakota&quot;</span>,<span class="st">&quot;Arizona&quot;</span>,<span class="st">&quot;Colorado&quot;</span>,<span class="st">&quot;Oklahoma&quot;</span>,<span class="st">&quot;Utah&quot;</span>,<span class="st">&quot;Wyoming&quot;</span>)</span>
-<span id="cb203-13"><a href="groundwater.html#cb203-13" tabindex="-1"></a>wus <span class="ot">=</span> us_states[<span class="fu">match</span>(<span class="fu">toupper</span>(wus_states),<span class="fu">toupper</span>(us_states<span class="sc">$</span>NAME_1)),]</span>
-<span id="cb203-14"><a href="groundwater.html#cb203-14" tabindex="-1"></a></span>
-<span id="cb203-15"><a href="groundwater.html#cb203-15" tabindex="-1"></a><span class="co"># Project it to ensure it has the same spatial reference as the data</span></span>
-<span id="cb203-16"><a href="groundwater.html#cb203-16" tabindex="-1"></a>wus_t <span class="ot">=</span> terra<span class="sc">::</span><span class="fu">project</span>(wus, terra<span class="sc">::</span><span class="fu">crs</span>(r))</span>
-<span id="cb203-17"><a href="groundwater.html#cb203-17" tabindex="-1"></a></span>
-<span id="cb203-18"><a href="groundwater.html#cb203-18" tabindex="-1"></a><span class="co"># Crop out a the desired domain</span></span>
-<span id="cb203-19"><a href="groundwater.html#cb203-19" tabindex="-1"></a>r_wus <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(terra<span class="sc">::</span><span class="fu">rotate</span>(r), wus_t, <span class="at">snap=</span><span class="st">&quot;out&quot;</span>)</span>
-<span id="cb203-20"><a href="groundwater.html#cb203-20" tabindex="-1"></a></span>
-<span id="cb203-21"><a href="groundwater.html#cb203-21" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeCDF</span>(r_wus, <span class="st">&quot;GRCTellus.JPL.200204_202404_wus.nc&quot;</span>, <span class="at">varname =</span> <span class="st">&quot;lwe_thickness&quot;</span>, </span>
-<span id="cb203-22"><a href="groundwater.html#cb203-22" tabindex="-1"></a>                <span class="at">longname =</span> <span class="st">&quot;Liquid_Water_Equivalent_Thickness&quot;</span>, </span>
-<span id="cb203-23"><a href="groundwater.html#cb203-23" tabindex="-1"></a>                <span class="at">unit =</span> <span class="st">&quot;cm&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="groundwater.html#cb205-1" tabindex="-1"></a><span class="co"># The name of the raw data file from NASA-JPL</span></span>
+<span id="cb205-2"><a href="groundwater.html#cb205-2" tabindex="-1"></a>grace_file <span class="ot">&lt;-</span> <span class="st">&quot;GRCTellus.JPL.200204_202404.GLO.RL06.1M.MSCNv03CRI.nc&quot;</span></span>
+<span id="cb205-3"><a href="groundwater.html#cb205-3" tabindex="-1"></a></span>
+<span id="cb205-4"><a href="groundwater.html#cb205-4" tabindex="-1"></a><span class="co"># Only extract lwe_thickness</span></span>
+<span id="cb205-5"><a href="groundwater.html#cb205-5" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(grace_file), <span class="at">subds=</span><span class="st">&quot;lwe_thickness&quot;</span>)</span>
+<span id="cb205-6"><a href="groundwater.html#cb205-6" tabindex="-1"></a><span class="co"># download US state boundaries</span></span>
+<span id="cb205-7"><a href="groundwater.html#cb205-7" tabindex="-1"></a>us_states <span class="ot">&lt;-</span> geodata<span class="sc">::</span><span class="fu">gadm</span>(<span class="at">country=</span><span class="st">&quot;USA&quot;</span>, <span class="at">level=</span><span class="dv">1</span>, <span class="at">path=</span><span class="fu">tempdir</span>())</span>
+<span id="cb205-8"><a href="groundwater.html#cb205-8" tabindex="-1"></a></span>
+<span id="cb205-9"><a href="groundwater.html#cb205-9" tabindex="-1"></a><span class="co"># Make a new vector layer of only western states</span></span>
+<span id="cb205-10"><a href="groundwater.html#cb205-10" tabindex="-1"></a>wus_states <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Nebraska&quot;</span>,<span class="st">&quot;Washington&quot;</span>,<span class="st">&quot;New Mexico&quot;</span>,<span class="st">&quot;South Dakota&quot;</span>,<span class="st">&quot;Texas&quot;</span>,</span>
+<span id="cb205-11"><a href="groundwater.html#cb205-11" tabindex="-1"></a>                <span class="st">&quot;California&quot;</span>,<span class="st">&quot;Oregon&quot;</span>,<span class="st">&quot;Kansas&quot;</span>,<span class="st">&quot;Idaho&quot;</span>,<span class="st">&quot;Nevada&quot;</span>,<span class="st">&quot;Montana&quot;</span>,</span>
+<span id="cb205-12"><a href="groundwater.html#cb205-12" tabindex="-1"></a>                <span class="st">&quot;North Dakota&quot;</span>,<span class="st">&quot;Arizona&quot;</span>,<span class="st">&quot;Colorado&quot;</span>,<span class="st">&quot;Oklahoma&quot;</span>,<span class="st">&quot;Utah&quot;</span>,<span class="st">&quot;Wyoming&quot;</span>)</span>
+<span id="cb205-13"><a href="groundwater.html#cb205-13" tabindex="-1"></a>wus <span class="ot">=</span> us_states[<span class="fu">match</span>(<span class="fu">toupper</span>(wus_states),<span class="fu">toupper</span>(us_states<span class="sc">$</span>NAME_1)),]</span>
+<span id="cb205-14"><a href="groundwater.html#cb205-14" tabindex="-1"></a></span>
+<span id="cb205-15"><a href="groundwater.html#cb205-15" tabindex="-1"></a><span class="co"># Project it to ensure it has the same spatial reference as the data</span></span>
+<span id="cb205-16"><a href="groundwater.html#cb205-16" tabindex="-1"></a>wus_t <span class="ot">=</span> terra<span class="sc">::</span><span class="fu">project</span>(wus, terra<span class="sc">::</span><span class="fu">crs</span>(r))</span>
+<span id="cb205-17"><a href="groundwater.html#cb205-17" tabindex="-1"></a></span>
+<span id="cb205-18"><a href="groundwater.html#cb205-18" tabindex="-1"></a><span class="co"># Crop out a the desired domain</span></span>
+<span id="cb205-19"><a href="groundwater.html#cb205-19" tabindex="-1"></a>r_wus <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(terra<span class="sc">::</span><span class="fu">rotate</span>(r), wus_t, <span class="at">snap=</span><span class="st">&quot;out&quot;</span>)</span>
+<span id="cb205-20"><a href="groundwater.html#cb205-20" tabindex="-1"></a></span>
+<span id="cb205-21"><a href="groundwater.html#cb205-21" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">writeCDF</span>(r_wus, <span class="st">&quot;GRCTellus.JPL.200204_202404_wus.nc&quot;</span>, <span class="at">varname =</span> <span class="st">&quot;lwe_thickness&quot;</span>, </span>
+<span id="cb205-22"><a href="groundwater.html#cb205-22" tabindex="-1"></a>                <span class="at">longname =</span> <span class="st">&quot;Liquid_Water_Equivalent_Thickness&quot;</span>, </span>
+<span id="cb205-23"><a href="groundwater.html#cb205-23" tabindex="-1"></a>                <span class="at">unit =</span> <span class="st">&quot;cm&quot;</span>)</span></code></pre></div>
 <div class="example">
-<p><span id="exm:ex-grace1" class="example"><strong>Example 13.5  </strong></span>Calculate using GRACE satellite data how much water was replenished in the Central Valley between Sept 2014 and Sept 2015 to see if cutbacks resulted in any aquifer recovery. This will replicate some of an early study that used GRACE data to estimate aquifer sustainability. <span class="citation">(<a href="references.html#ref-famiglietti_global_2014">Famiglietti, 2014</a>)</span>. While that reference used (in their Figure 1) September-November averages, we’ll just use Sept values for simplicity.</p>
+<p><span id="exm:ex-grace1" class="example"><strong>Example 13.6  </strong></span>Calculate using GRACE satellite data how much water was replenished in the Central Valley between Sept 2014 and Sept 2015 to see if cutbacks resulted in any aquifer recovery. This will replicate some of an early study that used GRACE data to estimate aquifer sustainability. <span class="citation">(<a href="references.html#ref-famiglietti_global_2014">Famiglietti, 2014</a>)</span>. While that reference used (in their Figure 1) September-November averages, we’ll just use Sept values for simplicity.</p>
 </div>
 <p>First, read in the preprocessed file from the hydromisc package.</p>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="groundwater.html#cb204-1" tabindex="-1"></a>grace_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;GRCTellus.JPL.200204_202404_wus.nc&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
-<span id="cb204-2"><a href="groundwater.html#cb204-2" tabindex="-1"></a>r_wus <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(grace_file)</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="groundwater.html#cb206-1" tabindex="-1"></a>grace_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;GRCTellus.JPL.200204_202404_wus.nc&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
+<span id="cb206-2"><a href="groundwater.html#cb206-2" tabindex="-1"></a>r_wus <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(grace_file)</span></code></pre></div>
 <p>While not shown here, you’ll need the <em>wus_t</em> layer created in the preprocessing step, so run those commands from the preprocessing step. Next, download the shapefile of the aquifer boundary. For California’s central valley, it was obtained from the <a href="https://www.usgs.gov/mission-areas/water-resources/maps">USGS</a>, which some searching led to <a href="https://www.sciencebase.gov/catalog/item/6314056bd34e36012efa2bf4">here</a>. There are many sources for aquifer boundaries, but in the US starting with the USGS is always productive.</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="groundwater.html#cb205-1" tabindex="-1"></a>cv_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;CV_Alluvial_Bnd.shp&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
-<span id="cb205-2"><a href="groundwater.html#cb205-2" tabindex="-1"></a>cv_bound <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(cv_file)</span>
-<span id="cb205-3"><a href="groundwater.html#cb205-3" tabindex="-1"></a></span>
-<span id="cb205-4"><a href="groundwater.html#cb205-4" tabindex="-1"></a><span class="co">#Convert the spatial reference of the aquifer boundary to match the GRACE data</span></span>
-<span id="cb205-5"><a href="groundwater.html#cb205-5" tabindex="-1"></a>cv_bound_t <span class="ot">=</span> terra<span class="sc">::</span><span class="fu">project</span>(cv_bound, terra<span class="sc">::</span><span class="fu">crs</span>(r_wus))</span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="groundwater.html#cb207-1" tabindex="-1"></a>cv_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;CV_Alluvial_Bnd.shp&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
+<span id="cb207-2"><a href="groundwater.html#cb207-2" tabindex="-1"></a>cv_bound <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(cv_file)</span>
+<span id="cb207-3"><a href="groundwater.html#cb207-3" tabindex="-1"></a></span>
+<span id="cb207-4"><a href="groundwater.html#cb207-4" tabindex="-1"></a><span class="co">#Convert the spatial reference of the aquifer boundary to match the GRACE data</span></span>
+<span id="cb207-5"><a href="groundwater.html#cb207-5" tabindex="-1"></a>cv_bound_t <span class="ot">=</span> terra<span class="sc">::</span><span class="fu">project</span>(cv_bound, terra<span class="sc">::</span><span class="fu">crs</span>(r_wus))</span></code></pre></div>
 <p>The measurement dates are contained in the netcdf file downloaded from NASA, and they are correctly interpreted by <a href="https://cran.r-project.org/package=terra">terra</a>. Identify the time steps associated with the dates of interest, make sure there is only one measurement for each date (multiple measurements could be averaged, but again for simplicity only one observation is used here). The difference between <em>lwe_thickness</em> between the two dates can then be calculated.</p>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="groundwater.html#cb206-1" tabindex="-1"></a>dates <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">time</span>(r_wus)</span>
-<span id="cb206-2"><a href="groundwater.html#cb206-2" tabindex="-1"></a>idx1 <span class="ot">&lt;-</span> <span class="fu">which</span>(dates <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2014-09-01&quot;</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2014-09-30&quot;</span>))</span>
-<span id="cb206-3"><a href="groundwater.html#cb206-3" tabindex="-1"></a>idx2 <span class="ot">&lt;-</span> <span class="fu">which</span>(dates <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2015-09-01&quot;</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2015-09-30&quot;</span>))</span>
-<span id="cb206-4"><a href="groundwater.html#cb206-4" tabindex="-1"></a></span>
-<span id="cb206-5"><a href="groundwater.html#cb206-5" tabindex="-1"></a><span class="co"># Check to be sure there is exactly one for each</span></span>
-<span id="cb206-6"><a href="groundwater.html#cb206-6" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(idx1) <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> <span class="fu">length</span>(idx2) <span class="sc">!=</span> <span class="dv">1</span>) <span class="fu">message</span>(<span class="st">&quot;Must have exactly one index for each date&quot;</span>)</span>
-<span id="cb206-7"><a href="groundwater.html#cb206-7" tabindex="-1"></a></span>
-<span id="cb206-8"><a href="groundwater.html#cb206-8" tabindex="-1"></a><span class="co"># Extract the data for the dates of interest</span></span>
-<span id="cb206-9"><a href="groundwater.html#cb206-9" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> r_wus[[idx1]]</span>
-<span id="cb206-10"><a href="groundwater.html#cb206-10" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> r_wus[[idx2]]</span>
-<span id="cb206-11"><a href="groundwater.html#cb206-11" tabindex="-1"></a></span>
-<span id="cb206-12"><a href="groundwater.html#cb206-12" tabindex="-1"></a><span class="co"># Calculate the liquid water equivalent change over the period</span></span>
-<span id="cb206-13"><a href="groundwater.html#cb206-13" tabindex="-1"></a>rdelta <span class="ot">&lt;-</span> r2 <span class="sc">-</span> r1</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="groundwater.html#cb208-1" tabindex="-1"></a>dates <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">time</span>(r_wus)</span>
+<span id="cb208-2"><a href="groundwater.html#cb208-2" tabindex="-1"></a>idx1 <span class="ot">&lt;-</span> <span class="fu">which</span>(dates <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2014-09-01&quot;</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2014-09-30&quot;</span>))</span>
+<span id="cb208-3"><a href="groundwater.html#cb208-3" tabindex="-1"></a>idx2 <span class="ot">&lt;-</span> <span class="fu">which</span>(dates <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2015-09-01&quot;</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2015-09-30&quot;</span>))</span>
+<span id="cb208-4"><a href="groundwater.html#cb208-4" tabindex="-1"></a></span>
+<span id="cb208-5"><a href="groundwater.html#cb208-5" tabindex="-1"></a><span class="co"># Check to be sure there is exactly one for each</span></span>
+<span id="cb208-6"><a href="groundwater.html#cb208-6" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(idx1) <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> <span class="fu">length</span>(idx2) <span class="sc">!=</span> <span class="dv">1</span>) <span class="fu">message</span>(<span class="st">&quot;Must have exactly one index for each date&quot;</span>)</span>
+<span id="cb208-7"><a href="groundwater.html#cb208-7" tabindex="-1"></a></span>
+<span id="cb208-8"><a href="groundwater.html#cb208-8" tabindex="-1"></a><span class="co"># Extract the data for the dates of interest</span></span>
+<span id="cb208-9"><a href="groundwater.html#cb208-9" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> r_wus[[idx1]]</span>
+<span id="cb208-10"><a href="groundwater.html#cb208-10" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> r_wus[[idx2]]</span>
+<span id="cb208-11"><a href="groundwater.html#cb208-11" tabindex="-1"></a></span>
+<span id="cb208-12"><a href="groundwater.html#cb208-12" tabindex="-1"></a><span class="co"># Calculate the liquid water equivalent change over the period</span></span>
+<span id="cb208-13"><a href="groundwater.html#cb208-13" tabindex="-1"></a>rdelta <span class="ot">&lt;-</span> r2 <span class="sc">-</span> r1</span></code></pre></div>
 <p>A preliminary plot can be helpful as a reality check.</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="groundwater.html#cb207-1" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(rdelta)</span>
-<span id="cb207-2"><a href="groundwater.html#cb207-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(wus_t)</span>
-<span id="cb207-3"><a href="groundwater.html#cb207-3" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(cv_bound_t, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="groundwater.html#cb209-1" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(rdelta)</span>
+<span id="cb209-2"><a href="groundwater.html#cb209-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(wus_t)</span>
+<span id="cb209-3"><a href="groundwater.html#cb209-3" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(cv_bound_t, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:gwgrace-6"></span>
 <img src="hydr-watres_main_files/figure-html/gwgrace-6-1.png" alt="Change in water level between Sept 2014 and Sept 2015, cm." width="50%" />
 <p class="caption">
-Figure 13.19: Change in water level between Sept 2014 and Sept 2015, cm.
+Figure 13.23: Change in water level between Sept 2014 and Sept 2015, cm.
 </p>
 </div>
 <p>Now crop out only the aquifer extent of interest and plot that.</p>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="groundwater.html#cb208-1" tabindex="-1"></a>gw_cv <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(rdelta, cv_bound_t, <span class="at">snap=</span><span class="st">&quot;out&quot;</span>)</span>
-<span id="cb208-2"><a href="groundwater.html#cb208-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(gw_cv)</span>
-<span id="cb208-3"><a href="groundwater.html#cb208-3" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(wus_t)</span>
-<span id="cb208-4"><a href="groundwater.html#cb208-4" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(cv_bound_t, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="groundwater.html#cb210-1" tabindex="-1"></a>gw_cv <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(rdelta, cv_bound_t, <span class="at">snap=</span><span class="st">&quot;out&quot;</span>)</span>
+<span id="cb210-2"><a href="groundwater.html#cb210-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(gw_cv)</span>
+<span id="cb210-3"><a href="groundwater.html#cb210-3" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(wus_t)</span>
+<span id="cb210-4"><a href="groundwater.html#cb210-4" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">lines</span>(cv_bound_t, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:gwgrace-7"></span>
 <img src="hydr-watres_main_files/figure-html/gwgrace-7-1.png" alt="Change in water level for the California Central Valley aquifer between Sept 2014 and Sept 2015, cm." width="50%" />
 <p class="caption">
-Figure 13.20: Change in water level for the California Central Valley aquifer between Sept 2014 and Sept 2015, cm.
+Figure 13.24: Change in water level for the California Central Valley aquifer between Sept 2014 and Sept 2015, cm.
 </p>
 </div>
 <p>Finally, find the mean change in water storage over this area, and multiply this by the aquifer area to estimate a volume of water.</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="groundwater.html#cb209-1" tabindex="-1"></a><span class="co"># Find the area of the CV aquifer</span></span>
-<span id="cb209-2"><a href="groundwater.html#cb209-2" tabindex="-1"></a>cvaquifer_area <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">expanse</span>(cv_bound_t, <span class="at">unit=</span><span class="st">&quot;m&quot;</span>)</span>
-<span id="cb209-3"><a href="groundwater.html#cb209-3" tabindex="-1"></a>meanchange <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(terra<span class="sc">::</span><span class="fu">extract</span>(rdelta, cv_bound_t, <span class="at">fun=</span>mean, <span class="at">ID=</span><span class="cn">FALSE</span>))</span>
-<span id="cb209-4"><a href="groundwater.html#cb209-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Aquifer area: %.3e m^2, LWE mean change: %.2f cm</span><span class="sc">\n</span><span class="st">&quot;</span>, cvaquifer_area, meanchange))</span>
-<span id="cb209-5"><a href="groundwater.html#cb209-5" tabindex="-1"></a><span class="co">#&gt; Aquifer area: 5.324e+10 m^2, LWE mean change: -2.91 cm</span></span>
-<span id="cb209-6"><a href="groundwater.html#cb209-6" tabindex="-1"></a>volchange <span class="ot">&lt;-</span> cvaquifer_area <span class="sc">*</span> meanchange<span class="sc">/</span><span class="dv">100</span> <span class="co"># convert to cubic meters</span></span>
-<span id="cb209-7"><a href="groundwater.html#cb209-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Volume change: %.3e m^3</span><span class="sc">\n</span><span class="st">&quot;</span>, volchange))</span>
-<span id="cb209-8"><a href="groundwater.html#cb209-8" tabindex="-1"></a><span class="co">#&gt; Volume change: -1.547e+09 m^3</span></span></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="groundwater.html#cb211-1" tabindex="-1"></a><span class="co"># Find the area of the CV aquifer</span></span>
+<span id="cb211-2"><a href="groundwater.html#cb211-2" tabindex="-1"></a>cvaquifer_area <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">expanse</span>(cv_bound_t, <span class="at">unit=</span><span class="st">&quot;m&quot;</span>)</span>
+<span id="cb211-3"><a href="groundwater.html#cb211-3" tabindex="-1"></a>meanchange <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(terra<span class="sc">::</span><span class="fu">extract</span>(rdelta, cv_bound_t, <span class="at">fun=</span>mean, <span class="at">ID=</span><span class="cn">FALSE</span>))</span>
+<span id="cb211-4"><a href="groundwater.html#cb211-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Aquifer area: %.3e m^2, LWE mean change: %.2f cm</span><span class="sc">\n</span><span class="st">&quot;</span>, cvaquifer_area, meanchange))</span>
+<span id="cb211-5"><a href="groundwater.html#cb211-5" tabindex="-1"></a><span class="co">#&gt; Aquifer area: 5.324e+10 m^2, LWE mean change: -2.91 cm</span></span>
+<span id="cb211-6"><a href="groundwater.html#cb211-6" tabindex="-1"></a>volchange <span class="ot">&lt;-</span> cvaquifer_area <span class="sc">*</span> meanchange<span class="sc">/</span><span class="dv">100</span> <span class="co"># convert to cubic meters</span></span>
+<span id="cb211-7"><a href="groundwater.html#cb211-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Volume change: %.3e m^3</span><span class="sc">\n</span><span class="st">&quot;</span>, volchange))</span>
+<span id="cb211-8"><a href="groundwater.html#cb211-8" tabindex="-1"></a><span class="co">#&gt; Volume change: -1.547e+09 m^3</span></span></code></pre></div>
 <p>Based on this data the aquifer replenishment effort was not successful during this period.</p>
 
 </div>
