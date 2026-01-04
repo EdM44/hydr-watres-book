@@ -65,7 +65,7 @@ flowline <- sf::st_read(ndhsubsetfile, "NHDFlowline_Network", quiet = TRUE)
 ```
 
 In the example above, _nhd_subset_ has four layers of _sf_ objects, one of which is the _NHDFlowline_ layer that is used in what follows. What is displayed in Figure \@ref(fig:wbfig) is a static image produced using the [mapview](https://cran.r-project.org/package=mapview) function _mapshot_.
-```{r, message=FALSE, eval=FALSE}
+```{r mapview1, message=FALSE, eval=FALSE}
 mapview::mapview(basin, legend=FALSE) +
   mapview::mapview(flowline, color = "cyan", col.regions = "white", lwd = 3, legend=FALSE) +
   mapview::mapview(gauge, color = "red", col.regions = "white", cex = 3, legend=FALSE)
@@ -76,7 +76,7 @@ knitr::include_graphics('images/nhdplus_basin.png')
 ``` 
 
 In this example the flows with the prefix *qc* (representing the QCMA flows described in the [NHDPlus User's Guide](https://pubs.usgs.gov/publication/ofr20191096)) are extracted to represent naturalized flows. These are also converted to _mm_ using the total basin drainage area and the number of days per month.
-```{r message=FALSE}
+```{r nhdplus_df_assembly, message=FALSE}
 # Extract the data for only the outlet reach
 outlet <- subset(flowline, flowline$comid == gauge$comid)
 drainage_area_km2 <- outlet$totdasqkm
@@ -393,7 +393,7 @@ There are also many sources of precipitation data already interpolated to a regu
 datafile <- system.file("extdata", "prcp_cropped.tif", package="hydromisc")
 prcp <- terra::rast(datafile)
 scc_bound <- terra::vect(hydromisc::scc_county)
-scc_precip <- terra::crop(prcp, scc_bound)
+scc_precip <- terra::crop(prcp, scc_bound, mask=TRUE)
 terra::plot(scc_precip, plg=list(title="Precip\n(mm)", title.cex=0.7))
 terra::plot(scc_bound, add=TRUE)
 ```

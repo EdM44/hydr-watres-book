@@ -206,7 +206,7 @@ par(cex=0.8, mgp = c(2,0.7,0))
 plot(Ts, nus, xlab = xlbl, ylab = ylbl, type="l")
 ```
 
-## Atmosperic Properties
+## Atmospheric Properties
 
 Since water interacts with the atmosphere, through processes like evaporation and condensation, some basic properties of air are helpful. Selected characteristics of the standard atmosphere, as determined by the International Civil Aviation Organization (ICAO), are included in the _hydraulics_ package. Three functions _atmpres_, _atmdens_, and _atmtemp_ return different properties of the standard atmosphere, which vary with altitude. These are summarized in Table \@ref(tab:atmos-props-SI) for SI units and Table \@ref(tab:atmos-props-Eng) for US (or Eng) units. 
 

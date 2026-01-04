@@ -49,7 +49,7 @@ knitr::include_graphics('images/goulds_pump_3409.png')
 
 The three selected points, selected manually across the range of the curve, are used to generate a polynomial fit to the curve. There are many forms of equations that could be used to fit these three points to a smooth, continuous curve. Three common ones are implemented in the _hydraulics_ package, shown in Table \@ref(tab:pump-5).
 ```{r pump-5, echo=FALSE}
-knitr::kable(data.frame(type=c("poly1","poly2","poly3"), Equation=c("$h=a+{b}{Q}+{c}{Q}^2$","$h=a+{c}{Q}^2$","$h_{shutoff}+{c}{Q}^2$")), format="pipe", padding=0, escape = F,  booktabs = TRUE, caption = "Common equation forms for pump characteristic curves.")
+knitr::kable(data.frame(type=c("poly1","poly2","poly3"), Equation=c("$h=a+{b}{Q}+{c}{Q}^2$","$h=a+{c}{Q}^2$","$h=h_{shutoff}+{c}{Q}^2$")), format="pipe", padding=0, escape = F,  booktabs = TRUE, caption = "Common equation forms for pump characteristic curves.")
 ```
 The $h_{shutoff}$ value is the pump head at $Q={0}$. 
 

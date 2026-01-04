@@ -16,7 +16,9 @@ Before diving into peak flow analysis, it helps to refresh your background in ba
 * [A more thorough text, by Prof. G. Jay Kerns ](https://github.com/gjkerns/IPSUR/blob/master/inst/doc/IPSUR.pdf). This has [a companion R package](https://ipsur.org/).
 * [An online flood hydrology reference based in R, by Prof. Helen Fairweather](https://rpubs.com/hfairwea/ebook)
 
-Rather than repeat what is in those references, a couple of short demonstrations here will show some of the skills needed for flood hydrology. The first example illustrates binomial probabilities, which are useful for events with only two possible outcomes (e.g., a flood happens or it doesn't), where each outcome is independent and probabilities of each are constant. _R_ functions for distributions use a first letter to designate what it returns: _d_ is the density, _p_ is the (cumulative) distribution, _q_ is the quantile, _r_ is a random sequence.
+ _R_ functions for distributions use a first letter to designate what it returns: _d_ is the density, _p_ is the (cumulative) probability distribution, _q_ is the quantile, _r_ is a random sequence. For example, a set of 20 normally distributed random numbers can be generated with `rnorm(20)`. Review the [King](https://ww2.coastal.edu/kingw/statistics/R-tutorials/prob.html) reference above for other examples of using basic statistics in _R_.
+
+A couple of short demonstrations here will show some of the skills needed for flood hydrology. The first example illustrates binomial probability distribution, which is useful for events with only two possible outcomes (e.g., a flood happens or it doesn't), where each outcome is independent and probabilities of each are constant. Type `?Binomial` in the console to see _R_ documentation on the family of commands for this distribution.
 
 In _R_ the defaults for probabilities are to define them as $P[X~\le~x]$, or a probability of non-exceedance. Recall that a probability of exceedance is simply 1 - (probability of non-exceedance), or  $P[X~\gt~x] ~=~ 1-P[X~\le~x]$. In _R_, for quantiles or probabilities (using functions beginning with _q_ or _p_ like _pnorm_ or _qlnorm_) setting the argument _lower.tail_ to _FALSE_ uses a probability of exceedance instead of non-exceedance.
 
@@ -83,10 +85,11 @@ Using the older USGS site mapper, and specifying that inactive stations should a
 knitr::include_graphics('images/usgs_stations_select.png')
 ``` 
 
-While the data could be downloaded and saved locally through that link, it is convenient here to use the dataRetrieval command.
+While the data could be downloaded and saved locally through that link, it is convenient here to use the [dataRetrieval](https://cran.r-project.org/web/packages/dataRetrieval/vignettes/dataRetrieval.html) command. Note that this package is being rewritten, and [commands are changing](https://doi-usgs.github.io/dataRetrieval/articles/Status.html) as revisions occur.
 
 ```{r pf-1, message=FALSE, echo=TRUE, eval = FALSE}
-Qpeak_download <- dataRetrieval::readNWISpeak(siteNumbers="11169000")
+siteNumber <- "11169000"
+peakData <- dataRetrieval::readNWISpeak(siteNumber)
 ```
 
 The data used here are also available as part of the _hydromisc_ package, and may be obtained by typing `hydromisc::Qpeak_download`.

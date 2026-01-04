@@ -153,7 +153,7 @@ exm:ex-idf1
 fig:d-f2
 eq:d-f2
 fig:dm2
-fig:unnamed-chunk-26
+fig:unnamed-chunk-24
 eq:dm3
 fig:dm4
 fig:precip-interp
@@ -276,7 +276,7 @@ units-in-fluid-mechanics
 properties-of-water
 properties-important-for-water-standing-still
 properties-important-for-moving-water
-atmosperic-properties
+atmospheric-properties
 ideal-gas-law
 hydrostatics---forces-exerted-by-water-bodies
 pressure-and-force

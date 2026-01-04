@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2025-02-22" />
+<meta name="date" content="2026-01-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -67,9 +67,9 @@ engineering exercises using R.</p>" />
 <script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
 <script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
 <script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
-<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
 <script src="libs/HomeButton-0.0.1/home-button.js"></script>
 <script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<link href="libs/WS_Elev__ft-CSS-0.0.1/WS_Elev__ft_home-button.css" rel="stylesheet" />
 <script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
 <link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
 <link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
@@ -195,7 +195,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
 <li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
-<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmospheric-properties"><i class="fa fa-check"></i><b>2.3</b> Atmospheric Properties</a>
 <ul>
 <li class="chapter" data-level="2.3.1" data-path="properties-of-water.html"><a href="properties-of-water.html#ideal-gas-law"><i class="fa fa-check"></i><b>2.3.1</b> Ideal gas law</a></li>
 </ul></li>
@@ -425,16 +425,17 @@ All variables must have the same units, so typically <em>Q</em> is expressed as 
 <p>First considering Q, streamflow for USGS stream gauges can be directly downloaded from the USGS either from <a href="https://dashboard.waterdata.usgs.gov/app/nwd/en/">their website</a> or using the R package <a href="https://cran.r-project.org/package=dataRetrieval">dataRetrieval</a>. However, for many sites those streamflow observations will include effects of upstream impoundments (dams) or diversions, so will not represent the response of the watershed to precipitation. Another option is to use estimates of “naturalized” streamflows, which have been calculated by the USGS as part of its <a href="https://www.usgs.gov/national-hydrography/about-national-hydrography-products">National Hydrographic Dataset (NHD)</a> products. The R package <a href="https://cran.r-project.org/package=nhdplusTools">nhdplusTools</a> provides one way to access this. The packages <a href="https://cran.r-project.org/package=sf">sf</a> and <a href="https://cran.r-project.org/package=terra">terra</a> will be useful for manipulating some spatial objects created along the way.</p>
 <p>First the gauge and contributing basin are downloaded using <a href="https://cran.r-project.org/package=nhdplusTools">nhdplusTools</a>, and the river reach flowlines are identified.</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-1" tabindex="-1"></a><span class="fu">library</span>(nhdplusTools)</span>
-<span id="cb60-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-2" tabindex="-1"></a></span>
-<span id="cb60-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-3" tabindex="-1"></a>nwissite <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">featureSource =</span> <span class="st">&quot;nwissite&quot;</span>, <span class="at">featureID =</span> <span class="st">&quot;USGS-11169500&quot;</span>)</span>
-<span id="cb60-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-4" tabindex="-1"></a></span>
-<span id="cb60-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-5" tabindex="-1"></a><span class="co"># Retrieve gauge location and basin boundary objects</span></span>
-<span id="cb60-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-6" tabindex="-1"></a>gauge <span class="ot">&lt;-</span> <span class="fu">get_nldi_feature</span>(nwissite)</span>
-<span id="cb60-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-7" tabindex="-1"></a>basin <span class="ot">&lt;-</span> <span class="fu">get_nldi_basin</span>(nwissite)</span>
-<span id="cb60-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-8" tabindex="-1"></a>nldi_feature <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">featureSource =</span> <span class="st">&quot;comid&quot;</span>, <span class="at">featureID =</span> <span class="fu">as.integer</span>(gauge<span class="sc">$</span>comid)[<span class="dv">1</span>])</span>
-<span id="cb60-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-9" tabindex="-1"></a>flowline_nldi <span class="ot">&lt;-</span> <span class="fu">navigate_nldi</span>(nldi_feature, </span>
-<span id="cb60-10"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-10" tabindex="-1"></a>                               <span class="at">mode =</span> <span class="st">&quot;upstreamTributaries&quot;</span>, </span>
-<span id="cb60-11"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-11" tabindex="-1"></a>                               <span class="at">distance_km =</span> <span class="dv">1000</span>)</span></code></pre></div>
+<span id="cb60-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-2" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;nhdplusTools&#39; was built under R version 4.4.3</span></span>
+<span id="cb60-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-3" tabindex="-1"></a></span>
+<span id="cb60-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-4" tabindex="-1"></a>nwissite <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">featureSource =</span> <span class="st">&quot;nwissite&quot;</span>, <span class="at">featureID =</span> <span class="st">&quot;USGS-11169500&quot;</span>)</span>
+<span id="cb60-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-5" tabindex="-1"></a></span>
+<span id="cb60-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-6" tabindex="-1"></a><span class="co"># Retrieve gauge location and basin boundary objects</span></span>
+<span id="cb60-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-7" tabindex="-1"></a>gauge <span class="ot">&lt;-</span> <span class="fu">get_nldi_feature</span>(nwissite)</span>
+<span id="cb60-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-8" tabindex="-1"></a>basin <span class="ot">&lt;-</span> <span class="fu">get_nldi_basin</span>(nwissite)</span>
+<span id="cb60-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-9" tabindex="-1"></a>nldi_feature <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">featureSource =</span> <span class="st">&quot;comid&quot;</span>, <span class="at">featureID =</span> <span class="fu">as.integer</span>(gauge<span class="sc">$</span>comid)[<span class="dv">1</span>])</span>
+<span id="cb60-10"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-10" tabindex="-1"></a>flowline_nldi <span class="ot">&lt;-</span> <span class="fu">navigate_nldi</span>(nldi_feature, </span>
+<span id="cb60-11"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-11" tabindex="-1"></a>                               <span class="at">mode =</span> <span class="st">&quot;upstreamTributaries&quot;</span>, </span>
+<span id="cb60-12"><a href="the-hydrologic-cycle-and-precipitation.html#cb60-12" tabindex="-1"></a>                               <span class="at">distance_km =</span> <span class="dv">1000</span>)</span></code></pre></div>
 <p>With the basin and reaches defined, the nhdplus data for the basin contributing to the outlet gauge can be downloaded as a geopackage (.gpkg file). Here the current working directory is set as where the file will be written.</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-1" tabindex="-1"></a><span class="co"># Download the geopackage to the working directory</span></span>
 <span id="cb61-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb61-2" tabindex="-1"></a>output_file_download <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">&quot;subset_download.gpkg&quot;</span>)</span>
@@ -498,12 +499,13 @@ Figure 8.2: Watershed boundary and nhdplus stream network for USGS gauge 1116950
 <span id="cb65-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-8" tabindex="-1"></a></span>
 <span id="cb65-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-9" tabindex="-1"></a><span class="co"># Convert months to integers for plotting</span></span>
 <span id="cb65-10"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-10" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggplot2))</span>
-<span id="cb65-11"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-11" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df.plot, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">match</span>(Month,month.abb))) <span class="sc">+</span></span>
-<span id="cb65-12"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-12" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Flux, <span class="at">fill =</span> Component)) <span class="sc">+</span></span>
-<span id="cb65-13"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-13" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> precip, <span class="at">lty =</span> <span class="st">&quot;precip&quot;</span>), <span class="at">linewidth =</span> <span class="fl">1.25</span>) <span class="sc">+</span></span>
-<span id="cb65-14"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-14" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> month.abb) <span class="sc">+</span></span>
-<span id="cb65-15"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;&quot;</span>,<span class="at">y=</span><span class="st">&quot;Precip, Runoff or PET, mm&quot;</span>, <span class="at">linetype =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb65-16"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-16" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<span id="cb65-11"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-11" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;ggplot2&#39; was built under R version 4.4.3</span></span>
+<span id="cb65-12"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-12" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df.plot, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">match</span>(Month,month.abb))) <span class="sc">+</span></span>
+<span id="cb65-13"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-13" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Flux, <span class="at">fill =</span> Component)) <span class="sc">+</span></span>
+<span id="cb65-14"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-14" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> precip, <span class="at">lty =</span> <span class="st">&quot;precip&quot;</span>), <span class="at">linewidth =</span> <span class="fl">1.25</span>) <span class="sc">+</span></span>
+<span id="cb65-15"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-15" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> month.abb) <span class="sc">+</span></span>
+<span id="cb65-16"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-16" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;&quot;</span>,<span class="at">y=</span><span class="st">&quot;Precip, Runoff or PET, mm&quot;</span>, <span class="at">linetype =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb65-17"><a href="the-hydrologic-cycle-and-precipitation.html#cb65-17" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:wbprism"></span>
 <img src="hydr-watres_main_files/figure-html/wbprism-1.png" alt="Partial water budget for the basin contributing to USGS gauge 11169500." width="70%" />
 <p class="caption">
@@ -1025,8 +1027,8 @@ Figure 8.12: A double mass curve.
 <span class="citation">(<a href="references.html#ref-allen_crop_1998">Allen &amp; United Nations, 1998</a>)</span></p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb76-1" tabindex="-1"></a>linfit <span class="ot">=</span> <span class="fu">lm</span>(sum_X <span class="sc">~</span> sum_A, <span class="at">data =</span> annual_sum)</span>
 <span id="cb76-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb76-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>annual_sum<span class="sc">$</span>year,linfit<span class="sc">$</span>residuals, <span class="at">xlab =</span> <span class="st">&quot;Year&quot;</span>,<span class="at">ylab =</span> <span class="st">&quot;Residual of regression&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-26"></span>
-<img src="hydr-watres_main_files/figure-html/unnamed-chunk-26-1.png" alt="Residuals of the linear fit to the double-mass curve." width="60%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-24"></span>
+<img src="hydr-watres_main_files/figure-html/unnamed-chunk-24-1.png" alt="Residuals of the linear fit to the double-mass curve." width="60%" />
 <p class="caption">
 Figure 8.13: Residuals of the linear fit to the double-mass curve.
 </p>
@@ -1080,7 +1082,7 @@ Figure 8.15: Some basic precipitation interpolation methods, from the U.S. Natio
 <span id="cb78-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb78-2" tabindex="-1"></a>datafile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;prcp_cropped.tif&quot;</span>, <span class="at">package=</span><span class="st">&quot;hydromisc&quot;</span>)</span>
 <span id="cb78-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb78-3" tabindex="-1"></a>prcp <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(datafile)</span>
 <span id="cb78-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb78-4" tabindex="-1"></a>scc_bound <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(hydromisc<span class="sc">::</span>scc_county)</span>
-<span id="cb78-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb78-5" tabindex="-1"></a>scc_precip <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(prcp, scc_bound)</span>
+<span id="cb78-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb78-5" tabindex="-1"></a>scc_precip <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(prcp, scc_bound, <span class="at">mask=</span><span class="cn">TRUE</span>)</span>
 <span id="cb78-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb78-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(scc_precip, <span class="at">plg=</span><span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;Precip</span><span class="sc">\n</span><span class="st">(mm)&quot;</span>, <span class="at">title.cex=</span><span class="fl">0.7</span>))</span>
 <span id="cb78-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb78-7" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(scc_bound, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:chirps1"></span>
@@ -1092,13 +1094,13 @@ Figure 8.16: Annual Average Precipitation over Santa Clara County, mm
 <p>Spatial statistics are easily obtained using <a href="https://cran.r-project.org/package=terra">terra</a>, a versatile package for spatial analysis.</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-1" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">summary</span>(scc_precip)</span>
 <span id="cb79-2"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-2" tabindex="-1"></a><span class="co">#&gt;  chirps.v2.0.1981.2020.40yrs</span></span>
-<span id="cb79-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-3" tabindex="-1"></a><span class="co">#&gt;  Min.   : 197.1             </span></span>
-<span id="cb79-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-4" tabindex="-1"></a><span class="co">#&gt;  1st Qu.: 354.9             </span></span>
-<span id="cb79-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-5" tabindex="-1"></a><span class="co">#&gt;  Median : 447.9             </span></span>
-<span id="cb79-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-6" tabindex="-1"></a><span class="co">#&gt;  Mean   : 542.3             </span></span>
-<span id="cb79-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-7" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.: 652.3             </span></span>
+<span id="cb79-3"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-3" tabindex="-1"></a><span class="co">#&gt;  Min.   : 256.1             </span></span>
+<span id="cb79-4"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-4" tabindex="-1"></a><span class="co">#&gt;  1st Qu.: 395.3             </span></span>
+<span id="cb79-5"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-5" tabindex="-1"></a><span class="co">#&gt;  Median : 458.1             </span></span>
+<span id="cb79-6"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-6" tabindex="-1"></a><span class="co">#&gt;  Mean   : 548.0             </span></span>
+<span id="cb79-7"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-7" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.: 612.4             </span></span>
 <span id="cb79-8"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-8" tabindex="-1"></a><span class="co">#&gt;  Max.   :1297.2             </span></span>
-<span id="cb79-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-9" tabindex="-1"></a><span class="co">#&gt;  NA&#39;s   :5</span></span></code></pre></div>
+<span id="cb79-9"><a href="the-hydrologic-cycle-and-precipitation.html#cb79-9" tabindex="-1"></a><span class="co">#&gt;  NA&#39;s   :73</span></span></code></pre></div>
 
 </div>
 </div>

@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2025-02-22" />
+<meta name="date" content="2026-01-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -67,9 +67,9 @@ engineering exercises using R.</p>" />
 <script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
 <script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
 <script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
-<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
 <script src="libs/HomeButton-0.0.1/home-button.js"></script>
 <script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<link href="libs/WS_Elev__ft-CSS-0.0.1/WS_Elev__ft_home-button.css" rel="stylesheet" />
 <script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
 <link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
 <link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
@@ -195,7 +195,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="2.1" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-water-standing-still"><i class="fa fa-check"></i><b>2.1</b> Properties important for water standing still</a></li>
 <li class="chapter" data-level="2.2" data-path="properties-of-water.html"><a href="properties-of-water.html#properties-important-for-moving-water"><i class="fa fa-check"></i><b>2.2</b> Properties important for moving water</a></li>
-<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmosperic-properties"><i class="fa fa-check"></i><b>2.3</b> Atmosperic Properties</a>
+<li class="chapter" data-level="2.3" data-path="properties-of-water.html"><a href="properties-of-water.html#atmospheric-properties"><i class="fa fa-check"></i><b>2.3</b> Atmospheric Properties</a>
 <ul>
 <li class="chapter" data-level="2.3.1" data-path="properties-of-water.html"><a href="properties-of-water.html#ideal-gas-law"><i class="fa fa-check"></i><b>2.3.1</b> Ideal gas law</a></li>
 </ul></li>
@@ -412,7 +412,8 @@ Figure 10.1: The international bridge between Fort Kent, Maine and Clair, New Br
 <li><a href="https://github.com/gjkerns/IPSUR/blob/master/inst/doc/IPSUR.pdf">A more thorough text, by Prof. G. Jay Kerns</a>. This has <a href="https://ipsur.org/">a companion R package</a>.</li>
 <li><a href="https://rpubs.com/hfairwea/ebook">An online flood hydrology reference based in R, by Prof. Helen Fairweather</a></li>
 </ul>
-<p>Rather than repeat what is in those references, a couple of short demonstrations here will show some of the skills needed for flood hydrology. The first example illustrates binomial probabilities, which are useful for events with only two possible outcomes (e.g., a flood happens or it doesn’t), where each outcome is independent and probabilities of each are constant. <em>R</em> functions for distributions use a first letter to designate what it returns: <em>d</em> is the density, <em>p</em> is the (cumulative) distribution, <em>q</em> is the quantile, <em>r</em> is a random sequence.</p>
+<p><em>R</em> functions for distributions use a first letter to designate what it returns: <em>d</em> is the density, <em>p</em> is the (cumulative) probability distribution, <em>q</em> is the quantile, <em>r</em> is a random sequence. For example, a set of 20 normally distributed random numbers can be generated with <code>rnorm(20)</code>. Review the <a href="https://ww2.coastal.edu/kingw/statistics/R-tutorials/prob.html">King</a> reference above for other examples of using basic statistics in <em>R</em>.</p>
+<p>A couple of short demonstrations here will show some of the skills needed for flood hydrology. The first example illustrates binomial probability distribution, which is useful for events with only two possible outcomes (e.g., a flood happens or it doesn’t), where each outcome is independent and probabilities of each are constant. Type <code>?Binomial</code> in the console to see <em>R</em> documentation on the family of commands for this distribution.</p>
 <p>In <em>R</em> the defaults for probabilities are to define them as <span class="math inline">\(P[X~\le~x]\)</span>, or a probability of non-exceedance. Recall that a probability of exceedance is simply 1 - (probability of non-exceedance), or <span class="math inline">\(P[X~\gt~x] ~=~ 1-P[X~\le~x]\)</span>. In <em>R</em>, for quantiles or probabilities (using functions beginning with <em>q</em> or <em>p</em> like <em>pnorm</em> or <em>qlnorm</em>) setting the argument <em>lower.tail</em> to <em>FALSE</em> uses a probability of exceedance instead of non-exceedance.</p>
 <div class="example">
 <p><span id="exm:ex-flood1" class="example"><strong>Example 10.1  </strong></span>A temporary dam is constructed while a repair is built. It will be in place 5 years and is designed to protect against floods up to a 20-year recurrence interval (i.e., there is a <span class="math inline">\(p=\frac{1}{20}=0.05\)</span>, or 5% chance, that it will be exceeded in any one year). What is the probability of (a) no failure in the 5 year period, and (b) at least two failures in 5 years.</p>
@@ -477,8 +478,9 @@ Using the older USGS site mapper, and specifying that inactive stations should a
 Figure 10.3: Active and Inactive USGS sites recording peak flows.
 </p>
 </div>
-<p>While the data could be downloaded and saved locally through that link, it is convenient here to use the dataRetrieval command.</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="designing-for-floods-flood-hydrology.html#cb104-1" tabindex="-1"></a>Qpeak_download <span class="ot">&lt;-</span> dataRetrieval<span class="sc">::</span><span class="fu">readNWISpeak</span>(<span class="at">siteNumbers=</span><span class="st">&quot;11169000&quot;</span>)</span></code></pre></div>
+<p>While the data could be downloaded and saved locally through that link, it is convenient here to use the <a href="https://cran.r-project.org/web/packages/dataRetrieval/vignettes/dataRetrieval.html">dataRetrieval</a> command. Note that this package is being rewritten, and <a href="https://doi-usgs.github.io/dataRetrieval/articles/Status.html">commands are changing</a> as revisions occur.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="designing-for-floods-flood-hydrology.html#cb104-1" tabindex="-1"></a>siteNumber <span class="ot">&lt;-</span> <span class="st">&quot;11169000&quot;</span></span>
+<span id="cb104-2"><a href="designing-for-floods-flood-hydrology.html#cb104-2" tabindex="-1"></a>peakData <span class="ot">&lt;-</span> dataRetrieval<span class="sc">::</span><span class="fu">readNWISpeak</span>(siteNumber)</span></code></pre></div>
 <p>The data used here are also available as part of the <em>hydromisc</em> package, and may be obtained by typing <code>hydromisc::Qpeak_download</code>.</p>
 <p>It is always helpful to look at the downloaded data frame before doing anything with it. There are many columns that are not needed or that have repeated information. There are also some rows that have no data (‘NA’ values). It is also useful to change some column names to something more intuitive. We will need to define the water year (a water year begins October 1 and ends September 30).</p>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="designing-for-floods-flood-hydrology.html#cb105-1" tabindex="-1"></a>Qpeak <span class="ot">&lt;-</span> Qpeak_download[<span class="sc">!</span><span class="fu">is.na</span>(Qpeak_download<span class="sc">$</span>peak_dt),<span class="fu">c</span>(<span class="st">&#39;peak_dt&#39;</span>,<span class="st">&#39;peak_va&#39;</span>)]</span>
