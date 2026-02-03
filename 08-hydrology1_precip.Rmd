@@ -171,7 +171,7 @@ The data can be downloaded directly from the CDO site as a csv file, a sample of
 > Note that this initial station search and data download can be automated in R using other packages:
 > 
 > - Using the [FedData](https://cran.r-project.org/package=FedData) package, following a method similar to [this](http://zevross.com/blog/2016/03/15/using-the-new-r-package-feddata-to-access-federal-open-datasets-including-interactive-graphics).
-> - Using the [rnoaa](https://cran.r-project.org/package=rnoaa) package, referring to the [vignettes](https://docs.ropensci.org/rnoaa/).
+> - Using the [rnoaa](https://cran.r-project.org/package=rnoaa) package, referring to the [vignettes](https://docs.ropensci.org/rnoaa/). This package has limited functionality and is being replaced.
 
 While formats will vary depending on the source of the data, in this example we can import the csv file directly. Since _units_ were left as 'standard' on the CDO website, precipitation is in inches and temperatures in ^o^F.
 ```{r message=FALSE}

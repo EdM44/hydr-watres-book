@@ -63,7 +63,7 @@ K1 <- 0.4          # deoxygenation rate constant at 20C, 1/day
 K2 <- 0.8          # reaeration rate constant at 20C, 1/day
 ```
 
-Calculate some of the variables needed for the Streeter-Phelps model. Type _?hydromisc::DO_functions_ for more information on the DO-related functions in the _hydromisc_ package.
+Calculate some of the variables needed for the Streeter-Phelps model. Type `?hydromisc::DO_functions` for more information on the DO-related functions in the _hydromisc_ package.
 ```{r dosag-2, message=FALSE, echo=TRUE}
 Tmix <- hydromisc::Mixture(Q, Triv, Qeff, Teff)
 K1adj <- hydromisc::Kadj_deox(K1=K1, T=Tmix)
@@ -216,12 +216,12 @@ This produces a very small p-value (p < 0.01), meaning  the null hypothesis that
 
 ## Detecting changes in extreme events
 
-when looking at extreme events like the 100-year high tide, the methods are similar to those used in flood frequency analysis. One distinction is that flood frequency often uses a Gumbel or Log-Pearson type 3 distribution. For sea-level rise (and many other extreme events) other distributions are employed, with one common one being the Generalized Extreme Value (GEV), the cumulative distribution of which is described by Equation \@ref(eq:extr-1).
+When looking at extreme events like the 100-year high tide, the methods are similar to those used in flood frequency analysis. One distinction is that flood frequency often uses a Gumbel or Log-Pearson type 3 distribution. For sea-level rise (and many other extreme events) other distributions are employed, with one common one being the Generalized Extreme Value (GEV), the cumulative distribution of which is described by Equation \@ref(eq:extr-1).
 \begin{equation}
   F\left(x;\mu,\sigma,\xi\right)=exp\left[-\left(1+\xi\left(\frac{x-\mu}{\sigma}\right)\right)^{-1/\xi}\right]
   (\#eq:extr-1)
 \end{equation}
-The three parameters $\xi$, $\mu$, and $\sigma$ represent a shape, location, and scale of the distribution function. These distribution parameter can be determined using observations of extremes over a long period or over different periods of record, much as the mean, standard, deviation, and skew are used in flood frequency calculations. The distribution can then be used to estimate the probability associated with a specific magnitude event, or conversely the event magnitude associated with a defined risk level. An excellent example of that is from @tebaldi_modelling_2012 who analyzed projected extreme sea level changes through the 21st century.
+The three parameters $\xi$, $\mu$, and $\sigma$ represent a shape, location, and scale of the distribution function. These distribution parameters can be determined using observations of extremes over a long period or over different periods of record, much as the mean, standard, deviation, and skew are used in flood frequency calculations. The distribution can then be used to estimate the probability associated with a specific magnitude event, or conversely the event magnitude associated with a defined risk level. An excellent example of that is from @tebaldi_modelling_2012 who analyzed projected extreme sea level changes through the 21st century.
 
 (ref:figextr) Projected return periods by 2050 for floods that are 100 yr events during 1959–2008, [Tebaldi et al., 2012](https://iopscience.iop.org/article/10.1088/1748-9326/7/1/014032) 
 
@@ -236,19 +236,19 @@ if (!require('extRemes', quietly = TRUE)) install.packages('extRemes')
 
 ### Obtaining and preparing sea-level data
 
-Sea-level data can be downloaded directly into R using the [rnoaa](https://cran.r-project.org/package=rnoaa) package. However, NOAA also has a very intuitive interface that allows geographical searching and preliminary viewing of data. From the [NOAA Tines & Currents site](https://tidesandcurrents.noaa.gov) one can search an area of interest and find a tide gauge with a long record. 
+Sea-level data can be downloaded directly into R using the [rnoaa](https://github.com/ropensci/rnoaa) package, though it is due to be replaced and cannot download more recent data. Fortunately, NOAA also has a very intuitive interface that allows geographical searching and preliminary viewing of data. From the [NOAA Tides & Currents site](https://tidesandcurrents.noaa.gov) one can search an area of interest and find a tide gauge with a long record. 
 Figure \@ref(fig:slr-1).
 ```{r slr-1, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "55%", fig.cap='Identification of a sea-level gauge on the NOAA Tides & Currents site.'}
 knitr::include_graphics('images/noaa_tides_currents_site.png')
 ```
 
-By exploring the data inventory for this station, on its home page, the gauge has a very long record, being established in 1854, with measurement of extremes for over a century. Avoid selecting a partial month, or you may not have the ability to download monthly data. Monthly data were downloaded and saved as a csv file, which is available with the _hydromisc_ package.
+By exploring the data inventory for this station, on its home page, you can see the gauge has a very long record, being established in 1854, so it has measured extremes for over a century. When selecintg data, avoid selecting a partial month, or you may not have the ability to download monthly data. Monthly data for this site were downloaded and saved as a csv file, which is available with the _hydromisc_ package.
 ```{r message=FALSE}
 datafile <- system.file("extdata", "sealevel_9414290_wl.csv", package="hydromisc")
 dat <- read.csv(datafile,header=TRUE)
 ```
 
-These data were saved in metric units, so all levels are in meters above the selected tidal datum. there are dates indicating the month associated with each value (and day 1 is in there as a placeholder).
+These data were saved in metric units, so all levels are in meters above the selected tidal datum. There are dates indicating the month associated with each value (and day 1 is in there as a placeholder).
 
 If there are any missing data they may be labeled as “NaN”. If you see that, a clean way to address it is to first change the missing data to NA (which R recognizes) with a command such as 
 ```{r message=FALSE}
@@ -300,7 +300,7 @@ sca <- gevfit1$results$par[["scale"]]
 shp <- gevfit1$results$par[["shape"]]
 extRemes::pevd(2.35, loc = loc, scale = sca , shape = shp, type = c("GEV"))
 ```
-This returns a value of 0.99 (this is the CDF value, or the probability of non-exceedence, F). Recalling that return period, $T=1/P=1/(1-F)$, where P=prob. of exceedence; F=prob. of non-exceedence, the result that 2.35 meters is the 100-year highest water level is validated.
+This returns a value of 0.99 (this is the cumulative distribution function, CDF, value, or the probability of non-exceedence, F). Recalling that return period, $T=1/P=1/(1-F)$, where P=prob. of exceedence; F=prob. of non-exceedence, the result that 2.35 meters is the 100-year highest water level is validated.
 
 Repeating the calculation for a more recent period:
 ```{r slr-7, message=FALSE}
@@ -309,12 +309,11 @@ gevfit2 <- extRemes::fevd(peak_sl_sub2$peak_m)
 extRemes::return.level(gevfit2, return.period = 100, do.ci = TRUE, verbose = TRUE)
 ```
 
-This returns a 100-year high tide of 2.6 m for 1990-2020, a 10.6 % increase over 1900-1930. Another way to look at this is to find out how the frequency of the past (in this case, 1900-1930) 100-year event has changed with rising sea levels. Repeating the calculations from before to capture the GEV parameters for the later period, and then plugging in the 100-year high tide from the early period:
+This returns a 100-year high tide of 2.6 m for 1990-2020, a 10.6 % increase over 1900-1930. Another way to look at this is to find out how the frequency of the past (in this case, 1900-1930) 100-year event has changed with rising sea levels. Repeating the calculations from above to capture the GEV parameters for the later period, and then plugging in the 100-year high tide from the early period:
 ```{r slr-8, message=FALSE}
 loc2 <- gevfit2$results$par[["location"]]
 sca2 <- gevfit2$results$par[["scale"]]
 shp2 <- gevfit2$results$par[["shape"]]
 extRemes::pevd(2.35, loc = loc2, scale = sca2 , shape = shp2, type = c("GEV"))
 ```
-This returns a value of 0.72 (72% non-exceedence, or 28% exceedance, in other words we expect to see an annual high tide of 2.35 m or higher in 28% of the years). The return period of this is calculated as above: T = 1/(1-0.72) = 3.6 years. So, what was the 100-year event in 1900-1930 is about a 4-year event now.
-
+This returns a value of 0.72 (72% non-exceedence, or 28% exceedance, in other words we expect to see an annual high tide of 2.35 m or higher in 28% of the years). The return period of this is calculated as above: T = 1/(1-0.72) = 3.6 years. So, what was the rare 100-year event in 1900-1930 is about a 4-year event in 1990-2020, a much more common event.
