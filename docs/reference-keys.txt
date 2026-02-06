@@ -207,6 +207,7 @@ fig:changef2
 fig:hypo1
 fig:change-1
 fig:step-1
+tab:step-2
 fig:trend-4
 eq:extr-1
 fig:slrpk-1

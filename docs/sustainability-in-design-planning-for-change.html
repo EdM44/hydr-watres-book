@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2026-02-03" />
+<meta name="date" content="2026-02-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -531,14 +531,55 @@ Figure 11.9: Comparison of two records of SWE at Four Trees station, CA.
 </p>
 </div>
 <p>Calculate the means and medians of the two periods, just for illustration.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="sustainability-in-design-planning-for-change.html#cb122-1" tabindex="-1"></a><span class="fu">mean</span>(yvalues1)</span>
-<span id="cb122-2"><a href="sustainability-in-design-planning-for-change.html#cb122-2" tabindex="-1"></a><span class="co">#&gt; [1] 19.76364</span></span>
-<span id="cb122-3"><a href="sustainability-in-design-planning-for-change.html#cb122-3" tabindex="-1"></a><span class="fu">mean</span>(yvalues2)</span>
-<span id="cb122-4"><a href="sustainability-in-design-planning-for-change.html#cb122-4" tabindex="-1"></a><span class="co">#&gt; [1] 15.44545</span></span>
-<span id="cb122-5"><a href="sustainability-in-design-planning-for-change.html#cb122-5" tabindex="-1"></a><span class="fu">median</span>(yvalues1)</span>
-<span id="cb122-6"><a href="sustainability-in-design-planning-for-change.html#cb122-6" tabindex="-1"></a><span class="co">#&gt; [1] 17.8</span></span>
-<span id="cb122-7"><a href="sustainability-in-design-planning-for-change.html#cb122-7" tabindex="-1"></a><span class="fu">median</span>(yvalues2)</span>
-<span id="cb122-8"><a href="sustainability-in-design-planning-for-change.html#cb122-8" tabindex="-1"></a><span class="co">#&gt; [1] 7.9</span></span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="sustainability-in-design-planning-for-change.html#cb122-1" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">period=</span><span class="fu">c</span>(<span class="st">&quot;1980-2001&quot;</span>,<span class="st">&quot;2002-2023&quot;</span>), </span>
+<span id="cb122-2"><a href="sustainability-in-design-planning-for-change.html#cb122-2" tabindex="-1"></a>           <span class="at">mean=</span><span class="fu">c</span>(<span class="fu">mean</span>(yvalues1), <span class="fu">mean</span>(yvalues2)), </span>
+<span id="cb122-3"><a href="sustainability-in-design-planning-for-change.html#cb122-3" tabindex="-1"></a>           <span class="at">median=</span><span class="fu">c</span>(<span class="fu">median</span>(yvalues1), <span class="fu">median</span>(yvalues2))) <span class="sc">|&gt;</span></span>
+<span id="cb122-4"><a href="sustainability-in-design-planning-for-change.html#cb122-4" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>(<span class="at">table.attr =</span> <span class="st">&quot;style=&#39;width:50%;&#39;&quot;</span>,</span>
+<span id="cb122-5"><a href="sustainability-in-design-planning-for-change.html#cb122-5" tabindex="-1"></a>          <span class="at">caption =</span> <span class="st">&quot;Means and medians for 2 periods&quot;</span>, </span>
+<span id="cb122-6"><a href="sustainability-in-design-planning-for-change.html#cb122-6" tabindex="-1"></a>          <span class="at">digits=</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb122-7"><a href="sustainability-in-design-planning-for-change.html#cb122-7" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_classic</span>(<span class="at">full_width =</span> T, <span class="at">position =</span> <span class="st">&quot;center&quot;</span>)</span></code></pre></div>
+<table style="width:50%; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;" class=" lightable-classic">
+<caption>
+<span id="tab:step-2">Table 11.1: </span>Means and medians for 2 periods
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+period
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+median
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1980-2001
+</td>
+<td style="text-align:right;">
+19.8
+</td>
+<td style="text-align:right;">
+17.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2002-2023
+</td>
+<td style="text-align:right;">
+15.4
+</td>
+<td style="text-align:right;">
+7.9
+</td>
+</tr>
+</tbody>
+</table>
 <p>The mean for the later period is lower, as is the median. the question to pose is whether these differences are statistically significant. The following tests allow that determination.</p>
 <div id="method-1-using-a-t-test." class="section level4 hasAnchor" number="11.2.1.1">
 <h4><span class="header-section-number">11.2.1.1</span> Method 1: Using a t-test.<a href="sustainability-in-design-planning-for-change.html#method-1-using-a-t-test." class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -555,7 +596,7 @@ Figure 11.9: Comparison of two records of SWE at Four Trees station, CA.
 <span id="cb123-10"><a href="sustainability-in-design-planning-for-change.html#cb123-10" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
 <span id="cb123-11"><a href="sustainability-in-design-planning-for-change.html#cb123-11" tabindex="-1"></a><span class="co">#&gt; mean of x mean of y </span></span>
 <span id="cb123-12"><a href="sustainability-in-design-planning-for-change.html#cb123-12" tabindex="-1"></a><span class="co">#&gt;  19.76364  15.44545</span></span></code></pre></div>
-<p>Here the p-value is 0.36, a value much greater than <span class="math inline">\(\alpha = 0.05\)</span>, so the null hypothesis cannot be rejected. The difference in the means is not significant based on this test.</p>
+<p>Here the p-value is 0.36, a value much greater than <span class="math inline">\(\alpha = 0.05\)</span>, so the null hypothesis cannot be rejected. The difference in the means is not significant based on this test. As an example, if you want to extract just the p-value from the t.test you could use something like <code>t.test(yvalues1, yvalues2, "t")$p.value</code>.</p>
 </div>
 <div id="method-2-wilcoxon-rank-sum-or-mann-whitney-u-test." class="section level4 hasAnchor" number="11.2.1.2">
 <h4><span class="header-section-number">11.2.1.2</span> Method 2: Wilcoxon rank-sum (or Mann-Whitney U) test.<a href="sustainability-in-design-planning-for-change.html#method-2-wilcoxon-rank-sum-or-mann-whitney-u-test." class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -570,7 +611,7 @@ Figure 11.9: Comparison of two records of SWE at Four Trees station, CA.
 <span id="cb124-7"><a href="sustainability-in-design-planning-for-change.html#cb124-7" tabindex="-1"></a><span class="co">#&gt; data:  yvalues1 and yvalues2</span></span>
 <span id="cb124-8"><a href="sustainability-in-design-planning-for-change.html#cb124-8" tabindex="-1"></a><span class="co">#&gt; W = 297, p-value = 0.1999</span></span>
 <span id="cb124-9"><a href="sustainability-in-design-planning-for-change.html#cb124-9" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true location shift is not equal to 0</span></span></code></pre></div>
-<p>The p-value is much lower than with the t-test, showing less influence of the two very high SWE values in the second half of the record.</p>
+<p>The p-value is much lower than with the t-test, showing less influence of the two very high SWE values in the second half of the record. Output values can be extracted similarly to the t.test.</p>
 </div>
 </div>
 <div id="detecting-a-monotonic-trend" class="section level3 hasAnchor" number="11.2.2">
@@ -584,7 +625,7 @@ Figure 11.9: Comparison of two records of SWE at Four Trees station, CA.
 <span id="cb125-3"><a href="sustainability-in-design-planning-for-change.html#cb125-3" tabindex="-1"></a><span class="co">#&gt;                Estimate  Std. Error    t value  Pr(&gt;|t|)</span></span>
 <span id="cb125-4"><a href="sustainability-in-design-planning-for-change.html#cb125-4" tabindex="-1"></a><span class="co">#&gt; (Intercept) 347.3231078 370.6915171  0.9369600 0.3541359</span></span>
 <span id="cb125-5"><a href="sustainability-in-design-planning-for-change.html#cb125-5" tabindex="-1"></a><span class="co">#&gt; Year         -0.1647357   0.1852031 -0.8894868 0.3788081</span></span></code></pre></div>
-<p>The row for “Year” provides the data on the slope. The slope shows SWE declines by 0.16 inches/year based on regression. The p-value for the slope is 0.379, much larger than the typical <span class="math inline">\(\alpha\)</span>, meaning we cannot claim that a significant slope exists based on this test. So while a declining April 1 snowpack is observed at this location, it is not outside of the natural variability of the data based on a regression analysis.</p>
+<p>The row for “Year” provides the data on the slope. The slope shows SWE declines by 0.16 inches/year based on regression. The p-value for the slope is 0.379, much larger than the typical <span class="math inline">\(\alpha\)</span>, meaning we cannot claim that a significant slope exists based on this test. So while a declining April 1 snowpack is observed at this location, it is not outside of the natural variability of the data based on a regression analysis. The full set of regression output, such as the <span class="math inline">\(R^2\)</span> value, can be seen using <code>summary(m)</code>. Individual results can be saved to variables using something like <code>slope &lt;- m$coefficients["Year"]</code>. The p-value for the slope can be obtained by using the (row,col) of the coefficient, like <code>pval &lt;- summary(m)$coefficients[2,4]</code>. Extracting the <span class="math inline">\(R^2\)</span> value is done using <code>R2 &lt;- summary(m)$r.squared</code> and adjusted <span class="math inline">\(R^2\)</span> (for multiple regression) uses <code>summary(m)$adj.r.squared</code>.</p>
 </div>
 <div id="method-2-mann-kendall" class="section level4 hasAnchor" number="11.2.2.2">
 <h4><span class="header-section-number">11.2.2.2</span> Method 2: Mann-Kendall<a href="sustainability-in-design-planning-for-change.html#method-2-mann-kendall" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -605,7 +646,7 @@ Figure 11.9: Comparison of two records of SWE at Four Trees station, CA.
 <p>The non-parametric slope shows April 1 SWE declining by 0.14 inches per year over the period. Again, however, the p-value is greater than the typical <span class="math inline">\(\alpha\)</span>, so based on this method the trend is not significantly different from zero. As with the tests for a step change, the p-value is lower for the nonparametric test.</p>
 <p>A summary plot of the slopes of both methods is helpful.</p>
 <div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="sustainability-in-design-planning-for-change.html#cb128-1" tabindex="-1"></a><span class="fu">plot</span>(swe<span class="sc">$</span>Year,swe<span class="sc">$</span>April_1_SWE_in, <span class="at">xlab =</span> <span class="st">&quot;Year&quot;</span>,<span class="at">ylab =</span> <span class="st">&quot;Snow water equivalent, in&quot;</span>)</span>
-<span id="cb128-2"><a href="sustainability-in-design-planning-for-change.html#cb128-2" tabindex="-1"></a><span class="fu">lines</span>(swe<span class="sc">$</span>Year,m<span class="sc">$</span>fitted.values, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;black&quot;</span>)</span>
+<span id="cb128-2"><a href="sustainability-in-design-planning-for-change.html#cb128-2" tabindex="-1"></a><span class="fu">abline</span>(m, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;black&quot;</span>)        <span class="co"># plots regression line</span></span>
 <span id="cb128-3"><a href="sustainability-in-design-planning-for-change.html#cb128-3" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> ss<span class="sc">$</span>coefficients[<span class="st">&quot;Intercept&quot;</span>], <span class="at">b =</span> ss<span class="sc">$</span>coefficients[<span class="st">&quot;Year&quot;</span>], <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb128-4"><a href="sustainability-in-design-planning-for-change.html#cb128-4" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;Observations&quot;</span>,<span class="st">&quot;Regression&quot;</span>,<span class="st">&quot;Thiel-Sen&quot;</span>),  </span>
 <span id="cb128-5"><a href="sustainability-in-design-planning-for-change.html#cb128-5" tabindex="-1"></a>  <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;black&quot;</span>,<span class="st">&quot;black&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="at">lty =</span> <span class="fu">c</span>(<span class="cn">NA</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="cn">NA</span>,<span class="cn">NA</span>), <span class="at">cex=</span><span class="fl">0.8</span>)</span></code></pre></div>
@@ -619,7 +660,7 @@ Figure 11.10: Trends of SWE at Four Trees station, CA.
 </div>
 <div id="choosing-whether-to-use-parametric-or-non-parametric-tests" class="section level3 hasAnchor" number="11.2.3">
 <h3><span class="header-section-number">11.2.3</span> Choosing whether to use parametric or non-parametric tests<a href="sustainability-in-design-planning-for-change.html#choosing-whether-to-use-parametric-or-non-parametric-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Using the parameteric tests above (t-test, regression) requires making an assumption about the underlying distribution of the data, which non-parametric tests do not require. When using a parametric test, the assumption of normality can be tested. For example, for the regression residuals can be tested with the following, where the null hypothesis is that the data are nomally distributed.</p>
+<p>Using the parametric tests above (t-test, regression) requires making an assumption about the underlying distribution of the data, which non-parametric tests do not require. When using a parametric test, the assumption of normality can be tested. For example, for the regression residuals can be tested with the following, where the null hypothesis is that the data are normally distributed.</p>
 <div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="sustainability-in-design-planning-for-change.html#cb129-1" tabindex="-1"></a><span class="fu">shapiro.test</span>(m<span class="sc">$</span>residuals)<span class="sc">$</span>p.value</span>
 <span id="cb129-2"><a href="sustainability-in-design-planning-for-change.html#cb129-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.003647395</span></span></code></pre></div>
 <p>This produces a very small p-value (p &lt; 0.01), meaning the null hypothesis that the residuals are normally distributed is rejected with &gt;99% confidence. This means non-parametric test is more appropriate. In general, non-parametric tests are preferred in hydrologic work because data (and residuals) are rarely normally distributed.</p>
@@ -676,14 +717,14 @@ Figure 11.13: Annual highest sea-levels relative to MLLW at gauge 9414290.
 </div>
 <div id="conducting-the-extreme-event-analysis" class="section level3 hasAnchor" number="11.3.2">
 <h3><span class="header-section-number">11.3.2</span> Conducting the extreme event analysis<a href="sustainability-in-design-planning-for-change.html#conducting-the-extreme-event-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The question we will attempt to address is whether the 100-year peak tide level (the level exceeded with a 1 percent probability) has increased between the 1900-1930 and 1990-2020 periods. Extract a subset of the data for one period and fit a GEV distribution to the values.</p>
+<p>The question we will attempt to address is whether the 100-year peak tide level (the level exceeded with a 1 percent probability) has increased between the 1900-1930 and 1990-2020 periods. Extract a subset of the data for one period and fit a GEV distribution to the values. Specify units of meters for axis labeling.</p>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="sustainability-in-design-planning-for-change.html#cb136-1" tabindex="-1"></a>peak_sl_sub1 <span class="ot">&lt;-</span> <span class="fu">subset</span>(peak_sl_ann, year <span class="sc">&gt;=</span> <span class="dv">1900</span> <span class="sc">&amp;</span> year <span class="sc">&lt;=</span> <span class="dv">1930</span>)</span>
-<span id="cb136-2"><a href="sustainability-in-design-planning-for-change.html#cb136-2" tabindex="-1"></a>gevfit1 <span class="ot">&lt;-</span> extRemes<span class="sc">::</span><span class="fu">fevd</span>(peak_sl_sub1<span class="sc">$</span>peak_m)</span>
+<span id="cb136-2"><a href="sustainability-in-design-planning-for-change.html#cb136-2" tabindex="-1"></a>gevfit1 <span class="ot">&lt;-</span> extRemes<span class="sc">::</span><span class="fu">fevd</span>(peak_sl_sub1<span class="sc">$</span>peak_m, <span class="at">units =</span> <span class="st">&quot;m&quot;</span>)</span>
 <span id="cb136-3"><a href="sustainability-in-design-planning-for-change.html#cb136-3" tabindex="-1"></a>gevfit1<span class="sc">$</span>results<span class="sc">$</span>par</span>
 <span id="cb136-4"><a href="sustainability-in-design-planning-for-change.html#cb136-4" tabindex="-1"></a><span class="co">#&gt;   location      scale      shape </span></span>
 <span id="cb136-5"><a href="sustainability-in-design-planning-for-change.html#cb136-5" tabindex="-1"></a><span class="co">#&gt;  2.0747606  0.1004844 -0.2480902</span></span></code></pre></div>
-<p>A plot of return periods for the fit distribution is available as well.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="sustainability-in-design-planning-for-change.html#cb137-1" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">plot.fevd</span>(gevfit1, <span class="at">type=</span><span class="st">&quot;rl&quot;</span>)</span></code></pre></div>
+<p>A plot of return periods (by specifying <code>type="rl"</code> for return level) for the fit distribution is available.</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="sustainability-in-design-planning-for-change.html#cb137-1" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">plot.fevd</span>(gevfit1, <span class="at">type=</span><span class="st">&quot;rl&quot;</span>, <span class="at">main =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:slr-4"></span>
 <img src="hydr-watres_main_files/figure-html/slr-4-1.png" alt="Return periods based on the fit GEV distribution for 1900-1930. Points are observations; dashed lines enclose the 95% confidence interval." width="55%" />
 <p class="caption">
@@ -692,20 +733,14 @@ Figure 11.14: Return periods based on the fit GEV distribution for 1900-1930. Po
 </div>
 <p>As is usually the case, a statistical model does well in the area with observations, but the uncertainty increases for extreme values (like estimating a 500-year event from a 30-year record). A longer record produces better (less uncertain) estimates at higher return periods.</p>
 <p>Based on the GEV fit, the 100-year recurrence interval extreme tide is determined using:</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="sustainability-in-design-planning-for-change.html#cb138-1" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">return.level</span>(gevfit1, <span class="at">return.period =</span> <span class="dv">100</span>, <span class="at">do.ci =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb138-2"><a href="sustainability-in-design-planning-for-change.html#cb138-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb138-3"><a href="sustainability-in-design-planning-for-change.html#cb138-3" tabindex="-1"></a><span class="co">#&gt;  Preparing to calculate  95 % CI for  100-year return level </span></span>
-<span id="cb138-4"><a href="sustainability-in-design-planning-for-change.html#cb138-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb138-5"><a href="sustainability-in-design-planning-for-change.html#cb138-5" tabindex="-1"></a><span class="co">#&gt;  Model is   fixed </span></span>
-<span id="cb138-6"><a href="sustainability-in-design-planning-for-change.html#cb138-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb138-7"><a href="sustainability-in-design-planning-for-change.html#cb138-7" tabindex="-1"></a><span class="co">#&gt;  Using Normal Approximation Method.</span></span>
-<span id="cb138-8"><a href="sustainability-in-design-planning-for-change.html#cb138-8" tabindex="-1"></a><span class="co">#&gt; extRemes::fevd(x = peak_sl_sub1$peak_m)</span></span>
-<span id="cb138-9"><a href="sustainability-in-design-planning-for-change.html#cb138-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb138-10"><a href="sustainability-in-design-planning-for-change.html#cb138-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Normal Approx.&quot;</span></span>
-<span id="cb138-11"><a href="sustainability-in-design-planning-for-change.html#cb138-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb138-12"><a href="sustainability-in-design-planning-for-change.html#cb138-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;100-year return level: 2.35&quot;</span></span>
-<span id="cb138-13"><a href="sustainability-in-design-planning-for-change.html#cb138-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb138-14"><a href="sustainability-in-design-planning-for-change.html#cb138-14" tabindex="-1"></a><span class="co">#&gt; [1] &quot;95% Confidence Interval: (2.2579, 2.4429)&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="sustainability-in-design-planning-for-change.html#cb138-1" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">return.level</span>(gevfit1, <span class="at">return.period =</span> <span class="dv">100</span>, <span class="at">do.ci =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb138-2"><a href="sustainability-in-design-planning-for-change.html#cb138-2" tabindex="-1"></a><span class="co">#&gt; extRemes::fevd(x = peak_sl_sub1$peak_m, units = &quot;m&quot;)</span></span>
+<span id="cb138-3"><a href="sustainability-in-design-planning-for-change.html#cb138-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb138-4"><a href="sustainability-in-design-planning-for-change.html#cb138-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Normal Approx.&quot;</span></span>
+<span id="cb138-5"><a href="sustainability-in-design-planning-for-change.html#cb138-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb138-6"><a href="sustainability-in-design-planning-for-change.html#cb138-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;100-year return level: 2.35&quot;</span></span>
+<span id="cb138-7"><a href="sustainability-in-design-planning-for-change.html#cb138-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb138-8"><a href="sustainability-in-design-planning-for-change.html#cb138-8" tabindex="-1"></a><span class="co">#&gt; [1] &quot;95% Confidence Interval: (2.2579, 2.4429)&quot;</span></span></code></pre></div>
 <p>A check can be done using the reverse calculation, estimating the return period associated with a specified value of highest water level. This can be done by extracting the three GEV parameters, then running the <em>pevd</em> command.</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="sustainability-in-design-planning-for-change.html#cb139-1" tabindex="-1"></a>loc <span class="ot">&lt;-</span> gevfit1<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;location&quot;</span>]]</span>
 <span id="cb139-2"><a href="sustainability-in-design-planning-for-change.html#cb139-2" tabindex="-1"></a>sca <span class="ot">&lt;-</span> gevfit1<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;scale&quot;</span>]]</span>
@@ -715,28 +750,22 @@ Figure 11.14: Return periods based on the fit GEV distribution for 1900-1930. Po
 <p>This returns a value of 0.99 (this is the cumulative distribution function, CDF, value, or the probability of non-exceedence, F). Recalling that return period, <span class="math inline">\(T=1/P=1/(1-F)\)</span>, where P=prob. of exceedence; F=prob. of non-exceedence, the result that 2.35 meters is the 100-year highest water level is validated.</p>
 <p>Repeating the calculation for a more recent period:</p>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="sustainability-in-design-planning-for-change.html#cb140-1" tabindex="-1"></a>peak_sl_sub2 <span class="ot">&lt;-</span> <span class="fu">subset</span>(peak_sl_ann, year <span class="sc">&gt;=</span> <span class="dv">1990</span> <span class="sc">&amp;</span> year <span class="sc">&lt;=</span> <span class="dv">2020</span>)</span>
-<span id="cb140-2"><a href="sustainability-in-design-planning-for-change.html#cb140-2" tabindex="-1"></a>gevfit2 <span class="ot">&lt;-</span> extRemes<span class="sc">::</span><span class="fu">fevd</span>(peak_sl_sub2<span class="sc">$</span>peak_m)</span>
-<span id="cb140-3"><a href="sustainability-in-design-planning-for-change.html#cb140-3" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">return.level</span>(gevfit2, <span class="at">return.period =</span> <span class="dv">100</span>, <span class="at">do.ci =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb140-4"><a href="sustainability-in-design-planning-for-change.html#cb140-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb140-5"><a href="sustainability-in-design-planning-for-change.html#cb140-5" tabindex="-1"></a><span class="co">#&gt;  Preparing to calculate  95 % CI for  100-year return level </span></span>
-<span id="cb140-6"><a href="sustainability-in-design-planning-for-change.html#cb140-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb140-7"><a href="sustainability-in-design-planning-for-change.html#cb140-7" tabindex="-1"></a><span class="co">#&gt;  Model is   fixed </span></span>
-<span id="cb140-8"><a href="sustainability-in-design-planning-for-change.html#cb140-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb140-9"><a href="sustainability-in-design-planning-for-change.html#cb140-9" tabindex="-1"></a><span class="co">#&gt;  Using Normal Approximation Method.</span></span>
-<span id="cb140-10"><a href="sustainability-in-design-planning-for-change.html#cb140-10" tabindex="-1"></a><span class="co">#&gt; extRemes::fevd(x = peak_sl_sub2$peak_m)</span></span>
-<span id="cb140-11"><a href="sustainability-in-design-planning-for-change.html#cb140-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb140-12"><a href="sustainability-in-design-planning-for-change.html#cb140-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Normal Approx.&quot;</span></span>
-<span id="cb140-13"><a href="sustainability-in-design-planning-for-change.html#cb140-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb140-14"><a href="sustainability-in-design-planning-for-change.html#cb140-14" tabindex="-1"></a><span class="co">#&gt; [1] &quot;100-year return level: 2.597&quot;</span></span>
-<span id="cb140-15"><a href="sustainability-in-design-planning-for-change.html#cb140-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb140-16"><a href="sustainability-in-design-planning-for-change.html#cb140-16" tabindex="-1"></a><span class="co">#&gt; [1] &quot;95% Confidence Interval: (2.3983, 2.7957)&quot;</span></span></code></pre></div>
+<span id="cb140-2"><a href="sustainability-in-design-planning-for-change.html#cb140-2" tabindex="-1"></a>gevfit2 <span class="ot">&lt;-</span> extRemes<span class="sc">::</span><span class="fu">fevd</span>(peak_sl_sub2<span class="sc">$</span>peak_m, <span class="at">units =</span> <span class="st">&quot;m&quot;</span>)</span>
+<span id="cb140-3"><a href="sustainability-in-design-planning-for-change.html#cb140-3" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">return.level</span>(gevfit2, <span class="at">return.period =</span> <span class="dv">100</span>, <span class="at">do.ci =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb140-4"><a href="sustainability-in-design-planning-for-change.html#cb140-4" tabindex="-1"></a><span class="co">#&gt; extRemes::fevd(x = peak_sl_sub2$peak_m, units = &quot;m&quot;)</span></span>
+<span id="cb140-5"><a href="sustainability-in-design-planning-for-change.html#cb140-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb140-6"><a href="sustainability-in-design-planning-for-change.html#cb140-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Normal Approx.&quot;</span></span>
+<span id="cb140-7"><a href="sustainability-in-design-planning-for-change.html#cb140-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb140-8"><a href="sustainability-in-design-planning-for-change.html#cb140-8" tabindex="-1"></a><span class="co">#&gt; [1] &quot;100-year return level: 2.597&quot;</span></span>
+<span id="cb140-9"><a href="sustainability-in-design-planning-for-change.html#cb140-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb140-10"><a href="sustainability-in-design-planning-for-change.html#cb140-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;95% Confidence Interval: (2.3983, 2.7957)&quot;</span></span></code></pre></div>
 <p>This returns a 100-year high tide of 2.6 m for 1990-2020, a 10.6 % increase over 1900-1930. Another way to look at this is to find out how the frequency of the past (in this case, 1900-1930) 100-year event has changed with rising sea levels. Repeating the calculations from above to capture the GEV parameters for the later period, and then plugging in the 100-year high tide from the early period:</p>
 <div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="sustainability-in-design-planning-for-change.html#cb141-1" tabindex="-1"></a>loc2 <span class="ot">&lt;-</span> gevfit2<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;location&quot;</span>]]</span>
 <span id="cb141-2"><a href="sustainability-in-design-planning-for-change.html#cb141-2" tabindex="-1"></a>sca2 <span class="ot">&lt;-</span> gevfit2<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;scale&quot;</span>]]</span>
 <span id="cb141-3"><a href="sustainability-in-design-planning-for-change.html#cb141-3" tabindex="-1"></a>shp2 <span class="ot">&lt;-</span> gevfit2<span class="sc">$</span>results<span class="sc">$</span>par[[<span class="st">&quot;shape&quot;</span>]]</span>
 <span id="cb141-4"><a href="sustainability-in-design-planning-for-change.html#cb141-4" tabindex="-1"></a>extRemes<span class="sc">::</span><span class="fu">pevd</span>(<span class="fl">2.35</span>, <span class="at">loc =</span> loc2, <span class="at">scale =</span> sca2 , <span class="at">shape =</span> shp2, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;GEV&quot;</span>))</span>
 <span id="cb141-5"><a href="sustainability-in-design-planning-for-change.html#cb141-5" tabindex="-1"></a><span class="co">#&gt; [1] 0.7220968</span></span></code></pre></div>
-<p>This returns a value of 0.72 (72% non-exceedence, or 28% exceedance, in other words we expect to see an annual high tide of 2.35 m or higher in 28% of the years). The return period of this is calculated as above: T = 1/(1-0.72) = 3.6 years. So, what was the rare 100-year event in 1900-1930 is about a 4-year event in 1990-2020, a much more common event.</p>
+<p>This returns a value of 0.72 (72% non-exceedence, or 28% exceedence, in other words we expect to see an annual high tide of 2.35 m or higher in 28% of the years). The return period of this is calculated as above: T = 1/(1-0.72) = 3.6 years. So, what was the rare 100-year event in 1900-1930 is about a 4-year event in 1990-2020, a much more common event.</p>
 
 </div>
 </div>

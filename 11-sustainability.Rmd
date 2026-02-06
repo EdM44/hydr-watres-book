@@ -154,7 +154,7 @@ A t-test determines the significance of a difference in the mean between two sam
 ```{r step-1x, message=FALSE, echo=TRUE}
 t.test(yvalues1, yvalues2, var.equal = FALSE, alternative = "two.sided", paired = FALSE)
 ```
-Here the p-value is 0.36, a value much greater than $\alpha = 0.05$, so the null hypothesis cannot be rejected. The difference in the means is not significant based on this test.
+Here the p-value is 0.36, a value much greater than $\alpha = 0.05$, so the null hypothesis cannot be rejected. The difference in the means is not significant based on this test. As an example, if you want to extract just the p-value from the t.test you could use something like `t.test(yvalues1, yvalues2, "t")$p.value`.
 
 #### Method 2: Wilcoxon rank-sum (or Mann-Whitney U) test.
 
@@ -165,7 +165,7 @@ This is performed with a standard R function. Other arguments are set as with th
 ```{r step-2x, message=FALSE, echo=TRUE}
 wilcox.test(yvalues1, yvalues2, alternative = "two.sided", paired=FALSE) 
 ```
-The p-value is much lower than with the t-test, showing less influence of the two very high SWE values in the second half of the record. 
+The p-value is much lower than with the t-test, showing less influence of the two very high SWE values in the second half of the record. Output values can be extracted similarly to the t.test.
 
 ### Detecting a monotonic trend
 
@@ -178,7 +178,7 @@ To perform a linear regression in R, build a linear regression model (lm). This 
 m <- lm(April_1_SWE_in ~ Year, data = swe) 
 summary(m)$coefficients
 ```
-The row for "Year" provides the data on the slope. The slope shows SWE declines by 0.16 inches/year based on regression. The p-value for the slope is 0.379, much larger than the typical $\alpha$, meaning we cannot claim that a significant slope exists based on this test. So while a declining April 1 snowpack is observed at this location, it is not outside of the natural variability of the data based on a regression analysis. The full set of regression output, such as the  $R^2$ value, can be seen using `summary(m)`. Individual results can be saved to variables using something like `slope <- m$coefficients["year"]`. The p-value for the slope can be obtained by using the (row,col) of the coefficient, like `pval <- summary(m)$coefficients[2,4]`. Extracting the $R^2$ value is done using `R2 <- summary(m)$r.squared` and adjusted $R^2$ (for multiple regression) uses `summary(m)$adj.r.squared`.
+The row for "Year" provides the data on the slope. The slope shows SWE declines by 0.16 inches/year based on regression. The p-value for the slope is 0.379, much larger than the typical $\alpha$, meaning we cannot claim that a significant slope exists based on this test. So while a declining April 1 snowpack is observed at this location, it is not outside of the natural variability of the data based on a regression analysis. The full set of regression output, such as the  $R^2$ value, can be seen using `summary(m)`. Individual results can be saved to variables using something like `slope <- m$coefficients["Year"]`. The p-value for the slope can be obtained by using the (row,col) of the coefficient, like `pval <- summary(m)$coefficients[2,4]`. Extracting the $R^2$ value is done using `R2 <- summary(m)$r.squared` and adjusted $R^2$ (for multiple regression) uses `summary(m)$adj.r.squared`.
 
 #### Method 2: Mann-Kendall
 
@@ -204,14 +204,14 @@ The non-parametric slope shows April 1 SWE declining by 0.14 inches per year ove
 A summary plot of the slopes of both methods is helpful.
 ```{r trend-4, message=FALSE, echo=TRUE, fig.align = 'center', out.width = "60%", fig.cap = "Trends of SWE at Four Trees station, CA."}
 plot(swe$Year,swe$April_1_SWE_in, xlab = "Year",ylab = "Snow water equivalent, in")
-lines(swe$Year,m$fitted.values, lty=1, col="black")
+abline(m, lty=1, col="black")        # plots regression line
 abline(a = ss$coefficients["Intercept"], b = ss$coefficients["Year"], col="red", lty=2)
 legend("topright", legend=c("Observations","Regression","Thiel-Sen"),  
   col=c("black","black","red"),lty = c(NA,1,2), pch = c(1,NA,NA), cex=0.8)
 ```
 ### Choosing whether to use parametric or non-parametric tests
 
-Using the parameteric tests above (t-test, regression) requires making an assumption about the underlying distribution of the data, which non-parametric tests do not require. When using a parametric test, the assumption of normality can be tested. For example, for the regression residuals can be tested with the following, where the null hypothesis is that the data are nomally distributed.
+Using the parametric tests above (t-test, regression) requires making an assumption about the underlying distribution of the data, which non-parametric tests do not require. When using a parametric test, the assumption of normality can be tested. For example, for the regression residuals can be tested with the following, where the null hypothesis is that the data are normally distributed.
 ```{r trend-5, message=FALSE, echo=TRUE}
 shapiro.test(m$residuals)$p.value
 ```
@@ -284,7 +284,7 @@ peak_sl_sub1 <- subset(peak_sl_ann, year >= 1900 & year <= 1930)
 gevfit1 <- extRemes::fevd(peak_sl_sub1$peak_m, units = "m")
 gevfit1$results$par
 ```
-A plot of return periods for the fit distribution is available as well. 
+A plot of return periods (by specifying `type="rl"` for return level) for the fit distribution is available. 
 ```{r slr-4, message=FALSE, echo=TRUE, fig.align = 'center', out.width = "55%", fig.cap='Return periods based on the fit GEV distribution for 1900-1930. Points are observations; dashed lines enclose the 95% confidence interval.'}
 extRemes::plot.fevd(gevfit1, type="rl", main = "")
 ```
