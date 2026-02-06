@@ -138,10 +138,13 @@ boxplot(yvalues1,yvalues2,names=c("1980-2001","2002-2023"),boxwex=0.2,ylab="swe,
 ```
 Calculate the means and medians of the two periods, just for illustration.
 ```{r step-2, message=FALSE, echo=TRUE}
-mean(yvalues1)
-mean(yvalues2)
-median(yvalues1)
-median(yvalues2)
+data.frame(period=c("1980-2001","2002-2023"), 
+           mean=c(mean(yvalues1), mean(yvalues2)), 
+           median=c(median(yvalues1), median(yvalues2))) |>
+  kableExtra::kbl(table.attr = "style='width:50%;'",
+          caption = "Means and medians for 2 periods", 
+          digits=1) |>
+  kableExtra::kable_classic(full_width = T, position = "center")
 ```
 The mean for the later period is lower, as is the median. the question to pose is whether these differences are statistically significant. The following tests allow that determination.
 
@@ -175,7 +178,7 @@ To perform a linear regression in R, build a linear regression model (lm). This 
 m <- lm(April_1_SWE_in ~ Year, data = swe) 
 summary(m)$coefficients
 ```
-The row for "Year" provides the data on the slope. The slope shows SWE declines by 0.16 inches/year based on regression. The p-value for the slope is 0.379, much larger than the typical $\alpha$, meaning we cannot claim that a significant slope exists based on this test. So while a declining April 1 snowpack is observed at this location, it is not outside of the natural variability of the data based on a regression analysis.
+The row for "Year" provides the data on the slope. The slope shows SWE declines by 0.16 inches/year based on regression. The p-value for the slope is 0.379, much larger than the typical $\alpha$, meaning we cannot claim that a significant slope exists based on this test. So while a declining April 1 snowpack is observed at this location, it is not outside of the natural variability of the data based on a regression analysis. The full set of regression output, such as the  $R^2$ value, can be seen using `summary(m)`. Individual results can be saved to variables using something like `slope <- m$coefficients["year"]`. The p-value for the slope can be obtained by using the (row,col) of the coefficient, like `pval <- summary(m)$coefficients[2,4]`. Extracting the $R^2$ value is done using `R2 <- summary(m)$r.squared` and adjusted $R^2$ (for multiple regression) uses `summary(m)$adj.r.squared`.
 
 #### Method 2: Mann-Kendall
 
@@ -183,7 +186,7 @@ To conduct a Mann-Kendall trend test, additional packages need to be installed. 
 
 A non-parametric trend test (and plot) requires a few extra packages, which are installed like this:
 
-```{r trend-2, message=FALSE, echo=TRUE}
+```{r trend-2, message=FALSE, echo=TRUE, eval=FALSE}
 if (!require('Kendall', quietly = TRUE)) install.packages('Kendall')
 if (!require('zyp', quietly = TRUE)) install.packages('zyp')
 ```
@@ -230,7 +233,7 @@ knitr::include_graphics('images/erl405394f4_online.jpg')
 ```
 
 An example using the GEV with sea level data is illustrated below. The @tebaldi_modelling_2012 paper uses the R package [extRemes](https://cran.r-project.org/package=extRemes), which we will use here. The same package has been used to study extreme wind, precipitation, temperature, streamflow, and other events, so it is a very versatile and widely-used package. Install the package if it is not already installed.
-```{r slrpk-2, message=FALSE, echo=TRUE}
+```{r slrpk-2, message=FALSE, echo=TRUE, eval = FALSE}
 if (!require('extRemes', quietly = TRUE)) install.packages('extRemes')
 ```
 
@@ -275,22 +278,22 @@ plot(peak_sl_ann$year,peak_sl_ann$peak_m,xlab="Year",ylab="Annual Peak Sea Level
 
 ### Conducting the extreme event analysis
 
-The question we will attempt to address is whether the 100-year peak tide level (the level exceeded with a 1 percent probability) has increased between the 1900-1930 and 1990-2020 periods. Extract a subset of the data for one period and fit a GEV distribution to the values.
+The question we will attempt to address is whether the 100-year peak tide level (the level exceeded with a 1 percent probability) has increased between the 1900-1930 and 1990-2020 periods. Extract a subset of the data for one period and fit a GEV distribution to the values. Specify units of meters for axis labeling.
 ```{r slr-3, message=FALSE}
 peak_sl_sub1 <- subset(peak_sl_ann, year >= 1900 & year <= 1930)
-gevfit1 <- extRemes::fevd(peak_sl_sub1$peak_m)
+gevfit1 <- extRemes::fevd(peak_sl_sub1$peak_m, units = "m")
 gevfit1$results$par
 ```
 A plot of return periods for the fit distribution is available as well. 
 ```{r slr-4, message=FALSE, echo=TRUE, fig.align = 'center', out.width = "55%", fig.cap='Return periods based on the fit GEV distribution for 1900-1930. Points are observations; dashed lines enclose the 95% confidence interval.'}
-extRemes::plot.fevd(gevfit1, type="rl")
+extRemes::plot.fevd(gevfit1, type="rl", main = "")
 ```
 
 As is usually the case, a statistical model does well in the area with observations, but the uncertainty increases for extreme values (like estimating a 500-year event from a 30-year record). A longer record produces better (less uncertain) estimates at higher return periods.
 
 Based on the GEV fit, the 100-year recurrence interval extreme tide is determined using:
 ```{r slr-5, message=FALSE}
-extRemes::return.level(gevfit1, return.period = 100, do.ci = TRUE, verbose = TRUE)
+extRemes::return.level(gevfit1, return.period = 100, do.ci = TRUE, verbose = FALSE)
 ```
 A check can be done using the reverse calculation, estimating the return period associated with a specified value of highest water level. This can be done by extracting the three GEV parameters, then running the _pevd_ command.
 
@@ -305,8 +308,8 @@ This returns a value of 0.99 (this is the cumulative distribution function, CDF,
 Repeating the calculation for a more recent period:
 ```{r slr-7, message=FALSE}
 peak_sl_sub2 <- subset(peak_sl_ann, year >= 1990 & year <= 2020)
-gevfit2 <- extRemes::fevd(peak_sl_sub2$peak_m)
-extRemes::return.level(gevfit2, return.period = 100, do.ci = TRUE, verbose = TRUE)
+gevfit2 <- extRemes::fevd(peak_sl_sub2$peak_m, units = "m")
+extRemes::return.level(gevfit2, return.period = 100, do.ci = TRUE, verbose = FALSE)
 ```
 
 This returns a 100-year high tide of 2.6 m for 1990-2020, a 10.6 % increase over 1900-1930. Another way to look at this is to find out how the frequency of the past (in this case, 1900-1930) 100-year event has changed with rising sea levels. Repeating the calculations from above to capture the GEV parameters for the later period, and then plugging in the 100-year high tide from the early period:
@@ -316,4 +319,4 @@ sca2 <- gevfit2$results$par[["scale"]]
 shp2 <- gevfit2$results$par[["shape"]]
 extRemes::pevd(2.35, loc = loc2, scale = sca2 , shape = shp2, type = c("GEV"))
 ```
-This returns a value of 0.72 (72% non-exceedence, or 28% exceedance, in other words we expect to see an annual high tide of 2.35 m or higher in 28% of the years). The return period of this is calculated as above: T = 1/(1-0.72) = 3.6 years. So, what was the rare 100-year event in 1900-1930 is about a 4-year event in 1990-2020, a much more common event.
+This returns a value of 0.72 (72% non-exceedence, or 28% exceedence, in other words we expect to see an annual high tide of 2.35 m or higher in 28% of the years). The return period of this is calculated as above: T = 1/(1-0.72) = 3.6 years. So, what was the rare 100-year event in 1900-1930 is about a 4-year event in 1990-2020, a much more common event.
