@@ -124,11 +124,11 @@ For more detail, recover the values of each of the decision variables.
 vars <- get.variables(example.lp)
 ```
 
-Next you can print the sensitivity report -- a vector of M constraints followed by N decision variables. It helps to create a data frame for viewing and printing the results. Nicer printing is achieved using the kable and kableExtra functions.
+Next you can print the sensitivity report -- a vector of M constraints followed by N decision variables. It helps to create a data frame for viewing and printing the results. Nicer printing is achieved using the [kableExtra](https://cran.r-project.org/package=kableExtra) package. The `signif` function only keeps the specified number of significant figures, which makes for cleaner output.
 ```{r lm-9, message=FALSE}
 sens <- get.sensitivity.obj(example.lp)$objfrom
-results1 <- data.frame(variable=ColNames,value=vars,gradient=as.integer(sens))
-kbl(results1, booktabs = TRUE) %>% kable_styling(full_width = F)
+results1 <- data.frame(variable=ColNames,value=signif(vars,5),gradient=as.integer(sens))
+kbl(results1, booktabs = TRUE) |> kable_styling(full_width = F)
 ```
 The above shows decision variable values for the optimal solution. The Gradient is the change in the objective function for a unit increase in the decision variable. Here a negative gradient for decision variable $X1$, the groundwater withdrawal, means that increasing the groundwater withdrawal will have a negative effect on the objective function, (to minimize $X2$): that is intuitive, since increasing groundwater withdrawal can reduce reservoir supply on a one-to-one basis.
 
@@ -136,8 +136,8 @@ To look at which constraints are binding, retrieve the $duals part of the output
 ```{r lm-10, message=FALSE}
 m <- length(get.constraints(example.lp)) #number of constraints
 duals <- get.sensitivity.rhs(example.lp)$duals[1:m]
-results2 <- data.frame(constraint=c(seq(1:m)),multiplier=duals)
-kbl(results2, booktabs = TRUE) %>% kable_styling(full_width = F)
+results2 <- data.frame(constraint=c(seq(1:m)),multiplier=signif(duals,5))
+kbl(results2, booktabs = TRUE, digits = 5) |> kable_styling(full_width = F)
 ```
 The multipliers for each constraint are referred to as Lagrange multipliers (or shadow prices). Non-zero values of the multiplier indicate a binding capability of that constraint, and the change in the objective function that would result from a unit change in that value. Zero values are non-binding, since a unit change in their value has no effect on the optimal result. For example, constraint 3, that $X1 \le 4000$, with a multiplier of zero, could be changed (at least a small amount -- there can be a limit after which it can become binding) with no effect on the optimal solution. Similarly, if constraint 2, $X1+X2 \ge 7500$, were were increased, the objective function (the optimal reservoir supply) would also increase.
 
@@ -159,7 +159,7 @@ x <- data.frame(
   Month=paste0(month.abb[seq(1,12)]," (",seq(1,12),")"),
   Demand=c(0,0,0,0,40,130,230,250,180,110,0,0))
 names(x)[2] <- paste0("Demand, ","10$^6$m$^3$")
-kbl(cbind(x[1:4,],x[5:8,],x[9:12,]), booktabs = TRUE) %>% kable_styling(full_width = F)
+kbl(cbind(x[1:4,],x[5:8,],x[9:12,]), booktabs = TRUE) |> kable_styling(full_width = F)
 ```
 :::
 
@@ -217,7 +217,7 @@ x2 <- data.frame(
   V=c("Storage (s1-s12)","Release (r1-r12)","Hydropower (h1-h12)","Irrigation diversion (d1-d12)"),
   I=c("1-12","13-24","25-36","37-48"))
 names(x2) <- c("Decision Variables","Indices (columns)")
-kbl(x2, booktabs = TRUE) %>% kable_styling(full_width = F)
+kbl(x2, booktabs = TRUE) |> kable_styling(full_width = F)
 ```
 
 Using these indices as a guide, set up the objective function and initialize the linear model. While not necessary, redirecting the output of the _lp.control_ to a variable prevents a lot of output to the console. The following takes the revenue from hydropower and irrigation (in $ per 10$^6$m$^3$/month), multiplies them by the 12 monthly values for the hydropower flows and the irrigation deliveries, and sets the objective to maximize their sum, as described by Equation \@ref(eq:lmr-eq1).
@@ -229,7 +229,7 @@ x <- lp.control(reser.lp, sense="max")
 With the LP setup, the constraints need to be applied. Negative releases, storage, or river flows don’t make sense, so they all need to be positive, so $s_t\ge0$, $r_t\ge0$, $h_t\ge0$ for all 12 months, but because the _lpSolveAPI_ package assumes all decision variables have a range of $0\le x\le \infty$ these do not need to be explicitly added as constraints. When using other software packages these may need to be included.
 
 #### Constraints 1-12: Maximum storage
-The maximum capacity of the reservoir cannot be exceeded in any month, or $s_t\le 600$ for all 12 months. This can be added in a simple loop:
+The maximum capacity of the reservoir cannot be exceeded in any month, or $s_t\le 550$ for all 12 months. This can be added in a simple loop:
 ```{r lmr-6, message=FALSE, echo=TRUE}
 for (i in seq(1,12)) {
   add.constraint(reser.lp, xt=c(1), type="<=", rhs=res_cap, indices=c(i))
@@ -246,7 +246,7 @@ for (i in seq(1,12)) {
 ```
 
 #### Constraints 25-36: Hydropower
-Hydropower release cannot exceed the penstock capacity in any month: $h_t\le 180$ for all 12 months. This can be done following the example above for the maximum storage constraint
+Hydropower release cannot exceed the penstock capacity in any month: $h_t\le 160$ for all 12 months. This can be done following the example above for the maximum storage constraint
 ```{r lmr-8, message=FALSE, echo=TRUE}
 for (i in seq(1,12)) {
   add.constraint(reser.lp, xt=c(1), type="<=", rhs=penstock_cap, indices=c(i+24))
@@ -300,7 +300,7 @@ results0 <- data.frame(variable=DecisionVarNames,value=vars)
 r0 <- cbind(results0[13:24, ], results0[25:36, ])
 rownames(r0) <- c()
 names(r0) <- c("Decision Variable","Value","Decision Variable","Value")
-kbl(r0, booktabs = TRUE) %>% 
+kbl(r0, booktabs = TRUE, digits = 1) |> 
   kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
 ```
 
@@ -319,7 +319,7 @@ Another part of the output that is important is to what degree irrigation demand
 x1 <- cbind(results0[37:48, ], irrig_dem)
 rownames(x1) <- c()
 names(x1) <- c("Decision Variable","Value",paste0("Irrigation Demand, ","10$^6$m$^3$"))
-kbl(x1, booktabs = TRUE) %>% 
+kbl(x1, booktabs = TRUE, digits = 0) |> 
   kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
 ```
 
@@ -330,7 +330,7 @@ Finally, finding which constraints are binding can provide insights into how a s
 m <- length(get.constraints(reser.lp))             # retrieve the number of constraints
 duals <- get.sensitivity.rhs(reser.lp)$duals[1:m]
 results2 <- data.frame(Constraint=c(seq(1:m)),Multiplier=duals)
-kbl(results2[1:12,], booktabs = TRUE) %>% 
+kbl(results2[1:12,], booktabs = TRUE) |> 
   kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
 ```
 
