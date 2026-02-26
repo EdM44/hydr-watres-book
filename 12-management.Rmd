@@ -128,7 +128,8 @@ Next you can print the sensitivity report -- a vector of M constraints followed 
 ```{r lm-9, message=FALSE}
 sens <- get.sensitivity.obj(example.lp)$objfrom
 results1 <- data.frame(variable=ColNames,value=signif(vars,5),gradient=as.integer(sens))
-kbl(results1, booktabs = TRUE) |> kable_styling(full_width = F)
+kbl(results1, booktabs = TRUE, caption = "Summary of output") |>
+  kable_styling(full_width = F)
 ```
 The above shows decision variable values for the optimal solution. The Gradient is the change in the objective function for a unit increase in the decision variable. Here a negative gradient for decision variable $X1$, the groundwater withdrawal, means that increasing the groundwater withdrawal will have a negative effect on the objective function, (to minimize $X2$): that is intuitive, since increasing groundwater withdrawal can reduce reservoir supply on a one-to-one basis.
 
@@ -137,7 +138,9 @@ To look at which constraints are binding, retrieve the $duals part of the output
 m <- length(get.constraints(example.lp)) #number of constraints
 duals <- get.sensitivity.rhs(example.lp)$duals[1:m]
 results2 <- data.frame(constraint=c(seq(1:m)),multiplier=signif(duals,5))
-kbl(results2, booktabs = TRUE, digits = 5) |> kable_styling(full_width = F)
+kbl(results2, booktabs = TRUE, digits = 5, 
+    caption = "Summary of constraints and multipliers", table.attr = "style='width:50%;'") |>
+  kable_styling(full_width = T, position = "center")
 ```
 The multipliers for each constraint are referred to as Lagrange multipliers (or shadow prices). Non-zero values of the multiplier indicate a binding capability of that constraint, and the change in the objective function that would result from a unit change in that value. Zero values are non-binding, since a unit change in their value has no effect on the optimal result. For example, constraint 3, that $X1 \le 4000$, with a multiplier of zero, could be changed (at least a small amount -- there can be a limit after which it can become binding) with no effect on the optimal solution. Similarly, if constraint 2, $X1+X2 \ge 7500$, were were increased, the objective function (the optimal reservoir supply) would also increase.
 
@@ -159,7 +162,8 @@ x <- data.frame(
   Month=paste0(month.abb[seq(1,12)]," (",seq(1,12),")"),
   Demand=c(0,0,0,0,40,130,230,250,180,110,0,0))
 names(x)[2] <- paste0("Demand, ","10$^6$m$^3$")
-kbl(cbind(x[1:4,],x[5:8,],x[9:12,]), booktabs = TRUE) |> kable_styling(full_width = F)
+kbl(cbind(x[1:4,],x[5:8,],x[9:12,]), booktabs = TRUE, caption = "Monthly irrigation demands") |>
+  kable_styling(full_width = F)
 ```
 :::
 
@@ -217,7 +221,8 @@ x2 <- data.frame(
   V=c("Storage (s1-s12)","Release (r1-r12)","Hydropower (h1-h12)","Irrigation diversion (d1-d12)"),
   I=c("1-12","13-24","25-36","37-48"))
 names(x2) <- c("Decision Variables","Indices (columns)")
-kbl(x2, booktabs = TRUE) |> kable_styling(full_width = F)
+kbl(x2, booktabs = TRUE, caption = "Names assigned to the 48 decision variables", table.attr = "style='width:50%;'") |>
+  kable_styling(full_width = T, position = "center")
 ```
 
 Using these indices as a guide, set up the objective function and initialize the linear model. While not necessary, redirecting the output of the _lp.control_ to a variable prevents a lot of output to the console. The following takes the revenue from hydropower and irrigation (in $ per 10$^6$m$^3$/month), multiplies them by the 12 monthly values for the hydropower flows and the irrigation deliveries, and sets the objective to maximize their sum, as described by Equation \@ref(eq:lmr-eq1).
@@ -299,8 +304,10 @@ vars <- get.variables(reser.lp)       # retrieve decision variable values
 results0 <- data.frame(variable=DecisionVarNames,value=vars)
 r0 <- cbind(results0[13:24, ], results0[25:36, ])
 rownames(r0) <- c()
-names(r0) <- c("Decision Variable","Value","Decision Variable","Value")
-kbl(r0, booktabs = TRUE, digits = 1) |> 
+column_names <- c("Reservoir Release", paste0("10$^6$m$^3$"),
+                  "Hydropower Diversion", paste0("10$^6$m$^3$"))
+kbl(r0, booktabs = TRUE, digits = 1, col.names=column_names,
+    caption = "Monthly reservoir releases and amount used for hydropower") |> 
   kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
 ```
 
@@ -318,8 +325,8 @@ Another part of the output that is important is to what degree irrigation demand
 ```{r lmr-13, message=FALSE, echo=FALSE}
 x1 <- cbind(results0[37:48, ], irrig_dem)
 rownames(x1) <- c()
-names(x1) <- c("Decision Variable","Value",paste0("Irrigation Demand, ","10$^6$m$^3$"))
-kbl(x1, booktabs = TRUE, digits = 0) |> 
+names(x1) <- c("Decision variable",paste0("Delivery, 10$^6$m$^3$"),paste0("Demand, ","10$^6$m$^3$"))
+kbl(x1, booktabs = TRUE, digits = 0, caption = "Optimal monthly irrigation deliveries compared with monthly demands") |> 
   kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
 ```
 
@@ -330,8 +337,8 @@ Finally, finding which constraints are binding can provide insights into how a s
 m <- length(get.constraints(reser.lp))             # retrieve the number of constraints
 duals <- get.sensitivity.rhs(reser.lp)$duals[1:m]
 results2 <- data.frame(Constraint=c(seq(1:m)),Multiplier=duals)
-kbl(results2[1:12,], booktabs = TRUE) |> 
-  kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
+kbl(results2[1:12,], booktabs = TRUE, caption = "Multipliers for the constraint of reservoir capacity", table.attr = "style='width:50%;'") |> 
+  kable_styling(bootstrap_options = c("striped","condensed"),full_width = T, position = "center")
 ```
 
 For this example, in only one month would a larger reservoir have a positive impact on the maximum revenue.
