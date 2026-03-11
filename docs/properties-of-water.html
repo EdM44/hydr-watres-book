@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2026-02-26" />
+<meta name="date" content="2026-03-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1638,10 +1638,10 @@ It may help to consider a single 1m x 1m column of water with h=700 m high under
 \end{equation}\]</span>
 which can be discretized:
 <span class="math display" id="eq:bm-2">\[\begin{equation}
-  \frac{v_2-v_1}{v_1}=-\frac{p_2-p_1}{E_v}
+  \frac{v_2-v_1}{v_1}=\frac{\rho_1-\rho_2}{\rho_2}=-\frac{p_2-p_1}{E_v}
   \tag{2.2}
 \end{equation}\]</span>
-where <span class="math inline">\(v\)</span> is the specific volume (<span class="math inline">\(v=\frac{1}{\rho}\)</span>) and <span class="math inline">\(p\)</span> is pressure.</p>
+where <span class="math inline">\(\rho\)</span> is the density, <span class="math inline">\(v\)</span> is the specific volume (<span class="math inline">\(v=\frac{1}{\rho}\)</span>) and <span class="math inline">\(p\)</span> is pressure.</p>
 <p>Example <a href="properties-of-water.html#exm:ex-bm">2.3</a> shows one application of this.</p>
 <div class="example">
 <p><span id="exm:ex-bm" class="example"><strong>Example 2.3  </strong></span>A barrel of water has an initial temperature of 15 <span class="math inline">\(^\circ\)</span>C at atmospheric pressure (p=0 Pa gage). Plot the pressure the barrel must exert to have no change in volume as the water warms to 20 <span class="math inline">\(^\circ\)</span>C.</p>
@@ -1652,7 +1652,7 @@ Here essentially the larger specific volume (at a higher temperature) is then co
 <span id="cb6-2"><a href="properties-of-water.html#cb6-2" tabindex="-1"></a>  rho2 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> <span class="dv">15</span>, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
 <span id="cb6-3"><a href="properties-of-water.html#cb6-3" tabindex="-1"></a>  rho1 <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">dens</span>(<span class="at">T =</span> tmp, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
 <span id="cb6-4"><a href="properties-of-water.html#cb6-4" tabindex="-1"></a>  Ev <span class="ot">&lt;-</span> hydraulics<span class="sc">::</span><span class="fu">Ev</span>(<span class="at">T =</span> tmp, <span class="at">units =</span> <span class="st">&#39;SI&#39;</span>)</span>
-<span id="cb6-5"><a href="properties-of-water.html#cb6-5" tabindex="-1"></a>  <span class="fu">return</span>((<span class="sc">-</span>((<span class="dv">1</span><span class="sc">/</span>rho2) <span class="sc">-</span> (<span class="dv">1</span><span class="sc">/</span>rho1))<span class="sc">/</span>(<span class="dv">1</span><span class="sc">/</span>rho1))<span class="sc">*</span>Ev)</span>
+<span id="cb6-5"><a href="properties-of-water.html#cb6-5" tabindex="-1"></a>  <span class="fu">return</span>((<span class="sc">-</span>(rho1 <span class="sc">-</span> rho2)<span class="sc">/</span>rho2)<span class="sc">*</span>Ev)</span>
 <span id="cb6-6"><a href="properties-of-water.html#cb6-6" tabindex="-1"></a>}</span>
 <span id="cb6-7"><a href="properties-of-water.html#cb6-7" tabindex="-1"></a>temps <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">15</span>, <span class="at">to=</span><span class="dv">20</span>, <span class="at">by=</span><span class="dv">1</span>)</span>
 <span id="cb6-8"><a href="properties-of-water.html#cb6-8" tabindex="-1"></a><span class="fu">plot</span>(temps,<span class="fu">dp</span>(temps), <span class="at">xlab=</span><span class="st">&quot;Temperature, C&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Pressure increase, Pa&quot;</span>, <span class="at">type=</span><span class="st">&quot;b&quot;</span>)</span></code></pre></div>

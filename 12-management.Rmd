@@ -250,7 +250,7 @@ for (i in seq(1,12)) {
 }
 ```
 
-#### Constraints 25-36: Hydropower
+#### Constraints 25-36: Hydropower capacity
 Hydropower release cannot exceed the penstock capacity in any month: $h_t\le 160$ for all 12 months. This can be done following the example above for the maximum storage constraint
 ```{r lmr-8, message=FALSE, echo=TRUE}
 for (i in seq(1,12)) {
@@ -266,7 +266,7 @@ for (i in seq(1,12)) {
 }
 ```
 
-#### Constraints 49-60: Hydropower
+#### Constraints 49-60: Hydropower generation
 Hydropower generation will be less than or equal to reservoir release in every month, or $r_1-h_1\ge 0$, $r_2-h_2\ge 0$, ... for all 12 months.
 ```{r lmr-10, message=FALSE, echo=TRUE}
 for (i in seq(1,12)) {
@@ -302,9 +302,9 @@ To look at the hydropower generation, and to see how often spill occurs, it help
 ```{r lmr-12x, message=FALSE, echo=TRUE}
 vars <- get.variables(reser.lp)       # retrieve decision variable values
 results0 <- data.frame(variable=DecisionVarNames,value=vars)
-r0 <- cbind(results0[13:24, ], results0[25:36, ])
+r0 <- cbind(month.abb, results0[13:24, ], results0[25:36, ])
 rownames(r0) <- c()
-column_names <- c("Reservoir Release", paste0("10$^6$m$^3$"),
+column_names <- c("Month", "Reservoir Release", paste0("10$^6$m$^3$"),
                   "Hydropower Diversion", paste0("10$^6$m$^3$"))
 kbl(r0, booktabs = TRUE, digits = 1, col.names=column_names,
     caption = "Monthly reservoir releases and amount used for hydropower") |> 
@@ -313,8 +313,8 @@ kbl(r0, booktabs = TRUE, digits = 1, col.names=column_names,
 
 ```{r lmr-f12, message=FALSE, echo=FALSE, fig.align = 'center', out.width = "50%", fig.cap='Reservoir releases and hydropower water use for optimal solution.'}
 ylbl <- expression(10 ^6 ~ m ^3/month)
-plot(r0[,2], type="l", col="blue", xlab="Month", ylab=ylbl)
-lines(r0[,4], col="darkgreen", lty=2)
+plot(r0[,3], type="l", col="blue", xlab="Month", ylab=ylbl)
+lines(r0[,5], col="darkgreen", lty=2)
 legend("topright",c("Releases","Hydropower"),lty = c(1,2))
 grid()
 ```
@@ -323,9 +323,9 @@ For this optimal solution, the releases exceed the capacity of the penstock supp
 
 Another part of the output that is important is to what degree irrigation demand is met. the irrigation delivery is associated with decision variables with indices 37-48.
 ```{r lmr-13, message=FALSE, echo=FALSE}
-x1 <- cbind(results0[37:48, ], irrig_dem)
+x1 <- cbind(month.abb, results0[37:48, ], irrig_dem)
 rownames(x1) <- c()
-names(x1) <- c("Decision variable",paste0("Delivery, 10$^6$m$^3$"),paste0("Demand, ","10$^6$m$^3$"))
+names(x1) <- c("Month","Decision variable",paste0("Delivery, 10$^6$m$^3$"),paste0("Demand, ","10$^6$m$^3$"))
 kbl(x1, booktabs = TRUE, digits = 0, caption = "Optimal monthly irrigation deliveries compared with monthly demands") |> 
   kable_styling(bootstrap_options = c("striped","condensed"),full_width = F)
 ```

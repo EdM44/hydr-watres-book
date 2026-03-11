@@ -388,9 +388,9 @@ setting-up-the-problem-in-r-1
 building-the-linear-model
 constraints-1-12-maximum-storage
 constraints-13-24-irrigation-diversions
-constraints-25-36-hydropower
+constraints-25-36-hydropower-capacity
 constraints-37-48-reservoir-release
-constraints-49-60-hydropower
+constraints-49-60-hydropower-generation
 constraints-61-72-conservation-of-mass
 solving-the-model-and-interpreting-output
 more-realistic-reservoir-operation-non-linear-programming

@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2026-02-26" />
+<meta name="date" content="2026-03-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -846,8 +846,8 @@ Irrigation diversion (d1-d12)
 <span id="cb157-2"><a href="management-of-water-resources-systems.html#cb157-2" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&lt;=&quot;</span>, <span class="at">rhs=</span>irrig_dem[i], <span class="at">indices=</span><span class="fu">c</span>(i<span class="sc">+</span><span class="dv">36</span>))</span>
 <span id="cb157-3"><a href="management-of-water-resources-systems.html#cb157-3" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="constraints-25-36-hydropower" class="section level4 hasAnchor" number="12.2.3.3">
-<h4><span class="header-section-number">12.2.3.3</span> Constraints 25-36: Hydropower<a href="management-of-water-resources-systems.html#constraints-25-36-hydropower" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="constraints-25-36-hydropower-capacity" class="section level4 hasAnchor" number="12.2.3.3">
+<h4><span class="header-section-number">12.2.3.3</span> Constraints 25-36: Hydropower capacity<a href="management-of-water-resources-systems.html#constraints-25-36-hydropower-capacity" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Hydropower release cannot exceed the penstock capacity in any month: <span class="math inline">\(h_t\le 160\)</span> for all 12 months. This can be done following the example above for the maximum storage constraint</p>
 <div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="management-of-water-resources-systems.html#cb158-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>)) {</span>
 <span id="cb158-2"><a href="management-of-water-resources-systems.html#cb158-2" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&lt;=&quot;</span>, <span class="at">rhs=</span>penstock_cap, <span class="at">indices=</span><span class="fu">c</span>(i<span class="sc">+</span><span class="dv">24</span>))</span>
@@ -860,8 +860,8 @@ Irrigation diversion (d1-d12)
 <span id="cb159-2"><a href="management-of-water-resources-systems.html#cb159-2" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&gt;=&quot;</span>, <span class="at">rhs=</span><span class="dv">0</span>, <span class="at">indices=</span><span class="fu">c</span>(i<span class="sc">+</span><span class="dv">12</span>,i<span class="sc">+</span><span class="dv">36</span>))</span>
 <span id="cb159-3"><a href="management-of-water-resources-systems.html#cb159-3" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="constraints-49-60-hydropower" class="section level4 hasAnchor" number="12.2.3.5">
-<h4><span class="header-section-number">12.2.3.5</span> Constraints 49-60: Hydropower<a href="management-of-water-resources-systems.html#constraints-49-60-hydropower" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="constraints-49-60-hydropower-generation" class="section level4 hasAnchor" number="12.2.3.5">
+<h4><span class="header-section-number">12.2.3.5</span> Constraints 49-60: Hydropower generation<a href="management-of-water-resources-systems.html#constraints-49-60-hydropower-generation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Hydropower generation will be less than or equal to reservoir release in every month, or <span class="math inline">\(r_1-h_1\ge 0\)</span>, <span class="math inline">\(r_2-h_2\ge 0\)</span>, … for all 12 months.</p>
 <div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="management-of-water-resources-systems.html#cb160-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>)) {</span>
 <span id="cb160-2"><a href="management-of-water-resources-systems.html#cb160-2" tabindex="-1"></a>  <span class="fu">add.constraint</span>(reser.lp, <span class="at">xt=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>), <span class="at">type=</span><span class="st">&quot;&gt;=&quot;</span>, <span class="at">rhs=</span><span class="dv">0</span>, <span class="at">indices=</span><span class="fu">c</span>(i<span class="sc">+</span><span class="dv">12</span>,i<span class="sc">+</span><span class="dv">24</span>))</span>
@@ -894,9 +894,9 @@ Figure 12.7: The top of the linear model file produced by write.lp().
 <p>To look at the hydropower generation, and to see how often spill occurs, it helps to view the associated decision variables (as noted above, these are indices 12-24 and 25-36).</p>
 <div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="management-of-water-resources-systems.html#cb163-1" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">get.variables</span>(reser.lp)       <span class="co"># retrieve decision variable values</span></span>
 <span id="cb163-2"><a href="management-of-water-resources-systems.html#cb163-2" tabindex="-1"></a>results0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">variable=</span>DecisionVarNames,<span class="at">value=</span>vars)</span>
-<span id="cb163-3"><a href="management-of-water-resources-systems.html#cb163-3" tabindex="-1"></a>r0 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(results0[<span class="dv">13</span><span class="sc">:</span><span class="dv">24</span>, ], results0[<span class="dv">25</span><span class="sc">:</span><span class="dv">36</span>, ])</span>
+<span id="cb163-3"><a href="management-of-water-resources-systems.html#cb163-3" tabindex="-1"></a>r0 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(month.abb, results0[<span class="dv">13</span><span class="sc">:</span><span class="dv">24</span>, ], results0[<span class="dv">25</span><span class="sc">:</span><span class="dv">36</span>, ])</span>
 <span id="cb163-4"><a href="management-of-water-resources-systems.html#cb163-4" tabindex="-1"></a><span class="fu">rownames</span>(r0) <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb163-5"><a href="management-of-water-resources-systems.html#cb163-5" tabindex="-1"></a>column_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Reservoir Release&quot;</span>, <span class="fu">paste0</span>(<span class="st">&quot;10$^6$m$^3$&quot;</span>),</span>
+<span id="cb163-5"><a href="management-of-water-resources-systems.html#cb163-5" tabindex="-1"></a>column_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Month&quot;</span>, <span class="st">&quot;Reservoir Release&quot;</span>, <span class="fu">paste0</span>(<span class="st">&quot;10$^6$m$^3$&quot;</span>),</span>
 <span id="cb163-6"><a href="management-of-water-resources-systems.html#cb163-6" tabindex="-1"></a>                  <span class="st">&quot;Hydropower Diversion&quot;</span>, <span class="fu">paste0</span>(<span class="st">&quot;10$^6$m$^3$&quot;</span>))</span>
 <span id="cb163-7"><a href="management-of-water-resources-systems.html#cb163-7" tabindex="-1"></a><span class="fu">kbl</span>(r0, <span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">digits =</span> <span class="dv">1</span>, <span class="at">col.names=</span>column_names,</span>
 <span id="cb163-8"><a href="management-of-water-resources-systems.html#cb163-8" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Monthly reservoir releases and amount used for hydropower&quot;</span>) <span class="sc">|&gt;</span> </span>
@@ -907,6 +907,9 @@ Figure 12.7: The top of the linear model file produced by write.lp().
 </caption>
 <thead>
 <tr>
+<th style="text-align:left;">
+Month
+</th>
 <th style="text-align:left;">
 Reservoir Release
 </th>
@@ -924,6 +927,9 @@ Hydropower Diversion
 <tbody>
 <tr>
 <td style="text-align:left;">
+Jan
+</td>
+<td style="text-align:left;">
 r1
 </td>
 <td style="text-align:right;">
@@ -937,6 +943,9 @@ h1
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Feb
+</td>
 <td style="text-align:left;">
 r2
 </td>
@@ -952,6 +961,9 @@ h2
 </tr>
 <tr>
 <td style="text-align:left;">
+Mar
+</td>
+<td style="text-align:left;">
 r3
 </td>
 <td style="text-align:right;">
@@ -965,6 +977,9 @@ h3
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Apr
+</td>
 <td style="text-align:left;">
 r4
 </td>
@@ -980,6 +995,9 @@ h4
 </tr>
 <tr>
 <td style="text-align:left;">
+May
+</td>
+<td style="text-align:left;">
 r5
 </td>
 <td style="text-align:right;">
@@ -993,6 +1011,9 @@ h5
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Jun
+</td>
 <td style="text-align:left;">
 r6
 </td>
@@ -1008,6 +1029,9 @@ h6
 </tr>
 <tr>
 <td style="text-align:left;">
+Jul
+</td>
+<td style="text-align:left;">
 r7
 </td>
 <td style="text-align:right;">
@@ -1021,6 +1045,9 @@ h7
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Aug
+</td>
 <td style="text-align:left;">
 r8
 </td>
@@ -1036,6 +1063,9 @@ h8
 </tr>
 <tr>
 <td style="text-align:left;">
+Sep
+</td>
+<td style="text-align:left;">
 r9
 </td>
 <td style="text-align:right;">
@@ -1049,6 +1079,9 @@ h9
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Oct
+</td>
 <td style="text-align:left;">
 r10
 </td>
@@ -1064,6 +1097,9 @@ h10
 </tr>
 <tr>
 <td style="text-align:left;">
+Nov
+</td>
+<td style="text-align:left;">
 r11
 </td>
 <td style="text-align:right;">
@@ -1077,6 +1113,9 @@ h11
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Dec
+</td>
 <td style="text-align:left;">
 r12
 </td>
@@ -1107,6 +1146,9 @@ Another part of the output that is important is to what degree irrigation demand
 <thead>
 <tr>
 <th style="text-align:left;">
+Month
+</th>
+<th style="text-align:left;">
 Decision variable
 </th>
 <th style="text-align:right;">
@@ -1120,6 +1162,9 @@ Demand, 10<span class="math inline">\(^6\)</span>m<span class="math inline">\(^3
 <tbody>
 <tr>
 <td style="text-align:left;">
+Jan
+</td>
+<td style="text-align:left;">
 d1
 </td>
 <td style="text-align:right;">
@@ -1130,6 +1175,9 @@ d1
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Feb
+</td>
 <td style="text-align:left;">
 d2
 </td>
@@ -1142,6 +1190,9 @@ d2
 </tr>
 <tr>
 <td style="text-align:left;">
+Mar
+</td>
+<td style="text-align:left;">
 d3
 </td>
 <td style="text-align:right;">
@@ -1152,6 +1203,9 @@ d3
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Apr
+</td>
 <td style="text-align:left;">
 d4
 </td>
@@ -1164,6 +1218,9 @@ d4
 </tr>
 <tr>
 <td style="text-align:left;">
+May
+</td>
+<td style="text-align:left;">
 d5
 </td>
 <td style="text-align:right;">
@@ -1174,6 +1231,9 @@ d5
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Jun
+</td>
 <td style="text-align:left;">
 d6
 </td>
@@ -1186,6 +1246,9 @@ d6
 </tr>
 <tr>
 <td style="text-align:left;">
+Jul
+</td>
+<td style="text-align:left;">
 d7
 </td>
 <td style="text-align:right;">
@@ -1196,6 +1259,9 @@ d7
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Aug
+</td>
 <td style="text-align:left;">
 d8
 </td>
@@ -1208,6 +1274,9 @@ d8
 </tr>
 <tr>
 <td style="text-align:left;">
+Sep
+</td>
+<td style="text-align:left;">
 d9
 </td>
 <td style="text-align:right;">
@@ -1218,6 +1287,9 @@ d9
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Oct
+</td>
 <td style="text-align:left;">
 d10
 </td>
@@ -1230,6 +1302,9 @@ d10
 </tr>
 <tr>
 <td style="text-align:left;">
+Nov
+</td>
+<td style="text-align:left;">
 d11
 </td>
 <td style="text-align:right;">
@@ -1240,6 +1315,9 @@ d11
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Dec
+</td>
 <td style="text-align:left;">
 d12
 </td>
