@@ -1,7 +1,7 @@
 --- 
 title: 'Hydraulics and Water Resources: Examples Using R'
 author:
-- name: '[Ed Maurer](https://www.engr.scu.edu/~emaurer)'
+- name: '[Ed Maurer](https://edm44.github.io/edshome/)'
   affiliation: "Professor, [Civil, Environmental, and Sustainable Engineering Department,
     Santa Clara University](https://www.scu.edu/engineering/academic-programs/engineering/ce/)"
     
@@ -43,7 +43,7 @@ Scripting languages are powerful tools for performing calculations, providing a 
 
 No introduction to R or RStudio is provided here. It is assumed that the reader has installed R (and RStudio), is comfortable installing and updating packages, and understands the basics of R scripting. Some resources that can provide an introduction to R include:
 
-- [A brief overview](https://www.engr.scu.edu/~emaurer/shared/R-intro/), aimed at students at Santa Clara University. 
+- [A brief overview](https://edm44.github.io/R-intro-civil/), aimed at students at Santa Clara University. 
 - [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.html), a comprehensive reference by the R Core Team.
 - [Introduction to Programming with R](https://discdown.org/rprogramming/) by Stauffer et al., materials for a university course, including interactive exercises.
 - [R for Water Resources Data Science](https://www.r4wrds.com/), with both introductory and intermediate level courses online.
