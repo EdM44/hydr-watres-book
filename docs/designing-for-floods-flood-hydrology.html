@@ -25,7 +25,7 @@ engineering exercises using R.</p>" />
 
 
 
-<meta name="date" content="2026-04-02" />
+<meta name="date" content="2026-05-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -460,7 +460,7 @@ Figure 10.2: Illustration of three solutions.
 </div>
 <div id="ffa1" class="section level2 hasAnchor" number="10.2">
 <h2><span class="header-section-number">10.2</span> Estimating floods when you have peak flow observations - flood frequency analysis<a href="designing-for-floods-flood-hydrology.html#ffa1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>For an area fortunate enough to have a long record (i.e., several decades or more) of observations, estimating flood risk is a matter of statistical data analysis. In the U.S., data, collected by the U.S. Geological Survey (USGS), can be accessed through the <a href="https://dashboard.waterdata.usgs.gov/app/nwd/">National Water Dashboard</a>. Sometimes for discontinued stations it is easier to locate data through the <a href="https://maps.waterdata.usgs.gov/mapper">older USGS map interface</a>. For any site, data may be downloaded to a file, and the peakfq (watstore) format, designed to be imported into the <a href="https://water.usgs.gov/software/PeakFQ/">PeakFQ software</a>, is easy to work with in <em>R</em>.</p>
+<p>For an area fortunate enough to have a long record (several decades or more) of observations, estimating flood risk is a matter of statistical data analysis. In the U.S., data, collected by the U.S. Geological Survey (USGS), can be accessed through the <a href="https://dashboard.waterdata.usgs.gov/app/nwd/">National Water Dashboard</a>. Sometimes for discontinued stations it is easier to locate data through the <a href="https://maps.waterdata.usgs.gov/mapper">older USGS map interface</a>. For any site, data may be downloaded to a file, and the peakfq (watstore) format, designed to be imported into the <a href="https://water.usgs.gov/software/PeakFQ/">PeakFQ software</a>. As of late 2024, there is a <a href="https://rconnect.usgs.gov/peakfq/">USGS web app</a> that retrieves peak flow data for any gauge, obviating the need to download data separately.It is easy to work with USGS flow data, including instantaneous peak flows, in <em>R</em>, since data can also be accessed directly.</p>
 <div id="installing-helpful-packages" class="section level3 hasAnchor" number="10.2.1">
 <h3><span class="header-section-number">10.2.1</span> Installing helpful packages<a href="designing-for-floods-flood-hydrology.html#installing-helpful-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The USGS has developed many <em>R</em> packages, including one for retrieval of data, <a href="https://cran.r-project.org/package=dataRetrieval">dataRetrieval</a>. Since this resides on CRAN, the package can be installed with (the use of ‘!requireNamespace’ skips the installation if it already is installed):</p>
@@ -480,7 +480,7 @@ Figure 10.3: Active and Inactive USGS sites recording peak flows.
 </div>
 <p>While the data could be downloaded and saved locally through that link, it is convenient here to use the <a href="https://cran.r-project.org/web/packages/dataRetrieval/vignettes/dataRetrieval.html">dataRetrieval</a> command. Note that this package is being rewritten, and <a href="https://doi-usgs.github.io/dataRetrieval/articles/Status.html">commands are changing</a> as revisions occur.</p>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="designing-for-floods-flood-hydrology.html#cb104-1" tabindex="-1"></a>siteNumber <span class="ot">&lt;-</span> <span class="st">&quot;11169000&quot;</span></span>
-<span id="cb104-2"><a href="designing-for-floods-flood-hydrology.html#cb104-2" tabindex="-1"></a>peakData <span class="ot">&lt;-</span> dataRetrieval<span class="sc">::</span><span class="fu">readNWISpeak</span>(siteNumber)</span></code></pre></div>
+<span id="cb104-2"><a href="designing-for-floods-flood-hydrology.html#cb104-2" tabindex="-1"></a>Qpeak_download <span class="ot">&lt;-</span> dataRetrieval<span class="sc">::</span><span class="fu">readNWISpeak</span>(siteNumber)</span></code></pre></div>
 <p>The data used here are also available as part of the <em>hydromisc</em> package, and may be obtained by typing <code>hydromisc::Qpeak_download</code>.</p>
 <p>It is always helpful to look at the downloaded data frame before doing anything with it. There are many columns that are not needed or that have repeated information. There are also some rows that have no data (‘NA’ values). It is also useful to change some column names to something more intuitive. We will need to define the water year (a water year begins October 1 and ends September 30).</p>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="designing-for-floods-flood-hydrology.html#cb105-1" tabindex="-1"></a>Qpeak <span class="ot">&lt;-</span> Qpeak_download[<span class="sc">!</span><span class="fu">is.na</span>(Qpeak_download<span class="sc">$</span>peak_dt),<span class="fu">c</span>(<span class="st">&#39;peak_dt&#39;</span>,<span class="st">&#39;peak_va&#39;</span>)]</span>

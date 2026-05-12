@@ -62,7 +62,7 @@ legend("bottomright",legend=c("(a)","(b)","(c)"),col=c("black","blue","green"), 
 
 ## Estimating floods when you have peak flow observations - flood frequency analysis {#ffa1}
 
-For an area fortunate enough to have a long record (i.e., several decades or more) of observations, estimating flood risk is a matter of statistical data analysis. In the U.S., data, collected by the U.S. Geological Survey (USGS), can be accessed through the [National Water Dashboard](https://dashboard.waterdata.usgs.gov/app/nwd/). Sometimes for discontinued stations it is easier to locate data through the [older USGS map interface](https://maps.waterdata.usgs.gov/mapper). For any site, data may be downloaded to a file, and the peakfq (watstore) format, designed to be imported into the [PeakFQ software](https://water.usgs.gov/software/PeakFQ/), is easy to work with in _R_.
+For an area fortunate enough to have a long record (several decades or more) of observations, estimating flood risk is a matter of statistical data analysis. In the U.S., data, collected by the U.S. Geological Survey (USGS), can be accessed through the [National Water Dashboard](https://dashboard.waterdata.usgs.gov/app/nwd/). Sometimes for discontinued stations it is easier to locate data through the [older USGS map interface](https://maps.waterdata.usgs.gov/mapper). For any site, data may be downloaded to a file, and the peakfq (watstore) format, designed to be imported into the [PeakFQ software](https://water.usgs.gov/software/PeakFQ/). As of late 2024, there is a [USGS web app](https://rconnect.usgs.gov/peakfq/) that retrieves peak flow data for any gauge, obviating the need to download data separately.It is easy to work with USGS flow data, including instantaneous peak flows, in _R_, since data can also be accessed directly.
 
 ### Installing helpful packages
 
@@ -89,7 +89,7 @@ While the data could be downloaded and saved locally through that link, it is co
 
 ```{r pf-1, message=FALSE, echo=TRUE, eval = FALSE}
 siteNumber <- "11169000"
-peakData <- dataRetrieval::readNWISpeak(siteNumber)
+Qpeak_download <- dataRetrieval::readNWISpeak(siteNumber)
 ```
 
 The data used here are also available as part of the _hydromisc_ package, and may be obtained by typing `hydromisc::Qpeak_download`.
